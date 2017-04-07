@@ -29,31 +29,67 @@ namespace Genie.Templates.Complex
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using TestApp.DA.General;
-using TestApp.DA.General.Interfaces;
-using TestApp.DA.Infrastructure.EnumQueriesStoredProcedures;
-using TestApp.DA.Infrastructure.Interfaces;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading;
-using TestApp.DA.Dapper;
-using TestApp.DA.Infrastructure.Enum;
-using TestApp.DA.Infrastructure.Models;
-using TestApp.DA.SqlMaker.Interfaces;
-using System.Collections;
-using System.ComponentModel;
-using System.Text.RegularExpressions;
-
-namespace ");
+            this.Write("\r\nusing System;\r\nusing System.Collections.Concurrent;\r\nusing System.Collections.G" +
+                    "eneric;\r\nusing System.Data;\r\nusing System.Linq;\r\nusing ");
+            
+            #line 13 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".General;\r\nusing ");
+            
+            #line 14 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".General.Interfaces;\r\nusing ");
+            
+            #line 15 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.EnumQueriesStoredProcedures;\r\nusing ");
+            
+            #line 16 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Interfaces;\r\nusing System.Configuration;\r\nusing System.Data.SqlCl" +
+                    "ient;\r\nusing System.Reflection;\r\nusing System.Reflection.Emit;\r\nusing System.Tex" +
+                    "t;\r\nusing System.Threading;\r\nusing ");
+            
+            #line 23 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper;\r\nusing ");
+            
+            #line 24 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Enum;\r\nusing ");
+            
+            #line 25 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Models;\r\nusing ");
+            
+            #line 26 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".SqlMaker.Interfaces;\r\nusing System.Collections;\r\nusing System.ComponentModel;\r\nu" +
+                    "sing System.Text.RegularExpressions;\r\n\r\nnamespace ");
             
             #line 31 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));

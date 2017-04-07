@@ -8,6 +8,6 @@ namespace Genie.Models
         internal string Name { get; set; }
         internal string RelationName { get; set; }
         internal List<Attribute> Attributes { get; set; }
-
+        internal List<ForeignKeyAttribute> ForeignKeyAttributes { get; set; }
     }
 }

@@ -53,9 +53,9 @@ namespace Genie.Templates.Complex
                     "ew ArgumentOutOfRangeException(\"e\");\r\n                    }\r\n                }\r\n" +
                     "            }\r\n\r\n            public enum SortAs\r\n            {\r\n                " +
                     "Asc,\r\n                Desc\r\n            }\r\n        }\r\n\r\n        namespace EnumQu" +
-                    "eriesStoredProcedures\r\n        {\r\n          ");
+                    "eriesStoredProcedures\r\n        {\r\n\r\n          ");
             
-            #line 70 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 71 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 foreach(var relation in Model.Relations){
           
             
@@ -63,21 +63,21 @@ foreach(var relation in Model.Relations){
             #line hidden
             this.Write("public class ");
             
-            #line 71 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 72 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Enum : EnumBase<");
             
-            #line 71 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 72 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Enum, string>\r\n            {\r\n                public ");
             
-            #line 73 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 74 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
@@ -86,50 +86,108 @@ foreach(var relation in Model.Relations){
                     "(name, enumValue, cmdType)\r\n                    {\r\n                    }\r\n      " +
                     "      }\r\n          ");
             
-            #line 78 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 79 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 }
             
             #line default
             #line hidden
-            this.Write("\r\n            //public class BankEnum : EnumBase<BankEnum, string>\r\n            /" +
-                    "/{\r\n                //public static readonly BankEnum GetCustomerByPage = new Ba" +
-                    "nkEnum(\"GetCustomerByPage\", \"[dbo].[spCustomerListByPageGet]\", CommandType.Store" +
-                    "dProcedure);\r\n//\r\n                //public BankEnum(string Name, string EnumValu" +
-                    "e, CommandType? cmdType)\r\n                    //: base(Name, EnumValue, cmdType)" +
-                    "\r\n                //{\r\n                //}\r\n            //}\r\n\r\n\r\n\r\n            p" +
-                    "ublic sealed class EmptyEnum : EnumBase<EmptyEnum, string>\r\n            {\r\n     " +
-                    "           public EmptyEnum(string Name, string EnumValue, CommandType? cmdType)" +
-                    "\r\n                    : base(Name, EnumValue, cmdType)\r\n                {\r\n     " +
-                    "           }\r\n            }\r\n        }\r\n\r\n        namespace Interfaces\r\n        " +
-                    "{\r\n            public interface IDapperContext : IDisposable\r\n            {\r\n   " +
-                    "             IDbConnection Connection { get; }\r\n            }\r\n\r\n            pub" +
-                    "lic interface IFactoryRepository\r\n            {\r\n                IRepository<T, " +
-                    "TRepoSp> CreateRepository<T, TRepoSp>(IDapperContext context)\r\n                 " +
-                    "   where T : BaseModel\r\n                    where TRepoSp : EnumBase<TRepoSp, st" +
-                    "ring>;\r\n            }\r\n\r\n            public interface IRepository<T, in TRepoQue" +
-                    "ry>\r\n              where T : BaseModel\r\n              where TRepoQuery : EnumBas" +
-                    "e<TRepoQuery, string>\r\n            {\r\n                IDbConnection Conn { get; " +
-                    "}\r\n                IDapperContext Context { get; }\r\n\r\n\r\n                void Add" +
-                    "(T entity, IDbTransaction transaction = null, int? commandTimeout = null);\r\n    " +
-                    "            void Update(T entity, IDbTransaction transaction = null, int? comman" +
-                    "dTimeout = null);\r\n                void Remove(T entity, IDbTransaction transact" +
-                    "ion = null, int? commandTimeout = null);\r\n\r\n                T GetByKey(object ke" +
-                    "y, IDbTransaction transaction = null, int? commandTimeout = null);\r\n\r\n          " +
-                    "      IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeo" +
-                    "ut = null);\r\n                IEnumerable<T> GetBy(object where = null, object or" +
-                    "der = null, IDbTransaction transaction = null, int? commandTimeout = null);\r\n\r\n " +
-                    "               IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameter" +
-                    "s param = null, IDbTransaction transaction = null, int? commandTimeout = null);\r" +
-                    "\n                void Exec(TRepoQuery repoQuery, DynamicParameters param = null," +
-                    " IDbTransaction transaction = null, int? commandTimeout = null);\r\n            }\r" +
-                    "\n\r\n            public interface IUnitOfWork\r\n            {\r\n                IDap" +
-                    "perContext Context { get; }\r\n                IDbTransaction Transaction { get; }" +
-                    "\r\n                IRepository<TSet, TEnumSp> GetRepository<TSet, TEnumSp>() wher" +
-                    "e TSet : BaseModel where TEnumSp : EnumBase<TEnumSp, string>;\r\n                I" +
-                    "DbTransaction BeginTransaction();\r\n                void Commit();\r\n            }" +
-                    "\r\n        }\r\n\r\n        namespace Repos\r\n        {\r\n            ");
+            this.Write("\r\n          ");
             
-            #line 148 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 81 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+foreach(var view in Model.Views){
+          
+            
+            #line default
+            #line hidden
+            this.Write("public class ");
+            
+            #line 82 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum : EnumBase<");
+            
+            #line 82 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum, string>\r\n            {\r\n                public ");
+            
+            #line 84 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum(string name, string enumValue, CommandType? cmdType)\r\n                : base" +
+                    "(name, enumValue, cmdType)\r\n                    {\r\n                    }\r\n      " +
+                    "      }\r\n          ");
+            
+            #line 89 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("            //public class BankEnum : EnumBase<BankEnum, string>\r\n            //{" +
+                    "\r\n                //public static readonly BankEnum GetCustomerByPage = new Bank" +
+                    "Enum(\"GetCustomerByPage\", \"[dbo].[spCustomerListByPageGet]\", CommandType.StoredP" +
+                    "rocedure);\r\n//\r\n                //public BankEnum(string Name, string EnumValue," +
+                    " CommandType? cmdType)\r\n                    //: base(Name, EnumValue, cmdType)\r\n" +
+                    "                //{\r\n                //}\r\n            //}\r\n\r\n\r\n\r\n            pub" +
+                    "lic sealed class EmptyEnum : EnumBase<EmptyEnum, string>\r\n            {\r\n       " +
+                    "         public EmptyEnum(string Name, string EnumValue, CommandType? cmdType)\r\n" +
+                    "                    : base(Name, EnumValue, cmdType)\r\n                {\r\n       " +
+                    "         }\r\n            }\r\n        }\r\n\r\n        namespace Interfaces\r\n        {\r" +
+                    "\n            public interface IDapperContext : IDisposable\r\n            {\r\n     " +
+                    "           IDbConnection Connection { get; }\r\n            }\r\n\r\n            publi" +
+                    "c interface IFactoryRepository\r\n            {\r\n                IRepository<T, TR" +
+                    "epoSp> CreateRepository<T, TRepoSp>(IDapperContext context, UnitOfWork unit)\r\n  " +
+                    "                  where T : BaseModel\r\n                    where TRepoSp : EnumB" +
+                    "ase<TRepoSp, string>;\r\n\r\n                IViewRepository<T, TRepoSp> CreateViewR" +
+                    "epository<T, TRepoSp>(IDapperContext context)\r\n                    where T : cla" +
+                    "ss\r\n                    where TRepoSp : EnumBase<TRepoSp, string>;\r\n            " +
+                    "}\r\n\r\n            public interface IRepository<T, in TRepoQuery>\r\n              w" +
+                    "here T : BaseModel\r\n              where TRepoQuery : EnumBase<TRepoQuery, string" +
+                    ">\r\n            {\r\n                IDbConnection Conn { get; }\r\n                I" +
+                    "DapperContext Context { get; }\r\n\r\n\r\n                void Add(T entity, IDbTransa" +
+                    "ction transaction = null, int? commandTimeout = null);\r\n                void Upd" +
+                    "ate(T entity, IDbTransaction transaction = null, int? commandTimeout = null);\r\n " +
+                    "               void Remove(T entity, IDbTransaction transaction = null, int? com" +
+                    "mandTimeout = null);\r\n\r\n                T GetByKey(object key, IDbTransaction tr" +
+                    "ansaction = null, int? commandTimeout = null);\r\n\r\n                IEnumerable<T>" +
+                    " GetAll(IDbTransaction transaction = null, int? commandTimeout = null);\r\n       " +
+                    "         IEnumerable<T> GetBy(object where = null, object order = null, IDbTrans" +
+                    "action transaction = null, int? commandTimeout = null);\r\n\r\n                IEnum" +
+                    "erable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbT" +
+                    "ransaction transaction = null, int? commandTimeout = null);\r\n                voi" +
+                    "d Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction tran" +
+                    "saction = null, int? commandTimeout = null);\r\n            }\r\n\r\n            publi" +
+                    "c interface IUnitOfWork\r\n            {\r\n                IDapperContext Context {" +
+                    " get; }\r\n                IDbTransaction Transaction { get; }\r\n                IR" +
+                    "epository<TSet, TEnumSp> GetRepository<TSet, TEnumSp>() where TSet : BaseModel w" +
+                    "here TEnumSp : EnumBase<TEnumSp, string>;\r\n                IDbTransaction BeginT" +
+                    "ransaction();\r\n                void Commit();\r\n            }\r\n        }\r\n\r\n     " +
+                    "   public interface IViewRepository<out T, in TRepoQuery>\r\n            where T :" +
+                    " class\r\n            where TRepoQuery : EnumBase<TRepoQuery, string>\r\n        {\r\n" +
+                    "            IDbConnection Conn { get; }\r\n            IDapperContext Context { ge" +
+                    "t; }\r\n\r\n            IEnumerable<T> GetAll(IDbTransaction transaction = null, int" +
+                    "? commandTimeout = null);\r\n            IEnumerable<T> GetBy(object where = null," +
+                    " object order = null, IDbTransaction transaction = null, int? commandTimeout = n" +
+                    "ull);\r\n\r\n            IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicPar" +
+                    "ameters param = null, IDbTransaction transaction = null, int? commandTimeout = n" +
+                    "ull);\r\n            void Exec(TRepoQuery repoQuery, DynamicParameters param = nul" +
+                    "l, IDbTransaction transaction = null, int? commandTimeout = null);\r\n        }\r\n\r" +
+                    "\n        namespace Repos\r\n        {\r\n        ");
+            
+            #line 176 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+if(1==0){
+            
+            #line default
+            #line hidden
+            this.Write("          ");
+            
+            #line 177 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 foreach(var relation in Model.Relations){
           
             
@@ -137,28 +195,28 @@ foreach(var relation in Model.Relations){
             #line hidden
             this.Write("public class ");
             
-            #line 149 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 178 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository : Repository<");
             
-            #line 149 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 178 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 149 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 178 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Enum>\r\n            {\r\n                public ");
             
-            #line 151 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 180 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
@@ -166,12 +224,64 @@ foreach(var relation in Model.Relations){
             this.Write("Repository(IDapperContext context) : base(context)\r\n                {\r\n          " +
                     "      }\r\n            }\r\n            ");
             
-            #line 155 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 184 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 }
             
             #line default
             #line hidden
-            this.Write(@"        }
+            this.Write("\r\n            ");
+            
+            #line 186 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+foreach(var view in Model.Views){
+          
+            
+            #line default
+            #line hidden
+            this.Write("public class ");
+            
+            #line 187 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository : ViewRepository<");
+            
+            #line 187 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 187 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum>\r\n            {\r\n                public ");
+            
+            #line 189 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository(IDapperContext context) : base(context)\r\n                {\r\n          " +
+                    "      }\r\n            }\r\n            ");
+            
+            #line 193 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("        ");
+            
+            #line 194 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write(@"         
+        }
 
         namespace Models
         {
@@ -184,14 +294,15 @@ foreach(var relation in Model.Relations){
 
             public abstract class BaseModel 
             {
-                public BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
+                protected BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
                 internal HashSet<string> UpdatedProperties { get; set; }
                 internal ModelStatus DatabaseModelStatus { get; set; }
+                internal UnitOfWork DatabaseUnitOfWork { get; set; }
             }
 
             ");
             
-            #line 174 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 215 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 foreach(var relation in Model.Relations){
           
             
@@ -199,21 +310,21 @@ foreach(var relation in Model.Relations){
             #line hidden
             this.Write("[Table(\"[dbo].[");
             
-            #line 175 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 216 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.RelationName));
             
             #line default
             #line hidden
-            this.Write("]\")]\r\n            public partial class ");
+            this.Write("]\")]\r\n            public class ");
             
-            #line 176 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 217 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write(" : BaseModel\r\n            {\r\n                \r\n                ");
             
-            #line 179 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 220 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 foreach(var atd in relation.Attributes){
               
             
@@ -221,35 +332,64 @@ foreach(var atd in relation.Attributes){
             #line hidden
             this.Write("private ");
             
-            #line 180 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 221 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 180 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 221 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n                ");
             
-            #line 181 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 222 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n                ");
             
-            #line 183 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 224 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+foreach(var atd in relation.ForeignKeyAttributes){
+              
+            
+            #line default
+            #line hidden
+            this.Write("private ");
+            
+            #line 225 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 225 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n                ");
+            
+            #line 226 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n                ");
+            
+            #line 228 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 foreach(var atd in relation.Attributes){
             
             #line default
             #line hidden
             this.Write("                ");
             
-            #line 184 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 229 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 if(atd.IsKey) {
               
             
@@ -257,7 +397,7 @@ if(atd.IsKey) {
             #line hidden
             this.Write("[Key]\r\n                ");
             
-            #line 186 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 231 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 }
               
             
@@ -265,28 +405,28 @@ if(atd.IsKey) {
             #line hidden
             this.Write("public ");
             
-            #line 187 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 232 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 187 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 232 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get { return ");
             
-            #line 187 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 232 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write("; } set { ");
             
-            #line 187 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 232 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
@@ -294,111 +434,252 @@ if(atd.IsKey) {
             this.Write(" = value; if(DatabaseModelStatus == ModelStatus.Retrieved) { UpdatedProperties.Ad" +
                     "d(\"");
             
-            #line 187 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 232 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write("\"); } } }\r\n                ");
             
-            #line 188 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 233 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n                ");
+            
+            #line 235 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+foreach(var atd in relation.ForeignKeyAttributes){
+              
+            
+            #line default
+            #line hidden
+            this.Write("public ");
+            
+            #line 236 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 236 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(IDbTransaction transaction =null)\r\n                {\r\n                    return" +
+                    " DatabaseUnitOfWork != null ? ");
+            
+            #line 238 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(" ?? (");
+            
+            #line 238 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(" = DatabaseUnitOfWork.");
+            
+            #line 238 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
+            
+            #line default
+            #line hidden
+            this.Write("Repository.GetByKey(");
+            
+            #line 238 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingAttribute.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(", transaction)) : null;\r\n                }\r\n              ");
+            
+            #line 240 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 }
             
             #line default
             #line hidden
             this.Write("            }\r\n");
             
-            #line 190 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 242 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n            ");
+            
+            #line 244 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+foreach(var view in Model.Views){
+          
+            
+            #line default
+            #line hidden
+            this.Write("[Table(\"[dbo].[");
+            
+            #line 245 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.RelationName));
+            
+            #line default
+            #line hidden
+            this.Write("]\")]\r\n            public class ");
+            
+            #line 246 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" \r\n            {\r\n                ");
+            
+            #line 248 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+foreach(var atd in view.Attributes){
+              
+            
+            #line default
+            #line hidden
+            this.Write("public ");
+            
+            #line 249 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 249 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" { get; set; } \r\n                ");
+            
+            #line 250 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("            }\r\n");
+            
+            #line 252 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 }
             
             #line default
             #line hidden
             this.Write("        }\r\n\r\n        public class DapperContext : IDapperContext\r\n        {\r\n    " +
                     "        private readonly string _connectionStringName;\r\n            private read" +
-                    "only string _connectionString;\r\n            private bool _useMiniProfiler;\r\n    " +
-                    "        private IDbConnection _connection;\r\n\r\n            public DapperContext()" +
-                    "\r\n            {\r\n                var temp = ConfigurationManager.AppSettings[\"Us" +
-                    "eMiniProfilerForSql\"];\r\n                if (!bool.TryParse(temp, out _useMiniPro" +
-                    "filer))\r\n                {\r\n                    _useMiniProfiler = false;\r\n     " +
-                    "           }\r\n                _connectionStringName = ConfigurationManager.AppSe" +
-                    "ttings[\"UsedConnectionString\"];\r\n                _connectionString = Configurati" +
-                    "onManager.ConnectionStrings[_connectionStringName].ConnectionString; ;\r\n        " +
-                    "    }\r\n\r\n            public IDbConnection Connection\r\n            {\r\n           " +
-                    "     get\r\n                {\r\n                    if (_connection == null)\r\n     " +
-                    "               {\r\n                        _connection = new SqlConnection(_conne" +
-                    "ctionString);\r\n                    }\r\n                    if (_connection.State " +
-                    "!= ConnectionState.Open)\r\n                    {\r\n                        _connec" +
-                    "tion.Open();\r\n                    }\r\n                    return _connection;\r\n  " +
-                    "              }\r\n            }\r\n            public void Dispose()\r\n            {" +
-                    "\r\n                if (_connection != null && _connection.State == ConnectionStat" +
-                    "e.Open)\r\n                    _connection.Close();\r\n            }\r\n        }\r\n\r\n " +
-                    "       public class FactoryRepository : IFactoryRepository\r\n        {\r\n         " +
-                    "   public IRepository<T, TEnumSp> CreateRepository<T, TEnumSp>(IDapperContext co" +
-                    "ntext) where T : BaseModel where TEnumSp : EnumBase<TEnumSp, string>\r\n          " +
-                    "  {\r\n                IRepository<T, TEnumSp> repository;\r\n                //if (" +
-                    "typeof(T) == typeof(<Some type>))\r\n                //{\r\n                //    re" +
-                    "pository = (IRepository<T, TEnumSp>)new <SomeRepository>(context);\r\n            " +
-                    "    //}\r\n                //else\r\n                {\r\n                    reposito" +
-                    "ry = new Repository<T, TEnumSp>(context);\r\n                }\r\n                re" +
-                    "turn repository;\r\n            }\r\n\r\n        }\r\n\r\n        public class Repository<" +
-                    "T, TRepoQuery> : IRepository<T, TRepoQuery>\r\n               where T : BaseModel\r" +
-                    "\n               where TRepoQuery : EnumBase<TRepoQuery, string>\r\n        {\r\n    " +
-                    "        public IDbConnection Conn { get; private set; }\r\n            public IDap" +
-                    "perContext Context { get; private set; }\r\n\r\n            public Repository(IDappe" +
-                    "rContext context)\r\n            {\r\n                Context = context;\r\n          " +
-                    "      Conn = Context.Connection;\r\n            }\r\n\r\n            public virtual vo" +
-                    "id Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null)\r" +
-                    "\n            {\r\n                if (entity == null)\r\n                {\r\n        " +
-                    "            throw new ArgumentNullException(\"entity\", \"Add to DB null entity\");\r" +
-                    "\n                }\r\n                var res = Conn.Insert(entity, transaction: t" +
-                    "ransaction, commandTimeout: commandTimeout);\r\n            }\r\n\r\n            publi" +
-                    "c virtual void Update(T entity, IDbTransaction transaction = null, int? commandT" +
-                    "imeout = null)\r\n            {\r\n                if (entity == null)\r\n            " +
-                    "    {\r\n                    throw new ArgumentNullException(\"entity\", \"Update in " +
-                    "DB null entity\");\r\n                }\r\n                Conn.Update(entity, transa" +
-                    "ction: transaction, commandTimeout: commandTimeout);\r\n            }\r\n\r\n         " +
-                    "   public virtual void Remove(T entity, IDbTransaction transaction = null, int? " +
-                    "commandTimeout = null)\r\n            {\r\n                if (entity == null)\r\n    " +
-                    "            {\r\n                    throw new ArgumentNullException(\"entity\", \"Re" +
-                    "move in DB null entity\");\r\n                }\r\n                Conn.Delete(entity" +
-                    ", transaction: transaction, commandTimeout: commandTimeout);\r\n            }\r\n\r\n " +
-                    "           public virtual T GetByKey(object id, IDbTransaction transaction = nul" +
-                    "l, int? commandTimeout = null)\r\n            {\r\n                if (id == null)\r\n" +
-                    "                {\r\n                    throw new ArgumentNullException(\"id\");\r\n " +
-                    "               }\r\n                var item = Conn.Get<T>(id, transaction: transa" +
-                    "ction, commandTimeout: commandTimeout);\r\n                item.DatabaseModelStatu" +
-                    "s = ModelStatus.Retrieved;\r\n                return item;\r\n            }\r\n\r\n     " +
-                    "       public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, i" +
-                    "nt? commandTimeout = null)\r\n            {\r\n                var items = Conn.GetA" +
-                    "ll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();\r\n\r\n   " +
-                    "             foreach (var item in items)\r\n                    item.DatabaseModel" +
-                    "Status = ModelStatus.Retrieved;\r\n                return items;\r\n            }\r\n\r" +
-                    "\n            public virtual IEnumerable<T> GetBy(object where = null, object ord" +
-                    "er = null, IDbTransaction transaction = null, int? commandTimeout = null)\r\n     " +
-                    "       {\r\n                var items = Conn.GetBy<T>(where: where, order: order, " +
-                    "transaction: transaction, commandTimeout: commandTimeout).ToList();\r\n\r\n         " +
-                    "       foreach (var item in items)\r\n                    item.DatabaseModelStatus" +
-                    " = ModelStatus.Retrieved;\r\n                return items;\r\n            }\r\n\r\n     " +
-                    "       public IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters" +
-                    " param = null, IDbTransaction transaction = null,\r\n                             " +
-                    "                     int? commandTimeout = null)\r\n            {\r\n               " +
-                    " return Conn.Query<TSp>(repoQuery.Value, param, commandType: repoQuery.CmdType, " +
-                    "transaction: transaction, commandTimeout: commandTimeout);\r\n            }\r\n\r\n   " +
-                    "         public void Exec(TRepoQuery repoQuery, DynamicParameters param = null, " +
-                    "IDbTransaction transaction = null,\r\n                                      int? c" +
-                    "ommandTimeout = null)\r\n            {\r\n                Conn.Execute(repoQuery.Val" +
-                    "ue, param, commandType: repoQuery.CmdType, transaction: transaction, commandTime" +
-                    "out: commandTimeout);\r\n            }\r\n        }\r\n\r\n        public class UnitOfWo" +
-                    "rk : IUnitOfWork, IDisposable\r\n        {\r\n            private readonly Dictionar" +
-                    "y<Type, object> _repositories;\r\n            private readonly IFactoryRepository " +
-                    "_factory;\r\n\r\n            public IDapperContext Context { get;}\r\n            publ" +
-                    "ic IDbTransaction Transaction { get; private set; }\r\n\r\n            public UnitOf" +
-                    "Work(IDapperContext context, IFactoryRepository factory)\r\n            {\r\n       " +
-                    "         Context = context;\r\n                _factory = factory;\r\n              " +
-                    "  _repositories = new Dictionary<Type, object>();\r\n            }\r\n            \r\n" +
-                    "            ");
+                    "only string _connectionString;\r\n            private IDbConnection _connection;\r\n" +
+                    "\r\n            public DapperContext()\r\n            {\r\n                _connection" +
+                    "StringName = ConfigurationManager.AppSettings[\"UsedConnectionString\"];\r\n        " +
+                    "        _connectionString = ConfigurationManager.ConnectionStrings[_connectionSt" +
+                    "ringName].ConnectionString; ;\r\n            }\r\n\r\n            public IDbConnection" +
+                    " Connection\r\n            {\r\n                get\r\n                {\r\n            " +
+                    "        if (_connection == null)\r\n                    {\r\n                       " +
+                    " _connection = new SqlConnection(_connectionString);\r\n                    }\r\n   " +
+                    "                 if (_connection.State != ConnectionState.Open)\r\n               " +
+                    "     {\r\n                        _connection.Open();\r\n                    }\r\n    " +
+                    "                return _connection;\r\n                }\r\n            }\r\n         " +
+                    "   public void Dispose()\r\n            {\r\n                if (_connection != null" +
+                    " && _connection.State == ConnectionState.Open)\r\n                    _connection." +
+                    "Close();\r\n            }\r\n        }\r\n\r\n        public class FactoryRepository : I" +
+                    "FactoryRepository\r\n        {\r\n            public IRepository<T, TEnumSp> CreateR" +
+                    "epository<T, TEnumSp>(IDapperContext context, UnitOfWork unit) where T : BaseMod" +
+                    "el where TEnumSp : EnumBase<TEnumSp, string>\r\n            {\r\n                ret" +
+                    "urn  new Repository<T, TEnumSp>(context, unit);\r\n            \r\n            }\r\n\r\n" +
+                    "            public IViewRepository<T, TEnumSp> CreateViewRepository<T, TEnumSp>(" +
+                    "IDapperContext context) where T : class where TEnumSp : EnumBase<TEnumSp, string" +
+                    ">\r\n            {\r\n                return  new ViewRepository<T, TEnumSp>(context" +
+                    ");\r\n            }\r\n        }\r\n\r\n        public class Repository<T, TRepoQuery> :" +
+                    " IRepository<T, TRepoQuery>\r\n               where T : BaseModel\r\n               " +
+                    "where TRepoQuery : EnumBase<TRepoQuery, string>\r\n        {\r\n            public I" +
+                    "DbConnection Conn { get; }\r\n            public IDapperContext Context { get;}\r\n " +
+                    "           public UnitOfWork UnitOfWork { get;}\r\n\r\n            public Repository" +
+                    "(IDapperContext context, UnitOfWork unitOfWork)\r\n            {\r\n                " +
+                    "Context = context;\r\n                Conn = Context.Connection;\r\n                " +
+                    "UnitOfWork = unitOfWork;\r\n            }\r\n\r\n            public virtual void Add(T" +
+                    " entity, IDbTransaction transaction = null, int? commandTimeout = null)\r\n       " +
+                    "     {\r\n                if (entity == null)\r\n                {\r\n                " +
+                    "    throw new ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n       " +
+                    "         }\r\n                var insertedId = Conn.Insert(entity, transaction: tr" +
+                    "ansaction, commandTimeout: commandTimeout);\r\n                entity.DatabaseMode" +
+                    "lStatus = ModelStatus.Retrieved;\r\n                entity.DatabaseUnitOfWork = Un" +
+                    "itOfWork;\r\n            }\r\n\r\n            public virtual void Update(T entity, IDb" +
+                    "Transaction transaction = null, int? commandTimeout = null)\r\n            {\r\n    " +
+                    "            if (entity == null)\r\n                {\r\n                    throw ne" +
+                    "w ArgumentNullException(\"entity\", \"Update in DB null entity\");\r\n                " +
+                    "}\r\n                Conn.Update(entity, transaction: transaction, commandTimeout:" +
+                    " commandTimeout);\r\n            }\r\n\r\n            public virtual void Remove(T ent" +
+                    "ity, IDbTransaction transaction = null, int? commandTimeout = null)\r\n           " +
+                    " {\r\n                if (entity == null)\r\n                {\r\n                    " +
+                    "throw new ArgumentNullException(\"entity\", \"Remove in DB null entity\");\r\n        " +
+                    "        }\r\n                var deleted = Conn.Delete(entity, transaction: transa" +
+                    "ction, commandTimeout: commandTimeout);\r\n                if(deleted) { entity.Da" +
+                    "tabaseModelStatus = ModelStatus.Deleted; }\r\n            }\r\n\r\n            public " +
+                    "virtual T GetByKey(object id, IDbTransaction transaction = null, int? commandTim" +
+                    "eout = null)\r\n            {\r\n                if (id == null)\r\n                {\r" +
+                    "\n                    throw new ArgumentNullException(\"id\");\r\n                }\r\n" +
+                    "                var item = Conn.Get<T>(id, transaction: transaction, commandTime" +
+                    "out: commandTimeout);\r\n                item.DatabaseModelStatus = ModelStatus.Re" +
+                    "trieved;\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n               " +
+                    " return item;\r\n            }\r\n\r\n            public virtual IEnumerable<T> GetAll" +
+                    "(IDbTransaction transaction = null, int? commandTimeout = null)\r\n            {\r\n" +
+                    "                var items = Conn.GetAll<T>(transaction: transaction, commandTime" +
+                    "out: commandTimeout).ToList();\r\n\r\n                foreach (var item in items) \r\n" +
+                    "                {\r\n                    item.DatabaseUnitOfWork = UnitOfWork;\r\n  " +
+                    "                  item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n           " +
+                    "     }\r\n                return items;\r\n            }\r\n\r\n            public virtu" +
+                    "al IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction" +
+                    " transaction = null, int? commandTimeout = null)\r\n            {\r\n               " +
+                    " var items = Conn.GetBy<T>(where: where, order: order, transaction: transaction," +
+                    " commandTimeout: commandTimeout).ToList();\r\n\r\n                foreach (var item " +
+                    "in items)\r\n                {\r\n                    item.DatabaseUnitOfWork = Unit" +
+                    "OfWork;\r\n                    item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n" +
+                    "                }\r\n                return items;\r\n            }\r\n\r\n            p" +
+                    "ublic IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param =" +
+                    " null, IDbTransaction transaction = null,\r\n                                     " +
+                    "             int? commandTimeout = null)\r\n            {\r\n                return " +
+                    "Conn.Query<TSp>(repoQuery.Value, param, commandType: repoQuery.CmdType, transact" +
+                    "ion: transaction, commandTimeout: commandTimeout);\r\n            }\r\n\r\n           " +
+                    " public void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTrans" +
+                    "action transaction = null,\r\n                                      int? commandTi" +
+                    "meout = null)\r\n            {\r\n                Conn.Execute(repoQuery.Value, para" +
+                    "m, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: com" +
+                    "mandTimeout);\r\n            }\r\n        }\r\n\r\n        public class ViewRepository<T" +
+                    ", TRepoQuery> : IViewRepository<T, TRepoQuery>\r\n            where T : class\r\n   " +
+                    "         where TRepoQuery : EnumBase<TRepoQuery, string>\r\n        {\r\n           " +
+                    " public IDbConnection Conn { get; }\r\n            public IDapperContext Context {" +
+                    " get;}\r\n\r\n            public ViewRepository(IDapperContext context)\r\n           " +
+                    " {\r\n                Context = context;\r\n                Conn = Context.Connectio" +
+                    "n;\r\n            }\r\n\r\n            public virtual IEnumerable<T> GetAll(IDbTransac" +
+                    "tion transaction = null, int? commandTimeout = null)\r\n            {\r\n           " +
+                    "     return Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTime" +
+                    "out).ToList();\r\n            }\r\n\r\n            public virtual IEnumerable<T> GetBy" +
+                    "(object where = null, object order = null, IDbTransaction transaction = null, in" +
+                    "t? commandTimeout = null)\r\n            {\r\n                return Conn.GetBy<T>(w" +
+                    "here: where, order: order, transaction: transaction, commandTimeout: commandTime" +
+                    "out).ToList();\r\n            }\r\n\r\n            public IEnumerable<TSp> Exec<TSp>(T" +
+                    "RepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction " +
+                    "= null,\r\n                                                  int? commandTimeout =" +
+                    " null)\r\n            {\r\n                return Conn.Query<TSp>(repoQuery.Value, p" +
+                    "aram, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: " +
+                    "commandTimeout);\r\n            }\r\n\r\n            public void Exec(TRepoQuery repoQ" +
+                    "uery, DynamicParameters param = null, IDbTransaction transaction = null,\r\n      " +
+                    "                                int? commandTimeout = null)\r\n            {\r\n    " +
+                    "            Conn.Execute(repoQuery.Value, param, commandType: repoQuery.CmdType," +
+                    " transaction: transaction, commandTimeout: commandTimeout);\r\n            }\r\n    " +
+                    "    }\r\n\r\n        public class UnitOfWork : IUnitOfWork, IDisposable\r\n        {\r\n" +
+                    "            private readonly Dictionary<Type, object> _repositories;\r\n          " +
+                    "  private readonly IFactoryRepository _factory;\r\n\r\n            public IDapperCon" +
+                    "text Context { get;}\r\n            public IDbTransaction Transaction { get; priva" +
+                    "te set; }\r\n\r\n            public UnitOfWork(IDapperContext context, IFactoryRepos" +
+                    "itory factory)\r\n            {\r\n                Context = context;\r\n             " +
+                    "   _factory = factory;\r\n                _repositories = new Dictionary<Type, obj" +
+                    "ect>();\r\n            }\r\n            \r\n            ");
             
-            #line 348 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 448 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 foreach(var relation in Model.Relations){
           
             
@@ -406,42 +687,135 @@ foreach(var relation in Model.Relations){
             #line hidden
             this.Write("public IRepository<");
             
-            #line 349 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 449 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 349 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 449 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Enum> ");
             
-            #line 349 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 449 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository { get { return GetRepository<");
             
-            #line 349 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 449 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 349 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 449 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Enum>(); } }\r\n            ");
             
-            #line 350 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            #line 450 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n            ");
+            
+            #line 452 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+foreach(var view in Model.Views){
+          
+            
+            #line default
+            #line hidden
+            this.Write("public IViewRepository<");
+            
+            #line 453 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 453 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum> ");
+            
+            #line 453 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository { get { return GetViewRepository<");
+            
+            #line 453 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 453 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum>(); } }\r\n            ");
+            
+            #line 454 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n            ");
+            
+            #line 456 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+foreach(var sp in Model.Procedures){
+          
+            
+            #line default
+            #line hidden
+            this.Write("public List<T> ");
+            
+            #line 457 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
+            
+            #line default
+            #line hidden
+            this.Write("<T>(");
+            
+            #line 457 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
+            
+            #line default
+            #line hidden
+            this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
+            
+            #line 457 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.FullName));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 457 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.PassString));
+            
+            #line default
+            #line hidden
+            this.Write("\").ToList(); }\r\n            ");
+            
+            #line 458 "D:\Projects\Genie\Genie\Templates\Complex\Infrastructure.tt"
 }
             
             #line default
@@ -450,23 +824,29 @@ foreach(var relation in Model.Relations){
                     "ere TSet : BaseModel where TEnumSp : EnumBase<TEnumSp, string>\r\n            {\r\n " +
                     "               if (_repositories.Keys.Contains(typeof(TSet)))\r\n                 " +
                     "   return _repositories[typeof(TSet)] as IRepository<TSet, TEnumSp>;\r\n\r\n        " +
-                    "        var repository = _factory.CreateRepository<TSet, TEnumSp>(Context);\r\n   " +
-                    "             _repositories.Add(typeof(TSet), repository);\r\n\r\n                ret" +
-                    "urn repository;\r\n            }\r\n\r\n            public IDbTransaction BeginTransac" +
-                    "tion()\r\n            {\r\n                if (Transaction != null)\r\n               " +
-                    " {\r\n                    throw new NullReferenceException(\"Not finished previous " +
-                    "transaction\");\r\n                }\r\n                Transaction = Context.Connect" +
-                    "ion.BeginTransaction();\r\n                return Transaction;\r\n            }\r\n\r\n " +
-                    "           public void Commit()\r\n            {\r\n                if (Transaction " +
-                    "!= null)\r\n                {\r\n                    Transaction.Commit();\r\n        " +
-                    "            Transaction.Dispose();\r\n                    Transaction = null;\r\n   " +
-                    "             }\r\n                else\r\n                {\r\n                    thr" +
-                    "ow new NullReferenceException(\"Tried commit not opened transaction\");\r\n         " +
-                    "       }\r\n            }\r\n\r\n            public void Dispose()\r\n            {\r\n   " +
-                    "             if (Transaction != null)\r\n                {\r\n                    Tr" +
-                    "ansaction.Dispose();\r\n                }\r\n                if (Context != null)\r\n " +
-                    "               {\r\n                    Context.Dispose();\r\n                }\r\n   " +
-                    "         }\r\n        }\r\n    }");
+                    "        var repository = _factory.CreateRepository<TSet, TEnumSp>(Context, this)" +
+                    ";\r\n                _repositories.Add(typeof(TSet), repository);\r\n\r\n             " +
+                    "   return repository;\r\n            }\r\n\r\n            public IViewRepository<TSet," +
+                    " TEnumSp> GetViewRepository<TSet, TEnumSp>() where TSet : class where TEnumSp : " +
+                    "EnumBase<TEnumSp, string>\r\n            {\r\n                if (_repositories.Keys" +
+                    ".Contains(typeof(TSet)))\r\n                    return _repositories[typeof(TSet)]" +
+                    " as IViewRepository<TSet, TEnumSp>;\r\n\r\n                var repository = _factory" +
+                    ".CreateViewRepository<TSet, TEnumSp>(Context);\r\n                _repositories.Ad" +
+                    "d(typeof(TSet), repository);\r\n\r\n                return repository;\r\n            " +
+                    "}\r\n\r\n            public IDbTransaction BeginTransaction()\r\n            {\r\n      " +
+                    "          if (Transaction != null)\r\n                {\r\n                    throw" +
+                    " new NullReferenceException(\"Not finished previous transaction\");\r\n             " +
+                    "   }\r\n                Transaction = Context.Connection.BeginTransaction();\r\n    " +
+                    "            return Transaction;\r\n            }\r\n\r\n            public void Commit" +
+                    "()\r\n            {\r\n                if (Transaction != null)\r\n                {\r\n" +
+                    "                    Transaction.Commit();\r\n                    Transaction.Dispo" +
+                    "se();\r\n                    Transaction = null;\r\n                }\r\n             " +
+                    "   else\r\n                {\r\n                    throw new NullReferenceException" +
+                    "(\"Tried commit not opened transaction\");\r\n                }\r\n            }\r\n\r\n  " +
+                    "          public void Dispose()\r\n            {\r\n                if (Transaction " +
+                    "!= null)\r\n                {\r\n                    Transaction.Dispose();\r\n       " +
+                    "         }\r\n                if (Context != null)\r\n                {\r\n           " +
+                    "         Context.Dispose();\r\n                }\r\n            }\r\n        }\r\n    }");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -8,8 +8,6 @@ namespace Genie.Base
     public class GenieConfiguration
     {
         public string ConnectionString { get; set; }
-        public string ConnectionName { get; set; }
-        public string ProjectName { get; set; }
         public string ProjectPath { get; set; }
         public string BaseNamespace { get; set; }
     }
@@ -54,10 +52,6 @@ namespace Genie.Base
                 result.Error = "connectionString is not provided";
             else if (string.IsNullOrWhiteSpace(config.BaseNamespace))
                 result.Error = "baseNamespace not provided";
-            else if (string.IsNullOrWhiteSpace(config.ConnectionName))
-                result.Error = "connection name not provided";
-            else if (string.IsNullOrWhiteSpace(config.ProjectName))
-                result.Error = "projectName not provided";
             else if (string.IsNullOrWhiteSpace(config.ProjectPath))
                 result.Error = "projectPath not provided";
 

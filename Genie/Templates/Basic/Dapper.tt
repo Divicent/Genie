@@ -3721,7 +3721,7 @@ string name, object value = null, DbType? dbType = null, ParameterDirection? dir
                 var name = GetTableName(type);
 
                 var sb = new StringBuilder();
-                sb.AppendFormat("update [{0}] set ", name);
+                sb.AppendFormat("update {0} set ", name);
 
                 var allProperties = TypePropertiesCache(type);
                 var nonIdProps = allProperties.Where(a => !keyProperties.Contains(a) && entityToUpdate.UpdatedProperties.Contains(a.Name)).ToList(); // Only updated properties
