@@ -1,0 +1,47 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Genie.Templates.Basic"#>
+
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using TestApp.DA.General;
+using TestApp.DA.General.Interfaces;
+using TestApp.DA.Infrastructure.EnumQueriesStoredProcedures;
+using TestApp.DA.Infrastructure.Interfaces;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading;
+using TestApp.DA.Dapper;
+using TestApp.DA.Infrastructure.Enum;
+using TestApp.DA.Infrastructure.Models;
+using TestApp.DA.SqlMaker.Interfaces;
+using System.Collections;
+using System.ComponentModel;
+using System.Text.RegularExpressions;
+
+namespace <#=Model.BaseNamespace#>
+{
+<#    
+    var generalTemplate = new General();
+    var dapperTemplate = new Dapper();
+    var sqlMakerTemplate = new SQLMaker();
+    var infrastructureTemplate= new Infrastructure();
+#>
+
+<#    WriteLine(generalTemplate.TransformText());#>
+<#    WriteLine(dapperTemplate.TransformText());#>
+<#    WriteLine(sqlMakerTemplate.TransformText());#>
+<#    WriteLine(infrastructureTemplate.TransformText(Model));#>
+
+
+
+}

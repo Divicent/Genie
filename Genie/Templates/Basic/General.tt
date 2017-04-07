@@ -1,0 +1,67 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+    namespace General
+    {
+        namespace Interfaces
+        {
+            public interface IEnumBase<TE, out T> where TE : IEnumBase<TE, T>
+            {
+                T Value { get; }
+                string Name { get; }
+            }
+        }
+
+        public abstract class EnumBase<TEntity, TValue> : IEnumBase<EnumBase<TEntity, TValue>, TValue> where TEntity : EnumBase<TEntity, TValue>
+        {
+            #region Instance code
+
+            public TValue Value { get; }
+            public CommandType? CmdType { get; }
+            public string Name { get;}
+
+            protected EnumBase(string name, TValue enumValue, CommandType? cmdType = null)
+            {
+                Value = enumValue;
+                Name = name;
+                CmdType = cmdType;
+                Mapping.Add(name, this);
+            }
+
+            public override string ToString() { return Name; }
+
+            #endregion
+
+            #region Static tools
+
+            static private readonly Dictionary<string, EnumBase<TEntity, TValue>> Mapping;
+            static EnumBase() { Mapping = new Dictionary<string, EnumBase<TEntity, TValue>>(); }
+
+            protected static TEntity Parse(string name)
+            {
+                EnumBase<TEntity, TValue> result;
+                if (Mapping.TryGetValue(name, out result))
+                {
+                    return (TEntity)result;
+                }
+
+                throw new InvalidCastException();
+            }
+            // This is protected to force the child class to expose it's own static
+            // method.
+            // By recreating this static method at the derived class, static
+            // initialization will be explicit, promising the mapping dictionary
+            // will never be empty when this method is called.
+            protected static IEnumerable<TEntity> All { get { return Mapping.Values.AsEnumerable().Cast<TEntity>(); } }
+
+            #endregion
+
+            public override int GetHashCode()
+            {
+                return Value.GetHashCode();
+            }
+        }
+    }

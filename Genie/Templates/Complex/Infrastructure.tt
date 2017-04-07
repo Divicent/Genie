@@ -1,0 +1,399 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+    namespace Infrastructure
+    {
+        namespace Enum
+        {
+            public enum Condition
+            {
+                IsNull,
+                IsNotNull,
+                Equal,
+                NotEqual,
+                Less,
+                Greater,
+                LessEqual,
+                GreaterEqual,
+                Between,
+                Like,
+                In
+            }
+
+            public static class ConditionExtension
+            {
+                public static string GetString(this Condition e)
+                {
+                    var result = string.Empty;
+                    switch (e)
+                    {
+                        case Condition.IsNull:
+                            return "IS NULL";
+                        case Condition.IsNotNull:
+                            return "IS NOT NULL";
+                        case Condition.Equal:
+                            return "=";
+                        case Condition.NotEqual:
+                            return "<>";
+                        case Condition.Less:
+                            return "<";
+                        case Condition.Greater:
+                            return ">";
+                        case Condition.LessEqual:
+                            return "<=";
+                        case Condition.GreaterEqual:
+                            return ">=";
+                        case Condition.Between:
+                            return "BETWEEN";
+                        case Condition.Like:
+                            return "LIKE";
+                        case Condition.In:
+                            return "IN";
+                        default:
+                            throw new ArgumentOutOfRangeException("e");
+                    }
+                }
+            }
+
+            public enum SortAs
+            {
+                Asc,
+                Desc
+            }
+        }
+
+        namespace EnumQueriesStoredProcedures
+        {
+          <#foreach(var relation in Model.Relations){
+          #>public class <#=relation.Name#>Enum : EnumBase<<#=relation.Name#>Enum, string>
+            {
+                public <#=relation.Name#>Enum(string name, string enumValue, CommandType? cmdType)
+                : base(name, enumValue, cmdType)
+                    {
+                    }
+            }
+          <#}#>
+
+            //public class BankEnum : EnumBase<BankEnum, string>
+            //{
+                //public static readonly BankEnum GetCustomerByPage = new BankEnum("GetCustomerByPage", "[dbo].[spCustomerListByPageGet]", CommandType.StoredProcedure);
+//
+                //public BankEnum(string Name, string EnumValue, CommandType? cmdType)
+                    //: base(Name, EnumValue, cmdType)
+                //{
+                //}
+            //}
+
+
+
+            public sealed class EmptyEnum : EnumBase<EmptyEnum, string>
+            {
+                public EmptyEnum(string Name, string EnumValue, CommandType? cmdType)
+                    : base(Name, EnumValue, cmdType)
+                {
+                }
+            }
+        }
+
+        namespace Interfaces
+        {
+            public interface IDapperContext : IDisposable
+            {
+                IDbConnection Connection { get; }
+            }
+
+            public interface IFactoryRepository
+            {
+                IRepository<T, TRepoSp> CreateRepository<T, TRepoSp>(IDapperContext context)
+                    where T : BaseModel
+                    where TRepoSp : EnumBase<TRepoSp, string>;
+            }
+
+            public interface IRepository<T, in TRepoQuery>
+              where T : BaseModel
+              where TRepoQuery : EnumBase<TRepoQuery, string>
+            {
+                IDbConnection Conn { get; }
+                IDapperContext Context { get; }
+
+
+                void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
+                void Update(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
+                void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
+
+                T GetByKey(object key, IDbTransaction transaction = null, int? commandTimeout = null);
+
+                IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
+                IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null);
+
+                IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
+                void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
+            }
+
+            public interface IUnitOfWork
+            {
+                IDapperContext Context { get; }
+                IDbTransaction Transaction { get; }
+                IRepository<TSet, TEnumSp> GetRepository<TSet, TEnumSp>() where TSet : BaseModel where TEnumSp : EnumBase<TEnumSp, string>;
+                IDbTransaction BeginTransaction();
+                void Commit();
+            }
+        }
+
+        namespace Repos
+        {
+            <#foreach(var relation in Model.Relations){
+          #>public class <#=relation.Name#>Repository : Repository<<#=relation.Name#>, <#=relation.Name#>Enum>
+            {
+                public <#=relation.Name#>Repository(IDapperContext context) : base(context)
+                {
+                }
+            }
+            <#}#>
+        }
+
+        namespace Models
+        {
+            internal enum ModelStatus 
+            {
+                JustInMemory = 1,
+                Retrieved = 2,
+                Deleted = 3
+            }
+
+            public abstract class BaseModel 
+            {
+                public BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
+                internal HashSet<string> UpdatedProperties { get; set; }
+                internal ModelStatus DatabaseModelStatus { get; set; }
+            }
+
+            <#foreach(var relation in Model.Relations){
+          #>[Table("[dbo].[<#=relation.RelationName#>]")]
+            public partial class <#=relation.Name#> : BaseModel
+            {
+                
+                <#foreach(var atd in relation.Attributes){
+              #>private <#=atd.DataType#> <#=atd.FieldName#>;
+                <#}#>
+
+                <#foreach(var atd in relation.Attributes){#>
+                <#if(atd.IsKey) {
+              #>[Key]
+                <#}
+              #>public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { <#=atd.FieldName#> = value; if(DatabaseModelStatus == ModelStatus.Retrieved) { UpdatedProperties.Add("<#=atd.Name#>"); } } }
+                <#}#>
+            }
+<#}#>
+        }
+
+        public class DapperContext : IDapperContext
+        {
+            private readonly string _connectionStringName;
+            private readonly string _connectionString;
+            private bool _useMiniProfiler;
+            private IDbConnection _connection;
+
+            public DapperContext()
+            {
+                var temp = ConfigurationManager.AppSettings["UseMiniProfilerForSql"];
+                if (!bool.TryParse(temp, out _useMiniProfiler))
+                {
+                    _useMiniProfiler = false;
+                }
+                _connectionStringName = ConfigurationManager.AppSettings["UsedConnectionString"];
+                _connectionString = ConfigurationManager.ConnectionStrings[_connectionStringName].ConnectionString; ;
+            }
+
+            public IDbConnection Connection
+            {
+                get
+                {
+                    if (_connection == null)
+                    {
+                        _connection = new SqlConnection(_connectionString);
+                    }
+                    if (_connection.State != ConnectionState.Open)
+                    {
+                        _connection.Open();
+                    }
+                    return _connection;
+                }
+            }
+            public void Dispose()
+            {
+                if (_connection != null && _connection.State == ConnectionState.Open)
+                    _connection.Close();
+            }
+        }
+
+        public class FactoryRepository : IFactoryRepository
+        {
+            public IRepository<T, TEnumSp> CreateRepository<T, TEnumSp>(IDapperContext context) where T : BaseModel where TEnumSp : EnumBase<TEnumSp, string>
+            {
+                IRepository<T, TEnumSp> repository;
+                //if (typeof(T) == typeof(<Some type>))
+                //{
+                //    repository = (IRepository<T, TEnumSp>)new <SomeRepository>(context);
+                //}
+                //else
+                {
+                    repository = new Repository<T, TEnumSp>(context);
+                }
+                return repository;
+            }
+
+        }
+
+        public class Repository<T, TRepoQuery> : IRepository<T, TRepoQuery>
+               where T : BaseModel
+               where TRepoQuery : EnumBase<TRepoQuery, string>
+        {
+            public IDbConnection Conn { get; private set; }
+            public IDapperContext Context { get; private set; }
+
+            public Repository(IDapperContext context)
+            {
+                Context = context;
+                Conn = Context.Connection;
+            }
+
+            public virtual void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+            {
+                if (entity == null)
+                {
+                    throw new ArgumentNullException("entity", "Add to DB null entity");
+                }
+                var res = Conn.Insert(entity, transaction: transaction, commandTimeout: commandTimeout);
+            }
+
+            public virtual void Update(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+            {
+                if (entity == null)
+                {
+                    throw new ArgumentNullException("entity", "Update in DB null entity");
+                }
+                Conn.Update(entity, transaction: transaction, commandTimeout: commandTimeout);
+            }
+
+            public virtual void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+            {
+                if (entity == null)
+                {
+                    throw new ArgumentNullException("entity", "Remove in DB null entity");
+                }
+                Conn.Delete(entity, transaction: transaction, commandTimeout: commandTimeout);
+            }
+
+            public virtual T GetByKey(object id, IDbTransaction transaction = null, int? commandTimeout = null)
+            {
+                if (id == null)
+                {
+                    throw new ArgumentNullException("id");
+                }
+                var item = Conn.Get<T>(id, transaction: transaction, commandTimeout: commandTimeout);
+                item.DatabaseModelStatus = ModelStatus.Retrieved;
+                return item;
+            }
+
+            public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
+            {
+                var items = Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
+
+                foreach (var item in items)
+                    item.DatabaseModelStatus = ModelStatus.Retrieved;
+                return items;
+            }
+
+            public virtual IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null)
+            {
+                var items = Conn.GetBy<T>(where: where, order: order, transaction: transaction, commandTimeout: commandTimeout).ToList();
+
+                foreach (var item in items)
+                    item.DatabaseModelStatus = ModelStatus.Retrieved;
+                return items;
+            }
+
+            public IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null,
+                                                  int? commandTimeout = null)
+            {
+                return Conn.Query<TSp>(repoQuery.Value, param, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);
+            }
+
+            public void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null,
+                                      int? commandTimeout = null)
+            {
+                Conn.Execute(repoQuery.Value, param, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);
+            }
+        }
+
+        public class UnitOfWork : IUnitOfWork, IDisposable
+        {
+            private readonly Dictionary<Type, object> _repositories;
+            private readonly IFactoryRepository _factory;
+
+            public IDapperContext Context { get;}
+            public IDbTransaction Transaction { get; private set; }
+
+            public UnitOfWork(IDapperContext context, IFactoryRepository factory)
+            {
+                Context = context;
+                _factory = factory;
+                _repositories = new Dictionary<Type, object>();
+            }
+            
+            <#foreach(var relation in Model.Relations){
+          #>public IRepository<<#=relation.Name#>, <#=relation.Name#>Enum> <#=relation.Name#>Repository { get { return GetRepository<<#=relation.Name#>, <#=relation.Name#>Enum>(); } }
+            <#}#>
+
+            public IRepository<TSet, TEnumSp> GetRepository<TSet, TEnumSp>() where TSet : BaseModel where TEnumSp : EnumBase<TEnumSp, string>
+            {
+                if (_repositories.Keys.Contains(typeof(TSet)))
+                    return _repositories[typeof(TSet)] as IRepository<TSet, TEnumSp>;
+
+                var repository = _factory.CreateRepository<TSet, TEnumSp>(Context);
+                _repositories.Add(typeof(TSet), repository);
+
+                return repository;
+            }
+
+            public IDbTransaction BeginTransaction()
+            {
+                if (Transaction != null)
+                {
+                    throw new NullReferenceException("Not finished previous transaction");
+                }
+                Transaction = Context.Connection.BeginTransaction();
+                return Transaction;
+            }
+
+            public void Commit()
+            {
+                if (Transaction != null)
+                {
+                    Transaction.Commit();
+                    Transaction.Dispose();
+                    Transaction = null;
+                }
+                else
+                {
+                    throw new NullReferenceException("Tried commit not opened transaction");
+                }
+            }
+
+            public void Dispose()
+            {
+                if (Transaction != null)
+                {
+                    Transaction.Dispose();
+                }
+                if (Context != null)
+                {
+                    Context.Dispose();
+                }
+            }
+        }
+    }
