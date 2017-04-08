@@ -1,13 +1,13 @@
 ﻿
 using System.Collections.Generic;
+using Genie.Models.Abstract;
 
 namespace Genie.Models
 {
-    internal class Relation
+    internal class Relation : IRelation
     {
-        internal string Name { get; set; }
-        internal string RelationName { get; set; }
-        internal List<Attribute> Attributes { get; set; }
-        internal List<ForeignKeyAttribute> ForeignKeyAttributes { get; set; }
+        public string Name { get; set; }
+        public List<IAttribute> Attributes { get; set; }
+        public List<IForeignKeyAttribute> ForeignKeyAttributes { get; set; }
     }
 }

@@ -1,7 +1,11 @@
-﻿namespace Genie.Models
+﻿using Genie.Models.Abstract;
+
+namespace Genie.Models
 {
-    internal class ForeignKeyAttribute: Attribute
+    internal class ForeignKeyAttribute: IForeignKeyAttribute
     {
-        public Attribute ReferencingAttribute { get; set; }
+        public IAttribute ReferencingNonForeignKeyAttribute { get; set; }
+
+        public string ReferencingRelationName { get; set; }
     }
 }

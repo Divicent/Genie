@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using Genie.Models.Abstract;
 
 namespace Genie.Models
 {
-    public class View
+    internal class View: IView
     {
         public string Name { get; set; }
-        public string RelationName { get; set; }
-        internal List<Attribute> Attributes { get; set; }
+        public List<ISimpleAttribute> Attributes { get; set; }
     }
 }

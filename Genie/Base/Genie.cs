@@ -26,6 +26,8 @@ namespace Genie.Base
             IMessageFormatter exceptionFormatter = new GenieExceptionMessageFormatter();
 
             var result = new GenieGenerationResult();
+            IBasicConfiguration config = null;
+
             try
             {
                 output.WriteInformation("Checking configuration file.");
@@ -37,7 +39,6 @@ namespace Genie.Base
 
                 output.WriteInformation("Deserializing configuration file.");
 
-                IValidatiableConfiguration config;
                 try
                 {
                     config = JsonConvert.DeserializeObject<GenieBasicConfiguration>(File.ReadAllText(pathToConfiguraionJsonFile));
@@ -67,16 +68,15 @@ namespace Genie.Base
                 result.Success = false;
                 return result;
             }
-
-            var schema = Reader.Read(config);
-            var model = Parser.Parse(schema, config);
-            var content = new DA().TransformText(model);
-            Writer.Write(content, config.ProjectPath + "\\DA.cs");
-            result.Success = true;
+            IDatabaseSchemaReader schemaReader = new DatabaseSchemaReader();
+            var schema = schemaReader.Read(config, output);
+            //var schema = Reader.Read(config);
+            //var model = Parser.Parse(schema, config);
+            //var content = new DA().TransformText(model);
+            //Writer.Write(content, config.ProjectPath + "\\DA.cs");
+            //result.Success = true;
             return result;
 
         }
-
-        private static string Format
     }
 }
