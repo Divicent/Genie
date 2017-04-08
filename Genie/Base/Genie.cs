@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using Genie.Templates.Complex;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Genie.Base
 {
