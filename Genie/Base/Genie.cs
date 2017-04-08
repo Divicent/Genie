@@ -1,58 +1,66 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using Genie.Base.Abstract;
 using Genie.Templates.Complex;
+using Genie.Tools;
 using Newtonsoft.Json;
 
 namespace Genie.Base
 {
-    public class GenieConfiguration
+    /// <summary>
+    /// The base genie class that only provides a static method to generate
+    /// </summary>
+    public static class Genie
     {
-        public string ConnectionString { get; set; }
-        public string ProjectPath { get; set; }
-        public string BaseNamespace { get; set; }
-    }
-
-    public class GenieGenerationResult
-    {
-        public bool Success { get; set; }
-        public string Error { get; set; }    
-    }
-
-    public class Genie
-    {
-        public static GenieGenerationResult Generate(string pathToConfigFile)
+        /// <summary>
+        /// Generates the Data Access Layer using given configuration file
+        /// </summary>
+        /// <param name="pathToConfiguraionJsonFile">the full readable path to the configuration JSON file.</param>
+        /// <param name="output">Just implement your own one and pass it here or leave it null if you don't need a detailed output</param>
+        /// <returns>the result of the generation process</returns>
+        public static GenieGenerationResult Generate(string pathToConfiguraionJsonFile, IProcessOutput output = null)
         {
-            /*Genie will generate the DAL in 4 phases
-                01 Read schema 
-                02 Parse Schema
-                03 Generate File(s)
-                04 White File(s)
-             */
+            if(output == null)
+                output = new NonFunctioningProcessOutput();
+
+            IMessageFormatter exceptionFormatter = new GenieExceptionMessageFormatter();
 
             var result = new GenieGenerationResult();
-
-            if (!File.Exists(pathToConfigFile))
-            {
-                result.Error = "Configuration file not found";
-                return result;
-            }
-
-            GenieConfiguration config;
             try
             {
-                config = JsonConvert.DeserializeObject<GenieConfiguration>(File.ReadAllText(pathToConfigFile));
-            }
-            catch
-            {
-                result.Error = "Unable to read configuration file";
-                return result;
-            }
+                output.WriteInformation("Checking configuration file.");
 
-            if (string.IsNullOrWhiteSpace(config.ConnectionString))
-                result.Error = "connectionString is not provided";
-            else if (string.IsNullOrWhiteSpace(config.BaseNamespace))
-                result.Error = "baseNamespace not provided";
-            else if (string.IsNullOrWhiteSpace(config.ProjectPath))
-                result.Error = "projectPath not provided";
+                if(!File.Exists(pathToConfiguraionJsonFile))
+                    throw new Exception(string.Format("The configuration file ({0}) could not be found (File.Exists returned false).", pathToConfiguraionJsonFile));
+
+                output.WriteSuccess("Configuration file found, ready to read.");
+
+                output.WriteInformation("Deserializing configuration file.");
+
+                IValidatiableConfiguration config;
+                try
+                {
+                    config = JsonConvert.DeserializeObject<GenieBasicConfiguration>(File.ReadAllText(pathToConfiguraionJsonFile));
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(string.Format("Unable to deserialize the configuration file ({0}), the configuration file may have syntax errors.",exception.Message));
+                }
+
+                output.WriteSuccess("Successfully Deserialized the configuration file.");
+
+                output.WriteInformation("Validating configuration.");
+
+                config.Validate();
+
+                output.WriteSuccess("Configuration validated successfully.");
+
+            }
+            catch (Exception exception)
+            {
+                result.Error = exceptionFormatter.FormatException(exception,
+                    "En error occurred while trying to initialize generation process (probably a configuration error)");
+            }
 
             if (!string.IsNullOrEmpty(result.Error))
             {
@@ -68,5 +76,7 @@ namespace Genie.Base
             return result;
 
         }
+
+        private static string Format
     }
 }
