@@ -51,7 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\Abstract\IContentGenerator.cs" />
+    <Compile Include="Base\Abstract\IDalGenerator.cs" />
+    <Compile Include="Base\Abstract\IObstacleManager.cs" />
     <Compile Include="Base\ContentGenerator.cs" />
+    <Compile Include="Base\DalGenerator.cs" />
     <Compile Include="Base\DatabaseSchema.cs" />
     <Compile Include="Base\DatabaseSchemaReader.cs" />
     <Compile Include="Base\Abstract\IBasicConfiguration.cs" />
@@ -61,6 +64,7 @@
     <Compile Include="Base\Genie.cs" />
     <Compile Include="Base\GenieBasicConfiguration.cs" />
     <Compile Include="Base\GenieGenerationResult.cs" />
+    <Compile Include="Base\ObstacleManager.cs" />
     <Compile Include="Models\Abstract\IAttribute.cs" />
     <Compile Include="Models\Abstract\IContentFile.cs" />
     <Compile Include="Models\Abstract\IForeignKeyAttribute.cs" />

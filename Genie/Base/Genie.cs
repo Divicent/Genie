@@ -70,6 +70,7 @@ namespace Genie.Base
 
             IDatabaseSchemaReader schemaReader = new DatabaseSchemaReader();
             var schema = schemaReader.Read(config, output);
+            var 
             IObstacleManager obstacleManager = new ObstacleManager();
             obstacleManager.Clear(config.ProjectPath, output);
             //var schema = Reader.Read(config);

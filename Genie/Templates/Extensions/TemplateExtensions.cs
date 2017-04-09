@@ -14,7 +14,7 @@ namespace Genie.Templates.Extensions
         /// Generate the template
         /// </summary>
         /// <returns></returns>
-        IContentFile Generate(string path);
+        IContentFile Generate();
     }
 }
 
@@ -22,12 +22,18 @@ namespace Genie.Templates.Dapper
 {
     public partial class SqlMapper : ITemplateFile
     {
-        public IContentFile Generate(string path)
+        private readonly string _path;
+        public SqlMapper(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
         {
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = path
+                Path = _path
             };
         }
     }
@@ -37,26 +43,40 @@ namespace Genie.Templates.General
 {
     public partial class EnumBase : ITemplateFile
     {
-        public IContentFile Generate(string path)
+        private readonly string _path;
+        public EnumBase(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
         {
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = path
+                Path = _path
             };
         }
     }
 
     namespace Interfaces
     {
+
         public partial class IEnumBase : ITemplateFile
         {
-            public IContentFile Generate(string path)
+
+            private readonly string _path;
+            public IEnumBase(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
@@ -67,60 +87,91 @@ namespace Genie.Templates.Infrastructure
 {
     public partial class DapperContext : ITemplateFile
     {
-        public IContentFile Generate(string path)
+
+        private readonly string _path;
+        public DapperContext(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
         {
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = path
+                Path = _path
             };
         }
     }
 
     public partial class FactoryRepository : ITemplateFile
     {
-        public IContentFile Generate(string path)
+        private readonly string _path;
+        public FactoryRepository(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
         {
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = path
+                Path = _path
             };
         }
     }
 
     public partial class Repository : ITemplateFile
     {
-        public IContentFile Generate(string path)
+        private readonly string _path;
+        public Repository(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
         {
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = path
+                Path = _path
             };
         }
     }
 
     public partial class UnitOfWork : ITemplateFile
     {
-        public IContentFile Generate(string path)
+        private readonly string _path;
+        public UnitOfWork(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
         {
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = path
+                Path = _path
             };
         }
     }
 
     public partial class ViewRepository : ITemplateFile
     {
-        public IContentFile Generate(string path)
+        private readonly string _path;
+        public ViewRepository(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
         {
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = path
+                Path = _path
             };
         }
     }
@@ -129,12 +180,18 @@ namespace Genie.Templates.Infrastructure
     {
         public partial class ConditionExtension : ITemplateFile
         {
-            public IContentFile Generate(string path)
+            private readonly string _path;
+            public ConditionExtension(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
@@ -145,18 +202,19 @@ namespace Genie.Templates.Infrastructure
         public partial class QueriesAndEnum : ITemplateFile
         {
             private readonly List<IRelation> _relations;
-             
-            internal QueriesAndEnum(List<IRelation> relations)
+            private readonly string _path; 
+            internal QueriesAndEnum(List<IRelation> relations, string path)
             {
                 _relations = relations;
+                _path = path;
             }
 
-            public IContentFile Generate(string path)
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
@@ -166,60 +224,89 @@ namespace Genie.Templates.Infrastructure
     {
         public partial class IDapperContext : ITemplateFile
         {
-            public IContentFile Generate(string path)
+            private readonly string _path;
+            public IDapperContext(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
 
         public partial class IFactoryRepository : ITemplateFile
         {
-            public IContentFile Generate(string path)
+            private readonly string _path;
+            public IFactoryRepository(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
 
         public partial class IRepository : ITemplateFile
         {
-            public IContentFile Generate(string path)
+            private readonly string _path;
+            public IRepository(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
 
         public partial class IUnitOfWork : ITemplateFile
         {
-            public IContentFile Generate(string path)
+            private readonly string _path;
+            public IUnitOfWork(string path)
+            {
+                _path = path;
+            }
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
 
         public partial class IViewRepository : ITemplateFile
         {
-            public IContentFile Generate(string path)
+            private readonly string _path;
+            public IViewRepository(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
@@ -230,19 +317,21 @@ namespace Genie.Templates.Infrastructure
         public partial class Relation : ITemplateFile
         {
             private readonly IRelation _relation;
+            private readonly string _path;
 
-            internal Relation(IRelation relation)
+            internal Relation(IRelation relation, string path)
             {
                 _relation = relation;
+                _path = path;
             }
 
-            public IContentFile Generate(string path)
+            public IContentFile Generate()
             {
 
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
@@ -250,18 +339,20 @@ namespace Genie.Templates.Infrastructure
         public partial class View : ITemplateFile
         {
             private readonly IView _view;
+            private readonly string _path;
 
-            internal View(IView view)
+            internal View(IView view, string path)
             {
                 _view = view;
+                _path = path;
             }
 
-            public IContentFile Generate(string path)
+            public IContentFile Generate()
             {
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = path
+                    Path = _path
                 };
             }
         }
