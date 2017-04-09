@@ -1,0 +1,41 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
+{
+    public class ViewRepository<T, TRepoQuery> : IViewRepository<T, TRepoQuery>
+        where T : class
+        where TRepoQuery : EnumBase<TRepoQuery, string>
+    {
+        public IDbConnection Conn { get; }
+        public IDapperContext Context { get;}
+
+        public ViewRepository(IDapperContext context)
+        {
+            Context = context;
+            Conn = Context.Connection;
+        }
+
+        public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            return Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
+        }
+
+        public virtual IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            return Conn.GetBy<T>(where: where, order: order, transaction: transaction, commandTimeout: commandTimeout).ToList();
+        }
+
+        public IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null,
+                                                int? commandTimeout = null)
+        {
+            return Conn.Query<TSp>(repoQuery.Value, param, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);
+        }
+
+        public void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null,
+                                    int? commandTimeout = null)
+        {
+            Conn.Execute(repoQuery.Value, param, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);
+        }
+    }
+
+}

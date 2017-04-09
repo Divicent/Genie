@@ -1,0 +1,13 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces
+{
+    public interface ISqlMakerUpdate : ISqlMakerBase
+    {
+        ISqlMakerUpdate SET(string columnsValues = null);
+        ISqlMakerUpdate Val(string columnName, string parameterAliace);
+        ISqlMakerUpdate WHERE(string whereConditions);
+        ISqlMakerUpdate WhereAnd(string whereConditions);
+        ISqlMakerUpdate WhereOr(string whereConditions);
+    }
+}

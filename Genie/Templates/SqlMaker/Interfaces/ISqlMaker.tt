@@ -1,0 +1,8 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces
+{
+    public interface ISqlMaker : ISqlFirst, ISqlMakerSelect, ISqlMakerInsert, ISqlMakerUpdate, ISqlMakerDelete
+    {
+    }
+}

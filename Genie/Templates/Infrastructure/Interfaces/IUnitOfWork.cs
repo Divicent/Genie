@@ -7,20 +7,18 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Basic
+namespace Genie.Templates.Infrastructure.Interfaces
 {
-    using System.Linq;
-    using System.Text;
-    using System.Collections.Generic;
+    using Genie.Base;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Basic\General.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class General : GeneralBase
+    public partial class IUnitOfWork : IUnitOfWorkBase
     {
 #line hidden
         /// <summary>
@@ -28,33 +26,25 @@ namespace Genie.Templates.Basic
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\n    namespace General\r\n    {\r\n        namespace Interfaces\r\n        {\r\n        " +
-                    "    public interface IEnumBase<TE, out T> where TE : IEnumBase<TE, T>\r\n         " +
-                    "   {\r\n                T Value { get; }\r\n                string Name { get; }\r\n  " +
-                    "          }\r\n        }\r\n\r\n        public abstract class EnumBase<TEntity, TValue" +
-                    "> : IEnumBase<EnumBase<TEntity, TValue>, TValue> where TEntity : EnumBase<TEntit" +
-                    "y, TValue>\r\n        {\r\n            #region Instance code\r\n\r\n            public T" +
-                    "Value Value { get; }\r\n            public CommandType? CmdType { get; }\r\n        " +
-                    "    public string Name { get;}\r\n\r\n            protected EnumBase(string name, TV" +
-                    "alue enumValue, CommandType? cmdType = null)\r\n            {\r\n                Val" +
-                    "ue = enumValue;\r\n                Name = name;\r\n                CmdType = cmdType" +
-                    ";\r\n                Mapping.Add(name, this);\r\n            }\r\n\r\n            public" +
-                    " override string ToString() { return Name; }\r\n\r\n            #endregion\r\n\r\n      " +
-                    "      #region Static tools\r\n\r\n            static private readonly Dictionary<str" +
-                    "ing, EnumBase<TEntity, TValue>> Mapping;\r\n            static EnumBase() { Mappin" +
-                    "g = new Dictionary<string, EnumBase<TEntity, TValue>>(); }\r\n\r\n            protec" +
-                    "ted static TEntity Parse(string name)\r\n            {\r\n                EnumBase<T" +
-                    "Entity, TValue> result;\r\n                if (Mapping.TryGetValue(name, out resul" +
-                    "t))\r\n                {\r\n                    return (TEntity)result;\r\n           " +
-                    "     }\r\n\r\n                throw new InvalidCastException();\r\n            }\r\n    " +
-                    "        // This is protected to force the child class to expose it\'s own static\r" +
-                    "\n            // method.\r\n            // By recreating this static method at the " +
-                    "derived class, static\r\n            // initialization will be explicit, promising" +
-                    " the mapping dictionary\r\n            // will never be empty when this method is " +
-                    "called.\r\n            protected static IEnumerable<TEntity> All { get { return Ma" +
-                    "pping.Values.AsEnumerable().Cast<TEntity>(); } }\r\n\r\n            #endregion\r\n\r\n  " +
-                    "          public override int GetHashCode()\r\n            {\r\n                retu" +
-                    "rn Value.GetHashCode();\r\n            }\r\n        }\r\n    }");
+            this.Write("namespace ");
+            
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(@".Infrastructure.Interfaces
+{
+	public interface IUnitOfWork
+    {
+        IDapperContext Context { get; }
+        IDbTransaction Transaction { get; }
+        IRepository<TSet, TEnumSp> GetRepository<TSet, TEnumSp>() where TSet : BaseModel where TEnumSp : EnumBase<TEnumSp, string>;
+        IDbTransaction BeginTransaction();
+        void Commit();
+    }
+}
+");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -66,7 +56,7 @@ namespace Genie.Templates.Basic
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class GeneralBase
+    public class IUnitOfWorkBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

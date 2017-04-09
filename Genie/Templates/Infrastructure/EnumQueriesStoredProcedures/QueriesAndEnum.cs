@@ -7,21 +7,18 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Complex
+namespace Genie.Templates.Infrastructure.EnumQueriesStoredProcedures
 {
-    using System.Linq;
-    using System.Text;
-    using System.Collections.Generic;
-    using Genie.Templates.Basic;
+    using Genie.Base;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class DA : DABase
+    public partial class QueriesAndEnum : QueriesAndEnumBase
     {
 #line hidden
         /// <summary>
@@ -29,111 +26,51 @@ namespace Genie.Templates.Complex
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\nusing System;\r\nusing System.Collections.Concurrent;\r\nusing System.Collections.G" +
-                    "eneric;\r\nusing System.Data;\r\nusing System.Linq;\r\nusing ");
+            this.Write("namespace ");
             
-            #line 13 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".General;\r\nusing ");
-            
-            #line 14 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".General.Interfaces;\r\nusing ");
+            this.Write(".Infrastructure.EnumQueriesStoredProcedures\r\n{\r\n\t");
             
-            #line 15 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Infrastructure.EnumQueriesStoredProcedures;\r\nusing ");
-            
-            #line 16 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+foreach(var relation in GenerationContext.Schema.Relations){
+  
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\nusing System.Configuration;\r\nusing System.Data.SqlCl" +
-                    "ient;\r\nusing System.Reflection;\r\nusing System.Reflection.Emit;\r\nusing System.Tex" +
-                    "t;\r\nusing System.Threading;\r\nusing ");
+            this.Write("public class ");
             
-            #line 23 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
-            this.Write(".Dapper;\r\nusing ");
+            this.Write("Enum : EnumBase<");
             
-            #line 24 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Infrastructure.Enum;\r\nusing ");
-            
-            #line 25 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\nusing ");
+            this.Write("Enum, string>\r\n    {\r\n        public ");
             
-            #line 26 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".SqlMaker.Interfaces;\r\nusing System.Collections;\r\nusing System.ComponentModel;\r\nu" +
-                    "sing System.Text.RegularExpressions;\r\n\r\nnamespace ");
-            
-            #line 31 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.BaseNamespace));
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n");
+            this.Write("Enum(string name, string enumValue, CommandType? cmdType): base(name, enumValue, " +
+                    "cmdType)\r\n        {}\r\n    }\r\n\t");
             
-            #line 33 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-    
-    var generalTemplate = new General();
-    var dapperTemplate = new Dapper();
-    var sqlMakerTemplate = new SQLMaker();
-    var infrastructureTemplate= new Infrastructure();
-
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+}
             
             #line default
             #line hidden
-            this.Write("\r\n");
-            
-            #line 40 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-    WriteLine(generalTemplate.TransformText());
-            
-            #line default
-            #line hidden
-            
-            #line 41 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-    WriteLine(dapperTemplate.TransformText());
-            
-            #line default
-            #line hidden
-            
-            #line 42 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-    WriteLine(sqlMakerTemplate.TransformText());
-            
-            #line default
-            #line hidden
-            
-            #line 43 "D:\Projects\Genie\Genie\Templates\Complex\DA.tt"
-    WriteLine(infrastructureTemplate.TransformText(Model));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n\r\n\r\n}");
+            this.Write("}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -145,7 +82,7 @@ namespace Genie.Templates.Complex
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class DABase
+    public class QueriesAndEnumBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

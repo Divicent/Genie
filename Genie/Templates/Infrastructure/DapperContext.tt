@@ -1,0 +1,38 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
+{
+	public class DapperContext : IDapperContext
+    {
+        private readonly string _connectionStringName;
+        private readonly string _connectionString;
+        private IDbConnection _connection;
+
+        public DapperContext()
+        {
+            _connectionStringName = ConfigurationManager.AppSettings["UsedConnectionString"];
+            _connectionString = ConfigurationManager.ConnectionStrings[_connectionStringName].ConnectionString; ;
+        }
+
+        public IDbConnection Connection
+        {
+            get
+            {
+                if (_connection == null)
+                {
+                    _connection = new SqlConnection(_connectionString);
+                }
+                if (_connection.State != ConnectionState.Open)
+                {
+                    _connection.Open();
+                }
+                return _connection;
+            }
+        }
+        public void Dispose()
+        {
+            if (_connection != null && _connection.State == ConnectionState.Open)
+                _connection.Close();
+        }
+    }
+}

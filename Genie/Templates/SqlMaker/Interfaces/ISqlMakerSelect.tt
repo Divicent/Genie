@@ -1,0 +1,30 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces
+{
+	public interface ISqlMakerSelect : ISqlMakerBase
+    {
+        ISqlMakerSelect Union(bool isAll = false);
+
+        ISqlMakerSelect Col(string columnName, string columnAliace = null);
+        ISqlMakerSelect From(string tables = null);
+        ISqlMakerSelect Tab(string tableName, string tableAliace = null, string tableScheme = null);
+        ISqlMakerSelect Where(string whereConditions);
+        ISqlMakerSelect WhereAnd(string whereConditions);
+        ISqlMakerSelect WhereOr(string whereConditions);
+        ISqlMakerSelect Join(string tableName, string tableAliace = null);
+        ISqlMakerSelect LeftJoin(string tableName, string tableAliace = null);
+        ISqlMakerSelect RightJoin(string tableName, string tableAliace = null);
+        ISqlMakerSelect FullJoin(string tableName, string tableAliace = null);
+        ISqlMakerSelect On(string condition);
+        ISqlMakerSelect OnAnd(string condition);
+        ISqlMakerSelect OnOr(string condition);
+        ISqlMakerSelect OrderBy(string columnName, SortAs direction);
+        ISqlMakerSelect OrderThen(string columnName, SortAs direction);
+        ISqlMakerSelect GroupBy(string columnName);
+        ISqlMakerSelect GroupThen(string columnName);
+        ISqlMakerSelect Having(string havingConditions);
+        ISqlMakerSelect HavingAnd(string havingConditions);
+        ISqlMakerSelect HavingOr(string havingConditions);
+    }
+}

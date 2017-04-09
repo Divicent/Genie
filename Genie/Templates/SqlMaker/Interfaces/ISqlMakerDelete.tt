@@ -1,0 +1,11 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces
+{
+    public interface ISqlMakerDelete : ISqlMakerBase
+    {
+        ISqlMakerDelete WHERE(string whereConditions);
+        ISqlMakerDelete WhereAnd(string whereConditions);
+        ISqlMakerDelete WhereOr(string whereConditions);
+    }
+}

@@ -1,0 +1,19 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
+{
+	public interface IViewRepository<out T, in TRepoQuery>
+		where T : class
+		where TRepoQuery : EnumBase<TRepoQuery, string>
+	{
+		IDbConnection Conn { get; }
+		IDapperContext Context { get; }
+
+		IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
+		IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null);
+
+		IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
+		void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
+	}
+
+}

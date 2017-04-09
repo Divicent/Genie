@@ -1,0 +1,93 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+<# var Model = GenerationContext.Schema; #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
+{
+    public class UnitOfWork : IUnitOfWork, IDisposable
+    {
+        private readonly Dictionary<Type, object> _repositories;
+        private readonly IFactoryRepository _factory;
+
+        public IDapperContext Context { get;}
+        public IDbTransaction Transaction { get; private set; }
+
+        public UnitOfWork(IDapperContext context, IFactoryRepository factory)
+        {
+            Context = context;
+            _factory = factory;
+            _repositories = new Dictionary<Type, object>();
+        }
+            
+            
+        <#foreach(var relation in Model.Relations){
+      #>public IRepository<<#=relation.Name#>, <#=relation.Name#>Enum> <#=relation.Name#>Repository { get { return GetRepository<<#=relation.Name#>, <#=relation.Name#>Enum>(); } }
+        <#}#>
+
+        <#foreach(var view in Model.Views){
+      #>public IViewRepository<<#=view.Name#>, <#=view.Name#>Enum> <#=view.Name#>Repository { get { return GetViewRepository<<#=view.Name#>, <#=view.Name#>Enum>(); } }
+        <#}#>
+
+        <#foreach(var sp in Model.Procedures){
+      #>public List<T> <#=sp.Name#><T>(<#=sp.ParamString#>) { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>").ToList(); }
+        <#}#>
+            
+            
+        public IRepository<TSet, TEnumSp> GetRepository<TSet, TEnumSp>() where TSet : BaseModel where TEnumSp : EnumBase<TEnumSp, string>
+        {
+            if (_repositories.Keys.Contains(typeof(TSet)))
+                return _repositories[typeof(TSet)] as IRepository<TSet, TEnumSp>;
+
+            var repository = _factory.CreateRepository<TSet, TEnumSp>(Context, this);
+            _repositories.Add(typeof(TSet), repository);
+
+            return repository;
+        }
+
+        public IViewRepository<TSet, TEnumSp> GetViewRepository<TSet, TEnumSp>() where TSet : class where TEnumSp : EnumBase<TEnumSp, string>
+        {
+            if (_repositories.Keys.Contains(typeof(TSet)))
+                return _repositories[typeof(TSet)] as IViewRepository<TSet, TEnumSp>;
+
+            var repository = _factory.CreateViewRepository<TSet, TEnumSp>(Context);
+            _repositories.Add(typeof(TSet), repository);
+
+            return repository;
+        }
+
+        public IDbTransaction BeginTransaction()
+        {
+            if (Transaction != null)
+            {
+                throw new NullReferenceException("Not finished previous transaction");
+            }
+            Transaction = Context.Connection.BeginTransaction();
+            return Transaction;
+        }
+
+        public void Commit()
+        {
+            if (Transaction != null)
+            {
+                Transaction.Commit();
+                Transaction.Dispose();
+                Transaction = null;
+            }
+            else
+            {
+                throw new NullReferenceException("Tried commit not opened transaction");
+            }
+        }
+
+        public void Dispose()
+        {
+            if (Transaction != null)
+            {
+                Transaction.Dispose();
+            }
+            if (Context != null)
+            {
+                Context.Dispose();
+            }
+        }
+    }
+}

@@ -1,0 +1,98 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
+{
+    public class Repository<T, TRepoQuery> : IRepository<T, TRepoQuery>
+        where T : BaseModel
+        where TRepoQuery : EnumBase<TRepoQuery, string>
+    {
+        public IDbConnection Conn { get; }
+        public IDapperContext Context { get;}
+        public UnitOfWork UnitOfWork { get;}
+
+        public Repository(IDapperContext context, UnitOfWork unitOfWork)
+        {
+            Context = context;
+            Conn = Context.Connection;
+            UnitOfWork = unitOfWork;
+        }
+
+        public virtual void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity", "Add to DB null entity");
+            }
+            var insertedId = Conn.Insert(entity, transaction: transaction, commandTimeout: commandTimeout);
+            entity.DatabaseModelStatus = ModelStatus.Retrieved;
+            entity.DatabaseUnitOfWork = UnitOfWork;
+        }
+
+        public virtual void Update(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity", "Update in DB null entity");
+            }
+            Conn.Update(entity, transaction: transaction, commandTimeout: commandTimeout);
+        }
+
+        public virtual void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity", "Remove in DB null entity");
+            }
+            var deleted = Conn.Delete(entity, transaction: transaction, commandTimeout: commandTimeout);
+            if(deleted) { entity.DatabaseModelStatus = ModelStatus.Deleted; }
+        }
+
+        public virtual T GetByKey(object id, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("id");
+            }
+            var item = Conn.Get<T>(id, transaction: transaction, commandTimeout: commandTimeout);
+            item.DatabaseModelStatus = ModelStatus.Retrieved;
+            item.DatabaseUnitOfWork = UnitOfWork;
+            return item;
+        }
+
+        public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var items = Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
+
+            foreach (var item in items) 
+            {
+                item.DatabaseUnitOfWork = UnitOfWork;
+                item.DatabaseModelStatus = ModelStatus.Retrieved;
+            }
+            return items;
+        }
+
+        public virtual IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var items = Conn.GetBy<T>(where: where, order: order, transaction: transaction, commandTimeout: commandTimeout).ToList();
+
+            foreach (var item in items)
+            {
+                item.DatabaseUnitOfWork = UnitOfWork;
+                item.DatabaseModelStatus = ModelStatus.Retrieved;
+            }
+            return items;
+        }
+
+        public IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null,
+                                                int? commandTimeout = null)
+        {
+            return Conn.Query<TSp>(repoQuery.Value, param, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);
+        }
+
+        public void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null,
+                                    int? commandTimeout = null)
+        {
+            Conn.Execute(repoQuery.Value, param, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);
+        }
+    }
+}

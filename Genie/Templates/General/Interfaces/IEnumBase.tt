@@ -1,0 +1,10 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.General.Interfaces
+{
+	public interface IEnumBase<TE, out T> where TE : IEnumBase<TE, T>
+	{
+		T Value { get; }
+		string Name { get; }
+	}
+}

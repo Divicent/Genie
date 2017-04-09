@@ -1,0 +1,18 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
+{
+    public class FactoryRepository : IFactoryRepository
+    {
+        public IRepository<T, TEnumSp> CreateRepository<T, TEnumSp>(IDapperContext context, UnitOfWork unit) where T : BaseModel where TEnumSp : EnumBase<TEnumSp, string>
+        {
+            return  new Repository<T, TEnumSp>(context, unit);
+        }
+
+        public IViewRepository<T, TEnumSp> CreateViewRepository<T, TEnumSp>(IDapperContext context) where T : class where TEnumSp : EnumBase<TEnumSp, string>
+        {
+            return  new ViewRepository<T, TEnumSp>(context);
+        }
+    }
+
+}

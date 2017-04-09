@@ -1,0 +1,11 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces
+{
+    public interface ISqlMakerInsert : ISqlMakerBase
+    {
+        ISqlMakerInsert Col(string columnName);
+        ISqlMakerInsert VALUES(string parameters = null);
+        ISqlMakerInsert Param(string paramName);
+    }
+}

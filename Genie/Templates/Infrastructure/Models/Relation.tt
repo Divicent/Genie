@@ -1,0 +1,31 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+<# var relation = GenerationContext.CurrentRelation; #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
+{
+    [Table("[dbo].[<#=relation.Name#>]")]
+    public class <#=relation.Name#> : BaseModel
+    {
+        <#foreach(var atd in relation.Attributes){
+      #>private <#=atd.DataType#> <#=atd.FieldName#>;
+        <#}#>
+
+        <#foreach(var atd in relation.ForeignKeyAttributes){
+      #>private <#=atd.ReferencingRelationName#> <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>__;
+        <#}#>
+
+        <#foreach(var atd in relation.Attributes){#>
+        <#if(atd.IsKey) {
+      #>[Key]
+        <#}
+      #>public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { <#=atd.FieldName#> = value; if(DatabaseModelStatus == ModelStatus.Retrieved) { UpdatedProperties.Add("<#=atd.Name#>"); } } }
+        <#}#>
+
+        <#foreach(var atd in relation.ForeignKeyAttributes){
+      #>public <#=atd.ReferencingRelationName#> Get<#=atd.ReferencingNonForeignKeyAttribute.Name#>(IDbTransaction transaction =null)
+        {
+            return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>__ ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>__ = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.GetByKey(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>, transaction)) : null;
+        }
+        <#}#>
+    }
+}
