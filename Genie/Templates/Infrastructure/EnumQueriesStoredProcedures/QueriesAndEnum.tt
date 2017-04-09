@@ -2,7 +2,7 @@
 <#@ import namespace="Genie.Base" #>
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.EnumQueriesStoredProcedures
 {
-	<#foreach(var relation in GenerationContext.Schema.Relations){
+	<#foreach(var relation in _relations){
   #>public class <#=relation.Name#>Enum : EnumBase<<#=relation.Name#>Enum, string>
     {
         public <#=relation.Name#>Enum(string name, string enumValue, CommandType? cmdType): base(name, enumValue, cmdType)

@@ -67,6 +67,7 @@ namespace Genie.Base
                 result.Success = false;
                 return result;
             }
+
             IDatabaseSchemaReader schemaReader = new DatabaseSchemaReader();
             var schema = schemaReader.Read(config, output);
             //var schema = Reader.Read(config);

@@ -3,7 +3,7 @@
     /// <summary>
     /// Result entity from database generation
     /// </summary>
-    internal interface IContentFile
+    public interface IContentFile
     {
         /// <summary>
         /// Content of the file

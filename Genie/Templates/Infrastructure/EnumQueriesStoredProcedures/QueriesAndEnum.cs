@@ -36,7 +36,7 @@ namespace Genie.Templates.Infrastructure.EnumQueriesStoredProcedures
             this.Write(".Infrastructure.EnumQueriesStoredProcedures\r\n{\r\n\t");
             
             #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
-foreach(var relation in GenerationContext.Schema.Relations){
+foreach(var relation in _relations){
   
             
             #line default
