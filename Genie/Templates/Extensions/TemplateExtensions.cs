@@ -27,7 +27,7 @@ namespace Genie.Templates.Dapper
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = @"\Dapper\SqlMapper.cs"
+                Path = path
             };
         }
     }
@@ -42,7 +42,7 @@ namespace Genie.Templates.General
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = @"\General\EnumBase.cs"
+                Path = path
             };
         }
     }
@@ -56,7 +56,7 @@ namespace Genie.Templates.General
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = @"\General\Interfaces\IEnumBase.cs"
+                    Path = path
                 };
             }
         }
@@ -72,7 +72,7 @@ namespace Genie.Templates.Infrastructure
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = @"\Infrastructure\DapperContext.cs"
+                Path = path
             };
         }
     }
@@ -84,7 +84,7 @@ namespace Genie.Templates.Infrastructure
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = @"\Infrastructure\FactoryRepository.cs"
+                Path = path
             };
         }
     }
@@ -96,7 +96,7 @@ namespace Genie.Templates.Infrastructure
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = @"\Infrastructure\Repository.cs"
+                Path = path
             };
         }
     }
@@ -108,7 +108,7 @@ namespace Genie.Templates.Infrastructure
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = @"\Infrastructure\UnitOfWork.cs"
+                Path = path
             };
         }
     }
@@ -120,7 +120,7 @@ namespace Genie.Templates.Infrastructure
             return new ContentFile
             {
                 Content = TransformText(),
-                Path = @"\Infrastructure\ViewRepository.cs"
+                Path = path
             };
         }
     }
@@ -134,7 +134,7 @@ namespace Genie.Templates.Infrastructure
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = @"\Infrastructure\Enum\ConditionExtension.cs"
+                    Path = path
                 };
             }
         }
@@ -156,7 +156,7 @@ namespace Genie.Templates.Infrastructure
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = @"\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.cs"
+                    Path = path
                 };
             }
         }
@@ -171,7 +171,7 @@ namespace Genie.Templates.Infrastructure
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = @"\Infrastructure\Interfaces\IDapperContext.cs"
+                    Path = path
                 };
             }
         }
@@ -183,7 +183,7 @@ namespace Genie.Templates.Infrastructure
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = @"\Infrastructure\Interfaces\IFactoryRepository.cs"
+                    Path = path
                 };
             }
         }
@@ -195,7 +195,7 @@ namespace Genie.Templates.Infrastructure
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = @"\Infrastructure\Interfaces\IRepository.cs"
+                    Path = path
                 };
             }
         }
@@ -207,7 +207,7 @@ namespace Genie.Templates.Infrastructure
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = @"\Infrastructure\Interfaces\IUnitOfWork.cs"
+                    Path = path
                 };
             }
         }
@@ -219,7 +219,49 @@ namespace Genie.Templates.Infrastructure
                 return new ContentFile
                 {
                     Content = TransformText(),
-                    Path = @"\Infrastructure\Interfaces\IViewRepository.cs"
+                    Path = path
+                };
+            }
+        }
+    }
+
+    namespace Models
+    {
+        public partial class Relation : ITemplateFile
+        {
+            private readonly IRelation _relation;
+
+            internal Relation(IRelation relation)
+            {
+                _relation = relation;
+            }
+
+            public IContentFile Generate(string path)
+            {
+
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = path
+                };
+            }
+        }
+
+        public partial class View : ITemplateFile
+        {
+            private readonly IView _view;
+
+            internal View(IView view)
+            {
+                _view = view;
+            }
+
+            public IContentFile Generate(string path)
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = path
                 };
             }
         }

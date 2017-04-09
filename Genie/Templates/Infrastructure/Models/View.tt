@@ -1,12 +1,11 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
-<# var view = GenerationContext.CurrentView; #>
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 {
-    [Table("[dbo].[<#=view.Name#>]")]
-    public class <#=view.Name#> 
+    [Table("[dbo].[<#=_view.Name#>]")]
+    public class <#=_view.Name#> 
     {
-        <#foreach(var atd in view.Attributes){
+        <#foreach(var atd in _view.Attributes){
         #>public <#=atd.DataType#> <#=atd.Name#> { get; set; } 
         <#}#>
     }

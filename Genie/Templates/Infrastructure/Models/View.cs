@@ -26,58 +26,52 @@ namespace Genie.Templates.Infrastructure.Models
         /// </summary>
         public virtual string TransformText()
         {
-            
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
- var view = GenerationContext.CurrentView; 
-            
-            #line default
-            #line hidden
             this.Write("namespace ");
             
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models\r\n{\r\n    [Table(\"[dbo].[");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_view.Name));
             
             #line default
             #line hidden
             this.Write("]\")]\r\n    public class ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_view.Name));
             
             #line default
             #line hidden
             this.Write(" \r\n    {\r\n        ");
             
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
-foreach(var atd in view.Attributes){
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
+foreach(var atd in _view.Attributes){
         
             
             #line default
             #line hidden
             this.Write("public ");
             
-            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get; set; } \r\n        ");
             
-            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
+            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
 }
             
             #line default
