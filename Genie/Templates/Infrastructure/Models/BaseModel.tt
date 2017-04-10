@@ -1,0 +1,19 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
+{
+	internal enum ModelStatus 
+    {
+        JustInMemory = 1,
+        Retrieved = 2,
+        Deleted = 3
+    }
+
+    public abstract class BaseModel 
+    {
+        protected BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
+        internal HashSet<string> UpdatedProperties { get; set; }
+        internal ModelStatus DatabaseModelStatus { get; set; }
+        internal UnitOfWork DatabaseUnitOfWork { get; set; }
+    }
+}

@@ -26,9 +26,9 @@ namespace Genie.Templates.Infrastructure.Interfaces
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IDapperContext.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IDapperContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

@@ -1,5 +1,8 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System.Data;
+using Indico.DataAccess.General;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.EnumQueriesStoredProcedures
 {
 	<#foreach(var relation in _relations){

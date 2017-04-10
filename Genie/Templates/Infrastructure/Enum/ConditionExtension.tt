@@ -1,5 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum
 {
     public enum Condition
@@ -21,7 +23,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum
     {
         public static string GetString(this Condition e)
         {
-            var result = string.Empty;
             switch (e)
             {
                 case Condition.IsNull:

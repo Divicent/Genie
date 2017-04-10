@@ -26,7 +26,7 @@ namespace Genie.Base
 
 
                 foreach (var file in files)
-                    project.AddItem("Compiled", file);
+                    project.AddItem("Compile", file);
                 project.Save();
 
             }

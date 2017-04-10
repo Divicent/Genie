@@ -552,6 +552,23 @@ namespace Genie.Templates.Infrastructure
 
     namespace Models
     {
+        public partial class BaseModel : ITemplateFile
+        {
+            private readonly string _path;
+            public BaseModel(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
         public partial class Relation : ITemplateFile
         {
             private readonly IRelation _relation;

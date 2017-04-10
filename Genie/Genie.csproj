@@ -83,10 +83,75 @@
     <Compile Include="Models\StoredProcedure.cs" />
     <Compile Include="Models\View.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\Dapper\CustomPropertyTypeMap.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CustomPropertyTypeMap.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\DbString.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbString.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\DefaultTypeMap.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultTypeMap.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\DynamicParameters.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DynamicParameters.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\FeatureSupport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FeatureSupport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\ISqlAdapter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ISqlAdapter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\KeyAttribute.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KeyAttribute.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\PostgresAdapter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostgresAdapter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\SimpleMemberMap.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SimpleMemberMap.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Dapper\SqlMapper.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlMapper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\SqlMapperExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SqlMapperExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\SqlServerAdapter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SqlServerAdapter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\TableAttribute.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TableAttribute.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Dapper\WriteAttribute.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WriteAttribute.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Extensions\TemplateExtensions.cs" />
     <Compile Include="Templates\General\EnumBase.cs">
@@ -223,9 +288,61 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Templates\Dapper\CustomPropertyTypeMap.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CustomPropertyTypeMap.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\DbString.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DbString.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\DefaultTypeMap.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DefaultTypeMap.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\DynamicParameters.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DynamicParameters.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\FeatureSupport.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>FeatureSupport.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\ISqlAdapter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ISqlAdapter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\KeyAttribute.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>KeyAttribute.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\PostgresAdapter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PostgresAdapter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\SimpleMemberMap.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SimpleMemberMap.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\Dapper\SqlMapper.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>SqlMapper.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\SqlMapperExtensions.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SqlMapperExtensions.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\SqlServerAdapter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SqlServerAdapter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\TableAttribute.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TableAttribute.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Dapper\WriteAttribute.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>WriteAttribute.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\General\EnumBase.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

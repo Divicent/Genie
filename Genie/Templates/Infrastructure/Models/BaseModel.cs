@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure.EnumQueriesStoredProcedures
+namespace Genie.Templates.Infrastructure.Models
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure.EnumQueriesStoredProcedures
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class QueriesAndEnum : QueriesAndEnumBase
+    public partial class BaseModel : BaseModelBase
     {
 #line hidden
         /// <summary>
@@ -26,51 +26,31 @@ namespace Genie.Templates.Infrastructure.EnumQueriesStoredProcedures
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Data;\r\nusing Indico.DataAccess.General;\r\n\r\nnamespace ");
+            this.Write("namespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.EnumQueriesStoredProcedures\r\n{\r\n\t");
-            
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
-foreach(var relation in _relations){
-  
-            
-            #line default
-            #line hidden
-            this.Write("public class ");
-            
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Enum : EnumBase<");
-            
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Enum, string>\r\n    {\r\n        public ");
-            
-            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Enum(string name, string enumValue, CommandType? cmdType): base(name, enumValue, " +
-                    "cmdType)\r\n        {}\r\n    }\r\n\t");
-            
-            #line 14 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            this.Write(@".Infrastructure.Models
+{
+	internal enum ModelStatus 
+    {
+        JustInMemory = 1,
+        Retrieved = 2,
+        Deleted = 3
+    }
+
+    public abstract class BaseModel 
+    {
+        protected BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
+        internal HashSet<string> UpdatedProperties { get; set; }
+        internal ModelStatus DatabaseModelStatus { get; set; }
+        internal UnitOfWork DatabaseUnitOfWork { get; set; }
+    }
 }
-            
-            #line default
-            #line hidden
-            this.Write("}\r\n");
+");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -82,7 +62,7 @@ foreach(var relation in _relations){
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class QueriesAndEnumBase
+    public class BaseModelBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

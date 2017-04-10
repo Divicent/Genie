@@ -26,9 +26,10 @@ namespace Genie.Templates.General
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
+                    "m.Linq;\r\nusing Indico.DataAccess.General.Interfaces;\r\n\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\General\EnumBase.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\General\EnumBase.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

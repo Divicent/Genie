@@ -59,6 +59,8 @@ namespace Genie.Base
                     new UnitOfWork(schema, @"Infrastructure\UnitOfWork"),
                     new ViewRepository(@"Infrastructure\ViewRepository"),
 
+                    new BaseModel(@"Infrastructure\Models\BaseModel"),
+
                     new QueryMaker(@"SqlMaker/SqlMaker"),
                     new QueryMaker(@"SqlMaker/Interfaces/ISqlFirst"),
                     new QueryMaker(@"SqlMaker/Interfaces/ISqlMaker"),
@@ -67,6 +69,8 @@ namespace Genie.Base
                     new QueryMaker(@"SqlMaker/Interfaces/ISqlMakerSelect"),
                     new QueryMaker(@"SqlMaker/Interfaces/ISqlMakerUpdate"),
                     new QueryMaker(@"SqlMaker/Interfaces/ISqlMkrBase")
+
+                    
                 };
 
                 files.AddRange(schema.Relations

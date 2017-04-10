@@ -26,9 +26,9 @@ namespace Genie.Templates.Infrastructure.Enum
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Enum\ConditionExtension.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Enum\ConditionExtension.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -54,7 +54,6 @@ namespace Genie.Templates.Infrastructure.Enum
     {
         public static string GetString(this Condition e)
         {
-            var result = string.Empty;
             switch (e)
             {
                 case Condition.IsNull:
