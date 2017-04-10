@@ -13,7 +13,8 @@ namespace Genie.Base.Abstract
         /// </summary>
         /// <param name="schema">Schema to use</param>
         /// <param name="configuration">Configuration to use</param>
+        /// <param name="output">Process output</param>
         /// <returns>Collection of file contents</returns>
-        List<IContentFile> Generate(IDatabaseSchema schema, IBasicConfiguration configuration);
+        List<IContentFile> Generate(IDatabaseSchema schema, IBasicConfiguration configuration, IProcessOutput output);
     }
 }

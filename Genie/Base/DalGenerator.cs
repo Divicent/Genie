@@ -1,19 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Genie.Base.Abstract;
 using Genie.Models.Abstract;
 using Genie.Templates.Dapper;
 using Genie.Templates.Extensions;
-using Genie.Templates.SqlMaker.Interfaces;
+using Genie.Templates.General;
+using Genie.Templates.General.Interfaces;
+using Genie.Templates.Infrastructure;
+using Genie.Templates.Infrastructure.Enum;
+using Genie.Templates.Infrastructure.EnumQueriesStoredProcedures;
+using Genie.Templates.Infrastructure.Interfaces;
+using Genie.Templates.Infrastructure.Models;
 
 namespace Genie.Base
 {
     internal class DalGenerator : IDalGenerator
     {
-        public List<IContentFile> Generate(IDatabaseSchema schema, IBasicConfiguration configuration)
+        public List<IContentFile> Generate(IDatabaseSchema schema, IBasicConfiguration configuration, IProcessOutput output)
         {
-            var files = new List<ITemplateFile>();
-            files.Add(new SqlMapper());
+
+            output.WriteInformation("Generating files.");
+            List<ITemplateFile> files;
+            try
+            {
+                files = new List<ITemplateFile>
+                {
+                    new SqlMapper(@"Dapper\SqlMapper"),
+                    new EnumBase(@"General\EnumBase"),
+                    new IEnumBase(@"General\Interfaces\IEnumBase"),
+
+                    new ConditionExtension(@"Infrastructure\Enum\ConditionExtension"),
+                    new QueriesAndEnum(schema.Relations, @"Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum"),
+                    new IDapperContext(@"Infrastructure\Interfaces\IDapperContext"),
+                    new IFactoryRepository(@"Infrastructure\Interfaces\IFactoryRepository"),
+                    new IRepository(@"Infrastructure\Interfaces\IRepository"),
+                    new IUnitOfWork(@"Infrastructure\Interfaces\IUnitOfWork"),
+                    new IViewRepository(@"Infrastructure\Interfaces\IViewRepository"),
+
+                    new DapperContext(@"Infrastructure\DapperContext"),
+                    new FactoryRepository(@"Infrastructure\FactoryRepository"),
+                    new Repository(@"Infrastructure\Repository"),
+                    new UnitOfWork(schema, @"Infrastructure\UnitOfWork"),
+                    new ViewRepository(@"Infrastructure\ViewRepository")
+                };
+
+                files.AddRange(schema.Relations
+                    .Select(relation => new Relation(relation, @"Infrastructure\Models\" + relation.Name)));
+
+                files.AddRange(schema.Views
+                    .Select(view => new View(view, @"Infrastructure\Models\" + view.Name)));
+
+                output.WriteInformation(string.Format("{0} file found.", files.Count));
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to create list of template files.", e);
+            }
+
+            try
+            {
+                output.WriteInformation("Generating File content.");
+                var contentFiles =
+                    files.Select(templateFile => templateFile.Generate()).ToList();
+
+                output.WriteSuccess(string.Format("Successfully generated {0} files.", contentFiles.Count));
+
+                foreach (var contentFile in contentFiles)
+                    contentFile.Path = contentFile.Path + "." + "cs";
+
+                return contentFiles;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to generate file content", e);
+            }
+           
         }
     }
 }

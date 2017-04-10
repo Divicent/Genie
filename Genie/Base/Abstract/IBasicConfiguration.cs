@@ -21,5 +21,10 @@
         /// Base namespace of the data access layer usually, @projectName.DA | @projectName.DataAccess or something like that. choice is yours ;)
         /// </summary>
         string BaseNamespace { get; set; }
+
+        /// <summary>
+        /// Relative path to the project file
+        /// </summary>
+        string ProjectFile { get; set; }
     }
 }

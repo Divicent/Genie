@@ -1,6 +1,6 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
-<# var Model = GenerationContext.Schema; #>
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
@@ -19,15 +19,15 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         }
             
             
-        <#foreach(var relation in Model.Relations){
+        <#foreach(var relation in _schema.Relations){
       #>public IRepository<<#=relation.Name#>, <#=relation.Name#>Enum> <#=relation.Name#>Repository { get { return GetRepository<<#=relation.Name#>, <#=relation.Name#>Enum>(); } }
         <#}#>
 
-        <#foreach(var view in Model.Views){
+        <#foreach(var view in _schema.Views){
       #>public IViewRepository<<#=view.Name#>, <#=view.Name#>Enum> <#=view.Name#>Repository { get { return GetViewRepository<<#=view.Name#>, <#=view.Name#>Enum>(); } }
         <#}#>
 
-        <#foreach(var sp in Model.Procedures){
+        <#foreach(var sp in _schema.Procedures){
       #>public List<T> <#=sp.Name#><T>(<#=sp.ParamString#>) { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>").ToList(); }
         <#}#>
             

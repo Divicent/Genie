@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Genie.Base.Abstract;
 using Genie.Models;
 using Genie.Models.Abstract;
 using Genie.Templates.Extensions;
@@ -143,9 +144,12 @@ namespace Genie.Templates.Infrastructure
     public partial class UnitOfWork : ITemplateFile
     {
         private readonly string _path;
-        public UnitOfWork(string path)
+        private readonly IDatabaseSchema _schema;
+
+        internal UnitOfWork(IDatabaseSchema schema,string path)
         {
             _path = path;
+            _schema = schema;
         }
 
         public IContentFile Generate()

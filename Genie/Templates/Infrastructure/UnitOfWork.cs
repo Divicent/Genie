@@ -26,13 +26,7 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
- var Model = GenerationContext.Schema; 
-            
-            #line default
-            #line hidden
-            this.Write("namespace ");
+            this.Write("\r\nnamespace ");
             
             #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
@@ -60,7 +54,7 @@ namespace Genie.Templates.Infrastructure
         ");
             
             #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
-foreach(var relation in Model.Relations){
+foreach(var relation in _schema.Relations){
       
             
             #line default
@@ -110,7 +104,7 @@ foreach(var relation in Model.Relations){
             this.Write("\r\n        ");
             
             #line 26 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
-foreach(var view in Model.Views){
+foreach(var view in _schema.Views){
       
             
             #line default
@@ -160,7 +154,7 @@ foreach(var view in Model.Views){
             this.Write("\r\n        ");
             
             #line 30 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
-foreach(var sp in Model.Procedures){
+foreach(var sp in _schema.Procedures){
       
             
             #line default

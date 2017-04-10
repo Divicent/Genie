@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Genie.Base.Abstract;
 using Genie.Tools;
 using Newtonsoft.Json;
@@ -62,7 +63,7 @@ namespace Genie.Base
                     "En error occurred while trying to initialize generation process (probably a configuration error)");
             }
 
-            if (!string.IsNullOrEmpty(result.Error))
+            if (!string.IsNullOrEmpty(result.Error) || config ==  null)
             {
                 result.Success = false;
                 return result;
@@ -70,16 +71,25 @@ namespace Genie.Base
 
             IDatabaseSchemaReader schemaReader = new DatabaseSchemaReader();
             var schema = schemaReader.Read(config, output);
-            var 
+
+            IDalGenerator dalGenerator = new DalGenerator();
+            var contentFiles = dalGenerator.Generate(schema, config, output);
+
             IObstacleManager obstacleManager = new ObstacleManager();
             obstacleManager.Clear(config.ProjectPath, output);
-            //var schema = Reader.Read(config);
-            //var model = Parser.Parse(schema, config);
-            //var content = new DA().TransformText(model);
-            //Writer.Write(content, config.ProjectPath + "\\DA.cs");
-            //result.Success = true;
-            return result;
+            
+            IFileWriter writer = new DalWriter();
+            writer.Write(contentFiles, config.ProjectPath, output);
 
+            if (!string.IsNullOrWhiteSpace(config.ProjectFile))
+            {
+                IProjectItemManager projectItemManager = new CSharpProjectItemManager();
+                projectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectPath), contentFiles.Select(c => c.Path).ToList(), output);
+            }
+
+            output.WriteSuccess("Successfully completed.");
+
+            return result;
         }
     }
 }

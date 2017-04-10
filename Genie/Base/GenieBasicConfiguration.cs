@@ -27,5 +27,7 @@ namespace Genie.Base
             if(error != null)
                 throw new Exception(error);
         }
+
+        public string ProjectFile { get; set; }
     }
 }
