@@ -12,4 +12,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.EnumQueriesStoredP
         {}
     }
 	<#}#>
+
+	<#foreach(var view in _views){
+  #>public class <#=view.Name#>Enum : EnumBase<<#=view.Name#>Enum, string>
+    {
+        public <#=view.Name#>Enum(string name, string enumValue, CommandType? cmdType): base(name, enumValue, cmdType)
+        {}
+    }
+	<#}#>
 }

@@ -26,9 +26,38 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
+                    "m.Linq;\r\nusing ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper;\r\nusing ");
+            
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".General;\r\nusing ");
+            
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Interfaces;\r\nusing ");
+            
+            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            
+            #line 12 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

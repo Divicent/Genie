@@ -1,5 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum;
+
 namespace <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces
 {
 	public interface ISqlMakerSelect : ISqlMakerBase

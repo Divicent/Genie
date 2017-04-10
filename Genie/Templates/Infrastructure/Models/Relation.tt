@@ -1,5 +1,9 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+using System.Data;
+using <#=GenerationContext.BaseNamespace#>.Dapper;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 {
     [Table("[dbo].[<#=_relation.Name#>]")]

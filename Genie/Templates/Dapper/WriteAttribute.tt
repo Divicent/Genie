@@ -1,5 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+
 namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
 	[AttributeUsage(AttributeTargets.Property)]

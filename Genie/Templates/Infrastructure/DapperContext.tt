@@ -1,5 +1,10 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
 	public class DapperContext : IDapperContext

@@ -26,9 +26,24 @@ namespace Genie.Templates.SqlMaker
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing Syste" +
+                    "m.Text;\r\nusing ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Enum;\r\nusing ");
+            
+            #line 8 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".SqlMaker.Interfaces;\r\n\r\nnamespace ");
+            
+            #line 10 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

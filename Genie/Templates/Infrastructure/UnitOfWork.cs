@@ -26,9 +26,45 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\nnamespace ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
+                    "m.Linq;\r\nusing ");
             
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper;\r\nusing ");
+            
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".General;\r\nusing ");
+            
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.EnumQueriesStoredProcedures;\r\nusing ");
+            
+            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Interfaces;\r\nusing ");
+            
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            
+            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -53,7 +89,7 @@ namespace Genie.Templates.Infrastructure
             
         ");
             
-            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 31 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 foreach(var relation in _schema.Relations){
       
             
@@ -61,49 +97,49 @@ foreach(var relation in _schema.Relations){
             #line hidden
             this.Write("public IRepository<");
             
-            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Enum> ");
             
-            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository { get { return GetRepository<");
             
-            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Enum>(); } }\r\n        ");
             
-            #line 24 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 33 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n        ");
             
-            #line 26 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 35 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 foreach(var view in _schema.Views){
       
             
@@ -111,49 +147,49 @@ foreach(var view in _schema.Views){
             #line hidden
             this.Write("public IViewRepository<");
             
-            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 36 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 36 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Enum> ");
             
-            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 36 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Repository { get { return GetViewRepository<");
             
-            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 36 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 36 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Enum>(); } }\r\n        ");
             
-            #line 28 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 37 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n        ");
             
-            #line 30 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 39 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 foreach(var sp in _schema.Procedures){
       
             
@@ -161,35 +197,35 @@ foreach(var sp in _schema.Procedures){
             #line hidden
             this.Write("public List<T> ");
             
-            #line 31 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write("<T>(");
             
-            #line 31 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
             
             #line default
             #line hidden
             this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
             
-            #line 31 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 31 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.PassString));
             
             #line default
             #line hidden
             this.Write("\").ToList(); }\r\n        ");
             
-            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 41 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 }
             
             #line default

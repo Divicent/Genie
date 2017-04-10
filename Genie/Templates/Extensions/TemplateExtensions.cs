@@ -440,10 +440,12 @@ namespace Genie.Templates.Infrastructure
         public partial class QueriesAndEnum : ITemplateFile
         {
             private readonly List<IRelation> _relations;
+            private readonly List<IView> _views; 
             private readonly string _path; 
-            internal QueriesAndEnum(List<IRelation> relations, string path)
+            internal QueriesAndEnum(List<IRelation> relations, List<IView> views, string path)
             {
                 _relations = relations;
+                _views = views;
                 _path = path;
             }
 

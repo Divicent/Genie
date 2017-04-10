@@ -93,7 +93,6 @@ namespace Genie.Base
 
                     if (column.IsForeignKey)
                     {
-                        realation.Attributes.Add(attribute);
                         var fkAttribute = new ForeignKeyAttribute
                         {
                             ReferencingNonForeignKeyAttribute = attribute,

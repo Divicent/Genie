@@ -1,5 +1,17 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+
 namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
 	public static class SqlMapperExtensions

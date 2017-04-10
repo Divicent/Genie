@@ -1,5 +1,12 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum;
+using <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces;
+
 namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 {
     public class QueryMaker : ISqlMaker

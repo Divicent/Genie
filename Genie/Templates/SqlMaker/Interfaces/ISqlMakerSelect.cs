@@ -26,9 +26,16 @@ namespace Genie.Templates.SqlMaker.Interfaces
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using ");
             
             #line 3 "F:\Projects\Genie\Genie\Templates\SqlMaker\Interfaces\ISqlMakerSelect.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Enum;\r\n\r\nnamespace ");
+            
+            #line 5 "F:\Projects\Genie\Genie\Templates\SqlMaker\Interfaces\ISqlMakerSelect.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

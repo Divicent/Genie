@@ -26,9 +26,10 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
+                    "m.Linq;\r\nusing System.Reflection;\r\n\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Dapper\SqlServerAdapter.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Dapper\SqlServerAdapter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

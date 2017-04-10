@@ -209,6 +209,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IViewRepository.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Infrastructure\Models\BaseModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\Models\Relation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -387,6 +392,10 @@
     <Content Include="Templates\Infrastructure\Interfaces\IViewRepository.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IViewRepository.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Models\BaseModel.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BaseModel.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Models\Relation.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

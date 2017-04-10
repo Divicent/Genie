@@ -1,5 +1,8 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+using Indico.DataAccess.Dapper;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 {
     [Table("[dbo].[<#=_view.Name#>]")]

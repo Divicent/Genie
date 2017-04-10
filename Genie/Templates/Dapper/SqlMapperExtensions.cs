@@ -26,9 +26,25 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\nusing System.Collections.Concurrent;\r\nusing System.Collections.Gen" +
+                    "eric;\r\nusing System.Data;\r\nusing System.Linq;\r\nusing System.Reflection;\r\nusing S" +
+                    "ystem.Reflection.Emit;\r\nusing System.Text;\r\nusing System.Threading;\r\nusing ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
+            #line 12 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Enum;\r\nusing ");
+            
+            #line 13 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            
+            #line 15 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

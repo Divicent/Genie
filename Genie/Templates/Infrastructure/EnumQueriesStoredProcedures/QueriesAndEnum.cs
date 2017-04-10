@@ -70,6 +70,43 @@ foreach(var relation in _relations){
             
             #line default
             #line hidden
+            this.Write("\r\n\t");
+            
+            #line 16 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+foreach(var view in _views){
+  
+            
+            #line default
+            #line hidden
+            this.Write("public class ");
+            
+            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum : EnumBase<");
+            
+            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum, string>\r\n    {\r\n        public ");
+            
+            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Enum(string name, string enumValue, CommandType? cmdType): base(name, enumValue, " +
+                    "cmdType)\r\n        {}\r\n    }\r\n\t");
+            
+            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt"
+}
+            
+            #line default
+            #line hidden
             this.Write("}\r\n");
             return this.GenerationEnvironment.ToString();
         }

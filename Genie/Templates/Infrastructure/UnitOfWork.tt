@@ -1,5 +1,14 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using <#=GenerationContext.BaseNamespace#>.Dapper;
+using <#=GenerationContext.BaseNamespace#>.General;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.EnumQueriesStoredProcedures;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {

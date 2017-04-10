@@ -8,7 +8,7 @@
         /// <summary>
         /// Content of the file
         /// </summary>
-        string Content { get; }
+        string Content { get; set; }
 
         /// <summary>
         /// Relative path of the file to the base path

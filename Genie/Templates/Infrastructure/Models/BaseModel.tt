@@ -1,5 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System.Collections.Generic;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 {
 	internal enum ModelStatus 

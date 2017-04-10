@@ -1,5 +1,11 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Reflection;
+
 namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
 	public class SqlServerAdapter : ISqlAdapter

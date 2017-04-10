@@ -26,9 +26,9 @@ namespace Genie.Templates.Infrastructure.Models
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System.Collections.Generic;\r\n\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

@@ -26,9 +26,9 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Dapper\CustomPropertyTypeMap.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Dapper\CustomPropertyTypeMap.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
