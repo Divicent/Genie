@@ -69,25 +69,35 @@ namespace Genie.Base
                 return result;
             }
 
-            IDatabaseSchemaReader schemaReader = new DatabaseSchemaReader();
-            var schema = schemaReader.Read(config, output);
-
-            IDalGenerator dalGenerator = new DalGenerator();
-            var contentFiles = dalGenerator.Generate(schema, config, output);
-
-            IObstacleManager obstacleManager = new ObstacleManager();
-            obstacleManager.Clear(config.ProjectPath, output);
-            
-            IFileWriter writer = new DalWriter();
-            writer.Write(contentFiles, config.ProjectPath, output);
-
-            if (!string.IsNullOrWhiteSpace(config.ProjectFile))
+            try
             {
-                IProjectItemManager projectItemManager = new CSharpProjectItemManager();
-                projectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectPath), contentFiles.Select(c => c.Path).ToList(), output);
-            }
+                IDatabaseSchemaReader schemaReader = new DatabaseSchemaReader();
+                var schema = schemaReader.Read(config, output);
 
-            output.WriteSuccess("Successfully completed.");
+                IDalGenerator dalGenerator = new DalGenerator();
+                var contentFiles = dalGenerator.Generate(schema, config, output);
+
+                IObstacleManager obstacleManager = new ObstacleManager();
+                obstacleManager.Clear(config.ProjectPath, output);
+
+                IFileWriter writer = new DalWriter();
+                writer.Write(contentFiles, config.ProjectPath, output);
+
+                if (!string.IsNullOrWhiteSpace(config.ProjectFile))
+                {
+                    IProjectItemManager projectItemManager = new CSharpProjectItemManager();
+                    projectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectFile), contentFiles.Select(c => c.Path).ToList(), output);
+                }
+
+                output.WriteSuccess("Successfully completed.");
+
+            }
+            catch (Exception e)
+            {
+                result.Error = exceptionFormatter.FormatException(e.InnerException, e.Message);
+                result.Success = false;
+                return result;
+            }
 
             return result;
         }

@@ -38,6 +38,240 @@ namespace Genie.Templates.Dapper
             };
         }
     }
+
+    public partial class CustomPropertyTypeMap : ITemplateFile
+    {
+        private readonly string _path;
+        public CustomPropertyTypeMap(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class DbString : ITemplateFile
+    {
+        private readonly string _path;
+        public DbString(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class DefaultTypeMap : ITemplateFile
+    {
+        private readonly string _path;
+        public DefaultTypeMap(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class DynamicParameters : ITemplateFile
+    {
+        private readonly string _path;
+        public DynamicParameters(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class FeatureSupport : ITemplateFile
+    {
+        private readonly string _path;
+        public FeatureSupport(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class ISqlAdapter : ITemplateFile
+    {
+        private readonly string _path;
+        public ISqlAdapter(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class KeyAttribute : ITemplateFile
+    {
+        private readonly string _path;
+        public KeyAttribute(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class PostgresAdapter : ITemplateFile
+    {
+        private readonly string _path;
+        public PostgresAdapter(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class SimpleMemberMap : ITemplateFile
+    {
+        private readonly string _path;
+        public SimpleMemberMap(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class SqlMapperExtensions : ITemplateFile
+    {
+        private readonly string _path;
+        public SqlMapperExtensions(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class SqlServerAdapter : ITemplateFile
+    {
+        private readonly string _path;
+        public SqlServerAdapter(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class TableAttribute : ITemplateFile
+    {
+        private readonly string _path;
+        public TableAttribute(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class WriteAttribute : ITemplateFile
+    {
+        private readonly string _path;
+        public WriteAttribute(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
 }
 
 namespace Genie.Templates.General
@@ -348,6 +582,156 @@ namespace Genie.Templates.Infrastructure
             internal View(IView view, string path)
             {
                 _view = view;
+                _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+    }
+}
+
+namespace Genie.Templates.SqlMaker
+{
+    public partial class QueryMaker : ITemplateFile
+    {
+        private readonly string _path;
+        public QueryMaker(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    namespace Interfaces
+    {
+        public partial class ISqlFirst : ITemplateFile
+        {
+            private readonly string _path;
+            public ISqlFirst(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+
+        public partial class ISqlMaker : ITemplateFile
+        {
+            private readonly string _path;
+            public ISqlMaker(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+
+        public partial class ISqlMakerDelete : ITemplateFile
+        {
+            private readonly string _path;
+            public ISqlMakerDelete(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+
+        public partial class ISqlMakerInsert : ITemplateFile
+        {
+            private readonly string _path;
+            public ISqlMakerInsert(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+
+        public partial class ISqlMakerSelect : ITemplateFile
+        {
+            private readonly string _path;
+            public ISqlMakerSelect(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+
+        public partial class ISqlMakerUpdate : ITemplateFile
+        {
+            private readonly string _path;
+            public ISqlMakerUpdate(string path)
+            {
+                _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+
+        public partial class ISqlMkrBase : ITemplateFile
+        {
+            private readonly string _path;
+            public ISqlMkrBase(string path)
+            {
                 _path = path;
             }
 

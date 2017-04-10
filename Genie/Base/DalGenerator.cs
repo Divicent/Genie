@@ -12,6 +12,7 @@ using Genie.Templates.Infrastructure.Enum;
 using Genie.Templates.Infrastructure.EnumQueriesStoredProcedures;
 using Genie.Templates.Infrastructure.Interfaces;
 using Genie.Templates.Infrastructure.Models;
+using Genie.Templates.SqlMaker;
 
 namespace Genie.Base
 {
@@ -27,6 +28,20 @@ namespace Genie.Base
                 files = new List<ITemplateFile>
                 {
                     new SqlMapper(@"Dapper\SqlMapper"),
+                    new CustomPropertyTypeMap(@"Dapper\CustomPropertyTypeMap"),
+                    new DbString(@"Dapper\DbString"),
+                    new DefaultTypeMap(@"Dapper\DefaultTypeMap"),
+                    new DynamicParameters(@"Dapper\DynamicParameters"),
+                    new FeatureSupport(@"Dapper\FeatureSupport"),
+                    new ISqlAdapter(@"Dapper\ISqlAdapter"),
+                    new KeyAttribute(@"Dapper\KeyAttribute"),
+                    new PostgresAdapter(@"Dapper\PostgresAdapter"),
+                    new SimpleMemberMap(@"Dapper\SimpleMemberMap"),
+                    new SqlMapperExtensions(@"Dapper\SqlMapperExtensions"),
+                    new SqlServerAdapter(@"Dapper\SqlServerAdapter"),
+                    new TableAttribute(@"Dapper\TableAttribute"),
+                    new WriteAttribute(@"Dapper\WriteAttribute"),
+
                     new EnumBase(@"General\EnumBase"),
                     new IEnumBase(@"General\Interfaces\IEnumBase"),
 
@@ -42,7 +57,16 @@ namespace Genie.Base
                     new FactoryRepository(@"Infrastructure\FactoryRepository"),
                     new Repository(@"Infrastructure\Repository"),
                     new UnitOfWork(schema, @"Infrastructure\UnitOfWork"),
-                    new ViewRepository(@"Infrastructure\ViewRepository")
+                    new ViewRepository(@"Infrastructure\ViewRepository"),
+
+                    new QueryMaker(@"SqlMaker/SqlMaker"),
+                    new QueryMaker(@"SqlMaker/Interfaces/ISqlFirst"),
+                    new QueryMaker(@"SqlMaker/Interfaces/ISqlMaker"),
+                    new QueryMaker(@"SqlMaker/Interfaces/ISqlMakerDelete"),
+                    new QueryMaker(@"SqlMaker/Interfaces/ISqlMakerInsert"),
+                    new QueryMaker(@"SqlMaker/Interfaces/ISqlMakerSelect"),
+                    new QueryMaker(@"SqlMaker/Interfaces/ISqlMakerUpdate"),
+                    new QueryMaker(@"SqlMaker/Interfaces/ISqlMkrBase")
                 };
 
                 files.AddRange(schema.Relations
@@ -60,6 +84,7 @@ namespace Genie.Base
 
             try
             {
+                GenerationContext.BaseNamespace = configuration.BaseNamespace;
                 output.WriteInformation("Generating File content.");
                 var contentFiles =
                     files.Select(templateFile => templateFile.Generate()).ToList();

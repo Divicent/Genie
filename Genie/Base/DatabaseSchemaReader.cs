@@ -12,8 +12,6 @@ namespace Genie.Base
 {
     internal class DatabaseSchemaReader : IDatabaseSchemaReader
     {
-        private const string Providername = "System.Data.SqlClient";
-
         public IDatabaseSchema Read(IBasicConfiguration configuration, IProcessOutput output)
         {
             output.WriteInformation("Reading database meta data.");
@@ -21,8 +19,10 @@ namespace Genie.Base
             DBReader.DataSchema.DatabaseSchema schemaBase;
             try
             {
-                var reader = new DatabaseReader(configuration.ConnectionString, Providername);
-                schemaBase = reader.ReadAll();
+                using (var reader = new DatabaseReader(configuration.ConnectionString, SqlType.SqlServer))
+                {
+                    schemaBase = reader.ReadAll();
+                }
             }
             catch (Exception e)
             {

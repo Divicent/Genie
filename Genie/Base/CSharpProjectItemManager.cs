@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Genie.Base.Abstract;
 using Microsoft.Build.Evaluation;
 
@@ -17,8 +18,12 @@ namespace Genie.Base
 
                 var compileItems = project.GetItems("Compile");
 
-                foreach (var projectItem in compileItems)
+                var itemsToRemove = compileItems.ToList();
+                foreach (var projectItem in itemsToRemove)
+                {
                     project.RemoveItem(projectItem);
+                }
+
 
                 foreach (var file in files)
                     project.AddItem("Compiled", file);

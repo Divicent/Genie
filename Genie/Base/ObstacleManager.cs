@@ -12,10 +12,10 @@ namespace Genie.Base
 
             try
             {
-                Directory.Delete(Path.Combine(basePath, "Dapper"));
-                Directory.Delete(Path.Combine(basePath, "General"));
-                Directory.Delete(Path.Combine(basePath, "Infrastructure"));
-                Directory.Delete(Path.Combine(basePath, "SqlMaker"));
+                DeleteIfExists(Path.Combine(basePath, "Dapper"));
+                DeleteIfExists(Path.Combine(basePath, "General"));
+                DeleteIfExists(Path.Combine(basePath, "Infrastructure"));
+                DeleteIfExists(Path.Combine(basePath, "SqlMaker"));
             }
             catch (Exception e)
             {
@@ -24,6 +24,14 @@ namespace Genie.Base
             
 
             output.WriteSuccess("Folder cleared.");
+        }
+
+        private static void DeleteIfExists(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
         }
     }
 }

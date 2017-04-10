@@ -1,0 +1,14 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
+{
+	[AttributeUsage(AttributeTargets.Class)]
+    public class TableAttribute : Attribute
+    {
+        public TableAttribute(string tableName)
+        {
+            Name = tableName;
+        }
+        public string Name { get; private set; }
+    }
+}

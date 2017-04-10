@@ -1,0 +1,9 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
+{
+	[AttributeUsage(AttributeTargets.Property)]
+    public class KeyAttribute : Attribute
+    {
+    }
+}
