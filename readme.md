@@ -1,4 +1,4 @@
-#Genie
+Genie
 
 A complete code generator that can generate a data access layer for enterprise applications 
 
