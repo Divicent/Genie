@@ -5,15 +5,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
-using <#=GenerationContext.BaseNamespace#>.General;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
-    public class Repository<T, TRepoQuery> : IRepository<T, TRepoQuery>
+    public class Repository<T> : IRepository<T>
         where T : BaseModel
-        where TRepoQuery : EnumBase<TRepoQuery, string>
     {
         public IDbConnection Conn { get; }
         public IDapperContext Context { get;}
@@ -90,18 +88,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
                 item.DatabaseModelStatus = ModelStatus.Retrieved;
             }
             return items;
-        }
-
-        public IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null,
-                                                int? commandTimeout = null)
-        {
-            return Conn.Query<TSp>(repoQuery.Value, param, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);
-        }
-
-        public void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null,
-                                    int? commandTimeout = null)
-        {
-            Conn.Execute(repoQuery.Value, param, commandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);
         }
     }
 }

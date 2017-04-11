@@ -41,42 +41,39 @@ namespace Genie.Templates.Infrastructure
             
             #line default
             #line hidden
-            this.Write(".General;\r\nusing ");
-            
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\ViewRepository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
             this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
             
-            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\ViewRepository.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\ViewRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure\r\n{\r\n    public class ViewRepository<T, TRepoQuery> : IViewReposit" +
-                    "ory<T, TRepoQuery>\r\n        where T : class\r\n        where TRepoQuery : EnumBase" +
-                    "<TRepoQuery, string>\r\n    {\r\n        public IDbConnection Conn { get; }\r\n       " +
-                    " public IDapperContext Context { get;}\r\n\r\n        public ViewRepository(IDapperC" +
-                    "ontext context)\r\n        {\r\n            Context = context;\r\n            Conn = C" +
-                    "ontext.Connection;\r\n        }\r\n\r\n        public virtual IEnumerable<T> GetAll(ID" +
-                    "bTransaction transaction = null, int? commandTimeout = null)\r\n        {\r\n       " +
-                    "     return Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTime" +
-                    "out).ToList();\r\n        }\r\n\r\n        public virtual IEnumerable<T> GetBy(object " +
-                    "where = null, object order = null, IDbTransaction transaction = null, int? comma" +
-                    "ndTimeout = null)\r\n        {\r\n            return Conn.GetBy<T>(where: where, ord" +
-                    "er: order, transaction: transaction, commandTimeout: commandTimeout).ToList();\r\n" +
-                    "        }\r\n\r\n        public IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, Dyn" +
-                    "amicParameters param = null, IDbTransaction transaction = null,\r\n               " +
-                    "                                 int? commandTimeout = null)\r\n        {\r\n       " +
-                    "     return Conn.Query<TSp>(repoQuery.Value, param, commandType: repoQuery.CmdTy" +
-                    "pe, transaction: transaction, commandTimeout: commandTimeout);\r\n        }\r\n\r\n   " +
-                    "     public void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbT" +
-                    "ransaction transaction = null,\r\n                                    int? command" +
-                    "Timeout = null)\r\n        {\r\n            Conn.Execute(repoQuery.Value, param, com" +
-                    "mandType: repoQuery.CmdType, transaction: transaction, commandTimeout: commandTi" +
-                    "meout);\r\n        }\r\n    }\r\n\r\n}\r\n");
+            this.Write(@".Infrastructure
+{
+    public class ViewRepository<T> : IViewRepository<T>
+        where T : class
+    {
+        public IDbConnection Conn { get; }
+        public IDapperContext Context { get;}
+
+        public ViewRepository(IDapperContext context)
+        {
+            Context = context;
+            Conn = Context.Connection;
+        }
+
+        public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            return Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
+        }
+
+        public virtual IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            return Conn.GetBy<T>(where: where, order: order, transaction: transaction, commandTimeout: commandTimeout).ToList();
+        }
+    }
+}
+");
             return this.GenerationEnvironment.ToString();
         }
     }

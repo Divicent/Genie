@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
-using <#=GenerationContext.BaseNamespace#>.General;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.EnumQueriesStoredProcedures;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 
@@ -29,11 +27,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             
             
         <#foreach(var relation in _schema.Relations){
-      #>public IRepository<<#=relation.Name#>, <#=relation.Name#>Enum> <#=relation.Name#>Repository { get { return GetRepository<<#=relation.Name#>, <#=relation.Name#>Enum>(); } }
+      #>public IRepository<<#=relation.Name#>> <#=relation.Name#>Repository { get { return GetRepository<<#=relation.Name#>>(); } }
         <#}#>
 
         <#foreach(var view in _schema.Views){
-      #>public IViewRepository<<#=view.Name#>, <#=view.Name#>Enum> <#=view.Name#>Repository { get { return GetViewRepository<<#=view.Name#>, <#=view.Name#>Enum>(); } }
+      #>public IViewRepository<<#=view.Name#>> <#=view.Name#>Repository { get { return GetViewRepository<<#=view.Name#>>(); } }
         <#}#>
 
         <#foreach(var sp in _schema.Procedures){
@@ -41,23 +39,23 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         <#}#>
             
             
-        public IRepository<TSet, TEnumSp> GetRepository<TSet, TEnumSp>() where TSet : BaseModel where TEnumSp : EnumBase<TEnumSp, string>
+        public IRepository<TSet> GetRepository<TSet>() where TSet : BaseModel
         {
             if (_repositories.Keys.Contains(typeof(TSet)))
-                return _repositories[typeof(TSet)] as IRepository<TSet, TEnumSp>;
+                return _repositories[typeof(TSet)] as IRepository<TSet>;
 
-            var repository = _factory.CreateRepository<TSet, TEnumSp>(Context, this);
+            var repository = _factory.CreateRepository<TSet>(Context, this);
             _repositories.Add(typeof(TSet), repository);
 
             return repository;
         }
 
-        public IViewRepository<TSet, TEnumSp> GetViewRepository<TSet, TEnumSp>() where TSet : class where TEnumSp : EnumBase<TEnumSp, string>
+        public IViewRepository<TSet> GetViewRepository<TSet>() where TSet : class 
         {
             if (_repositories.Keys.Contains(typeof(TSet)))
-                return _repositories[typeof(TSet)] as IViewRepository<TSet, TEnumSp>;
+                return _repositories[typeof(TSet)] as IViewRepository<TSet>;
 
-            var repository = _factory.CreateViewRepository<TSet, TEnumSp>(Context);
+            var repository = _factory.CreateViewRepository<TSet>(Context);
             _repositories.Add(typeof(TSet), repository);
 
             return repository;

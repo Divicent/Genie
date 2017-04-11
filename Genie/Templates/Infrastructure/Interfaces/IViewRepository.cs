@@ -33,36 +33,24 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".Dapper;\r\nusing ");
+            this.Write(".Dapper;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IViewRepository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".General;\r\n\r\nnamespace ");
-            
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IViewRepository.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IViewRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(@".Infrastructure.Interfaces
 {
-	public interface IViewRepository<out T, in TRepoQuery>
+	public interface IViewRepository<out T>
 		where T : class
-		where TRepoQuery : EnumBase<TRepoQuery, string>
 	{
 		IDbConnection Conn { get; }
 		IDapperContext Context { get; }
 
 		IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
 		IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null);
-
-		IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
-		void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
 	}
-
 }
 ");
             return this.GenerationEnvironment.ToString();

@@ -43,11 +43,11 @@ namespace Genie.Base
                     new TableAttribute(@"Dapper\TableAttribute"),
                     new WriteAttribute(@"Dapper\WriteAttribute"),
 
-                    new EnumBase(@"General\EnumBase"),
-                    new IEnumBase(@"General\Interfaces\IEnumBase"),
+                //    new EnumBase(@"General\EnumBase"),
+                  //  new IEnumBase(@"General\Interfaces\IEnumBase"),
 
                     new ConditionExtension(@"Infrastructure\Enum\ConditionExtension"),
-                    new QueriesAndEnum(schema.Relations, schema.Views, @"Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum"),
+                   // new QueriesAndEnum(schema.Relations, schema.Views, @"Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum"),
                     new IDapperContext(@"Infrastructure\Interfaces\IDapperContext"),
                     new IFactoryRepository(@"Infrastructure\Interfaces\IFactoryRepository"),
                     new IRepository(@"Infrastructure\Interfaces\IRepository"),

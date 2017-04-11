@@ -33,23 +33,16 @@ namespace Genie.Templates.Infrastructure
             
             #line default
             #line hidden
-            this.Write(".General;\r\nusing ");
+            this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
             #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\FactoryRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\nusing ");
-            
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\FactoryRepository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\FactoryRepository.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\FactoryRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -58,14 +51,14 @@ namespace Genie.Templates.Infrastructure
 {
     public class FactoryRepository : IFactoryRepository
     {
-        public IRepository<T, TEnumSp> CreateRepository<T, TEnumSp>(IDapperContext context, UnitOfWork unit) where T : BaseModel where TEnumSp : EnumBase<TEnumSp, string>
+        public IRepository<T> CreateRepository<T>(IDapperContext context, UnitOfWork unit) where T : BaseModel
         {
-            return  new Repository<T, TEnumSp>(context, unit);
+            return  new Repository<T>(context, unit);
         }
 
-        public IViewRepository<T, TEnumSp> CreateViewRepository<T, TEnumSp>(IDapperContext context) where T : class where TEnumSp : EnumBase<TEnumSp, string>
+        public IViewRepository<T> CreateViewRepository<T>(IDapperContext context) where T : class
         {
-            return  new ViewRepository<T, TEnumSp>(context);
+            return  new ViewRepository<T>(context);
         }
     }
 

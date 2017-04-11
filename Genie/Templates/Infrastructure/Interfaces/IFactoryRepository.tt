@@ -1,18 +1,13 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
-using <#=GenerationContext.BaseNamespace#>.General;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
 {
 	public interface IFactoryRepository
     {
-        IRepository<T, TRepoSp> CreateRepository<T, TRepoSp>(IDapperContext context, UnitOfWork unit)
-            where T : BaseModel
-            where TRepoSp : EnumBase<TRepoSp, string>;
+        IRepository<T> CreateRepository<T>(IDapperContext context, UnitOfWork unit) where T : BaseModel;
 
-        IViewRepository<T, TRepoSp> CreateViewRepository<T, TRepoSp>(IDapperContext context)
-            where T : class
-            where TRepoSp : EnumBase<TRepoSp, string>;
+        IViewRepository<T> CreateViewRepository<T>(IDapperContext context) where T : class;
     }
 }

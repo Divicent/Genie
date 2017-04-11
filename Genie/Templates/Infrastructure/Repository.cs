@@ -41,79 +41,62 @@ namespace Genie.Templates.Infrastructure
             
             #line default
             #line hidden
-            this.Write(".General;\r\nusing ");
+            this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
             #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\nusing ");
-            
-            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 12 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure\r\n{\r\n    public class Repository<T, TRepoQuery> : IRepository<T, T" +
-                    "RepoQuery>\r\n        where T : BaseModel\r\n        where TRepoQuery : EnumBase<TRe" +
-                    "poQuery, string>\r\n    {\r\n        public IDbConnection Conn { get; }\r\n        pub" +
-                    "lic IDapperContext Context { get;}\r\n        public UnitOfWork UnitOfWork { get;}" +
-                    "\r\n\r\n        public Repository(IDapperContext context, UnitOfWork unitOfWork)\r\n  " +
-                    "      {\r\n            Context = context;\r\n            Conn = Context.Connection;\r" +
-                    "\n            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public virtual void " +
-                    "Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null)\r\n  " +
-                    "      {\r\n            if (entity == null)\r\n            {\r\n                throw n" +
-                    "ew ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n            }\r\n   " +
-                    "         var insertedId = Conn.Insert(entity, transaction: transaction, commandT" +
-                    "imeout: commandTimeout);\r\n            entity.DatabaseModelStatus = ModelStatus.R" +
-                    "etrieved;\r\n            entity.DatabaseUnitOfWork = UnitOfWork;\r\n        }\r\n\r\n   " +
-                    "     public virtual void Update(T entity, IDbTransaction transaction = null, int" +
-                    "? commandTimeout = null)\r\n        {\r\n            if (entity == null)\r\n          " +
-                    "  {\r\n                throw new ArgumentNullException(\"entity\", \"Update in DB nul" +
-                    "l entity\");\r\n            }\r\n            Conn.Update(entity, transaction: transac" +
-                    "tion, commandTimeout: commandTimeout);\r\n        }\r\n\r\n        public virtual void" +
-                    " Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null)" +
-                    "\r\n        {\r\n            if (entity == null)\r\n            {\r\n                thr" +
-                    "ow new ArgumentNullException(\"entity\", \"Remove in DB null entity\");\r\n           " +
-                    " }\r\n            var deleted = Conn.Delete(entity, transaction: transaction, comm" +
-                    "andTimeout: commandTimeout);\r\n            if(deleted) { entity.DatabaseModelStat" +
-                    "us = ModelStatus.Deleted; }\r\n        }\r\n\r\n        public virtual T GetByKey(obje" +
-                    "ct id, IDbTransaction transaction = null, int? commandTimeout = null)\r\n        {" +
-                    "\r\n            if (id == null)\r\n            {\r\n                throw new Argument" +
-                    "NullException(\"id\");\r\n            }\r\n            var item = Conn.Get<T>(id, tran" +
-                    "saction: transaction, commandTimeout: commandTimeout);\r\n            item.Databas" +
-                    "eModelStatus = ModelStatus.Retrieved;\r\n            item.DatabaseUnitOfWork = Uni" +
-                    "tOfWork;\r\n            return item;\r\n        }\r\n\r\n        public virtual IEnumera" +
-                    "ble<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)\r\n  " +
-                    "      {\r\n            var items = Conn.GetAll<T>(transaction: transaction, comman" +
-                    "dTimeout: commandTimeout).ToList();\r\n\r\n            foreach (var item in items) \r" +
-                    "\n            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n         " +
-                    "       item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n       " +
-                    "     return items;\r\n        }\r\n\r\n        public virtual IEnumerable<T> GetBy(obj" +
-                    "ect where = null, object order = null, IDbTransaction transaction = null, int? c" +
-                    "ommandTimeout = null)\r\n        {\r\n            var items = Conn.GetBy<T>(where: w" +
-                    "here, order: order, transaction: transaction, commandTimeout: commandTimeout).To" +
-                    "List();\r\n\r\n            foreach (var item in items)\r\n            {\r\n             " +
-                    "   item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelStat" +
-                    "us = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n        }" +
-                    "\r\n\r\n        public IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParam" +
-                    "eters param = null, IDbTransaction transaction = null,\r\n                        " +
-                    "                        int? commandTimeout = null)\r\n        {\r\n            retu" +
-                    "rn Conn.Query<TSp>(repoQuery.Value, param, commandType: repoQuery.CmdType, trans" +
-                    "action: transaction, commandTimeout: commandTimeout);\r\n        }\r\n\r\n        publ" +
-                    "ic void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransactio" +
-                    "n transaction = null,\r\n                                    int? commandTimeout =" +
-                    " null)\r\n        {\r\n            Conn.Execute(repoQuery.Value, param, commandType:" +
-                    " repoQuery.CmdType, transaction: transaction, commandTimeout: commandTimeout);\r\n" +
-                    "        }\r\n    }\r\n}\r\n");
+            this.Write(".Infrastructure\r\n{\r\n    public class Repository<T> : IRepository<T>\r\n        wher" +
+                    "e T : BaseModel\r\n    {\r\n        public IDbConnection Conn { get; }\r\n        publ" +
+                    "ic IDapperContext Context { get;}\r\n        public UnitOfWork UnitOfWork { get;}\r" +
+                    "\n\r\n        public Repository(IDapperContext context, UnitOfWork unitOfWork)\r\n   " +
+                    "     {\r\n            Context = context;\r\n            Conn = Context.Connection;\r\n" +
+                    "            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public virtual void A" +
+                    "dd(T entity, IDbTransaction transaction = null, int? commandTimeout = null)\r\n   " +
+                    "     {\r\n            if (entity == null)\r\n            {\r\n                throw ne" +
+                    "w ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n            }\r\n    " +
+                    "        var insertedId = Conn.Insert(entity, transaction: transaction, commandTi" +
+                    "meout: commandTimeout);\r\n            entity.DatabaseModelStatus = ModelStatus.Re" +
+                    "trieved;\r\n            entity.DatabaseUnitOfWork = UnitOfWork;\r\n        }\r\n\r\n    " +
+                    "    public virtual void Update(T entity, IDbTransaction transaction = null, int?" +
+                    " commandTimeout = null)\r\n        {\r\n            if (entity == null)\r\n           " +
+                    " {\r\n                throw new ArgumentNullException(\"entity\", \"Update in DB null" +
+                    " entity\");\r\n            }\r\n            Conn.Update(entity, transaction: transact" +
+                    "ion, commandTimeout: commandTimeout);\r\n        }\r\n\r\n        public virtual void " +
+                    "Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null)\r" +
+                    "\n        {\r\n            if (entity == null)\r\n            {\r\n                thro" +
+                    "w new ArgumentNullException(\"entity\", \"Remove in DB null entity\");\r\n            " +
+                    "}\r\n            var deleted = Conn.Delete(entity, transaction: transaction, comma" +
+                    "ndTimeout: commandTimeout);\r\n            if(deleted) { entity.DatabaseModelStatu" +
+                    "s = ModelStatus.Deleted; }\r\n        }\r\n\r\n        public virtual T GetByKey(objec" +
+                    "t id, IDbTransaction transaction = null, int? commandTimeout = null)\r\n        {\r" +
+                    "\n            if (id == null)\r\n            {\r\n                throw new ArgumentN" +
+                    "ullException(\"id\");\r\n            }\r\n            var item = Conn.Get<T>(id, trans" +
+                    "action: transaction, commandTimeout: commandTimeout);\r\n            item.Database" +
+                    "ModelStatus = ModelStatus.Retrieved;\r\n            item.DatabaseUnitOfWork = Unit" +
+                    "OfWork;\r\n            return item;\r\n        }\r\n\r\n        public virtual IEnumerab" +
+                    "le<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)\r\n   " +
+                    "     {\r\n            var items = Conn.GetAll<T>(transaction: transaction, command" +
+                    "Timeout: commandTimeout).ToList();\r\n\r\n            foreach (var item in items) \r\n" +
+                    "            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n          " +
+                    "      item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n        " +
+                    "    return items;\r\n        }\r\n\r\n        public virtual IEnumerable<T> GetBy(obje" +
+                    "ct where = null, object order = null, IDbTransaction transaction = null, int? co" +
+                    "mmandTimeout = null)\r\n        {\r\n            var items = Conn.GetBy<T>(where: wh" +
+                    "ere, order: order, transaction: transaction, commandTimeout: commandTimeout).ToL" +
+                    "ist();\r\n\r\n            foreach (var item in items)\r\n            {\r\n              " +
+                    "  item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelStatu" +
+                    "s = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n        }\r" +
+                    "\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

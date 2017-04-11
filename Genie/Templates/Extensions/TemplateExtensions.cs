@@ -276,45 +276,45 @@ namespace Genie.Templates.Dapper
 
 namespace Genie.Templates.General
 {
-    public partial class EnumBase : ITemplateFile
-    {
-        private readonly string _path;
-        public EnumBase(string path)
-        {
-            _path = path;
-        }
+    //public partial class EnumBase : ITemplateFile
+    //{
+    //    private readonly string _path;
+    //    public EnumBase(string path)
+    //    {
+    //        _path = path;
+    //    }
 
-        public IContentFile Generate()
-        {
-            return new ContentFile
-            {
-                Content = TransformText(),
-                Path = _path
-            };
-        }
-    }
+    //    public IContentFile Generate()
+    //    {
+    //        return new ContentFile
+    //        {
+    //            Content = TransformText(),
+    //            Path = _path
+    //        };
+    //    }
+    //}
 
     namespace Interfaces
     {
 
-        public partial class IEnumBase : ITemplateFile
-        {
+        //public partial class IEnumBase : ITemplateFile
+        //{
 
-            private readonly string _path;
-            public IEnumBase(string path)
-            {
-                _path = path;
-            }
+        //    private readonly string _path;
+        //    public IEnumBase(string path)
+        //    {
+        //        _path = path;
+        //    }
 
-            public IContentFile Generate()
-            {
-                return new ContentFile
-                {
-                    Content = TransformText(),
-                    Path = _path
-                };
-            }
-        }
+        //    public IContentFile Generate()
+        //    {
+        //        return new ContentFile
+        //        {
+        //            Content = TransformText(),
+        //            Path = _path
+        //        };
+        //    }
+        //}
     }
 }
 
@@ -437,27 +437,27 @@ namespace Genie.Templates.Infrastructure
 
     namespace EnumQueriesStoredProcedures
     {
-        public partial class QueriesAndEnum : ITemplateFile
-        {
-            private readonly List<IRelation> _relations;
-            private readonly List<IView> _views; 
-            private readonly string _path; 
-            internal QueriesAndEnum(List<IRelation> relations, List<IView> views, string path)
-            {
-                _relations = relations;
-                _views = views;
-                _path = path;
-            }
+    //    public partial class QueriesAndEnum : ITemplateFile
+    //    {
+    //        private readonly List<IRelation> _relations;
+    //        private readonly List<IView> _views; 
+    //        private readonly string _path; 
+    //        internal QueriesAndEnum(List<IRelation> relations, List<IView> views, string path)
+    //        {
+    //            _relations = relations;
+    //            _views = views;
+    //            _path = path;
+    //        }
 
-            public IContentFile Generate()
-            {
-                return new ContentFile
-                {
-                    Content = TransformText(),
-                    Path = _path
-                };
-            }
-        }
+    //        public IContentFile Generate()
+    //        {
+    //            return new ContentFile
+    //            {
+    //                Content = TransformText(),
+    //                Path = _path
+    //            };
+    //        }
+    //    }
     }
 
     namespace Interfaces

@@ -154,25 +154,10 @@
       <DependentUpon>WriteAttribute.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Extensions\TemplateExtensions.cs" />
-    <Compile Include="Templates\General\EnumBase.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EnumBase.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\General\Interfaces\IEnumBase.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IEnumBase.tt</DependentUpon>
-    </Compile>
     <Compile Include="Templates\Infrastructure\DapperContext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DapperContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>QueriesAndEnum.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\Enum\ConditionExtension.cs">
       <AutoGen>True</AutoGen>
@@ -279,6 +264,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>QueryMaker.tt</DependentUpon>
     </Compile>
+    <Compile Include="Tools\CommonTools.cs" />
     <Compile Include="Tools\GenieExceptionMessageFormatter.cs" />
     <Compile Include="Base\Abstract\IValidatableConfiguration.cs" />
     <Compile Include="Tools\IMessageFormatter.cs" />
@@ -349,21 +335,9 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>WriteAttribute.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\General\EnumBase.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>EnumBase.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\General\Interfaces\IEnumBase.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>IEnumBase.cs</LastGenOutput>
-    </Content>
     <Content Include="Templates\Infrastructure\DapperContext.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>DapperContext.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>QueriesAndEnum.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Enum\ConditionExtension.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

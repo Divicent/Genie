@@ -3,22 +3,16 @@
 using System.Collections.Generic;
 using System.Data;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
-using <#=GenerationContext.BaseNamespace#>.General;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
 {
-	public interface IViewRepository<out T, in TRepoQuery>
+	public interface IViewRepository<out T>
 		where T : class
-		where TRepoQuery : EnumBase<TRepoQuery, string>
 	{
 		IDbConnection Conn { get; }
 		IDapperContext Context { get; }
 
 		IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
 		IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null);
-
-		IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
-		void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
 	}
-
 }

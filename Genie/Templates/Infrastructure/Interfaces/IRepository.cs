@@ -40,25 +40,17 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".General;\r\nusing ");
-            
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(@".Infrastructure.Interfaces
 {
-	public interface IRepository<T, in TRepoQuery>
+	public interface IRepository<T>
         where T : BaseModel
-        where TRepoQuery : EnumBase<TRepoQuery, string>
     {
         IDbConnection Conn { get; }
         IDapperContext Context { get; }
@@ -72,9 +64,6 @@ namespace Genie.Templates.Infrastructure.Interfaces
 
         IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
         IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null);
-
-        IEnumerable<TSp> Exec<TSp>(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
-        void Exec(TRepoQuery repoQuery, DynamicParameters param = null, IDbTransaction transaction = null, int? commandTimeout = null);
     }
 }
 ");

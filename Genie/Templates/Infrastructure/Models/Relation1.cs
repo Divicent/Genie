@@ -158,15 +158,14 @@ foreach(var atd in _relation.Attributes){
             
             #line default
             #line hidden
-            this.Write(" = value; if(DatabaseModelStatus == ModelStatus.Retrieved) { UpdatedProperties.Ad" +
-                    "d(\"");
+            this.Write(" = value; __U(\"");
             
             #line 24 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
-            this.Write("\"); } } }\r\n");
+            this.Write("\"); } }\r\n");
             
             #line 25 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }

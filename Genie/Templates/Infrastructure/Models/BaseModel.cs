@@ -48,6 +48,16 @@ namespace Genie.Templates.Infrastructure.Models
         internal HashSet<string> UpdatedProperties { get; set; }
         internal ModelStatus DatabaseModelStatus { get; set; }
         internal UnitOfWork DatabaseUnitOfWork { get; set; }
+
+		/// <summary>
+        /// Checks the status of the object , and registers as updated property
+        /// </summary>
+        /// <param name=""propertyName"">The updated property name</param>
+		protected void __U(string propertyName) 
+		{
+			if( DatabaseModelStatus == ModelStatus.Retrieved ) 
+				UpdatedProperties.Add(propertyName);
+		}
     }
 }
 ");

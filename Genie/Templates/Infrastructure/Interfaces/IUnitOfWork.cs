@@ -33,16 +33,9 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".General;\r\nusing ");
-            
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -53,7 +46,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
     {
         IDapperContext Context { get; }
         IDbTransaction Transaction { get; }
-        IRepository<TSet, TEnumSp> GetRepository<TSet, TEnumSp>() where TSet : BaseModel where TEnumSp : EnumBase<TEnumSp, string>;
+        IRepository<TSet> GetRepository<TSet>() where TSet : BaseModel;
         IDbTransaction BeginTransaction();
         void Commit();
     }

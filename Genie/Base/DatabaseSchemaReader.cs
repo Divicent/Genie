@@ -6,6 +6,7 @@ using DatabaseSchemaReader.DataSchema;
 using Genie.Base.Abstract;
 using Genie.Models;
 using Genie.Models.Abstract;
+using Genie.Tools;
 using DBReader = DatabaseSchemaReader;
 using DBSchema = Genie.Base.DatabaseSchema;
 namespace Genie.Base
@@ -87,7 +88,7 @@ namespace Genie.Base
                     {
                         IsKey = column.IsPrimaryKey,
                         Name = column.Name,
-                        DataType = column.DataType.NetDataTypeCSharpName,
+                        DataType = CommonTools.GetCSharpDataType(column.DataType.NetDataTypeCSharpName, column.Nullable),
                         FieldName = "_" + (column.Name.First() + "").ToLower() + column.Name.Substring(1)
                     };
 
@@ -126,7 +127,7 @@ namespace Genie.Base
                 foreach (var attribute in databaseView.Columns.Select(column => new SimpleAttribute
                 {
                     Name = column.Name,
-                    DataType = column.DataType.NetDataTypeCSharpName,
+                    DataType = CommonTools.GetCSharpDataType(column.DataType.NetDataTypeCSharpName, column.Nullable),
                 }))
                 {
                     view.Attributes.Add(attribute);

@@ -35,34 +35,34 @@ namespace Genie.Templates.Dapper
             #line hidden
             this.Write(".Dapper\r\n{\r\n\t/// <summary>\r\n    /// Implements custom property mapping by user pr" +
                     "ovided criteria (usually presence of some custom attribute with column to member" +
-                    " mapping)\r\n    /// </summary>\r\n    sealed partial class CustomPropertyTypeMap : " +
-                    "SqlMapper.ITypeMap\r\n    {\r\n        private readonly Type _type;\r\n        private" +
-                    " readonly Func<Type, string, PropertyInfo> _propertySelector;\r\n\r\n        /// <su" +
-                    "mmary>\r\n        /// Creates custom property mapping\r\n        /// </summary>\r\n   " +
-                    "     /// <param name=\"type\">Target entity type</param>\r\n        /// <param name=" +
-                    "\"propertySelector\">Property selector based on target type and DataReader column " +
-                    "name</param>\r\n        public CustomPropertyTypeMap(Type type, Func<Type, string," +
-                    " PropertyInfo> propertySelector)\r\n        {\r\n            if (type == null)\r\n    " +
-                    "            throw new ArgumentNullException(\"type\");\r\n\r\n            if (property" +
-                    "Selector == null)\r\n                throw new ArgumentNullException(\"propertySele" +
-                    "ctor\");\r\n\r\n            _type = type;\r\n            _propertySelector = propertySe" +
-                    "lector;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Always returns default " +
-                    "constructor\r\n        /// </summary>\r\n        /// <param name=\"names\">DataReader " +
-                    "column names</param>\r\n        /// <param name=\"types\">DataReader column types</p" +
-                    "aram>\r\n        /// <returns>Default constructor</returns>\r\n        public Constr" +
-                    "uctorInfo FindConstructor(string[] names, Type[] types)\r\n        {\r\n            " +
-                    "return _type.GetConstructor(new Type[0]);\r\n        }\r\n\r\n        /// <summary>\r\n " +
-                    "       /// Not impelmeneted as far as default constructor used for all cases\r\n  " +
-                    "      /// </summary>\r\n        /// <param name=\"constructor\"></param>\r\n        //" +
-                    "/ <param name=\"columnName\"></param>\r\n        /// <returns></returns>\r\n        pu" +
-                    "blic SqlMapper.IMemberMap GetConstructorParameter(ConstructorInfo constructor, s" +
-                    "tring columnName)\r\n        {\r\n            throw new NotSupportedException();\r\n  " +
-                    "      }\r\n\r\n        /// <summary>\r\n        /// Returns property based on selector" +
-                    " strategy\r\n        /// </summary>\r\n        /// <param name=\"columnName\">DataRead" +
-                    "er column name</param>\r\n        /// <returns>Poperty member map</returns>\r\n     " +
-                    "   public SqlMapper.IMemberMap GetMember(string columnName)\r\n        {\r\n        " +
-                    "    var prop = _propertySelector(_type, columnName);\r\n            return prop !=" +
-                    " null ? new SimpleMemberMap(columnName, prop) : null;\r\n        }\r\n    }\r\n}");
+                    " mapping)\r\n    /// </summary>\r\n    sealed class CustomPropertyTypeMap : SqlMappe" +
+                    "r.ITypeMap\r\n    {\r\n        private readonly Type _type;\r\n        private readonl" +
+                    "y Func<Type, string, PropertyInfo> _propertySelector;\r\n\r\n        /// <summary>\r\n" +
+                    "        /// Creates custom property mapping\r\n        /// </summary>\r\n        ///" +
+                    " <param name=\"type\">Target entity type</param>\r\n        /// <param name=\"propert" +
+                    "ySelector\">Property selector based on target type and DataReader column name</pa" +
+                    "ram>\r\n        public CustomPropertyTypeMap(Type type, Func<Type, string, Propert" +
+                    "yInfo> propertySelector)\r\n        {\r\n            if (type == null)\r\n            " +
+                    "    throw new ArgumentNullException(\"type\");\r\n\r\n            if (propertySelector" +
+                    " == null)\r\n                throw new ArgumentNullException(\"propertySelector\");\r" +
+                    "\n\r\n            _type = type;\r\n            _propertySelector = propertySelector;\r" +
+                    "\n        }\r\n\r\n        /// <summary>\r\n        /// Always returns default construc" +
+                    "tor\r\n        /// </summary>\r\n        /// <param name=\"names\">DataReader column n" +
+                    "ames</param>\r\n        /// <param name=\"types\">DataReader column types</param>\r\n " +
+                    "       /// <returns>Default constructor</returns>\r\n        public ConstructorInf" +
+                    "o FindConstructor(string[] names, Type[] types)\r\n        {\r\n            return _" +
+                    "type.GetConstructor(new Type[0]);\r\n        }\r\n\r\n        /// <summary>\r\n        /" +
+                    "// Not implemented as far as default constructor used for all cases\r\n        ///" +
+                    " </summary>\r\n        /// <param name=\"constructor\"></param>\r\n        /// <param " +
+                    "name=\"columnName\"></param>\r\n        /// <returns></returns>\r\n        public SqlM" +
+                    "apper.IMemberMap GetConstructorParameter(ConstructorInfo constructor, string col" +
+                    "umnName)\r\n        {\r\n            throw new NotSupportedException();\r\n        }\r\n" +
+                    "\r\n        /// <summary>\r\n        /// Returns property based on selector strategy" +
+                    "\r\n        /// </summary>\r\n        /// <param name=\"columnName\">DataReader column" +
+                    " name</param>\r\n        /// <returns>Property member map</returns>\r\n        publi" +
+                    "c SqlMapper.IMemberMap GetMember(string columnName)\r\n        {\r\n            var " +
+                    "prop = _propertySelector(_type, columnName);\r\n            return prop != null ? " +
+                    "new SimpleMemberMap(columnName, prop) : null;\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
