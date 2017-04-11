@@ -9,26 +9,26 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
     [Table("[dbo].[<#=_relation.Name#>]")]
     public class <#=_relation.Name#> : BaseModel
     {
-        <#foreach(var atd in _relation.Attributes){
-      #>private <#=atd.DataType#> <#=atd.FieldName#>;
-        <#}#>
+<#foreach(var atd in _relation.Attributes){#>
+		private <#=atd.DataType#> <#=atd.FieldName#>;
+<#}#>
 
-        <#foreach(var atd in _relation.ForeignKeyAttributes){
-      #>private <#=atd.ReferencingRelationName#> <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>__;
-        <#}#>
+<#foreach(var atd in _relation.ForeignKeyAttributes){#>
+		private <#=atd.ReferencingRelationName#> <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj;
+<#}#>
 
-        <#foreach(var atd in _relation.Attributes){#>
-        <#if(atd.IsKey) {
-      #>[Key]
-        <#}
-      #>public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { <#=atd.FieldName#> = value; if(DatabaseModelStatus == ModelStatus.Retrieved) { UpdatedProperties.Add("<#=atd.Name#>"); } } }
-        <#}#>
+<#foreach(var atd in _relation.Attributes){#>
+<#	if(atd.IsKey) {#>
+		[Key]
+<#	}#>
+		public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { <#=atd.FieldName#> = value; if(DatabaseModelStatus == ModelStatus.Retrieved) { UpdatedProperties.Add("<#=atd.Name#>"); } } }
+<#}#>
 
-        <#foreach(var atd in _relation.ForeignKeyAttributes){
-      #>public <#=atd.ReferencingRelationName#> Get<#=atd.ReferencingNonForeignKeyAttribute.Name#>(IDbTransaction transaction =null)
+<#foreach(var atd in _relation.ForeignKeyAttributes){#>
+		public <#=atd.ReferencingRelationName#> Get<#=atd.ReferencingNonForeignKeyAttribute.Name#>(IDbTransaction transaction =null)
         {
-            return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>__ ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>__ = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.GetByKey(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>, transaction)) : null;
+            return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.GetByKey(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>, transaction)) : null;
         }
-        <#}#>
+<#}#>
     }
 }

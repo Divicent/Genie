@@ -47,15 +47,14 @@ namespace Genie.Templates.Infrastructure.Models
             
             #line default
             #line hidden
-            this.Write(" \r\n    {\r\n        ");
+            this.Write(" \r\n    {\r\n");
             
             #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
 foreach(var atd in _view.Attributes){
-        
             
             #line default
             #line hidden
-            this.Write("public ");
+            this.Write("\t\tpublic ");
             
             #line 12 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
@@ -69,7 +68,7 @@ foreach(var atd in _view.Attributes){
             
             #line default
             #line hidden
-            this.Write(" { get; set; } \r\n        ");
+            this.Write(" { get; set; } \r\n");
             
             #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
 }

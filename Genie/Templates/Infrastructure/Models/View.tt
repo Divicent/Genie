@@ -8,8 +8,8 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
     [Table("[dbo].[<#=_view.Name#>]")]
     public class <#=_view.Name#> 
     {
-        <#foreach(var atd in _view.Attributes){
-        #>public <#=atd.DataType#> <#=atd.Name#> { get; set; } 
-        <#}#>
+<#foreach(var atd in _view.Attributes){#>
+		public <#=atd.DataType#> <#=atd.Name#> { get; set; } 
+<#}#>
     }
 }

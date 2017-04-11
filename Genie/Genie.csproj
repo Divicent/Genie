@@ -214,7 +214,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BaseModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Models\Relation.cs">
+    <Compile Include="Templates\Infrastructure\Models\Relation1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Relation.tt</DependentUpon>
@@ -399,7 +399,7 @@
     </Content>
     <Content Include="Templates\Infrastructure\Models\Relation.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>Relation.cs</LastGenOutput>
+      <LastGenOutput>Relation1.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Models\View.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
