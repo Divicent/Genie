@@ -33,8 +33,20 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces\r\n{\r\n\tpublic interface IDapperContext : IDisposable\r\n\t{" +
-                    "\r\n\t\tIDbConnection Connection { get; }\r\n\t}\r\n}\r\n");
+            this.Write(@".Infrastructure.Interfaces
+{
+	/// <summary>
+    /// A system wide context that holds the connection to the database and manages the connection
+    /// </summary>
+	public interface IDapperContext : IDisposable
+	{
+	    /// <summary>
+        /// Connection to the database
+        /// </summary>
+		IDbConnection Connection { get; }
+	}
+}
+");
             return this.GenerationEnvironment.ToString();
         }
     }

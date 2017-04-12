@@ -174,15 +174,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IDapperContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Interfaces\IFactoryRepository.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IFactoryRepository.tt</DependentUpon>
-    </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IRepository.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Interfaces\IRepositoryFactory.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IRepositoryFactory.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IUnitOfWork.cs">
       <AutoGen>True</AutoGen>
@@ -351,13 +351,13 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IDapperContext.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\Infrastructure\Interfaces\IFactoryRepository.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>IFactoryRepository.cs</LastGenOutput>
-    </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IRepository.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IRepository.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Interfaces\IRepositoryFactory.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IRepositoryFactory.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IUnitOfWork.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

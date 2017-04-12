@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure
+namespace Genie.Templates.Infrastructure.Interfaces
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\FactoryRepository.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepositoryFactory.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class FactoryRepository : FactoryRepositoryBase
+    public partial class IRepositoryFactory : IRepositoryFactoryBase
     {
 #line hidden
         /// <summary>
@@ -26,44 +26,46 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using ");
+            this.Write("\r\nusing ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\FactoryRepository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\nusing ");
-            
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\FactoryRepository.tt"
+            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepositoryFactory.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\FactoryRepository.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepositoryFactory.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(@".Infrastructure
+            this.Write(@".Infrastructure.Interfaces
 {
-    public class FactoryRepository : IFactoryRepository
+	/// <summary>
+    /// Factory for creating repositories 
+    /// </summary>
+	public interface IRepositoryFactory
     {
-        public IRepository<T> CreateRepository<T>(IDapperContext context, UnitOfWork unit) where T : BaseModel
-        {
-            return  new Repository<T>(context, unit);
-        }
+        /// <summary>
+        /// Creates a normal repository
+        /// </summary>
+        /// <typeparam name=""T"">Type of the repository</typeparam>
+        /// <param name=""context"">Content of the repository</param>
+        /// <param name=""unit"">Unit of work of the repository</param>
+        /// <returns>A new repository</returns>
+        IRepository<T> CreateRepository<T>(IDapperContext context, UnitOfWork unit) where T : BaseModel;
 
-        public IViewRepository<T> CreateViewRepository<T>(IDapperContext context) where T : class
-        {
-            return  new ViewRepository<T>(context);
-        }
+        /// <summary>
+        /// Creates a read only repository
+        /// </summary>
+        /// <typeparam name=""T"">Type of the repository</typeparam>
+        /// <param name=""context"">Context that the repository is created</param>
+        /// <returns>A new repository</returns>
+        IViewRepository<T> CreateReadOnlyRepository<T>(IDapperContext context) where T : class;
     }
-
 }
-");
+    ");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -75,7 +77,7 @@ namespace Genie.Templates.Infrastructure
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class FactoryRepositoryBase
+    public class IRepositoryFactoryBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

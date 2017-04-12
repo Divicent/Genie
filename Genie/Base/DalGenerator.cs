@@ -49,7 +49,7 @@ namespace Genie.Base
                     new ConditionExtension(@"Infrastructure\Enum\ConditionExtension"),
                    // new QueriesAndEnum(schema.Relations, schema.Views, @"Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum"),
                     new IDapperContext(@"Infrastructure\Interfaces\IDapperContext"),
-                    new IFactoryRepository(@"Infrastructure\Interfaces\IFactoryRepository"),
+                    new IRepositoryFactory(@"Infrastructure\Interfaces\IFactoryRepository"),
                     new IRepository(@"Infrastructure\Interfaces\IRepository"),
                     new IUnitOfWork(@"Infrastructure\Interfaces\IUnitOfWork"),
                     new IViewRepository(@"Infrastructure\Interfaces\IViewRepository"),

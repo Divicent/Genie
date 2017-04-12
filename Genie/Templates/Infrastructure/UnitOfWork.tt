@@ -13,12 +13,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly Dictionary<Type, object> _repositories;
-        private readonly IFactoryRepository _factory;
+        private readonly IRepositoryFactory _factory;
 
         public IDapperContext Context { get;}
         public IDbTransaction Transaction { get; private set; }
 
-        public UnitOfWork(IDapperContext context, IFactoryRepository factory)
+        public UnitOfWork(IDapperContext context, IRepositoryFactory factory)
         {
             Context = context;
             _factory = factory;
@@ -31,7 +31,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         <#}#>
 
         <#foreach(var view in _schema.Views){
-      #>public IViewRepository<<#=view.Name#>> <#=view.Name#>Repository { get { return GetViewRepository<<#=view.Name#>>(); } }
+      #>public IViewRepository<<#=view.Name#>> <#=view.Name#>Repository { get { return GetReadonlyRepository<<#=view.Name#>>(); } }
         <#}#>
 
         <#foreach(var sp in _schema.Procedures){
@@ -50,12 +50,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             return repository;
         }
 
-        public IViewRepository<TSet> GetViewRepository<TSet>() where TSet : class 
+        public IViewRepository<TSet> GetReadonlyRepository<TSet>() where TSet : class 
         {
             if (_repositories.Keys.Contains(typeof(TSet)))
                 return _repositories[typeof(TSet)] as IViewRepository<TSet>;
 
-            var repository = _factory.CreateViewRepository<TSet>(Context);
+            var repository = _factory.CreateReadOnlyRepository<TSet>(Context);
             _repositories.Add(typeof(TSet), repository);
 
             return repository;

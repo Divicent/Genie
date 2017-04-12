@@ -339,10 +339,10 @@ namespace Genie.Templates.Infrastructure
         }
     }
 
-    public partial class FactoryRepository : ITemplateFile
+    public partial class RepositoryFactory : ITemplateFile
     {
         private readonly string _path;
-        public FactoryRepository(string path)
+        public RepositoryFactory(string path)
         {
             _path = path;
         }
@@ -480,10 +480,10 @@ namespace Genie.Templates.Infrastructure
             }
         }
 
-        public partial class IFactoryRepository : ITemplateFile
+        public partial class IRepositoryFactory : ITemplateFile
         {
             private readonly string _path;
-            public IFactoryRepository(string path)
+            public IRepositoryFactory(string path)
             {
                 _path = path;
             }

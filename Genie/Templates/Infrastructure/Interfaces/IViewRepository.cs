@@ -26,16 +26,9 @@ namespace Genie.Templates.Infrastructure.Interfaces
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\nusing ");
+            this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\n\r\nnamespace ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IViewRepository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Dapper;\r\n\r\nnamespace ");
-            
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IViewRepository.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IViewRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

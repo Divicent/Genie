@@ -2,7 +2,6 @@
 <#@ import namespace="Genie.Base" #>
 using System.Collections.Generic;
 using System.Data;
-using <#=GenerationContext.BaseNamespace#>.Dapper;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
 {

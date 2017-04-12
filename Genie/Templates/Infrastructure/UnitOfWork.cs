@@ -60,12 +60,12 @@ namespace Genie.Templates.Infrastructure
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly Dictionary<Type, object> _repositories;
-        private readonly IFactoryRepository _factory;
+        private readonly IRepositoryFactory _factory;
 
         public IDapperContext Context { get;}
         public IDbTransaction Transaction { get; private set; }
 
-        public UnitOfWork(IDapperContext context, IFactoryRepository factory)
+        public UnitOfWork(IDapperContext context, IRepositoryFactory factory)
         {
             Context = context;
             _factory = factory;
@@ -131,7 +131,7 @@ foreach(var view in _schema.Views){
             
             #line default
             #line hidden
-            this.Write("Repository { get { return GetViewRepository<");
+            this.Write("Repository { get { return GetReadonlyRepository<");
             
             #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
@@ -193,24 +193,24 @@ foreach(var sp in _schema.Procedures){
                     "(typeof(TSet)))\r\n                return _repositories[typeof(TSet)] as IReposito" +
                     "ry<TSet>;\r\n\r\n            var repository = _factory.CreateRepository<TSet>(Contex" +
                     "t, this);\r\n            _repositories.Add(typeof(TSet), repository);\r\n\r\n         " +
-                    "   return repository;\r\n        }\r\n\r\n        public IViewRepository<TSet> GetView" +
-                    "Repository<TSet>() where TSet : class \r\n        {\r\n            if (_repositories" +
-                    ".Keys.Contains(typeof(TSet)))\r\n                return _repositories[typeof(TSet)" +
-                    "] as IViewRepository<TSet>;\r\n\r\n            var repository = _factory.CreateViewR" +
-                    "epository<TSet>(Context);\r\n            _repositories.Add(typeof(TSet), repositor" +
-                    "y);\r\n\r\n            return repository;\r\n        }\r\n\r\n        public IDbTransactio" +
-                    "n BeginTransaction()\r\n        {\r\n            if (Transaction != null)\r\n         " +
-                    "   {\r\n                throw new NullReferenceException(\"Not finished previous tr" +
-                    "ansaction\");\r\n            }\r\n            Transaction = Context.Connection.BeginT" +
-                    "ransaction();\r\n            return Transaction;\r\n        }\r\n\r\n        public void" +
-                    " Commit()\r\n        {\r\n            if (Transaction != null)\r\n            {\r\n     " +
-                    "           Transaction.Commit();\r\n                Transaction.Dispose();\r\n      " +
-                    "          Transaction = null;\r\n            }\r\n            else\r\n            {\r\n " +
-                    "               throw new NullReferenceException(\"Tried commit not opened transac" +
-                    "tion\");\r\n            }\r\n        }\r\n\r\n        public void Dispose()\r\n        {\r\n " +
-                    "           if (Transaction != null)\r\n            {\r\n                Transaction." +
-                    "Dispose();\r\n            }\r\n            if (Context != null)\r\n            {\r\n    " +
-                    "            Context.Dispose();\r\n            }\r\n        }\r\n    }\r\n}\r\n");
+                    "   return repository;\r\n        }\r\n\r\n        public IViewRepository<TSet> GetRead" +
+                    "onlyRepository<TSet>() where TSet : class \r\n        {\r\n            if (_reposito" +
+                    "ries.Keys.Contains(typeof(TSet)))\r\n                return _repositories[typeof(T" +
+                    "Set)] as IViewRepository<TSet>;\r\n\r\n            var repository = _factory.CreateR" +
+                    "eadOnlyRepository<TSet>(Context);\r\n            _repositories.Add(typeof(TSet), r" +
+                    "epository);\r\n\r\n            return repository;\r\n        }\r\n\r\n        public IDbTr" +
+                    "ansaction BeginTransaction()\r\n        {\r\n            if (Transaction != null)\r\n " +
+                    "           {\r\n                throw new NullReferenceException(\"Not finished pre" +
+                    "vious transaction\");\r\n            }\r\n            Transaction = Context.Connectio" +
+                    "n.BeginTransaction();\r\n            return Transaction;\r\n        }\r\n\r\n        pub" +
+                    "lic void Commit()\r\n        {\r\n            if (Transaction != null)\r\n            " +
+                    "{\r\n                Transaction.Commit();\r\n                Transaction.Dispose();" +
+                    "\r\n                Transaction = null;\r\n            }\r\n            else\r\n        " +
+                    "    {\r\n                throw new NullReferenceException(\"Tried commit not opened" +
+                    " transaction\");\r\n            }\r\n        }\r\n\r\n        public void Dispose()\r\n    " +
+                    "    {\r\n            if (Transaction != null)\r\n            {\r\n                Tran" +
+                    "saction.Dispose();\r\n            }\r\n            if (Context != null)\r\n           " +
+                    " {\r\n                Context.Dispose();\r\n            }\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

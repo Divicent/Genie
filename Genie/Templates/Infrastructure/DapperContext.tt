@@ -7,33 +7,41 @@ using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
+	/// <summary>
+    /// An Implementation that uses SqlConnection
+    /// </summary>
 	public class DapperContext : IDapperContext
     {
-        private readonly string _connectionStringName;
         private readonly string _connectionString;
         private IDbConnection _connection;
 
+		/// <summary>
+        /// Initialize  a new dapper context 
+        /// </summary>
         public DapperContext()
         {
-            _connectionStringName = ConfigurationManager.AppSettings["UsedConnectionString"];
-            _connectionString = ConfigurationManager.ConnectionStrings[_connectionStringName].ConnectionString; ;
+            var connectionStringName = ConfigurationManager.AppSettings["UsedConnectionString"];
+            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString; ;
         }
 
+		/// <summary>
+        /// Get the connection to the database
+        /// </summary>
         public IDbConnection Connection
         {
             get
             {
                 if (_connection == null)
-                {
                     _connection = new SqlConnection(_connectionString);
-                }
                 if (_connection.State != ConnectionState.Open)
-                {
                     _connection.Open();
-                }
                 return _connection;
             }
         }
+
+		/// <summary>
+        /// Dispose the context
+        /// </summary>
         public void Dispose()
         {
             if (_connection != null && _connection.State == ConnectionState.Open)
