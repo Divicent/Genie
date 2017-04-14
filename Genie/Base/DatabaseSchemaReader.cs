@@ -20,13 +20,9 @@ namespace Genie.Base
             DBReader.DataSchema.DatabaseSchema schemaBase;
             try
             {
-                using (var progress = output.WriteProgress())
+                using (var reader = new DatabaseReader(configuration.ConnectionString, SqlType.SqlServer))
                 {
-                    using (var reader = new DatabaseReader(configuration.ConnectionString, SqlType.SqlServer))
-                    {
-                        schemaBase = reader.ReadAll();
-                        reader.ReaderProgress += (sender, args) => { progress.Report((int)(args.Count / args.Index) * 100, args.Name); };
-                    }
+                    schemaBase = reader.ReadAll();
                 }
             }
             catch (Exception e)

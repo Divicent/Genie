@@ -12,10 +12,10 @@ namespace Genie.Base
             /*Does nothing*/
         }
 
-        public IProgressReporter WriteProgress()
-        {
-            return new NonFunctionningProgressReporter();
-        }
+        //public IProgressReporter WriteProgress()
+        //{
+        //    return new NonFunctionningProgressReporter();
+        //}
 
         public void WriteSuccess(string content)
         {
