@@ -16,25 +16,18 @@ namespace Genie.Base
                 var projectCollection = new ProjectCollection();
                 var project = projectCollection.LoadProject(projectFilePath);
 
-                var compileItems = project.GetItems("Compile");
-
-                var itemsToRemove = compileItems.ToList();
-                foreach (var projectItem in itemsToRemove)
-                {
+                foreach (var projectItem in project.GetItems("Compile").ToList())
                     project.RemoveItem(projectItem);
-                }
-
 
                 foreach (var file in files)
                     project.AddItem("Compile", file);
-                project.Save();
 
+                project.Save();
             }
             catch (Exception e)
             {
                 throw new Exception("Unable to process file.", e);
             }
-
             output.WriteSuccess("Project file processed.");
         }
     }

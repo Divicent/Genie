@@ -26,16 +26,16 @@ namespace Genie.Templates.Infrastructure.Interfaces
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Data;\r\nusing ");
+            this.Write("using System;\r\nusing System.Data;\r\nusing ");
             
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Models;\r\nusing System.Collections.Generic;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -47,11 +47,97 @@ namespace Genie.Templates.Infrastructure.Interfaces
         IDapperContext Context { get; }
         IDbTransaction Transaction { get; }
         IRepository<TSet> GetRepository<TSet>() where TSet : BaseModel;
+		IReadOnlyRepository<TSet> GetReadonlyRepository<TSet>() where TSet : class;
         IDbTransaction BeginTransaction();
-        void Commit();
-    }
+
+		");
+            
+            #line 18 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+foreach(var relation in _schema.Relations){
+      
+            
+            #line default
+            #line hidden
+            this.Write("IRepository<");
+            
+            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("> ");
+            
+            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository { get; }\r\n        ");
+            
+            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
 }
-");
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        ");
+            
+            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+foreach(var view in _schema.Views){
+      
+            
+            #line default
+            #line hidden
+            this.Write("IReadOnlyRepository<");
+            
+            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("> ");
+            
+            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository { get; }\r\n        ");
+            
+            #line 24 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        ");
+            
+            #line 26 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+foreach(var sp in _schema.Procedures){
+      
+            
+            #line default
+            #line hidden
+            this.Write("List<T> ");
+            
+            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
+            
+            #line default
+            #line hidden
+            this.Write("<T>(");
+            
+            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n        ");
+            
+            #line 28 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        void Commit();\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

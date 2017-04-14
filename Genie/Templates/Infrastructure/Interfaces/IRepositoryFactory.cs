@@ -62,7 +62,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
         /// <typeparam name=""T"">Type of the repository</typeparam>
         /// <param name=""context"">Context that the repository is created</param>
         /// <returns>A new repository</returns>
-        IViewRepository<T> CreateReadOnlyRepository<T>(IDapperContext context) where T : class;
+        IReadOnlyRepository<T> CreateReadOnlyRepository<T>(IDapperContext context) where T : class;
     }
 }
     ");

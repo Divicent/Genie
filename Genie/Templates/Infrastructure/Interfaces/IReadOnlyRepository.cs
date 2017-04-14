@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure
+namespace Genie.Templates.Infrastructure.Interfaces
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\ViewRepository.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class ViewRepository : ViewRepositoryBase
+    public partial class IReadOnlyRepository : IReadOnlyRepositoryBase
     {
 #line hidden
         /// <summary>
@@ -26,52 +26,24 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\nusing System.Linq;\r\nusing " +
-                    "");
+            this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\ViewRepository.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Dapper;\r\nusing ");
-            
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\ViewRepository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
-            
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\ViewRepository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(@".Infrastructure
+            this.Write(@".Infrastructure.Interfaces
 {
-    public class ViewRepository<T> : IViewRepository<T>
-        where T : class
-    {
-        public IDbConnection Conn { get; }
-        public IDapperContext Context { get;}
+	public interface IReadOnlyRepository<out T>
+		where T : class
+	{
+		IDbConnection Conn { get; }
+		IDapperContext Context { get; }
 
-        public ViewRepository(IDapperContext context)
-        {
-            Context = context;
-            Conn = Context.Connection;
-        }
-
-        public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            return Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
-        }
-
-        public virtual IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            return Conn.GetBy<T>(where: where, order: order, transaction: transaction, commandTimeout: commandTimeout).ToList();
-        }
-    }
+		IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
+		IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null);
+	}
 }
 ");
             return this.GenerationEnvironment.ToString();
@@ -85,7 +57,7 @@ namespace Genie.Templates.Infrastructure
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class ViewRepositoryBase
+    public class IReadOnlyRepositoryBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

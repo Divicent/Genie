@@ -396,10 +396,10 @@ namespace Genie.Templates.Infrastructure
         }
     }
 
-    public partial class ViewRepository : ITemplateFile
+    public partial class ReadOnlyRepository : ITemplateFile
     {
         private readonly string _path;
-        public ViewRepository(string path)
+        public ReadOnlyRepository(string path)
         {
             _path = path;
         }
@@ -519,9 +519,11 @@ namespace Genie.Templates.Infrastructure
         public partial class IUnitOfWork : ITemplateFile
         {
             private readonly string _path;
-            public IUnitOfWork(string path)
+            private readonly IDatabaseSchema _schema;
+            internal IUnitOfWork(IDatabaseSchema schema, string path)
             {
                 _path = path;
+                _schema = schema;
             }
             public IContentFile Generate()
             {
@@ -533,10 +535,10 @@ namespace Genie.Templates.Infrastructure
             }
         }
 
-        public partial class IViewRepository : ITemplateFile
+        public partial class IReadOnlyRepository : ITemplateFile
         {
             private readonly string _path;
-            public IViewRepository(string path)
+            public IReadOnlyRepository(string path)
             {
                 _path = path;
             }

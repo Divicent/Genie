@@ -158,7 +158,7 @@ foreach(var atd in _relation.Attributes){
             
             #line default
             #line hidden
-            this.Write(" = value; __U(\"");
+            this.Write(" = value; __Updated(\"");
             
             #line 24 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));

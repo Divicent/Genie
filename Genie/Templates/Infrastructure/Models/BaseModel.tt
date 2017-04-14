@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 {
-	internal enum ModelStatus 
+    internal enum ModelStatus
     {
         JustInMemory = 1,
         Retrieved = 2,
         Deleted = 3
     }
 
-    public abstract class BaseModel 
+    public abstract class BaseModel
     {
         protected BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
         internal HashSet<string> UpdatedProperties { get; set; }
@@ -22,7 +22,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
         /// Checks the status of the object , and registers as updated property
         /// </summary>
         /// <param name="propertyName">The updated property name</param>
-		protected void __U(string propertyName) 
+		protected void __Updated(string propertyName) 
 		{
 			if( DatabaseModelStatus == ModelStatus.Retrieved ) 
 				UpdatedProperties.Add(propertyName);

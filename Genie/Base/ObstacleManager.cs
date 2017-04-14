@@ -13,7 +13,6 @@ namespace Genie.Base
             try
             {
                 DeleteIfExists(Path.Combine(basePath, "Dapper"));
-                DeleteIfExists(Path.Combine(basePath, "General"));
                 DeleteIfExists(Path.Combine(basePath, "Infrastructure"));
                 DeleteIfExists(Path.Combine(basePath, "SqlMaker"));
             }

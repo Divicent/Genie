@@ -20,9 +20,13 @@ namespace Genie.Base
             DBReader.DataSchema.DatabaseSchema schemaBase;
             try
             {
-                using (var reader = new DatabaseReader(configuration.ConnectionString, SqlType.SqlServer))
+                using (var progress = output.WriteProgress())
                 {
-                    schemaBase = reader.ReadAll();
+                    using (var reader = new DatabaseReader(configuration.ConnectionString, SqlType.SqlServer))
+                    {
+                        schemaBase = reader.ReadAll();
+                        reader.ReaderProgress += (sender, args) => { progress.Report((int)(args.Count / args.Index) * 100, args.Name); };
+                    }
                 }
             }
             catch (Exception e)
@@ -139,8 +143,8 @@ namespace Genie.Base
             {
                 throw new Exception("Unable to parse view " + databaseView.Name, e);
             }
-            
         }
+
         private static StoredProcedure ParseProcedure(DatabaseStoredProcedure databaseSp, IProcessOutput output)
         {
             output.WriteInformation("Parsing stored procedure " + databaseSp.Name);

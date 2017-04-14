@@ -117,7 +117,7 @@ foreach(var view in _schema.Views){
             
             #line default
             #line hidden
-            this.Write("public IViewRepository<");
+            this.Write("public IReadOnlyRepository<");
             
             #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
@@ -193,24 +193,25 @@ foreach(var sp in _schema.Procedures){
                     "(typeof(TSet)))\r\n                return _repositories[typeof(TSet)] as IReposito" +
                     "ry<TSet>;\r\n\r\n            var repository = _factory.CreateRepository<TSet>(Contex" +
                     "t, this);\r\n            _repositories.Add(typeof(TSet), repository);\r\n\r\n         " +
-                    "   return repository;\r\n        }\r\n\r\n        public IViewRepository<TSet> GetRead" +
-                    "onlyRepository<TSet>() where TSet : class \r\n        {\r\n            if (_reposito" +
-                    "ries.Keys.Contains(typeof(TSet)))\r\n                return _repositories[typeof(T" +
-                    "Set)] as IViewRepository<TSet>;\r\n\r\n            var repository = _factory.CreateR" +
-                    "eadOnlyRepository<TSet>(Context);\r\n            _repositories.Add(typeof(TSet), r" +
-                    "epository);\r\n\r\n            return repository;\r\n        }\r\n\r\n        public IDbTr" +
-                    "ansaction BeginTransaction()\r\n        {\r\n            if (Transaction != null)\r\n " +
-                    "           {\r\n                throw new NullReferenceException(\"Not finished pre" +
-                    "vious transaction\");\r\n            }\r\n            Transaction = Context.Connectio" +
-                    "n.BeginTransaction();\r\n            return Transaction;\r\n        }\r\n\r\n        pub" +
-                    "lic void Commit()\r\n        {\r\n            if (Transaction != null)\r\n            " +
-                    "{\r\n                Transaction.Commit();\r\n                Transaction.Dispose();" +
-                    "\r\n                Transaction = null;\r\n            }\r\n            else\r\n        " +
-                    "    {\r\n                throw new NullReferenceException(\"Tried commit not opened" +
-                    " transaction\");\r\n            }\r\n        }\r\n\r\n        public void Dispose()\r\n    " +
-                    "    {\r\n            if (Transaction != null)\r\n            {\r\n                Tran" +
-                    "saction.Dispose();\r\n            }\r\n            if (Context != null)\r\n           " +
-                    " {\r\n                Context.Dispose();\r\n            }\r\n        }\r\n    }\r\n}\r\n");
+                    "   return repository;\r\n        }\r\n\r\n        public IReadOnlyRepository<TSet> Get" +
+                    "ReadonlyRepository<TSet>() where TSet : class \r\n        {\r\n            if (_repo" +
+                    "sitories.Keys.Contains(typeof(TSet)))\r\n                return _repositories[type" +
+                    "of(TSet)] as IReadOnlyRepository<TSet>;\r\n\r\n            var repository = _factory" +
+                    ".CreateReadOnlyRepository<TSet>(Context);\r\n            _repositories.Add(typeof(" +
+                    "TSet), repository);\r\n\r\n            return repository;\r\n        }\r\n\r\n        publ" +
+                    "ic IDbTransaction BeginTransaction()\r\n        {\r\n            if (Transaction != " +
+                    "null)\r\n            {\r\n                throw new NullReferenceException(\"Not fini" +
+                    "shed previous transaction\");\r\n            }\r\n            Transaction = Context.C" +
+                    "onnection.BeginTransaction();\r\n            return Transaction;\r\n        }\r\n\r\n   " +
+                    "     public void Commit()\r\n        {\r\n            if (Transaction != null)\r\n    " +
+                    "        {\r\n                Transaction.Commit();\r\n                Transaction.Di" +
+                    "spose();\r\n                Transaction = null;\r\n            }\r\n            else\r\n" +
+                    "            {\r\n                throw new NullReferenceException(\"Tried commit no" +
+                    "t opened transaction\");\r\n            }\r\n        }\r\n\r\n        public void Dispose" +
+                    "()\r\n        {\r\n            if (Transaction != null)\r\n            {\r\n            " +
+                    "    Transaction.Dispose();\r\n            }\r\n            if (Context != null)\r\n   " +
+                    "         {\r\n                Context.Dispose();\r\n            }\r\n        }\r\n    }\r" +
+                    "\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

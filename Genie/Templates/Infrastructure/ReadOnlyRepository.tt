@@ -8,13 +8,13 @@ using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
-    public class ViewRepository<T> : IViewRepository<T>
+    public class ReadOnlyRepository<T> : IReadOnlyRepository<T>
         where T : class
     {
         public IDbConnection Conn { get; }
         public IDapperContext Context { get;}
 
-        public ViewRepository(IDapperContext context)
+        public ReadOnlyRepository(IDapperContext context)
         {
             Context = context;
             Conn = Context.Connection;

@@ -56,9 +56,9 @@ namespace Genie.Templates.Infrastructure
             return  new Repository<T>(context, unit);
         }
 
-        public IViewRepository<T> CreateReadOnlyRepository<T>(IDapperContext context) where T : class
+        public IReadOnlyRepository<T> CreateReadOnlyRepository<T>(IDapperContext context) where T : class
         {
-            return  new ViewRepository<T>(context);
+            return  new ReadOnlyRepository<T>(context);
         }
     }
 }

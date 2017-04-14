@@ -54,6 +54,7 @@
     <Compile Include="Base\Abstract\IFileWriter.cs" />
     <Compile Include="Base\Abstract\IObstacleManager.cs" />
     <Compile Include="Base\Abstract\IProjectItemManager.cs" />
+    <Compile Include="Base\Abstract\IProgressReporter.cs" />
     <Compile Include="Base\ContentGenerator.cs" />
     <Compile Include="Base\DalGenerator.cs" />
     <Compile Include="Base\DalWriter.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Base\GenieBasicConfiguration.cs" />
     <Compile Include="Base\GenieGenerationResult.cs" />
     <Compile Include="Base\CSharpProjectItemManager.cs" />
+    <Compile Include="Base\NonFunctionningProgressReporter.cs" />
     <Compile Include="Base\ObstacleManager.cs" />
     <Compile Include="Models\Abstract\IAttribute.cs" />
     <Compile Include="Models\Abstract\IContentFile.cs" />
@@ -164,15 +166,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ConditionExtension.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\FactoryRepository.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FactoryRepository.tt</DependentUpon>
-    </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IDapperContext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IDapperContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Interfaces\IReadOnlyRepository.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IReadOnlyRepository.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IRepository.cs">
       <AutoGen>True</AutoGen>
@@ -189,11 +191,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IUnitOfWork.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Interfaces\IViewRepository.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IViewRepository.tt</DependentUpon>
-    </Compile>
     <Compile Include="Templates\Infrastructure\Models\BaseModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -209,20 +206,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>View.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Infrastructure\ReadOnlyRepository.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReadOnlyRepository.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\Repository.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Repository.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Infrastructure\RepositoryFactory.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepositoryFactory.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\UnitOfWork.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnitOfWork.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Infrastructure\ViewRepository.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ViewRepository.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\SqlMaker\Interfaces\ISqlFirst.cs">
       <AutoGen>True</AutoGen>
@@ -343,13 +345,13 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ConditionExtension.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\Infrastructure\FactoryRepository.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>FactoryRepository.cs</LastGenOutput>
-    </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IDapperContext.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IDapperContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IReadOnlyRepository.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IRepository.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
@@ -363,10 +365,6 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IUnitOfWork.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\Infrastructure\Interfaces\IViewRepository.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>IViewRepository.cs</LastGenOutput>
-    </Content>
     <Content Include="Templates\Infrastructure\Models\BaseModel.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>BaseModel.cs</LastGenOutput>
@@ -379,17 +377,21 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>View.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\Infrastructure\ReadOnlyRepository.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ReadOnlyRepository.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\Infrastructure\Repository.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>Repository.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\Infrastructure\RepositoryFactory.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepositoryFactory.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\Infrastructure\UnitOfWork.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>UnitOfWork.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\Infrastructure\ViewRepository.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ViewRepository.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\SqlMaker\Interfaces\ISqlFirst.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

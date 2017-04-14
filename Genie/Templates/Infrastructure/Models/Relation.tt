@@ -21,7 +21,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 <#	if(atd.IsKey) {#>
 		[Key]
 <#	}#>
-		public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { <#=atd.FieldName#> = value; __U("<#=atd.Name#>"); } }
+		public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { <#=atd.FieldName#> = value; __Updated("<#=atd.Name#>"); } }
 <#}#>
 
 <#foreach(var atd in _relation.ForeignKeyAttributes){#>

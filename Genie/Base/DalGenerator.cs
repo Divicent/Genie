@@ -43,22 +43,18 @@ namespace Genie.Base
                     new TableAttribute(@"Dapper\TableAttribute"),
                     new WriteAttribute(@"Dapper\WriteAttribute"),
 
-                //    new EnumBase(@"General\EnumBase"),
-                  //  new IEnumBase(@"General\Interfaces\IEnumBase"),
-
                     new ConditionExtension(@"Infrastructure\Enum\ConditionExtension"),
-                   // new QueriesAndEnum(schema.Relations, schema.Views, @"Infrastructure\EnumQueriesStoredProcedures\QueriesAndEnum"),
                     new IDapperContext(@"Infrastructure\Interfaces\IDapperContext"),
-                    new IRepositoryFactory(@"Infrastructure\Interfaces\IFactoryRepository"),
+                    new IRepositoryFactory(@"Infrastructure\Interfaces\IRepositoryFactory"),
                     new IRepository(@"Infrastructure\Interfaces\IRepository"),
-                    new IUnitOfWork(@"Infrastructure\Interfaces\IUnitOfWork"),
-                    new IViewRepository(@"Infrastructure\Interfaces\IViewRepository"),
+                    new IUnitOfWork(schema, @"Infrastructure\Interfaces\IUnitOfWork"),
+                    new IReadOnlyRepository(@"Infrastructure\Interfaces\IReadOnlyRepository"),
 
                     new DapperContext(@"Infrastructure\DapperContext"),
-                    new FactoryRepository(@"Infrastructure\FactoryRepository"),
+                    new RepositoryFactory(@"Infrastructure\RepositoryFactory"),
                     new Repository(@"Infrastructure\Repository"),
                     new UnitOfWork(schema, @"Infrastructure\UnitOfWork"),
-                    new ViewRepository(@"Infrastructure\ViewRepository"),
+                    new ReadOnlyRepository(@"Infrastructure\ReadOnlyRepository"),
 
                     new BaseModel(@"Infrastructure\Models\BaseModel"),
 

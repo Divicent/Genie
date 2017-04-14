@@ -5,7 +5,7 @@ using System.Data;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
 {
-	public interface IViewRepository<out T>
+	public interface IReadOnlyRepository<out T>
 		where T : class
 	{
 		IDbConnection Conn { get; }
