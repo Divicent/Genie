@@ -30,21 +30,21 @@ namespace Genie.Templates.SqlMaker
                     "m.Text;\r\nusing ");
             
             #line 7 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.baseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Enum;\r\nusing ");
             
             #line 8 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.baseNamespace));
             
             #line default
             #line hidden
             this.Write(".SqlMaker.Interfaces;\r\n\r\nnamespace ");
             
             #line 10 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.baseNamespace));
             
             #line default
             #line hidden
@@ -55,299 +55,299 @@ namespace Genie.Templates.SqlMaker
                     "      ActionSelectWhereOnHaving,\r\n            ActionSelectJoin,\r\n            Act" +
                     "ionSelectOrder,\r\n            ActionSelectGroup,\r\n            ActionDelete,\r\n    " +
                     "        ActionDeleteWhere,\r\n            Table,\r\n            Column,\r\n           " +
-                    " Parameter,\r\n        }\r\n\r\n        private static string br = \"\\n\";\r\n        priv" +
-                    "ate static string brIndent = \"\\n\\t\";\r\n        private static string brIndentX2 =" +
-                    " \"\\n\\t\\t\";\r\n\r\n        private static string _dbScheme;\r\n\r\n        public static " +
-                    "string DbScheme { get { return _dbScheme; } set { _dbScheme = value; } }\r\n\r\n    " +
-                    "    private static List<Clause> _clauses;\r\n        private static List<Clause> C" +
-                    "lauses\r\n        {\r\n            get { return _clauses ?? (_clauses = new List<Cla" +
-                    "use>()); }\r\n        }\r\n\r\n        private class Clause\r\n        {\r\n            pu" +
-                    "blic static Clause New(ClauseType type, string sqlPart = null, string name = nul" +
-                    "l, string aliace = null,\r\n                                        string conditi" +
-                    "on = null, string direction = null, string extra = null)\r\n            {\r\n       " +
-                    "         return new Clause\r\n                {\r\n                    ClauseType = " +
-                    "type,\r\n                    SqlPart = sqlPart,\r\n                    Name = name,\r" +
-                    "\n                    Aliace = aliace,\r\n                    Condition = condition" +
-                    ",\r\n                    Direction = direction,\r\n                    Extra = extra" +
-                    "\r\n                };\r\n            }\r\n\r\n            public ClauseType ClauseType " +
-                    "{ get; private set; }\r\n            public string SqlPart { get; private set; }\r\n" +
-                    "            public string Name { get; private set; }\r\n            public string " +
-                    "Aliace { get; private set; }\r\n            public string Condition { get; private" +
-                    " set; }\r\n            public string Direction { get; private set; }\r\n            " +
-                    "public string Extra { get; private set; }\r\n        }\r\n\r\n        private static I" +
-                    "SqlMaker _sqlMaker;\r\n\r\n        public static ISqlMaker Current\r\n        {\r\n     " +
-                    "       get { return _sqlMaker ?? (_sqlMaker = new QueryMaker()); }\r\n        }\r\n " +
-                    "       public static ISqlFirst New(string dbScheme = null)\r\n        {\r\n         " +
-                    "   if (!string.IsNullOrEmpty(dbScheme))\r\n            {\r\n                _dbSchem" +
-                    "e = dbScheme;\r\n            }\r\n            Clauses.Clear();\r\n            _sqlMake" +
-                    "r = new QueryMaker();\r\n            return _sqlMaker;\r\n        }\r\n\r\n        #regi" +
-                    "on Common Method\r\n        private static string FormatScheme(string globalScheme" +
-                    ", string currentScheme = null)\r\n        {\r\n            if (!string.IsNullOrEmpty" +
-                    "(currentScheme))\r\n            {\r\n                return string.Format(\"[{0}].\", " +
-                    "currentScheme.Trim());\r\n            }\r\n            if (!string.IsNullOrEmpty(glo" +
-                    "balScheme))\r\n            {\r\n                return string.Format(\"[{0}].\", globa" +
-                    "lScheme.Trim());\r\n            }\r\n            return string.Empty;\r\n        }\r\n  " +
-                    "      private static string FormatAliace(string aliace)\r\n        {\r\n            " +
-                    "if (!string.IsNullOrEmpty(aliace))\r\n            {\r\n                return string" +
-                    ".Format(\" AS {0}\", aliace.Trim());\r\n            }\r\n            return string.Emp" +
-                    "ty;\r\n        }\r\n        private static string FormatTableNameWithShema(string sc" +
-                    "heme, string tableName)\r\n        {\r\n            return string.Format(\"{0}[{1}]\"," +
-                    " scheme, tableName.Trim());\r\n        }\r\n        private static string ResolveStr" +
-                    "ingToRows(string extra, string indent)\r\n        {\r\n            var sb = new Stri" +
-                    "ngBuilder();\r\n            var delimiters = new char[] { \',\', \';\' };\r\n           " +
-                    " var array = extra.Split(delimiters);\r\n            var firstParam = true;\r\n     " +
-                    "       foreach (var s in array)\r\n            {\r\n                if (firstParam)\r" +
-                    "\n                {\r\n                    sb.Append(indent + s.Trim());\r\n         " +
-                    "           firstParam = false;\r\n                }\r\n                else\r\n       " +
-                    "         {\r\n                    sb.Append(indent + \", \" + s.Trim());\r\n          " +
-                    "      }\r\n            }\r\n            return sb.ToString();\r\n        }\r\n        pr" +
-                    "ivate static string FormatParameter(string paramName)\r\n        {\r\n            re" +
-                    "turn paramName.Contains(\"@\") ? paramName.Trim() : \"@\" + paramName.Trim();\r\n     " +
-                    "   }\r\n        #endregion\r\n\r\n        #region Resolve Sql Query\r\n        private s" +
-                    "tatic string ResolveInsert(IEnumerable<Clause> list, string dbScheme)\r\n        {" +
-                    "\r\n            var sb = new StringBuilder();\r\n            var sqlScheme = FormatS" +
-                    "cheme(dbScheme);\r\n            var isFirstCol = true;\r\n            var lastBkt = " +
-                    "false;\r\n            var insertedParams = false;\r\n            var colCount = list" +
-                    ".Count(i => i.ClauseType == ClauseType.Column);\r\n            var count = 0;\r\n   " +
-                    "         foreach (var clause in list)\r\n            {\r\n                switch (cl" +
-                    "ause.ClauseType)\r\n                {\r\n                    case ClauseType.ActionI" +
-                    "nsert:\r\n                        sb.Append(clause.SqlPart);\r\n                    " +
-                    "    sb.Append(\" \");\r\n                        sb.Append(FormatTableNameWithShema(" +
-                    "sqlScheme, clause.Name));\r\n                        break;\r\n                    c" +
-                    "ase ClauseType.Column:\r\n                        count += 1;\r\n                   " +
-                    "     if (isFirstCol)\r\n                        {\r\n                            sb." +
-                    "Append(\" (\");\r\n                        }\r\n                        if (isFirstCol" +
-                    ")\r\n                        {\r\n                            sb.Append(brIndentX2 +" +
-                    " \"[\" + clause.Name + \"]\");\r\n                            isFirstCol = false;\r\n   " +
-                    "                     }\r\n                        else\r\n                        {\r" +
-                    "\n                            sb.Append(brIndentX2 + \", [\" + clause.Name + \"]\");\r" +
-                    "\n                        }\r\n                        if (count == colCount)\r\n    " +
-                    "                    {\r\n                            sb.Append(brIndent + \")\");\r\n " +
-                    "                       }\r\n                        break;\r\n                    ca" +
-                    "se ClauseType.ActionInsertValues:\r\n                        lastBkt = true;\r\n    " +
-                    "                    sb.Append(brIndent);\r\n                        sb.Append(clau" +
-                    "se.SqlPart);\r\n                        sb.Append(\" (\");\r\n                        " +
-                    "if (!string.IsNullOrEmpty(clause.Extra))\r\n                        {\r\n           " +
-                    "                 insertedParams = true;\r\n                            sb.Append(R" +
-                    "esolveStringToRows(clause.Extra, brIndentX2));\r\n                        }\r\n     " +
-                    "                   break;\r\n                    case ClauseType.Parameter:\r\n     " +
-                    "                   var paramName = FormatParameter(clause.Name);\r\n              " +
-                    "          if (!insertedParams)\r\n                        {\r\n                     " +
-                    "       insertedParams = true;\r\n                            sb.Append(brIndentX2 " +
-                    "+ paramName);\r\n                        }\r\n                        else\r\n        " +
-                    "                {\r\n                            sb.Append(brIndentX2 + \", \" + par" +
-                    "amName);\r\n                        }\r\n                        break;\r\n           " +
-                    "         default:\r\n                        throw new ArgumentOutOfRangeException" +
-                    "(\"Wrong clause type in Insert resolving method\");\r\n                }\r\n          " +
-                    "  }\r\n            if (lastBkt)\r\n            {\r\n                sb.Append(brIndent" +
-                    " + \");\");\r\n            }\r\n            return sb.ToString();\r\n        }\r\n\r\n      " +
-                    "  private static string ResolveUpdate(List<Clause> list, string dbScheme)\r\n     " +
-                    "   {\r\n            var sb = new StringBuilder();\r\n            var sqlScheme = For" +
-                    "matScheme(dbScheme);\r\n            var isSetParam = false;\r\n            foreach (" +
-                    "var clause in list)\r\n            {\r\n                switch (clause.ClauseType)\r\n" +
-                    "                {\r\n                    case ClauseType.ActionUpdate:\r\n          " +
-                    "              sb.Append(clause.SqlPart);\r\n                        sb.Append(\" \")" +
-                    ";\r\n                        sb.Append(FormatTableNameWithShema(sqlScheme, clause." +
-                    "Name));\r\n                        break;\r\n                    case ClauseType.Act" +
-                    "ionUpdateSet:\r\n                        sb.Append(br);\r\n                        s" +
-                    "b.Append(clause.SqlPart);\r\n                        if (!string.IsNullOrEmpty(cla" +
-                    "use.Extra))\r\n                        {\r\n                            isSetParam =" +
-                    " true;\r\n                            sb.Append(ResolveStringToRows(clause.Extra, " +
-                    "brIndent));\r\n                        }\r\n                        break;\r\n        " +
-                    "            case ClauseType.ActionUpdateValues:\r\n                        if (!is" +
-                    "SetParam)\r\n                        {\r\n                            isSetParam = t" +
-                    "rue;\r\n                            sb.Append(brIndent + clause.Name.Trim());\r\n   " +
-                    "                         sb.Append(\" = \");\r\n                            sb.Appen" +
-                    "d(FormatParameter(clause.Aliace));\r\n                        }\r\n                 " +
-                    "       else\r\n                        {\r\n                            sb.Append(br" +
-                    "Indent + \", \" + clause.Name.Trim());\r\n                            sb.Append(\" = " +
-                    "\");\r\n                            sb.Append(FormatParameter(clause.Aliace));\r\n   " +
-                    "                     }\r\n                        break;\r\n                    case" +
-                    " ClauseType.ActionUpdateWhere:\r\n                        sb.Append(clause.SqlPart" +
-                    ");\r\n                        sb.Append(clause.Condition.Trim());\r\n               " +
-                    "         break;\r\n                    default:\r\n                        throw new" +
-                    " ArgumentOutOfRangeException();\r\n                }\r\n            }\r\n            s" +
-                    "b.Append(\";\");\r\n            return sb.ToString();\r\n        }\r\n\r\n        private " +
-                    "static string ResolveSelect(List<Clause> list, string dbScheme)\r\n        {\r\n    " +
-                    "        var sb = new StringBuilder();\r\n            bool isFirst = true;\r\n       " +
-                    "     foreach (var clause in list)\r\n            {\r\n                switch (clause" +
-                    ".ClauseType)\r\n                {\r\n                    case ClauseType.ActionSelec" +
-                    "t:\r\n                        isFirst = true; // SELECT or UNION\r\n                " +
-                    "        sb.Append(clause.SqlPart);\r\n                        if (!string.IsNullOr" +
-                    "Empty(clause.Extra))\r\n                        {\r\n                            isF" +
-                    "irst = false;\r\n                            sb.Append(ResolveStringToRows(clause." +
-                    "Extra, brIndent));\r\n                        }\r\n                        break;\r\n " +
-                    "                   case ClauseType.ActionSelectWhereOnHaving:\r\n                 " +
-                    "       sb.Append(clause.SqlPart);\r\n                        sb.Append(clause.Cond" +
-                    "ition.Trim());\r\n                        break;\r\n                    case ClauseT" +
-                    "ype.ActionSelectJoin:\r\n                        var schemeJoin = FormatScheme(dbS" +
-                    "cheme, clause.Extra);\r\n                        var tabNameJoin = FormatTableName" +
-                    "WithShema(schemeJoin, clause.Name);\r\n                        var tabAliaceJoin =" +
-                    " FormatAliace(clause.Aliace);\r\n                        sb.Append(clause.SqlPart)" +
-                    ";\r\n                        sb.Append(tabNameJoin + tabAliaceJoin);\r\n            " +
-                    "            break;\r\n                    case ClauseType.ActionSelectOrder:\r\n    " +
-                    "                    sb.Append(clause.SqlPart);\r\n                        sb.Appen" +
-                    "d(clause.Name.Trim());\r\n                        sb.Append(\" \");\r\n               " +
-                    "         sb.Append(clause.Direction);\r\n                        break;\r\n         " +
-                    "           case ClauseType.ActionSelectGroup:\r\n                        sb.Append" +
-                    "(clause.SqlPart);\r\n                        sb.Append(clause.Name.Trim());\r\n     " +
-                    "                   break;\r\n                    case ClauseType.Table:\r\n         " +
-                    "               var scheme = FormatScheme(dbScheme, clause.Extra);\r\n             " +
-                    "           var tabName = FormatTableNameWithShema(scheme, clause.Name);\r\n       " +
-                    "                 var tabAliace = FormatAliace(clause.Aliace);\r\n                 " +
-                    "       if (isFirst)\r\n                        {\r\n                            isFi" +
-                    "rst = false;\r\n                            sb.Append(brIndent + tabName + tabAlia" +
-                    "ce);\r\n                        }\r\n                        else\r\n                 " +
-                    "       {\r\n                            sb.Append(brIndent + \", \" + tabName + tabA" +
-                    "liace);\r\n                        }\r\n                        break;\r\n            " +
-                    "        case ClauseType.Column:\r\n                        var aliace = string.IsN" +
-                    "ullOrEmpty(clause.Aliace) ? string.Empty : \" AS \" + clause.Aliace.Trim();\r\n     " +
-                    "                   if (isFirst)\r\n                        {\r\n                    " +
-                    "        isFirst = false;\r\n                            sb.Append(brIndent + claus" +
-                    "e.Name.Trim() + aliace);\r\n                        }\r\n                        els" +
-                    "e\r\n                        {\r\n                            sb.Append(brIndent + \"" +
-                    ", \" + clause.Name.Trim() + aliace);\r\n                        }\r\n                " +
-                    "        break;\r\n                    default:\r\n                        throw new " +
-                    "ArgumentOutOfRangeException();\r\n                }\r\n            }\r\n            sb" +
-                    ".Append(\";\");\r\n            return sb.ToString();\r\n        }\r\n\r\n        private s" +
-                    "tatic string ResolveDelete(List<Clause> list, string dbScheme)\r\n        {\r\n     " +
-                    "       var sb = new StringBuilder();\r\n            var sqlScheme = FormatScheme(d" +
-                    "bScheme);\r\n            foreach (var clause in list)\r\n            {\r\n            " +
-                    "    switch (clause.ClauseType)\r\n                {\r\n                    case Clau" +
-                    "seType.ActionDelete:\r\n                        sb.Append(clause.SqlPart);\r\n      " +
-                    "                  sb.Append(\" \");\r\n                        sb.Append(FormatTable" +
-                    "NameWithShema(sqlScheme, clause.Name));\r\n                        break;\r\n       " +
-                    "             case ClauseType.ActionDeleteWhere:\r\n                        sb.Appe" +
-                    "nd(clause.SqlPart);\r\n                        sb.Append(clause.Condition.Trim());" +
-                    "\r\n                        break;\r\n                    default:\r\n                " +
-                    "        throw new ArgumentOutOfRangeException();\r\n                }\r\n           " +
-                    " }\r\n            sb.Append(\";\");\r\n            return sb.ToString();\r\n        }\r\n " +
-                    "       #endregion Resolve Sql Query\r\n\r\n        public virtual string RawSql()\r\n " +
-                    "       {\r\n            string sqlResult = null;\r\n            if (Clauses.Count ==" +
-                    " 0)\r\n            {\r\n                throw new Exception(\"Empty query\");\r\n       " +
-                    "     }\r\n            var first = Clauses.First();\r\n            switch (first.Clau" +
-                    "seType)\r\n            {\r\n                case ClauseType.ActionInsert:\r\n         " +
-                    "           sqlResult = ResolveInsert(Clauses, _dbScheme);\r\n                    b" +
-                    "reak;\r\n                case ClauseType.ActionUpdate:\r\n                    sqlRes" +
-                    "ult = ResolveUpdate(Clauses, _dbScheme);\r\n                    break;\r\n          " +
-                    "      case ClauseType.ActionSelect:\r\n                    sqlResult = ResolveSele" +
-                    "ct(Clauses, _dbScheme);\r\n                    break;\r\n                case Clause" +
-                    "Type.ActionDelete:\r\n                    sqlResult = ResolveDelete(Clauses, _dbSc" +
-                    "heme);\r\n                    break;\r\n                default:\r\n                  " +
-                    "  throw new Exception(\"Wrong start of query\");\r\n            }\r\n            retur" +
-                    "n sqlResult;\r\n        }\r\n\r\n        #region SELECT\r\n        public virtual ISqlMa" +
-                    "kerSelect SELECT(string columns = null)\r\n        {\r\n            Clauses.Add(Clau" +
-                    "se.New(ClauseType.ActionSelect, \"SELECT\", extra: columns));\r\n            return " +
-                    "this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect SelectDistinct(string" +
-                    " columns = null)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.Actio" +
-                    "nSelect, \"SELECT DISTINCT\", extra: columns));\r\n            return this;\r\n       " +
-                    " }\r\n\r\n        public virtual ISqlMakerSelect Union(bool isAll = false)\r\n        " +
-                    "{\r\n            var sqlPart = br + \"UNION\" + (isAll ? \" ALL\" : string.Empty) + br" +
-                    " + \"SELECT\";\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelect, sqlPar" +
-                    "t));\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSel" +
-                    "ect Col(string columnName, string columnAliace = null)\r\n        {\r\n            C" +
-                    "lauses.Add(Clause.New(ClauseType.Column, name: columnName, aliace: columnAliace)" +
+                    " Parameter,\r\n        }\r\n\r\n        private const string Br = \"\\n\";\r\n        priva" +
+                    "te const string BrIndent = \"\\n\\t\";\r\n        private const string BrIndentX2 = \"\\" +
+                    "n\\t\\t\";\r\n\r\n        public static string DbScheme { get; set; }\r\n\r\n        privat" +
+                    "e static List<Clause> _clauses;\r\n        private static List<Clause> Clauses\r\n  " +
+                    "      {\r\n            get { return _clauses ?? (_clauses = new List<Clause>()); }" +
+                    "\r\n        }\r\n\r\n        private class Clause\r\n        {\r\n            public stati" +
+                    "c Clause New(ClauseType type, string sqlPart = null, string name = null, string " +
+                    "aliace = null,\r\n                                        string condition = null," +
+                    " string direction = null, string extra = null)\r\n            {\r\n                r" +
+                    "eturn new Clause\r\n                {\r\n                    ClauseType = type,\r\n   " +
+                    "                 SqlPart = sqlPart,\r\n                    Name = name,\r\n         " +
+                    "           Aliace = aliace,\r\n                    Condition = condition,\r\n       " +
+                    "             Direction = direction,\r\n                    Extra = extra\r\n        " +
+                    "        };\r\n            }\r\n\r\n            public ClauseType ClauseType { get; pri" +
+                    "vate set; }\r\n            public string SqlPart { get; private set; }\r\n          " +
+                    "  public string Name { get; private set; }\r\n            public string Aliace { g" +
+                    "et; private set; }\r\n            public string Condition { get; private set; }\r\n " +
+                    "           public string Direction { get; private set; }\r\n            public str" +
+                    "ing Extra { get; private set; }\r\n        }\r\n\r\n        private static ISqlMaker _" +
+                    "sqlMaker;\r\n\r\n        public static ISqlMaker Current\r\n        {\r\n            get" +
+                    " { return _sqlMaker ?? (_sqlMaker = new QueryMaker()); }\r\n        }\r\n        pub" +
+                    "lic static ISqlFirst New(string dbScheme = null)\r\n        {\r\n            if (!st" +
+                    "ring.IsNullOrEmpty(dbScheme))\r\n            {\r\n                DbScheme = dbSchem" +
+                    "e;\r\n            }\r\n            Clauses.Clear();\r\n            _sqlMaker = new Que" +
+                    "ryMaker();\r\n            return _sqlMaker;\r\n        }\r\n\r\n        #region Common M" +
+                    "ethod\r\n        private static string FormatScheme(string globalScheme, string cu" +
+                    "rrentScheme = null)\r\n        {\r\n            if (!string.IsNullOrEmpty(currentSch" +
+                    "eme))\r\n            {\r\n                return string.Format(\"[{0}].\", currentSche" +
+                    "me.Trim());\r\n            }\r\n            if (!string.IsNullOrEmpty(globalScheme))" +
+                    "\r\n            {\r\n                return string.Format(\"[{0}].\", globalScheme.Tri" +
+                    "m());\r\n            }\r\n            return string.Empty;\r\n        }\r\n        priva" +
+                    "te static string FormatAliace(string aliace)\r\n        {\r\n            if (!string" +
+                    ".IsNullOrEmpty(aliace))\r\n            {\r\n                return string.Format(\" A" +
+                    "S {0}\", aliace.Trim());\r\n            }\r\n            return string.Empty;\r\n      " +
+                    "  }\r\n        private static string FormatTableNameWithShema(string scheme, strin" +
+                    "g tableName)\r\n        {\r\n            return string.Format(\"{0}[{1}]\", scheme, ta" +
+                    "bleName.Trim());\r\n        }\r\n        private static string ResolveStringToRows(s" +
+                    "tring extra, string indent)\r\n        {\r\n            var sb = new StringBuilder()" +
+                    ";\r\n            var delimiters = new [] { \',\', \';\' };\r\n            var array = ex" +
+                    "tra.Split(delimiters);\r\n            var firstParam = true;\r\n            foreach " +
+                    "(var s in array)\r\n            {\r\n                if (firstParam)\r\n              " +
+                    "  {\r\n                    sb.Append(indent + s.Trim());\r\n                    firs" +
+                    "tParam = false;\r\n                }\r\n                else\r\n                {\r\n   " +
+                    "                 sb.Append(indent + \", \" + s.Trim());\r\n                }\r\n      " +
+                    "      }\r\n            return sb.ToString();\r\n        }\r\n        private static st" +
+                    "ring FormatParameter(string paramName)\r\n        {\r\n            return paramName." +
+                    "Contains(\"@\") ? paramName.Trim() : \"@\" + paramName.Trim();\r\n        }\r\n        #" +
+                    "endregion\r\n\r\n        #region Resolve Sql Query\r\n        private static string Re" +
+                    "solveInsert(IEnumerable<Clause> items, string dbScheme)\r\n        {\r\n            " +
+                    "var list = items.ToList();\r\n            var sb = new StringBuilder();\r\n         " +
+                    "   var sqlScheme = FormatScheme(dbScheme);\r\n            var isFirstCol = true;\r\n" +
+                    "            var lastBkt = false;\r\n            var insertedParams = false;\r\n     " +
+                    "       var colCount = list.Count(i => i.ClauseType == ClauseType.Column);\r\n     " +
+                    "       var count = 0;\r\n            foreach (var clause in list)\r\n            {\r\n" +
+                    "                switch (clause.ClauseType)\r\n                {\r\n                 " +
+                    "   case ClauseType.ActionInsert:\r\n                        sb.Append(clause.SqlPa" +
+                    "rt);\r\n                        sb.Append(\" \");\r\n                        sb.Append" +
+                    "(FormatTableNameWithShema(sqlScheme, clause.Name));\r\n                        bre" +
+                    "ak;\r\n                    case ClauseType.Column:\r\n                        count " +
+                    "+= 1;\r\n                        if (isFirstCol)\r\n                        {\r\n     " +
+                    "                       sb.Append(\" (\");\r\n                        }\r\n            " +
+                    "            if (isFirstCol)\r\n                        {\r\n                        " +
+                    "    sb.Append(BrIndentX2 + \"[\" + clause.Name + \"]\");\r\n                          " +
+                    "  isFirstCol = false;\r\n                        }\r\n                        else\r\n" +
+                    "                        {\r\n                            sb.Append(BrIndentX2 + \"," +
+                    " [\" + clause.Name + \"]\");\r\n                        }\r\n                        if" +
+                    " (count == colCount)\r\n                        {\r\n                            sb." +
+                    "Append(BrIndent + \")\");\r\n                        }\r\n                        brea" +
+                    "k;\r\n                    case ClauseType.ActionInsertValues:\r\n                   " +
+                    "     lastBkt = true;\r\n                        sb.Append(BrIndent);\r\n            " +
+                    "            sb.Append(clause.SqlPart);\r\n                        sb.Append(\" (\");" +
+                    "\r\n                        if (!string.IsNullOrEmpty(clause.Extra))\r\n            " +
+                    "            {\r\n                            insertedParams = true;\r\n             " +
+                    "               sb.Append(ResolveStringToRows(clause.Extra, BrIndentX2));\r\n      " +
+                    "                  }\r\n                        break;\r\n                    case Cl" +
+                    "auseType.Parameter:\r\n                        var paramName = FormatParameter(cla" +
+                    "use.Name);\r\n                        if (!insertedParams)\r\n                      " +
+                    "  {\r\n                            insertedParams = true;\r\n                       " +
+                    "     sb.Append(BrIndentX2 + paramName);\r\n                        }\r\n            " +
+                    "            else\r\n                        {\r\n                            sb.Appe" +
+                    "nd(BrIndentX2 + \", \" + paramName);\r\n                        }\r\n                 " +
+                    "       break;\r\n                    default:\r\n                        throw new A" +
+                    "rgumentOutOfRangeException(\"items\",\"Wrong clause type in Insert resolving method" +
+                    "\");\r\n                }\r\n            }\r\n            if (lastBkt)\r\n            {\r\n" +
+                    "                sb.Append(BrIndent + \");\");\r\n            }\r\n            return s" +
+                    "b.ToString();\r\n        }\r\n\r\n        private static string ResolveUpdate(List<Cla" +
+                    "use> list, string dbScheme)\r\n        {\r\n            var sb = new StringBuilder()" +
+                    ";\r\n            var sqlScheme = FormatScheme(dbScheme);\r\n            var isSetPar" +
+                    "am = false;\r\n            foreach (var clause in list)\r\n            {\r\n          " +
+                    "      switch (clause.ClauseType)\r\n                {\r\n                    case Cl" +
+                    "auseType.ActionUpdate:\r\n                        sb.Append(clause.SqlPart);\r\n    " +
+                    "                    sb.Append(\" \");\r\n                        sb.Append(FormatTab" +
+                    "leNameWithShema(sqlScheme, clause.Name));\r\n                        break;\r\n     " +
+                    "               case ClauseType.ActionUpdateSet:\r\n                        sb.Appe" +
+                    "nd(Br);\r\n                        sb.Append(clause.SqlPart);\r\n                   " +
+                    "     if (!string.IsNullOrEmpty(clause.Extra))\r\n                        {\r\n      " +
+                    "                      isSetParam = true;\r\n                            sb.Append(" +
+                    "ResolveStringToRows(clause.Extra, BrIndent));\r\n                        }\r\n      " +
+                    "                  break;\r\n                    case ClauseType.ActionUpdateValues" +
+                    ":\r\n                        if (!isSetParam)\r\n                        {\r\n        " +
+                    "                    isSetParam = true;\r\n                            sb.Append(Br" +
+                    "Indent + clause.Name.Trim());\r\n                            sb.Append(\" = \");\r\n  " +
+                    "                          sb.Append(FormatParameter(clause.Aliace));\r\n          " +
+                    "              }\r\n                        else\r\n                        {\r\n      " +
+                    "                      sb.Append(BrIndent + \", \" + clause.Name.Trim());\r\n        " +
+                    "                    sb.Append(\" = \");\r\n                            sb.Append(For" +
+                    "matParameter(clause.Aliace));\r\n                        }\r\n                      " +
+                    "  break;\r\n                    case ClauseType.ActionUpdateWhere:\r\n              " +
+                    "          sb.Append(clause.SqlPart);\r\n                        sb.Append(clause.C" +
+                    "ondition.Trim());\r\n                        break;\r\n                    default:\r" +
+                    "\n                        throw new ArgumentOutOfRangeException();\r\n             " +
+                    "   }\r\n            }\r\n            sb.Append(\";\");\r\n            return sb.ToString" +
+                    "();\r\n        }\r\n\r\n        private static string ResolveSelect(List<Clause> list," +
+                    " string dbScheme)\r\n        {\r\n            var sb = new StringBuilder();\r\n       " +
+                    "     bool isFirst = true;\r\n            foreach (var clause in list)\r\n           " +
+                    " {\r\n                switch (clause.ClauseType)\r\n                {\r\n             " +
+                    "       case ClauseType.ActionSelect:\r\n                        isFirst = true; //" +
+                    " SELECT or UNION\r\n                        sb.Append(clause.SqlPart);\r\n          " +
+                    "              if (!string.IsNullOrEmpty(clause.Extra))\r\n                        " +
+                    "{\r\n                            isFirst = false;\r\n                            sb." +
+                    "Append(ResolveStringToRows(clause.Extra, BrIndent));\r\n                        }\r" +
+                    "\n                        break;\r\n                    case ClauseType.ActionSelec" +
+                    "tWhereOnHaving:\r\n                        sb.Append(clause.SqlPart);\r\n           " +
+                    "             sb.Append(clause.Condition.Trim());\r\n                        break;" +
+                    "\r\n                    case ClauseType.ActionSelectJoin:\r\n                       " +
+                    " var schemeJoin = FormatScheme(dbScheme, clause.Extra);\r\n                       " +
+                    " var tabNameJoin = FormatTableNameWithShema(schemeJoin, clause.Name);\r\n         " +
+                    "               var tabAliaceJoin = FormatAliace(clause.Aliace);\r\n               " +
+                    "         sb.Append(clause.SqlPart);\r\n                        sb.Append(tabNameJo" +
+                    "in + tabAliaceJoin);\r\n                        break;\r\n                    case C" +
+                    "lauseType.ActionSelectOrder:\r\n                        sb.Append(clause.SqlPart);" +
+                    "\r\n                        sb.Append(clause.Name.Trim());\r\n                      " +
+                    "  sb.Append(\" \");\r\n                        sb.Append(clause.Direction);\r\n       " +
+                    "                 break;\r\n                    case ClauseType.ActionSelectGroup:\r" +
+                    "\n                        sb.Append(clause.SqlPart);\r\n                        sb." +
+                    "Append(clause.Name.Trim());\r\n                        break;\r\n                   " +
+                    " case ClauseType.Table:\r\n                        var scheme = FormatScheme(dbSch" +
+                    "eme, clause.Extra);\r\n                        var tabName = FormatTableNameWithSh" +
+                    "ema(scheme, clause.Name);\r\n                        var tabAliace = FormatAliace(" +
+                    "clause.Aliace);\r\n                        if (isFirst)\r\n                        {" +
+                    "\r\n                            isFirst = false;\r\n                            sb.A" +
+                    "ppend(BrIndent + tabName + tabAliace);\r\n                        }\r\n             " +
+                    "           else\r\n                        {\r\n                            sb.Appen" +
+                    "d(BrIndent + \", \" + tabName + tabAliace);\r\n                        }\r\n          " +
+                    "              break;\r\n                    case ClauseType.Column:\r\n             " +
+                    "           var aliace = string.IsNullOrEmpty(clause.Aliace) ? string.Empty : \" A" +
+                    "S \" + clause.Aliace.Trim();\r\n                        if (isFirst)\r\n             " +
+                    "           {\r\n                            isFirst = false;\r\n                    " +
+                    "        sb.Append(BrIndent + clause.Name.Trim() + aliace);\r\n                    " +
+                    "    }\r\n                        else\r\n                        {\r\n                " +
+                    "            sb.Append(BrIndent + \", \" + clause.Name.Trim() + aliace);\r\n         " +
+                    "               }\r\n                        break;\r\n                    default:\r\n" +
+                    "                        throw new ArgumentOutOfRangeException();\r\n              " +
+                    "  }\r\n            }\r\n            sb.Append(\";\");\r\n            return sb.ToString(" +
+                    ");\r\n        }\r\n\r\n        private static string ResolveDelete(List<Clause> list, " +
+                    "string dbScheme)\r\n        {\r\n            var sb = new StringBuilder();\r\n        " +
+                    "    var sqlScheme = FormatScheme(dbScheme);\r\n            foreach (var clause in " +
+                    "list)\r\n            {\r\n                switch (clause.ClauseType)\r\n              " +
+                    "  {\r\n                    case ClauseType.ActionDelete:\r\n                        " +
+                    "sb.Append(clause.SqlPart);\r\n                        sb.Append(\" \");\r\n           " +
+                    "             sb.Append(FormatTableNameWithShema(sqlScheme, clause.Name));\r\n     " +
+                    "                   break;\r\n                    case ClauseType.ActionDeleteWhere" +
+                    ":\r\n                        sb.Append(clause.SqlPart);\r\n                        s" +
+                    "b.Append(clause.Condition.Trim());\r\n                        break;\r\n            " +
+                    "        default:\r\n                        throw new ArgumentOutOfRangeException(" +
+                    ");\r\n                }\r\n            }\r\n            sb.Append(\";\");\r\n            r" +
+                    "eturn sb.ToString();\r\n        }\r\n        #endregion Resolve Sql Query\r\n\r\n       " +
+                    " public virtual string RawSql()\r\n        {\r\n            string sqlResult;\r\n     " +
+                    "       if (Clauses.Count == 0)\r\n            {\r\n                throw new Excepti" +
+                    "on(\"Empty query\");\r\n            }\r\n            var first = Clauses.First();\r\n   " +
+                    "         switch (first.ClauseType)\r\n            {\r\n                case ClauseTy" +
+                    "pe.ActionInsert:\r\n                    sqlResult = ResolveInsert(Clauses, DbSchem" +
+                    "e);\r\n                    break;\r\n                case ClauseType.ActionUpdate:\r\n" +
+                    "                    sqlResult = ResolveUpdate(Clauses, DbScheme);\r\n             " +
+                    "       break;\r\n                case ClauseType.ActionSelect:\r\n                  " +
+                    "  sqlResult = ResolveSelect(Clauses, DbScheme);\r\n                    break;\r\n   " +
+                    "             case ClauseType.ActionDelete:\r\n                    sqlResult = Reso" +
+                    "lveDelete(Clauses, DbScheme);\r\n                    break;\r\n                defau" +
+                    "lt:\r\n                    throw new Exception(\"Wrong start of query\");\r\n         " +
+                    "   }\r\n            return sqlResult;\r\n        }\r\n\r\n        #region SELECT\r\n      " +
+                    "  public virtual ISqlMakerSelect SELECT(string columns = null)\r\n        {\r\n     " +
+                    "       Clauses.Add(Clause.New(ClauseType.ActionSelect, \"SELECT\", extra: columns)" +
                     ");\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelec" +
-                    "t From(string tables = null)\r\n        {\r\n            Clauses.Add(Clause.New(Clau" +
-                    "seType.ActionSelect, br + \"FROM\", extra: tables));\r\n            return this;\r\n  " +
-                    "      }\r\n\r\n        public virtual ISqlMakerSelect Tab(string tableName, string t" +
-                    "ableAliace = null, string tableScheme = null)\r\n        {\r\n            Clauses.Ad" +
-                    "d(Clause.New(ClauseType.Table, name: tableName, aliace: tableAliace, extra: tabl" +
-                    "eScheme));\r\n            return this;\r\n        }\r\n\r\n        ISqlMakerSelect ISqlM" +
-                    "akerSelect.Where(string whereConditions)\r\n        {\r\n            Clauses.Add(Cla" +
-                    "use.New(ClauseType.ActionSelectWhereOnHaving, br + \"WHERE\" + brIndent, condition" +
-                    ": whereConditions));\r\n            return this;\r\n        }\r\n\r\n        ISqlMakerSe" +
-                    "lect ISqlMakerSelect.WhereAnd(string whereConditions)\r\n        {\r\n            Cl" +
-                    "auses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + \"AND \", co" +
-                    "ndition: whereConditions));\r\n            return this;\r\n        }\r\n\r\n        ISql" +
-                    "MakerSelect ISqlMakerSelect.WhereOr(string whereConditions)\r\n        {\r\n        " +
-                    "    Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + \"OR " +
-                    "\", condition: whereConditions));\r\n            return this;\r\n        }\r\n\r\n       " +
-                    " public virtual ISqlMakerSelect Join(string tableName, string tableAliace = null" +
-                    ")\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, br" +
-                    " + \"INNER JOIN \", name: tableName, aliace: tableAliace));\r\n            return th" +
-                    "is;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect LeftJoin(string tableNa" +
-                    "me, string tableAliace = null)\r\n        {\r\n            Clauses.Add(Clause.New(Cl" +
-                    "auseType.ActionSelectJoin, br + \"LEFT JOIN \", name: tableName, aliace: tableAlia" +
-                    "ce));\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSe" +
-                    "lect RightJoin(string tableName, string tableAliace = null)\r\n        {\r\n        " +
-                    "    Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, br + \"RIGHT JOIN \", name" +
-                    ": tableName, aliace: tableAliace));\r\n            return this;\r\n        }\r\n\r\n    " +
-                    "    public virtual ISqlMakerSelect FullJoin(string tableName, string tableAliace" +
-                    " = null)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectJ" +
-                    "oin, br + \"FULL JOIN \", name: tableName, aliace: tableAliace));\r\n            ret" +
-                    "urn this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect On(string conditi" +
-                    "on)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereO" +
-                    "nHaving, brIndent + \"ON \", condition: condition));\r\n            return this;\r\n  " +
-                    "      }\r\n\r\n        public virtual ISqlMakerSelect OnAnd(string condition)\r\n     " +
-                    "   {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, b" +
-                    "rIndent + \"AND \", condition: condition));\r\n            return this;\r\n        }\r\n" +
-                    "\r\n        public virtual ISqlMakerSelect OnOr(string condition)\r\n        {\r\n    " +
-                    "        Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + " +
-                    "\"OR \", condition: condition));\r\n            return this;\r\n        }\r\n\r\n        p" +
-                    "ublic virtual ISqlMakerSelect OrderBy(string columnName, SortAs direction)\r\n    " +
-                    "    {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectOrder, br + \"OR" +
-                    "DER BY \", name: columnName, direction: direction.ToString().ToUpperInvariant()))" +
-                    ";\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect" +
-                    " OrderThen(string columnName, SortAs direction)\r\n        {\r\n            Clauses." +
-                    "Add(Clause.New(ClauseType.ActionSelectOrder, \", \", name: columnName, direction: " +
-                    "direction.ToString().ToUpperInvariant()));\r\n            return this;\r\n        }\r" +
-                    "\n\r\n        public virtual ISqlMakerSelect GroupBy(string columnName)\r\n        {\r" +
-                    "\n            Clauses.Add(Clause.New(ClauseType.ActionSelectGroup, br + \"GROUP BY" +
-                    " \", name: columnName));\r\n            return this;\r\n        }\r\n\r\n        public v" +
-                    "irtual ISqlMakerSelect GroupThen(string columnName)\r\n        {\r\n            Clau" +
-                    "ses.Add(Clause.New(ClauseType.ActionSelectGroup, \", \", name: columnName));\r\n    " +
-                    "        return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect Having" +
-                    "(string havingConditions)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseT" +
-                    "ype.ActionSelectWhereOnHaving, br + \"HAVING \", condition: havingConditions));\r\n " +
-                    "           return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect Hav" +
-                    "ingAnd(string havingConditions)\r\n        {\r\n            Clauses.Add(Clause.New(C" +
-                    "lauseType.ActionSelectWhereOnHaving, brIndent + \"AND \", condition: havingConditi" +
-                    "ons));\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerS" +
-                    "elect HavingOr(string havingConditions)\r\n        {\r\n            Clauses.Add(Clau" +
-                    "se.New(ClauseType.ActionSelectWhereOnHaving, brIndent + \"OR \", condition: having" +
-                    "Conditions));\r\n            return this;\r\n        }\r\n        #endregion SELECT\r\n\r" +
-                    "\n        #region INSERT\r\n        public virtual ISqlMakerInsert INSERT(string ta" +
-                    "bleName)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionInsert," +
-                    " \"INSERT INTO\", name: tableName));\r\n            return this;\r\n        }\r\n       " +
-                    " public virtual ISqlMakerInsert Col(string columnName)\r\n        {\r\n            C" +
-                    "lauses.Add(Clause.New(ClauseType.Column, name: columnName));\r\n            return" +
-                    " this;\r\n        }\r\n\r\n        public virtual ISqlMakerInsert VALUES(string parame" +
-                    "ters = null)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionIns" +
-                    "ertValues, \"VALUES\", extra: parameters));\r\n            return this;\r\n        }\r\n" +
-                    "\r\n        public virtual ISqlMakerInsert Param(string paramName)\r\n        {\r\n   " +
-                    "         Clauses.Add(Clause.New(ClauseType.Parameter, name: paramName));\r\n      " +
-                    "      return this;\r\n        }\r\n        #endregion INSERT\r\n\r\n        #region UPDA" +
-                    "TE\r\n        public virtual ISqlMakerUpdate UPDATE(string tableName)\r\n        {\r\n" +
-                    "            Clauses.Add(Clause.New(ClauseType.ActionUpdate, \"UPDATE\", name: tabl" +
-                    "eName));\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMake" +
-                    "rUpdate SET(string columnsValues = null)\r\n        {\r\n            Clauses.Add(Cla" +
-                    "use.New(ClauseType.ActionUpdateSet, \"SET\", extra: columnsValues));\r\n            " +
-                    "return this;\r\n        }\r\n\r\n        public virtual ISqlMakerUpdate Val(string col" +
-                    "umnName, string parameterAliace)\r\n        {\r\n            Clauses.Add(Clause.New(" +
-                    "ClauseType.ActionUpdateValues, name: columnName, aliace: parameterAliace));\r\n   " +
-                    "         return this;\r\n        }\r\n\r\n        ISqlMakerUpdate ISqlMakerUpdate.WHER" +
-                    "E(string whereConditions)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseT" +
-                    "ype.ActionUpdateWhere, br + \"WHERE \", condition: whereConditions));\r\n           " +
-                    " return this;\r\n        }\r\n\r\n        ISqlMakerUpdate ISqlMakerUpdate.WhereAnd(str" +
-                    "ing whereConditions)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.A" +
-                    "ctionUpdateWhere, brIndent + \"AND \", condition: whereConditions));\r\n            " +
-                    "return this;\r\n        }\r\n\r\n        ISqlMakerUpdate ISqlMakerUpdate.WhereOr(strin" +
-                    "g whereConditions)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.Act" +
-                    "ionUpdateWhere, brIndent + \"OR \", condition: whereConditions));\r\n            ret" +
-                    "urn this;\r\n        }\r\n        #endregion UPDATE\r\n\r\n        #region DELETE\r\n     " +
-                    "   public virtual ISqlMakerDelete DELETE(string tableName)\r\n        {\r\n         " +
-                    "   Clauses.Add(Clause.New(ClauseType.ActionDelete, \"DELETE FROM\", name: tableNam" +
-                    "e));\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerDel" +
-                    "ete WHERE(string whereConditions)\r\n        {\r\n            Clauses.Add(Clause.New" +
-                    "(ClauseType.ActionDeleteWhere, br + \"WHERE \", condition: whereConditions));\r\n   " +
-                    "         return this;\r\n        }\r\n\r\n        public virtual ISqlMakerDelete Where" +
-                    "And(string whereConditions)\r\n        {\r\n            Clauses.Add(Clause.New(Claus" +
-                    "eType.ActionDeleteWhere, brIndent + \"AND \", condition: whereConditions));\r\n     " +
-                    "       return this;\r\n        }\r\n\r\n        public virtual ISqlMakerDelete WhereOr" +
-                    "(string whereConditions)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseTy" +
-                    "pe.ActionDeleteWhere, brIndent + \"OR \", condition: whereConditions));\r\n         " +
-                    "   return this;\r\n        }\r\n        #endregion DELETE\r\n    }\r\n}\r\n");
+                    "t SelectDistinct(string columns = null)\r\n        {\r\n            Clauses.Add(Clau" +
+                    "se.New(ClauseType.ActionSelect, \"SELECT DISTINCT\", extra: columns));\r\n          " +
+                    "  return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect Union(bool i" +
+                    "sAll = false)\r\n        {\r\n            var sqlPart = Br + \"UNION\" + (isAll ? \" AL" +
+                    "L\" : string.Empty) + Br + \"SELECT\";\r\n            Clauses.Add(Clause.New(ClauseTy" +
+                    "pe.ActionSelect, sqlPart));\r\n            return this;\r\n        }\r\n\r\n        publ" +
+                    "ic virtual ISqlMakerSelect Col(string columnName, string columnAliace = null)\r\n " +
+                    "       {\r\n            Clauses.Add(Clause.New(ClauseType.Column, name: columnName" +
+                    ", aliace: columnAliace));\r\n            return this;\r\n        }\r\n\r\n        public" +
+                    " virtual ISqlMakerSelect From(string tables = null)\r\n        {\r\n            Clau" +
+                    "ses.Add(Clause.New(ClauseType.ActionSelect, Br + \"FROM\", extra: tables));\r\n     " +
+                    "       return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect Tab(str" +
+                    "ing tableName, string tableAliace = null, string tableScheme = null)\r\n        {\r" +
+                    "\n            Clauses.Add(Clause.New(ClauseType.Table, name: tableName, aliace: t" +
+                    "ableAliace, extra: tableScheme));\r\n            return this;\r\n        }\r\n\r\n      " +
+                    "  ISqlMakerSelect ISqlMakerSelect.Where(string whereConditions)\r\n        {\r\n    " +
+                    "        Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, Br + \"WHERE" +
+                    "\" + BrIndent, condition: whereConditions));\r\n            return this;\r\n        }" +
+                    "\r\n\r\n        ISqlMakerSelect ISqlMakerSelect.WhereAnd(string whereConditions)\r\n  " +
+                    "      {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving" +
+                    ", BrIndent + \"AND \", condition: whereConditions));\r\n            return this;\r\n  " +
+                    "      }\r\n\r\n        ISqlMakerSelect ISqlMakerSelect.WhereOr(string whereCondition" +
+                    "s)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOn" +
+                    "Having, BrIndent + \"OR \", condition: whereConditions));\r\n            return this" +
+                    ";\r\n        }\r\n\r\n        public virtual ISqlMakerSelect Join(string tableName, st" +
+                    "ring tableAliace = null)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseTy" +
+                    "pe.ActionSelectJoin, Br + \"INNER JOIN \", name: tableName, aliace: tableAliace));" +
+                    "\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect " +
+                    "LeftJoin(string tableName, string tableAliace = null)\r\n        {\r\n            Cl" +
+                    "auses.Add(Clause.New(ClauseType.ActionSelectJoin, Br + \"LEFT JOIN \", name: table" +
+                    "Name, aliace: tableAliace));\r\n            return this;\r\n        }\r\n\r\n        pub" +
+                    "lic virtual ISqlMakerSelect RightJoin(string tableName, string tableAliace = nul" +
+                    "l)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, B" +
+                    "r + \"RIGHT JOIN \", name: tableName, aliace: tableAliace));\r\n            return t" +
+                    "his;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect FullJoin(string tableN" +
+                    "ame, string tableAliace = null)\r\n        {\r\n            Clauses.Add(Clause.New(C" +
+                    "lauseType.ActionSelectJoin, Br + \"FULL JOIN \", name: tableName, aliace: tableAli" +
+                    "ace));\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerS" +
+                    "elect On(string condition)\r\n        {\r\n            Clauses.Add(Clause.New(Clause" +
+                    "Type.ActionSelectWhereOnHaving, BrIndent + \"ON \", condition: condition));\r\n     " +
+                    "       return this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect OnAnd(s" +
+                    "tring condition)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.Actio" +
+                    "nSelectWhereOnHaving, BrIndent + \"AND \", condition: condition));\r\n            re" +
+                    "turn this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect OnOr(string cond" +
+                    "ition)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectWhe" +
+                    "reOnHaving, BrIndent + \"OR \", condition: condition));\r\n            return this;\r" +
+                    "\n        }\r\n\r\n        public virtual ISqlMakerSelect OrderBy(string columnName, " +
+                    "SortAs direction)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.Acti" +
+                    "onSelectOrder, Br + \"ORDER BY \", name: columnName, direction: direction.ToString" +
+                    "().ToUpperInvariant()));\r\n            return this;\r\n        }\r\n\r\n        public " +
+                    "virtual ISqlMakerSelect OrderThen(string columnName, SortAs direction)\r\n        " +
+                    "{\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectOrder, \", \", name: " +
+                    "columnName, direction: direction.ToString().ToUpperInvariant()));\r\n            r" +
+                    "eturn this;\r\n        }\r\n\r\n        public virtual ISqlMakerSelect GroupBy(string " +
+                    "columnName)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSele" +
+                    "ctGroup, Br + \"GROUP BY \", name: columnName));\r\n            return this;\r\n      " +
+                    "  }\r\n\r\n        public virtual ISqlMakerSelect GroupThen(string columnName)\r\n    " +
+                    "    {\r\n            Clauses.Add(Clause.New(ClauseType.ActionSelectGroup, \", \", na" +
+                    "me: columnName));\r\n            return this;\r\n        }\r\n\r\n        public virtual" +
+                    " ISqlMakerSelect Having(string havingConditions)\r\n        {\r\n            Clauses" +
+                    ".Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, Br + \"HAVING \", condition:" +
+                    " havingConditions));\r\n            return this;\r\n        }\r\n\r\n        public virt" +
+                    "ual ISqlMakerSelect HavingAnd(string havingConditions)\r\n        {\r\n            C" +
+                    "lauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + \"AND \", c" +
+                    "ondition: havingConditions));\r\n            return this;\r\n        }\r\n\r\n        pu" +
+                    "blic virtual ISqlMakerSelect HavingOr(string havingConditions)\r\n        {\r\n     " +
+                    "       Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + \"" +
+                    "OR \", condition: havingConditions));\r\n            return this;\r\n        }\r\n     " +
+                    "   #endregion SELECT\r\n\r\n        #region INSERT\r\n        public virtual ISqlMaker" +
+                    "Insert INSERT(string tableName)\r\n        {\r\n            Clauses.Add(Clause.New(C" +
+                    "lauseType.ActionInsert, \"INSERT INTO\", name: tableName));\r\n            return th" +
+                    "is;\r\n        }\r\n        public virtual ISqlMakerInsert Col(string columnName)\r\n " +
+                    "       {\r\n            Clauses.Add(Clause.New(ClauseType.Column, name: columnName" +
+                    "));\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMakerInse" +
+                    "rt VALUES(string parameters = null)\r\n        {\r\n            Clauses.Add(Clause.N" +
+                    "ew(ClauseType.ActionInsertValues, \"VALUES\", extra: parameters));\r\n            re" +
+                    "turn this;\r\n        }\r\n\r\n        public virtual ISqlMakerInsert Param(string par" +
+                    "amName)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.Parameter, nam" +
+                    "e: paramName));\r\n            return this;\r\n        }\r\n        #endregion INSERT\r" +
+                    "\n\r\n        #region UPDATE\r\n        public virtual ISqlMakerUpdate UPDATE(string " +
+                    "tableName)\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionUpdat" +
+                    "e, \"UPDATE\", name: tableName));\r\n            return this;\r\n        }\r\n\r\n        " +
+                    "public virtual ISqlMakerUpdate SET(string columnsValues = null)\r\n        {\r\n    " +
+                    "        Clauses.Add(Clause.New(ClauseType.ActionUpdateSet, \"SET\", extra: columns" +
+                    "Values));\r\n            return this;\r\n        }\r\n\r\n        public virtual ISqlMak" +
+                    "erUpdate Val(string columnName, string parameterAliace)\r\n        {\r\n            " +
+                    "Clauses.Add(Clause.New(ClauseType.ActionUpdateValues, name: columnName, aliace: " +
+                    "parameterAliace));\r\n            return this;\r\n        }\r\n\r\n        ISqlMakerUpda" +
+                    "te ISqlMakerUpdate.WHERE(string whereConditions)\r\n        {\r\n            Clauses" +
+                    ".Add(Clause.New(ClauseType.ActionUpdateWhere, Br + \"WHERE \", condition: whereCon" +
+                    "ditions));\r\n            return this;\r\n        }\r\n\r\n        ISqlMakerUpdate ISqlM" +
+                    "akerUpdate.WhereAnd(string whereConditions)\r\n        {\r\n            Clauses.Add(" +
+                    "Clause.New(ClauseType.ActionUpdateWhere, BrIndent + \"AND \", condition: whereCond" +
+                    "itions));\r\n            return this;\r\n        }\r\n\r\n        ISqlMakerUpdate ISqlMa" +
+                    "kerUpdate.WhereOr(string whereConditions)\r\n        {\r\n            Clauses.Add(Cl" +
+                    "ause.New(ClauseType.ActionUpdateWhere, BrIndent + \"OR \", condition: whereConditi" +
+                    "ons));\r\n            return this;\r\n        }\r\n        #endregion UPDATE\r\n\r\n      " +
+                    "  #region DELETE\r\n        public virtual ISqlMakerDelete DELETE(string tableName" +
+                    ")\r\n        {\r\n            Clauses.Add(Clause.New(ClauseType.ActionDelete, \"DELET" +
+                    "E FROM\", name: tableName));\r\n            return this;\r\n        }\r\n\r\n        publ" +
+                    "ic virtual ISqlMakerDelete WHERE(string whereConditions)\r\n        {\r\n           " +
+                    " Clauses.Add(Clause.New(ClauseType.ActionDeleteWhere, Br + \"WHERE \", condition: " +
+                    "whereConditions));\r\n            return this;\r\n        }\r\n\r\n        public virtua" +
+                    "l ISqlMakerDelete WhereAnd(string whereConditions)\r\n        {\r\n            Claus" +
+                    "es.Add(Clause.New(ClauseType.ActionDeleteWhere, BrIndent + \"AND \", condition: wh" +
+                    "ereConditions));\r\n            return this;\r\n        }\r\n\r\n        public virtual " +
+                    "ISqlMakerDelete WhereOr(string whereConditions)\r\n        {\r\n            Clauses." +
+                    "Add(Clause.New(ClauseType.ActionDeleteWhere, BrIndent + \"OR \", condition: whereC" +
+                    "onditions));\r\n            return this;\r\n        }\r\n        #endregion DELETE\r\n  " +
+                    "  }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

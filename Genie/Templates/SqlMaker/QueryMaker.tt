@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum;
-using <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces;
+using <#=GenerationContext.baseNamespace#>.Infrastructure.Enum;
+using <#=GenerationContext.baseNamespace#>.SqlMaker.Interfaces;
 
-namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
+namespace <#=GenerationContext.baseNamespace#>.SqlMaker
 {
     public class QueryMaker : ISqlMaker
     {
@@ -31,13 +31,11 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
             Parameter,
         }
 
-        private static string br = "\n";
-        private static string brIndent = "\n\t";
-        private static string brIndentX2 = "\n\t\t";
+        private const string Br = "\n";
+        private const string BrIndent = "\n\t";
+        private const string BrIndentX2 = "\n\t\t";
 
-        private static string _dbScheme;
-
-        public static string DbScheme { get { return _dbScheme; } set { _dbScheme = value; } }
+        public static string DbScheme { get; set; }
 
         private static List<Clause> _clauses;
         private static List<Clause> Clauses
@@ -81,7 +79,7 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
         {
             if (!string.IsNullOrEmpty(dbScheme))
             {
-                _dbScheme = dbScheme;
+                DbScheme = dbScheme;
             }
             Clauses.Clear();
             _sqlMaker = new QueryMaker();
@@ -116,7 +114,7 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
         private static string ResolveStringToRows(string extra, string indent)
         {
             var sb = new StringBuilder();
-            var delimiters = new char[] { ',', ';' };
+            var delimiters = new [] { ',', ';' };
             var array = extra.Split(delimiters);
             var firstParam = true;
             foreach (var s in array)
@@ -140,8 +138,9 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
         #endregion
 
         #region Resolve Sql Query
-        private static string ResolveInsert(IEnumerable<Clause> list, string dbScheme)
+        private static string ResolveInsert(IEnumerable<Clause> items, string dbScheme)
         {
+            var list = items.ToList();
             var sb = new StringBuilder();
             var sqlScheme = FormatScheme(dbScheme);
             var isFirstCol = true;
@@ -166,27 +165,27 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
                         }
                         if (isFirstCol)
                         {
-                            sb.Append(brIndentX2 + "[" + clause.Name + "]");
+                            sb.Append(BrIndentX2 + "[" + clause.Name + "]");
                             isFirstCol = false;
                         }
                         else
                         {
-                            sb.Append(brIndentX2 + ", [" + clause.Name + "]");
+                            sb.Append(BrIndentX2 + ", [" + clause.Name + "]");
                         }
                         if (count == colCount)
                         {
-                            sb.Append(brIndent + ")");
+                            sb.Append(BrIndent + ")");
                         }
                         break;
                     case ClauseType.ActionInsertValues:
                         lastBkt = true;
-                        sb.Append(brIndent);
+                        sb.Append(BrIndent);
                         sb.Append(clause.SqlPart);
                         sb.Append(" (");
                         if (!string.IsNullOrEmpty(clause.Extra))
                         {
                             insertedParams = true;
-                            sb.Append(ResolveStringToRows(clause.Extra, brIndentX2));
+                            sb.Append(ResolveStringToRows(clause.Extra, BrIndentX2));
                         }
                         break;
                     case ClauseType.Parameter:
@@ -194,20 +193,20 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
                         if (!insertedParams)
                         {
                             insertedParams = true;
-                            sb.Append(brIndentX2 + paramName);
+                            sb.Append(BrIndentX2 + paramName);
                         }
                         else
                         {
-                            sb.Append(brIndentX2 + ", " + paramName);
+                            sb.Append(BrIndentX2 + ", " + paramName);
                         }
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("Wrong clause type in Insert resolving method");
+                        throw new ArgumentOutOfRangeException("items","Wrong clause type in Insert resolving method");
                 }
             }
             if (lastBkt)
             {
-                sb.Append(brIndent + ");");
+                sb.Append(BrIndent + ");");
             }
             return sb.ToString();
         }
@@ -227,25 +226,25 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
                         sb.Append(FormatTableNameWithShema(sqlScheme, clause.Name));
                         break;
                     case ClauseType.ActionUpdateSet:
-                        sb.Append(br);
+                        sb.Append(Br);
                         sb.Append(clause.SqlPart);
                         if (!string.IsNullOrEmpty(clause.Extra))
                         {
                             isSetParam = true;
-                            sb.Append(ResolveStringToRows(clause.Extra, brIndent));
+                            sb.Append(ResolveStringToRows(clause.Extra, BrIndent));
                         }
                         break;
                     case ClauseType.ActionUpdateValues:
                         if (!isSetParam)
                         {
                             isSetParam = true;
-                            sb.Append(brIndent + clause.Name.Trim());
+                            sb.Append(BrIndent + clause.Name.Trim());
                             sb.Append(" = ");
                             sb.Append(FormatParameter(clause.Aliace));
                         }
                         else
                         {
-                            sb.Append(brIndent + ", " + clause.Name.Trim());
+                            sb.Append(BrIndent + ", " + clause.Name.Trim());
                             sb.Append(" = ");
                             sb.Append(FormatParameter(clause.Aliace));
                         }
@@ -276,7 +275,7 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
                         if (!string.IsNullOrEmpty(clause.Extra))
                         {
                             isFirst = false;
-                            sb.Append(ResolveStringToRows(clause.Extra, brIndent));
+                            sb.Append(ResolveStringToRows(clause.Extra, BrIndent));
                         }
                         break;
                     case ClauseType.ActionSelectWhereOnHaving:
@@ -307,11 +306,11 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
                         if (isFirst)
                         {
                             isFirst = false;
-                            sb.Append(brIndent + tabName + tabAliace);
+                            sb.Append(BrIndent + tabName + tabAliace);
                         }
                         else
                         {
-                            sb.Append(brIndent + ", " + tabName + tabAliace);
+                            sb.Append(BrIndent + ", " + tabName + tabAliace);
                         }
                         break;
                     case ClauseType.Column:
@@ -319,11 +318,11 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
                         if (isFirst)
                         {
                             isFirst = false;
-                            sb.Append(brIndent + clause.Name.Trim() + aliace);
+                            sb.Append(BrIndent + clause.Name.Trim() + aliace);
                         }
                         else
                         {
-                            sb.Append(brIndent + ", " + clause.Name.Trim() + aliace);
+                            sb.Append(BrIndent + ", " + clause.Name.Trim() + aliace);
                         }
                         break;
                     default:
@@ -362,7 +361,7 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 
         public virtual string RawSql()
         {
-            string sqlResult = null;
+            string sqlResult;
             if (Clauses.Count == 0)
             {
                 throw new Exception("Empty query");
@@ -371,16 +370,16 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
             switch (first.ClauseType)
             {
                 case ClauseType.ActionInsert:
-                    sqlResult = ResolveInsert(Clauses, _dbScheme);
+                    sqlResult = ResolveInsert(Clauses, DbScheme);
                     break;
                 case ClauseType.ActionUpdate:
-                    sqlResult = ResolveUpdate(Clauses, _dbScheme);
+                    sqlResult = ResolveUpdate(Clauses, DbScheme);
                     break;
                 case ClauseType.ActionSelect:
-                    sqlResult = ResolveSelect(Clauses, _dbScheme);
+                    sqlResult = ResolveSelect(Clauses, DbScheme);
                     break;
                 case ClauseType.ActionDelete:
-                    sqlResult = ResolveDelete(Clauses, _dbScheme);
+                    sqlResult = ResolveDelete(Clauses, DbScheme);
                     break;
                 default:
                     throw new Exception("Wrong start of query");
@@ -403,7 +402,7 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 
         public virtual ISqlMakerSelect Union(bool isAll = false)
         {
-            var sqlPart = br + "UNION" + (isAll ? " ALL" : string.Empty) + br + "SELECT";
+            var sqlPart = Br + "UNION" + (isAll ? " ALL" : string.Empty) + Br + "SELECT";
             Clauses.Add(Clause.New(ClauseType.ActionSelect, sqlPart));
             return this;
         }
@@ -416,7 +415,7 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 
         public virtual ISqlMakerSelect From(string tables = null)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelect, br + "FROM", extra: tables));
+            Clauses.Add(Clause.New(ClauseType.ActionSelect, Br + "FROM", extra: tables));
             return this;
         }
 
@@ -428,67 +427,67 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 
         ISqlMakerSelect ISqlMakerSelect.Where(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, br + "WHERE" + brIndent, condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, Br + "WHERE" + BrIndent, condition: whereConditions));
             return this;
         }
 
         ISqlMakerSelect ISqlMakerSelect.WhereAnd(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + "AND ", condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + "AND ", condition: whereConditions));
             return this;
         }
 
         ISqlMakerSelect ISqlMakerSelect.WhereOr(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + "OR ", condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + "OR ", condition: whereConditions));
             return this;
         }
 
         public virtual ISqlMakerSelect Join(string tableName, string tableAliace = null)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, br + "INNER JOIN ", name: tableName, aliace: tableAliace));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, Br + "INNER JOIN ", name: tableName, aliace: tableAliace));
             return this;
         }
 
         public virtual ISqlMakerSelect LeftJoin(string tableName, string tableAliace = null)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, br + "LEFT JOIN ", name: tableName, aliace: tableAliace));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, Br + "LEFT JOIN ", name: tableName, aliace: tableAliace));
             return this;
         }
 
         public virtual ISqlMakerSelect RightJoin(string tableName, string tableAliace = null)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, br + "RIGHT JOIN ", name: tableName, aliace: tableAliace));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, Br + "RIGHT JOIN ", name: tableName, aliace: tableAliace));
             return this;
         }
 
         public virtual ISqlMakerSelect FullJoin(string tableName, string tableAliace = null)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, br + "FULL JOIN ", name: tableName, aliace: tableAliace));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectJoin, Br + "FULL JOIN ", name: tableName, aliace: tableAliace));
             return this;
         }
 
         public virtual ISqlMakerSelect On(string condition)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + "ON ", condition: condition));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + "ON ", condition: condition));
             return this;
         }
 
         public virtual ISqlMakerSelect OnAnd(string condition)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + "AND ", condition: condition));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + "AND ", condition: condition));
             return this;
         }
 
         public virtual ISqlMakerSelect OnOr(string condition)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + "OR ", condition: condition));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + "OR ", condition: condition));
             return this;
         }
 
         public virtual ISqlMakerSelect OrderBy(string columnName, SortAs direction)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectOrder, br + "ORDER BY ", name: columnName, direction: direction.ToString().ToUpperInvariant()));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectOrder, Br + "ORDER BY ", name: columnName, direction: direction.ToString().ToUpperInvariant()));
             return this;
         }
 
@@ -500,7 +499,7 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 
         public virtual ISqlMakerSelect GroupBy(string columnName)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectGroup, br + "GROUP BY ", name: columnName));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectGroup, Br + "GROUP BY ", name: columnName));
             return this;
         }
 
@@ -512,19 +511,19 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 
         public virtual ISqlMakerSelect Having(string havingConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, br + "HAVING ", condition: havingConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, Br + "HAVING ", condition: havingConditions));
             return this;
         }
 
         public virtual ISqlMakerSelect HavingAnd(string havingConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + "AND ", condition: havingConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + "AND ", condition: havingConditions));
             return this;
         }
 
         public virtual ISqlMakerSelect HavingOr(string havingConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, brIndent + "OR ", condition: havingConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionSelectWhereOnHaving, BrIndent + "OR ", condition: havingConditions));
             return this;
         }
         #endregion SELECT
@@ -575,19 +574,19 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 
         ISqlMakerUpdate ISqlMakerUpdate.WHERE(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionUpdateWhere, br + "WHERE ", condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionUpdateWhere, Br + "WHERE ", condition: whereConditions));
             return this;
         }
 
         ISqlMakerUpdate ISqlMakerUpdate.WhereAnd(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionUpdateWhere, brIndent + "AND ", condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionUpdateWhere, BrIndent + "AND ", condition: whereConditions));
             return this;
         }
 
         ISqlMakerUpdate ISqlMakerUpdate.WhereOr(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionUpdateWhere, brIndent + "OR ", condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionUpdateWhere, BrIndent + "OR ", condition: whereConditions));
             return this;
         }
         #endregion UPDATE
@@ -601,19 +600,19 @@ namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 
         public virtual ISqlMakerDelete WHERE(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionDeleteWhere, br + "WHERE ", condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionDeleteWhere, Br + "WHERE ", condition: whereConditions));
             return this;
         }
 
         public virtual ISqlMakerDelete WhereAnd(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionDeleteWhere, brIndent + "AND ", condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionDeleteWhere, BrIndent + "AND ", condition: whereConditions));
             return this;
         }
 
         public virtual ISqlMakerDelete WhereOr(string whereConditions)
         {
-            Clauses.Add(Clause.New(ClauseType.ActionDeleteWhere, brIndent + "OR ", condition: whereConditions));
+            Clauses.Add(Clause.New(ClauseType.ActionDeleteWhere, BrIndent + "OR ", condition: whereConditions));
             return this;
         }
         #endregion DELETE
