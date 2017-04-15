@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using <#=GenerationContext.baseNamespace#>.Infrastructure.Enum;
-using <#=GenerationContext.baseNamespace#>.SqlMaker.Interfaces;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum;
+using <#=GenerationContext.BaseNamespace#>.SqlMaker.Interfaces;
 
-namespace <#=GenerationContext.baseNamespace#>.SqlMaker
+namespace <#=GenerationContext.BaseNamespace#>.SqlMaker
 {
     public class QueryMaker : ISqlMaker
     {

@@ -30,21 +30,21 @@ namespace Genie.Templates.SqlMaker
                     "m.Text;\r\nusing ");
             
             #line 7 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.baseNamespace));
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Enum;\r\nusing ");
             
             #line 8 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.baseNamespace));
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".SqlMaker.Interfaces;\r\n\r\nnamespace ");
             
             #line 10 "F:\Projects\Genie\Genie\Templates\SqlMaker\QueryMaker.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.baseNamespace));
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
