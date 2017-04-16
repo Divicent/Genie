@@ -7,5 +7,7 @@ namespace Genie.Models
         public IAttribute ReferencingNonForeignKeyAttribute { get; set; }
 
         public string ReferencingRelationName { get; set; }
+
+        public string ReferencingTableColumnName { get; set; }
     }
 }

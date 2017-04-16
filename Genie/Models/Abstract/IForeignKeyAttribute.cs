@@ -14,5 +14,10 @@
         /// Name of the referencing relation ( table )
         /// </summary>
         string ReferencingRelationName { get; set; }
+
+        /// <summary>
+        /// The column that is referred in the foreign table
+        /// </summary>
+        string ReferencingTableColumnName { get; set; }
     }
 }

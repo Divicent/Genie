@@ -70,9 +70,11 @@
     <Compile Include="Base\CSharpProjectItemManager.cs" />
     <Compile Include="Base\NonFunctionningProgressReporter.cs" />
     <Compile Include="Base\ObstacleManager.cs" />
+    <Compile Include="Extensions\CharExtensions.cs" />
     <Compile Include="Models\Abstract\IAttribute.cs" />
     <Compile Include="Models\Abstract\IContentFile.cs" />
     <Compile Include="Models\Abstract\IForeignKeyAttribute.cs" />
+    <Compile Include="Models\Abstract\IReferenceList.cs" />
     <Compile Include="Models\Abstract\IRelation.cs" />
     <Compile Include="Models\Abstract\IStoredProcedure.cs" />
     <Compile Include="Models\Abstract\IView.cs" />
@@ -80,11 +82,13 @@
     <Compile Include="Models\Attribute.cs" />
     <Compile Include="Models\ContentFile.cs" />
     <Compile Include="Models\ForeignKeyAttribute.cs" />
+    <Compile Include="Models\ReferenceList.cs" />
     <Compile Include="Models\Relation.cs" />
     <Compile Include="Models\SimpleAttribute.cs" />
     <Compile Include="Models\StoredProcedure.cs" />
     <Compile Include="Models\View.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Templates\Dapper\CustomPropertyTypeMap.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

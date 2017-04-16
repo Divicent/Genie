@@ -1,7 +1,10 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Extensions"#>
 using System;
 using System.Data;
+using System.Collections.Generic;
+
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
@@ -29,6 +32,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
         {
             return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.GetByKey(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>, transaction)) : null;
         }
+<#}#>
+
+<#foreach(var list in _relation.ReferenceLists){#>
+		public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.GetBy(new { <#=list.ReferencedPropertyName#> = <#=list.ReferencedPropertyOnThisRelation#> }, transaction: transaction); }
 <#}#>
     }
 }

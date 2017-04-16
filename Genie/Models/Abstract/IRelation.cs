@@ -21,5 +21,10 @@ namespace Genie.Models.Abstract
         /// List of foreign Key attributes of the relation
         /// </summary>
         List<IForeignKeyAttribute> ForeignKeyAttributes { get; set; }
+
+        /// <summary>
+        /// List of reference collections
+        /// </summary>
+        List<IReferenceList> ReferenceLists { get; set; } 
     }
 }

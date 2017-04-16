@@ -9,6 +9,7 @@ using Genie.Models.Abstract;
 using Genie.Tools;
 using DBReader = DatabaseSchemaReader;
 using DBSchema = Genie.Base.DatabaseSchema;
+
 namespace Genie.Base
 {
     internal class DatabaseSchemaReader : IDatabaseSchemaReader
@@ -65,6 +66,7 @@ namespace Genie.Base
                 }
             } else { output.WriteInformation("No stored procedures found in the database.");}
 
+            ProcessRelationships(schema.Relations, output);
             return schema;
         }
 
@@ -79,7 +81,8 @@ namespace Genie.Base
                 {
                     Name = table.Name,
                     Attributes = new List<IAttribute>(),
-                    ForeignKeyAttributes = new List<IForeignKeyAttribute>()
+                    ForeignKeyAttributes = new List<IForeignKeyAttribute>(),
+                    ReferenceLists = new List<IReferenceList>()
                 };
 
                 foreach (var column in table.Columns)
@@ -94,10 +97,13 @@ namespace Genie.Base
 
                     if (column.IsForeignKey)
                     {
+                        var foreignKey = column.Table.ForeignKeys.Find(f => f.Columns.Any(c => c == column.Name));
+                        var foriegnColumn = foreignKey.ReferencedColumns(column.DatabaseSchema).FirstOrDefault();
                         var fkAttribute = new ForeignKeyAttribute
                         {
                             ReferencingNonForeignKeyAttribute = attribute,
                             ReferencingRelationName = column.ForeignKeyTableName,
+                            ReferencingTableColumnName = foriegnColumn
                         };
 
                         realation.ForeignKeyAttributes.Add(fkAttribute);
@@ -161,6 +167,42 @@ namespace Genie.Base
             {
                 throw new Exception("Unable to parse stored procedure "+ databaseSp.Name, e);
             }
+        }
+
+        private static void ProcessRelationships(IReadOnlyCollection<IRelation> relations, IProcessOutput output)
+        {
+            output.WriteInformation("Processing relationships.");
+
+            try
+            {
+                /*
+                 * for each r in relationship
+                 *      if r has a foreign key to any other table
+                 *          get the table from list
+                 *              add a list to that table
+                 * 
+                 */
+
+                foreach (var relation in relations)
+                {
+                    foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
+                    {
+                        var referencingRelation =
+                            relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
+                        referencingRelation?.ReferenceLists.Add(new ReferenceList
+                        {
+                            ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
+                            ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
+                            ReferncedRelationName = relation.Name
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to process relationships of the tables", e);
+            }
+            output.WriteSuccess("Relationships processed.");
         }
     }
 }

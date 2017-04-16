@@ -9,5 +9,6 @@ namespace Genie.Models
         public string Name { get; set; }
         public List<IAttribute> Attributes { get; set; }
         public List<IForeignKeyAttribute> ForeignKeyAttributes { get; set; }
+        public List<IReferenceList> ReferenceLists { get; set; } 
     }
 }
