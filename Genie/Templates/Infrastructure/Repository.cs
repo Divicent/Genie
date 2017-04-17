@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class Repository : RepositoryBase
     {
@@ -29,28 +29,28 @@ namespace Genie.Templates.Infrastructure
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
                     "m.Linq;\r\nusing ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper;\r\nusing ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 11 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -96,7 +96,17 @@ namespace Genie.Templates.Infrastructure
                     "ist();\r\n\r\n            foreach (var item in items)\r\n            {\r\n              " +
                     "  item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelStatu" +
                     "s = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n        }\r" +
-                    "\n    }\r\n}\r\n");
+                    "\n\r\n        /// <summary>\r\n        /// Get the first item of the result \r\n       " +
+                    " /// </summary>\r\n        /// <param name=\"where\">Where condition</param>\r\n      " +
+                    "  /// <param name=\"transaction\">Transaction</param>\r\n        /// <param name=\"co" +
+                    "mmandTimeout\">CommnadTime out</param>\r\n        /// <returns>First item or null</" +
+                    "returns>\r\n        public virtual T First(object where = null, IDbTransaction tra" +
+                    "nsaction = null, int? commandTimeout = null)\r\n        {\r\n            var item = " +
+                    "Conn.GetBy<T>(where: where, transaction: transaction, commandTimeout: commandTim" +
+                    "eout, first : true).FirstOrDefault();\r\n            if (item == null)\r\n          " +
+                    "      return null;\r\n\r\n            item.DatabaseUnitOfWork = UnitOfWork;\r\n       " +
+                    "     item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            return item;" +
+                    "\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

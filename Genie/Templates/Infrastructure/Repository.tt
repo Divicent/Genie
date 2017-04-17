@@ -89,5 +89,23 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             }
             return items;
         }
+
+        /// <summary>
+        /// Get the first item of the result 
+        /// </summary>
+        /// <param name="where">Where condition</param>
+        /// <param name="transaction">Transaction</param>
+        /// <param name="commandTimeout">CommnadTime out</param>
+        /// <returns>First item or null</returns>
+        public virtual T First(object where = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            var item = Conn.GetBy<T>(where: where, transaction: transaction, commandTimeout: commandTimeout, first : true).FirstOrDefault();
+            if (item == null)
+                return null;
+
+            item.DatabaseUnitOfWork = UnitOfWork;
+            item.DatabaseModelStatus = ModelStatus.Retrieved;
+            return item;
+        }
     }
 }

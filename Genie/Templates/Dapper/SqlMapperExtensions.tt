@@ -149,14 +149,14 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         /// <param name="where"></param>
         /// <param name="order"></param>
         /// <returns>Entity of T</returns>
-        public static IEnumerable<T> GetBy<T>(this IDbConnection connection, object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+        public static IEnumerable<T> GetBy<T>(this IDbConnection connection, object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null, bool first = false) where T : class
         {
             var type = typeof(T);
             var isUseWhere = where != null;
             var isUseOrder = order != null;
             if (!isUseWhere && !isUseOrder)
             {
-                return GetAll<T>(connection: connection, transaction: transaction, commandTimeout: commandTimeout);
+                return GetAll<T>(connection, transaction, commandTimeout);
             }
             var whereType = isUseWhere ? where.GetType() : null;
             var orderType = isUseOrder ? order.GetType() : null;
@@ -174,8 +174,8 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                     cache.Order = GetListOfNames(orderType.GetProperties());
                 }
                 var name = GetTableName(type);
-                StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("select * from {0}", name);
+                var sb = new StringBuilder();
+                sb.AppendFormat("select {1} * from {0}", name, first ? "top 1" : "");
                 int cnt, last, i;
                 if (isUseWhere)
                 {
@@ -208,27 +208,24 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                         }
                     }
                 }
-
-                // TODO: pluralizer 
-                // TODO: query information schema and only select fields that are both in information schema and underlying class / interface 
                 cache.Sql = sb.ToString();
                 GetQueriesWhereOrder[key] = cache;
             }
 
-            IEnumerable<T> obj = null;
+            IEnumerable<T> obj;
             var dynParms = new DynamicParameters();
             if (isUseWhere)
             {
-                foreach (string name in cache.Where)
+                foreach (var name in cache.Where)
                 {
                     dynParms.Add(name, whereType.GetProperty(name).GetValue(where, null));
                 }
             }
             if (isUseOrder)
             {
-                foreach (string name in cache.Order)
+                foreach (var name in cache.Order)
                 {
-                    SortAs enumVal = (SortAs)orderType.GetProperty(name).GetValue(order, null);
+                    var enumVal = (SortAs)orderType.GetProperty(name).GetValue(order, null);
                     switch (enumVal)
                     {
                         case SortAs.Asc:
@@ -269,6 +266,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             }
             return obj;
         }
+
 
         /// <summary>
         /// Returns a single entity by a single id from table "Ts". T must be of interface type. 

@@ -35,7 +35,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 <#}#>
 
 <#foreach(var list in _relation.ReferenceLists){#>
-		public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.GetBy(new { <#=list.ReferencedPropertyName#> = <#=list.ReferencedPropertyOnThisRelation#> }, transaction: transaction); }
+		public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.GetBy(new { <#=list.ReferencedPropertyName#> = <#=list.ReferencedPropertyOnThisRelation#> }, transaction: transaction); }
 <#}#>
     }
 }
