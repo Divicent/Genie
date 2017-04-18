@@ -25,9 +25,9 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             return Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
         }
 
-        public virtual IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null)
+        public virtual IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            return Conn.GetBy<T>(where: where, order: order, transaction: transaction, commandTimeout: commandTimeout).ToList();
+            return Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page,  transaction: transaction, commandTimeout: commandTimeout).ToList();
         }
     }
 }

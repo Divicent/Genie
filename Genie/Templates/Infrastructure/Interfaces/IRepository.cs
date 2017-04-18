@@ -63,7 +63,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
         T GetByKey(object key, IDbTransaction transaction = null, int? commandTimeout = null);
 
         IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
-        IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null);
+        IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null);
         T First(object where = null, IDbTransaction transaction = null, int? commandTimeout = null);
     }
 }

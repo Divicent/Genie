@@ -90,23 +90,24 @@ namespace Genie.Templates.Infrastructure
                     "            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n          " +
                     "      item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n        " +
                     "    return items;\r\n        }\r\n\r\n        public virtual IEnumerable<T> GetBy(obje" +
-                    "ct where = null, object order = null, IDbTransaction transaction = null, int? co" +
-                    "mmandTimeout = null)\r\n        {\r\n            var items = Conn.GetBy<T>(where: wh" +
-                    "ere, order: order, transaction: transaction, commandTimeout: commandTimeout).ToL" +
-                    "ist();\r\n\r\n            foreach (var item in items)\r\n            {\r\n              " +
-                    "  item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelStatu" +
-                    "s = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n        }\r" +
-                    "\n\r\n        /// <summary>\r\n        /// Get the first item of the result \r\n       " +
-                    " /// </summary>\r\n        /// <param name=\"where\">Where condition</param>\r\n      " +
-                    "  /// <param name=\"transaction\">Transaction</param>\r\n        /// <param name=\"co" +
-                    "mmandTimeout\">CommnadTime out</param>\r\n        /// <returns>First item or null</" +
-                    "returns>\r\n        public virtual T First(object where = null, IDbTransaction tra" +
-                    "nsaction = null, int? commandTimeout = null)\r\n        {\r\n            var item = " +
-                    "Conn.GetBy<T>(where: where, transaction: transaction, commandTimeout: commandTim" +
-                    "eout, first : true).FirstOrDefault();\r\n            if (item == null)\r\n          " +
-                    "      return null;\r\n\r\n            item.DatabaseUnitOfWork = UnitOfWork;\r\n       " +
-                    "     item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            return item;" +
-                    "\r\n        }\r\n    }\r\n}\r\n");
+                    "ct where = null, object order = null, int? pageSize = null, int? page = null, ID" +
+                    "bTransaction transaction = null, int? commandTimeout = null)\r\n        {\r\n       " +
+                    "     var items = Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, p" +
+                    "age: page , transaction: transaction, commandTimeout: commandTimeout).ToList();\r" +
+                    "\n\r\n            foreach (var item in items)\r\n            {\r\n                item." +
+                    "DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelStatus = Mod" +
+                    "elStatus.Retrieved;\r\n            }\r\n            return items;\r\n        }\r\n\r\n    " +
+                    "    /// <summary>\r\n        /// Get the first item of the result \r\n        /// </" +
+                    "summary>\r\n        /// <param name=\"where\">Where condition</param>\r\n        /// <" +
+                    "param name=\"transaction\">Transaction</param>\r\n        /// <param name=\"commandTi" +
+                    "meout\">CommnadTime out</param>\r\n        /// <returns>First item or null</returns" +
+                    ">\r\n        public virtual T First(object where = null, IDbTransaction transactio" +
+                    "n = null, int? commandTimeout = null)\r\n        {\r\n            var item = Conn.Ge" +
+                    "tBy<T>(where: where, transaction: transaction, commandTimeout: commandTimeout, f" +
+                    "irst : true).FirstOrDefault();\r\n            if (item == null)\r\n                r" +
+                    "eturn null;\r\n\r\n            item.DatabaseUnitOfWork = UnitOfWork;\r\n            it" +
+                    "em.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            return item;\r\n     " +
+                    "   }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

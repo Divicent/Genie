@@ -148,8 +148,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         /// <param name="connection">Open SqlConnection</param>
         /// <param name="where"></param>
         /// <param name="order"></param>
+	    /// <param name="pageSize">Size of the page </param>
+	    /// <param name="page">page if paging is required</param>
         /// <returns>Entity of T</returns>
-        public static IEnumerable<T> GetBy<T>(this IDbConnection connection, object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null, bool first = false) where T : class
+        public static IEnumerable<T> GetBy<T>(this IDbConnection connection, object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null, bool first = false) where T : class
         {
             var type = typeof(T);
             var isUseWhere = where != null;
@@ -208,6 +210,14 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                         }
                     }
                 }
+
+                // Paging required
+                if (page != null && pageSize != null)
+                {
+                    sb.Append(string.Format(" OFFSET ({0}) ROWS " +
+                                            " FETCH NEXT {1} ROWS ONLY ", page * pageSize, pageSize));
+                }
+
                 cache.Sql = sb.ToString();
                 GetQueriesWhereOrder[key] = cache;
             }

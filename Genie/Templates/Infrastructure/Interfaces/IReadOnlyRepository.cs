@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class IReadOnlyRepository : IReadOnlyRepositoryBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
         {
             this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -42,7 +42,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
 		IDapperContext Context { get; }
 
 		IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
-		IEnumerable<T> GetBy(object where = null, object order = null, IDbTransaction transaction = null, int? commandTimeout = null);
+		IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null);
 	}
 }
 ");
