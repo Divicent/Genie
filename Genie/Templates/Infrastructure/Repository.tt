@@ -93,9 +93,9 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         }
 
 
-        internal virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, IDbTransaction transaction = null)
+        internal virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction transaction = null)
         {
-            var items = Conn.Get<T>(targetName, where, order, pageSize, page, limit, transaction).ToList();
+            var items = Conn.Get<T>(targetName, where, order, pageSize, page, limit, skip, take, transaction).ToList();
 
             foreach (var item in items)
             {

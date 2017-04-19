@@ -353,7 +353,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <param name="pageSize"></param>
 	    /// <param name="page"></param>
 	    /// <returns>Entity of T</returns>
-	    public static IEnumerable<T> Get<T>(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, IDbTransaction tramTransaction = null )
+	    public static IEnumerable<T> Get<T>(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tramTransaction = null )
         {
             var queryBuilder = new StringBuilder(string.Format("select {0} * from " + target, limit != null ? " top " + limit : ""));
 	        if (where != null && where.Count > 0)
@@ -382,6 +382,14 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                 queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS " +
                                            " FETCH NEXT {1} ROWS ONLY ", page * pageSize, pageSize));
             }
+			else 
+			{
+				if( skip != null) 
+					queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS " , skip));
+
+				if( take != null)
+					queryBuilder.Append(string.Format(" FETCH NEXT {0} ROWS ONLY " , skip));
+			}
 
 	        return connection.Query<T>(queryBuilder.ToString(), transaction: tramTransaction);
         }
