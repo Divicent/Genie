@@ -3,6 +3,7 @@
 <#@ import namespace="Genie.Extensions"#>
 using System;
 using System.Data;
+using System.Linq;
 using System.Collections.Generic;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
@@ -34,7 +35,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 <#foreach(var atd in entity.ForeignKeyAttributes){#>
 		public <#=atd.ReferencingRelationName#> Get<#=atd.ReferencingNonForeignKeyAttribute.Name#>(IDbTransaction transaction =null)
         {
-            return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.Get().Where.<#=atd.ReferencingTableColumnName#>.Equals(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>).Filter().Top(1).Query(transaction).FirstOrDefault()) : null;
+            return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.Get().Where.<#=atd.ReferencingTableColumnName#>.Equals(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#><#=atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ?  ".GetValueOrDefault()" : ""#>).Filter().Top(1).Query(transaction).FirstOrDefault()) : null;
         }
 <#}#>
 
