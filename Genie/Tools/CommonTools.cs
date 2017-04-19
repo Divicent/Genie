@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DatabaseSchemaReader.DataSchema;
 
 namespace Genie.Tools
 {
@@ -17,13 +16,37 @@ namespace Genie.Tools
             "DateTime"
         };
 
-        public static string GetCSharpDataType(string csharpDatatype, bool nullable)
+        public static string GetCSharpDataType(string dataType, bool nullable)
         {
+            var csharpDatatype = ConvertDataType(dataType);
             if (!nullable)
                 return csharpDatatype;
             if (NullableTypes.Contains(csharpDatatype))
                 return csharpDatatype + "?";
             return csharpDatatype;
+        }
+
+        private static string ConvertDataType(string dataType)
+        {
+            var type = dataType.ToLower();
+            switch (type)
+            {
+                case "int":
+                    return type;
+                case "numeric":
+                case "decimal":
+                    return "decimal";
+                case "datetime2":
+                case "datetime":
+                case "date":
+                    return "DateTime";
+                case "varchar":
+                case "nvarchar":
+                    return "string";
+                case "bit":
+                    return "bool";
+            }
+            return "";
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class Repository : RepositoryBase
     {
@@ -29,28 +29,28 @@ namespace Genie.Templates.Infrastructure
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
                     "m.Linq;\r\nusing ");
             
-            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper;\r\nusing ");
             
-            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
-            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 11 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -100,12 +100,13 @@ namespace Genie.Templates.Infrastructure
                     "OfWork = UnitOfWork;\r\n                item.DatabaseModelStatus = ModelStatus.Ret" +
                     "rieved;\r\n            }\r\n            return items;\r\n        }\r\n\r\n\r\n        intern" +
                     "al virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<stri" +
-                    "ng> order, int? pageSize = null, int? page = null, int? limit = null, IDbTransac" +
-                    "tion transaction = null)\r\n        {\r\n            var items = Conn.Get<T>(targetN" +
-                    "ame, where, order, pageSize, page, limit, transaction).ToList();\r\n\r\n            " +
-                    "foreach (var item in items)\r\n            {\r\n                item.DatabaseUnitOfW" +
-                    "ork = UnitOfWork;\r\n                item.DatabaseModelStatus = ModelStatus.Retrie" +
-                    "ved;\r\n            }\r\n            return items;\r\n        }\t\t\r\n    }\r\n}\r\n");
+                    "ng> order, int? pageSize = null, int? page = null, int? limit = null, int? skip " +
+                    "= null, int? take = null, IDbTransaction transaction = null)\r\n        {\r\n       " +
+                    "     var items = Conn.Get<T>(targetName, where, order, pageSize, page, limit, sk" +
+                    "ip, take, transaction).ToList();\r\n\r\n            foreach (var item in items)\r\n   " +
+                    "         {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n             " +
+                    "   item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n           " +
+                    " return items;\r\n        }\t\t\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

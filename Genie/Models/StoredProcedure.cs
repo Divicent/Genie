@@ -1,4 +1,5 @@
-﻿using Genie.Models.Abstract;
+﻿using System.Collections.Generic;
+using Genie.Models.Abstract;
 
 namespace Genie.Models
 {
@@ -7,5 +8,6 @@ namespace Genie.Models
         public string Name { get; set; }
         public string PassString { get; set; }
         public string ParamString { get; set; }
+        public List<ProcedureParameter> Parameters { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class ReadOnlyRepository : ReadOnlyRepositoryBase
     {
@@ -29,59 +29,45 @@ namespace Genie.Templates.Infrastructure
             this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\nusing System.Linq;\r\nusing " +
                     "");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper;\r\nusing ");
             
-            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
             
-            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(@".Infrastructure
-{
-    public class ReadOnlyRepository<T> : IReadOnlyRepository<T>
-        where T : class
-    {
-        public IDbConnection Conn { get; }
-        public IDapperContext Context { get;}
-
-        public ReadOnlyRepository(IDapperContext context)
-        {
-            Context = context;
-            Conn = Context.Connection;
-        }
-
-        [System.Obsolete(""GetAll is deprecated, please use Get instead."")]
-        public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            return Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
-        }
-        
-        [System.Obsolete(""GetBy is deprecated, please use Get instead."")]
-        public virtual IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            return Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page,  transaction: transaction, commandTimeout: commandTimeout).ToList();
-        }
-
-        
-        internal virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, IDbTransaction transaction = null)
-        {
-            return Conn.Get<T>(targetName, where, order,  pageSize, page, limit, transaction).ToList();
-        }
-    }
-}
-");
+            this.Write(".Infrastructure\r\n{\r\n    public class ReadOnlyRepository<T> : IReadOnlyRepository<" +
+                    "T>\r\n        where T : class\r\n    {\r\n        public IDbConnection Conn { get; }\r\n" +
+                    "        public IDapperContext Context { get;}\r\n\r\n        public ReadOnlyReposito" +
+                    "ry(IDapperContext context)\r\n        {\r\n            Context = context;\r\n         " +
+                    "   Conn = Context.Connection;\r\n        }\r\n\r\n        [System.Obsolete(\"GetAll is " +
+                    "deprecated, please use Get instead.\")]\r\n        public virtual IEnumerable<T> Ge" +
+                    "tAll(IDbTransaction transaction = null, int? commandTimeout = null)\r\n        {\r\n" +
+                    "            return Conn.GetAll<T>(transaction: transaction, commandTimeout: comm" +
+                    "andTimeout).ToList();\r\n        }\r\n        \r\n        [System.Obsolete(\"GetBy is d" +
+                    "eprecated, please use Get instead.\")]\r\n        public virtual IEnumerable<T> Get" +
+                    "By(object where = null, object order = null, int? pageSize = null, int? page = n" +
+                    "ull, IDbTransaction transaction = null, int? commandTimeout = null)\r\n        {\r\n" +
+                    "            return Conn.GetBy<T>(where: where, order: order, pageSize: pageSize," +
+                    " page: page,  transaction: transaction, commandTimeout: commandTimeout).ToList()" +
+                    ";\r\n        }\r\n\r\n        \r\n        internal virtual IEnumerable<T> Get(string tar" +
+                    "getName, Queue<string> where, Queue<string> order, int? pageSize = null, int? pa" +
+                    "ge = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction" +
+                    " transaction = null)\r\n        {\r\n            return Conn.Get<T>(targetName, wher" +
+                    "e, order,  pageSize, page, limit, skip, take, transaction).ToList();\r\n        }\r" +
+                    "\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
