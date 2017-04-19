@@ -5,6 +5,7 @@ namespace Genie.Models
 {
     internal class View: IView
     {
+        public string FieldName { get; set; }
         public string Name { get; set; }
         public List<ISimpleAttribute> Attributes { get; set; }
     }

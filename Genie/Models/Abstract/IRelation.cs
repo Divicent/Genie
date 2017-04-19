@@ -25,6 +25,11 @@ namespace Genie.Models.Abstract
         /// <summary>
         /// List of reference collections
         /// </summary>
-        List<IReferenceList> ReferenceLists { get; set; } 
+        List<IReferenceList> ReferenceLists { get; set; }
+
+        /// <summary>
+        /// The Field Name
+        /// </summary>
+        string FieldName { get; set; }
     }
 }

@@ -5,12 +5,12 @@ using Genie.Base.Abstract;
 using Genie.Models.Abstract;
 using Genie.Templates.Dapper;
 using Genie.Templates.Extensions;
-using Genie.Templates.General;
-using Genie.Templates.General.Interfaces;
 using Genie.Templates.Infrastructure;
 using Genie.Templates.Infrastructure.Enum;
+using Genie.Templates.Infrastructure.Filters;
 using Genie.Templates.Infrastructure.Interfaces;
 using Genie.Templates.Infrastructure.Models;
+using Genie.Templates.Infrastructure.Repositories;
 using Genie.Templates.SqlMaker;
 using Genie.Templates.SqlMaker.Interfaces;
 
@@ -43,6 +43,8 @@ namespace Genie.Base
                     new WriteAttribute(@"Dapper\WriteAttribute"),
 
                     new ConditionExtension(@"Infrastructure\Enum\ConditionExtension"),
+                    new Filters(@"Infrastructure\Filters\Filter"),
+                    new RepositoryImplementation(@"Infrastructure\Repositories\Repositories", schema.Relations, schema.Views),
                     new IDapperContext(@"Infrastructure\Interfaces\IDapperContext"),
                     new IRepositoryFactory(@"Infrastructure\Interfaces\IRepositoryFactory"),
                     new IRepository(@"Infrastructure\Interfaces\IRepository"),

@@ -1,14 +1,30 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
 
-using System;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories
 {
 <#foreach(var relation in _relations){#>
 	public class <#=relation.Name#>Repository : Repository<<#=relation.Name#>>
 	{
+        public <#=relation.Name#>Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        {
+        }
+
 		public <#=relation.Name#>QueryContext Get() { return new <#=relation.Name#>QueryContext(this); }
+	}
+<#}#>
+
+<#foreach(var view in _views){#>
+	public class <#=view.Name#>Repository : ReadOnlyRepository<<#=view.Name#>>
+	{
+        public <#=view.Name#>Repository(IDapperContext context) : base(context)
+        {
+        }
+
+		public <#=view.Name#>QueryContext Get() { return new <#=view.Name#>QueryContext(this); }
 	}
 <#}#>
 }

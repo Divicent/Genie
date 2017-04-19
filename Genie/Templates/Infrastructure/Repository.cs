@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class Repository : RepositoryBase
     {
@@ -29,36 +29,36 @@ namespace Genie.Templates.Infrastructure
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
                     "m.Linq;\r\nusing ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper;\r\nusing ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 11 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure\r\n{\r\n    public abstract class Repository<T,Q> : IRepository<T>\r\n " +
-                    "       where T : BaseModel\r\n    {\r\n        public IDbConnection Conn { get; }\r\n " +
-                    "       public IDapperContext Context { get;}\r\n        public UnitOfWork UnitOfWo" +
-                    "rk { get;}\r\n\r\n        public Repository(IDapperContext context, UnitOfWork unitO" +
+            this.Write(".Infrastructure\r\n{\r\n    public abstract class Repository<T> : IRepository<T>\r\n   " +
+                    "     where T : BaseModel\r\n    {\r\n        public IDbConnection Conn { get; }\r\n   " +
+                    "     public IDapperContext Context { get;}\r\n        public IUnitOfWork UnitOfWor" +
+                    "k { get;}\r\n\r\n        public Repository(IDapperContext context, IUnitOfWork unitO" +
                     "fWork)\r\n        {\r\n            Context = context;\r\n            Conn = Context.Co" +
                     "nnection;\r\n            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public vir" +
                     "tual void Add(T entity, IDbTransaction transaction = null, int? commandTimeout =" +
@@ -97,17 +97,24 @@ namespace Genie.Templates.Infrastructure
                     ".ToList();\r\n\r\n            foreach (var item in items)\r\n            {\r\n          " +
                     "      item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelS" +
                     "tatus = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n      " +
-                    "  }\r\n\r\n        /// <summary>\r\n        /// Get the first item of the result \r\n   " +
-                    "     /// </summary>\r\n        /// <param name=\"where\">Where condition</param>\r\n  " +
-                    "      /// <param name=\"transaction\">Transaction</param>\r\n        /// <param name" +
-                    "=\"commandTimeout\">CommnadTime out</param>\r\n        /// <returns>First item or nu" +
-                    "ll</returns>\r\n        public virtual T First(object where = null, IDbTransaction" +
-                    " transaction = null, int? commandTimeout = null)\r\n        {\r\n            var ite" +
-                    "m = Conn.GetBy<T>(where: where, transaction: transaction, commandTimeout: comman" +
-                    "dTimeout, first : true).FirstOrDefault();\r\n            if (item == null)\r\n      " +
-                    "          return null;\r\n\r\n            item.DatabaseUnitOfWork = UnitOfWork;\r\n   " +
-                    "         item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            return i" +
-                    "tem;\r\n        }\t\t\r\n    }\r\n}\r\n");
+                    "  }\r\n\r\n\r\n        internal virtual IEnumerable<T> Get(string targetName, Queue<st" +
+                    "ring> where, Queue<string> order, int? pageSize = null, int? page = null, int? l" +
+                    "imit = null, IDbTransaction transaction = null)\r\n        {\r\n            var item" +
+                    "s = Conn.Get<T>(targetName, where, order, pageSize, page, limit, transaction).To" +
+                    "List();\r\n\r\n            foreach (var item in items)\r\n            {\r\n             " +
+                    "   item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelStat" +
+                    "us = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n        }" +
+                    "\r\n\r\n        /// <summary>\r\n        /// Get the first item of the result \r\n      " +
+                    "  /// </summary>\r\n        /// <param name=\"where\">Where condition</param>\r\n     " +
+                    "   /// <param name=\"transaction\">Transaction</param>\r\n        /// <param name=\"c" +
+                    "ommandTimeout\">CommnadTime out</param>\r\n        /// <returns>First item or null<" +
+                    "/returns>\r\n        public virtual T First(object where = null, IDbTransaction tr" +
+                    "ansaction = null, int? commandTimeout = null)\r\n        {\r\n            var item =" +
+                    " Conn.GetBy<T>(where: where, transaction: transaction, commandTimeout: commandTi" +
+                    "meout, first : true).FirstOrDefault();\r\n            if (item == null)\r\n         " +
+                    "       return null;\r\n\r\n            item.DatabaseUnitOfWork = UnitOfWork;\r\n      " +
+                    "      item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            return item" +
+                    ";\r\n        }\t\t\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

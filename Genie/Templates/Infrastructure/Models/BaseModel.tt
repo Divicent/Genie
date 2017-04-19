@@ -1,6 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
 using System.Collections.Generic;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 {
@@ -16,7 +17,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
         protected BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
         internal HashSet<string> UpdatedProperties { get; set; }
         internal ModelStatus DatabaseModelStatus { get; set; }
-        internal UnitOfWork DatabaseUnitOfWork { get; set; }
+        internal IUnitOfWork DatabaseUnitOfWork { get; set; }
 
 		/// <summary>
         /// Checks the status of the object , and registers as updated property

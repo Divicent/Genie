@@ -15,6 +15,11 @@ namespace Genie.Models.Abstract
         /// <summary>
         /// List of attributes (resulting columns) of the view
         /// </summary>
-        List<ISimpleAttribute> Attributes { get; }  
+        List<ISimpleAttribute> Attributes { get; }
+
+        /// <summary>
+        /// The Field Name
+        /// </summary>
+        string FieldName { get; set; }
     }
 }

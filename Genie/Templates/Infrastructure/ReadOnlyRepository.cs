@@ -71,6 +71,11 @@ namespace Genie.Templates.Infrastructure
         {
             return Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page,  transaction: transaction, commandTimeout: commandTimeout).ToList();
         }
+
+        internal virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, IDbTransaction transaction = null)
+        {
+            return Conn.Get<T>(targetName, where, order,  pageSize, page, limit, transactiontransaction).ToList();
+        }
     }
 }
 ");
