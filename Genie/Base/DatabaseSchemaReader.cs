@@ -80,6 +80,7 @@ namespace Genie.Base
                 var realation = new Relation
                 {
                     Name = table.Name,
+                    FieldName = "_" + (table.Name.First() + "").ToLower() + table.Name.Substring(1),
                     Attributes = new List<IAttribute>(),
                     ForeignKeyAttributes = new List<IForeignKeyAttribute>(),
                     ReferenceLists = new List<IReferenceList>()
@@ -126,6 +127,7 @@ namespace Genie.Base
             {
                 var view = new View
                 {
+                    FieldName = "_" + (databaseView.Name.First() + "").ToLower() + databaseView.Name.Substring(1),
                     Name = databaseView.Name,
                     Attributes = new List<ISimpleAttribute>()
                 };
@@ -133,6 +135,7 @@ namespace Genie.Base
                 foreach (var attribute in databaseView.Columns.Select(column => new SimpleAttribute
                 {
                     Name = column.Name,
+                    FieldName = "_" + (column.Name.First() + "").ToLower() + column.Name.Substring(1),
                     DataType = CommonTools.GetCSharpDataType(column.DataType.NetDataTypeCSharpName, column.Nullable),
                 }))
                 {

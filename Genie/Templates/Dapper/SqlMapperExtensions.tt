@@ -338,6 +338,54 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             return obj;
         }
 
+	    /// <summary>
+	    /// Returns a single entity by a single id from table "Ts". T must be of interface type. 
+	    /// Id must be marked with [Key] attribute.
+	    /// Created entity is tracked/intercepted for changes and used by the Update() extension. 
+	    /// </summary>
+	    /// <typeparam name="T">Interface type to create and populate</typeparam>
+	    /// <param name="connection">Open SqlConnection</param>
+	    /// <param name="target"></param>
+	    /// <param name="where"></param>
+	    /// <param name="order"></param>
+	    /// <param name="limit"></param>
+	    /// <param name="tramTransaction"></param>
+	    /// <param name="pageSize"></param>
+	    /// <param name="page"></param>
+	    /// <returns>Entity of T</returns>
+	    public static IEnumerable<T> Get<T>(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, IDbTransaction tramTransaction = null )
+        {
+            var queryBuilder = new StringBuilder(string.Format("select {0} * from " + target, limit != null ? " top " + limit : ""));
+	        if (where != null && where.Count > 0)
+	        {
+                queryBuilder.Append(" where ");
+                while (where.Count > 0)
+                {
+                    var item = where.Dequeue();
+
+                    queryBuilder.Append(string.Format(" {0} ", item));
+                }
+            }
+
+            if (order != null && order.Count > 0)
+            {
+                queryBuilder.Append(" order by ");
+                while (order.Count > 0)
+                {
+                    var item = order.Dequeue();
+                    queryBuilder.Append(string.Format(" {0} ", item));
+                }
+            }
+
+	        if (page != null && pageSize != null)
+	        {
+                queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS " +
+                                           " FETCH NEXT {1} ROWS ONLY ", page * pageSize, pageSize));
+            }
+
+	        return connection.Query<T>(queryBuilder.ToString(), transaction: tramTransaction);
+        }
+
         private static int GetKeyTypeWhereOrder(Type type, Type where, Type order)
         {
             var handler = type.TypeHandle;

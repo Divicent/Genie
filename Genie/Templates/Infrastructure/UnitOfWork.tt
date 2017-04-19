@@ -7,6 +7,7 @@ using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
@@ -14,6 +15,15 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
     {
         private readonly Dictionary<Type, object> _repositories;
         private readonly IRepositoryFactory _factory;
+
+        <#foreach(var relation in _schema.Relations){
+      #>private <#=relation.Name#>Repository <#=relation.FieldName#>Repository;
+        <#}#>
+
+        <#foreach(var view in _schema.Views){
+      #>public <#=view.Name#>Repository <#=view.FieldName#>Repository;
+        <#}#>
+
 
         public IDapperContext Context { get;}
         public IDbTransaction Transaction { get; private set; }
@@ -27,11 +37,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             
             
         <#foreach(var relation in _schema.Relations){
-      #>public IRepository<<#=relation.Name#>> <#=relation.Name#>Repository { get { return GetRepository<<#=relation.Name#>>(); } }
+      #>public <#=relation.Name#>Repository <#=relation.Name#>Repository { get { return <#=relation.FieldName#>Repository ?? (<#=relation.FieldName#>Repository = new <#=relation.Name#>Repository(Context, this)); } }
         <#}#>
 
         <#foreach(var view in _schema.Views){
-      #>public IReadOnlyRepository<<#=view.Name#>> <#=view.Name#>Repository { get { return GetReadonlyRepository<<#=view.Name#>>(); } }
+      #>public <#=view.Name#>Repository <#=view.Name#>Repository { get { return <#=view.FieldName#>Repository ?? (<#=view.FieldName#>Repository = new <#=view.Name#>Repository(Context)); } }
         <#}#>
 
         <#foreach(var sp in _schema.Procedures){

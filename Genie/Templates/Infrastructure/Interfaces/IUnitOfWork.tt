@@ -4,6 +4,7 @@ using System;
 using System.Data;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 using System.Collections.Generic;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
 {
@@ -16,11 +17,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
         IDbTransaction BeginTransaction();
 
 		<#foreach(var relation in _schema.Relations){
-      #>IRepository<<#=relation.Name#>> <#=relation.Name#>Repository { get; }
+      #><#=relation.Name#>Repository <#=relation.Name#>Repository { get; }
         <#}#>
 
         <#foreach(var view in _schema.Views){
-      #>IReadOnlyRepository<<#=view.Name#>> <#=view.Name#>Repository { get; }
+      #><#=view.Name#>Repository <#=view.Name#>Repository { get; }
         <#}#>
 
         <#foreach(var sp in _schema.Procedures){

@@ -14,5 +14,10 @@
         /// Name of the attribute
         /// </summary>
         string Name { get; set; }
+
+        /// <summary>
+        /// Name of the field
+        /// </summary>
+        string FieldName { get; set; }
     }
 }

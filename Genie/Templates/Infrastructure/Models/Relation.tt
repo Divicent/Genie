@@ -4,8 +4,10 @@
 using System;
 using System.Data;
 using System.Collections.Generic;
-
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 {
@@ -36,6 +38,69 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 
 <#foreach(var list in _relation.ReferenceLists){#>
 		public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.GetBy(new { <#=list.ReferencedPropertyName#> = <#=list.ReferencedPropertyOnThisRelation#> }, transaction: transaction); }
+<#}#>
+    }
+
+	public class <#=_relation.Name#>QueryContext 
+	{
+		private <#=_relation.Name#>FilterContext _where; 
+	    private <#=_relation.Name#>OrderContext _order;
+		private readonly <#=_relation.Name#>Repository _repo;
+		internal <#=_relation.Name#>QueryContext(<#=_relation.Name#>Repository repo) { _repo = repo; }
+		public <#=_relation.Name#>FilterContext Where { get { return _where ?? (_where = new <#=_relation.Name#>FilterContext(_repo, this)); }}
+        public <#=_relation.Name#>OrderContext OrderBy { get { return _order ?? (_order = new <#=_relation.Name#>OrderContext(_repo, this)); } }
+	    private int? _page;
+	    private int? _pageSize;
+	    private int? _limit;
+
+        public <#=_relation.Name#>QueryContext Page(int pageSize, int page)
+        {
+            _page = page;
+            _pageSize = pageSize;
+            return this;
+        }
+
+        public <#=_relation.Name#>QueryContext Top(int limit)
+        {
+            _limit = limit;
+            return this;
+        }
+
+	    public IEnumerable<<#=_relation.Name#>> Query(IDbTransaction transaction = null)
+	    {
+	        return _repo.Get("[dbo].[<#=_relation.Name#>]", _where == null ? null : _where.GetFilterExpressions(), _order == null ? null : _order.GetOrderExpressions(), _pageSize, _page, _limit, transaction);
+	    }
+	}
+
+	public class <#=_relation.Name#>FilterContext : BaseFilterContext
+	{
+		private <#=_relation.Name#>Repository _repo;
+		private readonly <#=_relation.Name#>QueryContext  _queryContext;
+		internal <#=_relation.Name#>FilterContext(<#=_relation.Name#>Repository repo, <#=_relation.Name#>QueryContext context) { _repo = repo; _queryContext = context; }
+
+<#foreach(var atd in _relation.Attributes){#>
+<#if(atd.DataType == "string"){#>
+		private StringFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext> <#=atd.FieldName#>;
+		public StringFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new StringFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+<#} else if(atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" || atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" || atd.DataType == "long" || atd.DataType == "long?" ){#>
+		private NumberFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext> <#=atd.FieldName#>;
+		public NumberFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new NumberFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+<#}else if(atd.DataType == "DateTime" || atd.DataType == "DateTime?"){#>
+    	private DateFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext> <#=atd.FieldName#>;
+		public DateFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new DateFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+<#}#>
+<#}#>
+	}
+
+    public class  <#=_relation.Name#>OrderContext : BaseOrderContext
+    {
+		private <#=_relation.Name#>Repository _repo;
+		private readonly <#=_relation.Name#>QueryContext  _queryContext;
+		internal <#=_relation.Name#>OrderContext(<#=_relation.Name#>Repository repo, <#=_relation.Name#>QueryContext context) { _repo = repo; _queryContext = context; }
+
+<#foreach(var atd in _relation.Attributes){#>
+        private OrderElement<<#=_relation.Name#>OrderContext,<#=_relation.Name#>QueryContext> <#=atd.FieldName#>;
+		public OrderElement<<#=_relation.Name#>OrderContext,<#=_relation.Name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new OrderElement<<#=_relation.Name#>OrderContext,<#=_relation.Name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
 <#}#>
     }
 }

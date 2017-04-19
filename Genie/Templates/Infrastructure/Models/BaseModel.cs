@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Models
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class BaseModel : BaseModelBase
     {
@@ -26,9 +26,16 @@ namespace Genie.Templates.Infrastructure.Models
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Collections.Generic;\r\n\r\nnamespace ");
+            this.Write("using System.Collections.Generic;\r\nusing ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
+            #line 4 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -47,7 +54,7 @@ namespace Genie.Templates.Infrastructure.Models
         protected BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
         internal HashSet<string> UpdatedProperties { get; set; }
         internal ModelStatus DatabaseModelStatus { get; set; }
-        internal UnitOfWork DatabaseUnitOfWork { get; set; }
+        internal IUnitOfWork DatabaseUnitOfWork { get; set; }
 
 		/// <summary>
         /// Checks the status of the object , and registers as updated property
