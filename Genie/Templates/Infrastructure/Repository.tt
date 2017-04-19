@@ -10,7 +10,7 @@ using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
-    public class Repository<T> : IRepository<T>
+    public abstract class Repository<T,Q> : IRepository<T>
         where T : BaseModel
     {
         public IDbConnection Conn { get; }
@@ -106,6 +106,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             item.DatabaseUnitOfWork = UnitOfWork;
             item.DatabaseModelStatus = ModelStatus.Retrieved;
             return item;
-        }
+        }		
     }
 }

@@ -170,6 +170,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ConditionExtension.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Filters.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Filters.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IDapperContext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -224,6 +229,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>RepositoryFactory.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Repositories\RepositoryImplementation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepositoryImplementation.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\UnitOfWork.cs">
       <AutoGen>True</AutoGen>
@@ -349,6 +359,10 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ConditionExtension.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\Infrastructure\Filters\Filters.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Filters.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IDapperContext.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IDapperContext.cs</LastGenOutput>
@@ -392,6 +406,10 @@
     <Content Include="Templates\Infrastructure\RepositoryFactory.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>RepositoryFactory.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Repositories\RepositoryImplementation.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepositoryImplementation.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\UnitOfWork.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

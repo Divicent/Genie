@@ -9,7 +9,6 @@ using Genie.Templates.General;
 using Genie.Templates.General.Interfaces;
 using Genie.Templates.Infrastructure;
 using Genie.Templates.Infrastructure.Enum;
-using Genie.Templates.Infrastructure.EnumQueriesStoredProcedures;
 using Genie.Templates.Infrastructure.Interfaces;
 using Genie.Templates.Infrastructure.Models;
 using Genie.Templates.SqlMaker;

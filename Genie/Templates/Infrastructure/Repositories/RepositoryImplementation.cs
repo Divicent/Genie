@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure
+namespace Genie.Templates.Infrastructure.Repositories
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class Repository : RepositoryBase
+    public partial class RepositoryImplementation : RepositoryImplementationBase
     {
 #line hidden
         /// <summary>
@@ -26,88 +26,56 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
-                    "m.Linq;\r\nusing ");
+            this.Write("\r\nusing System;\r\n\r\nnamespace ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Dapper;\r\nusing ");
+            this.Write(".Infrastructure.Repositories\r\n{\r\n");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\nusing ");
-            
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+foreach(var relation in _relations){
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            this.Write("\tpublic class ");
             
-            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure\r\n{\r\n    public abstract class Repository<T,Q> : IRepository<T>\r\n " +
-                    "       where T : BaseModel\r\n    {\r\n        public IDbConnection Conn { get; }\r\n " +
-                    "       public IDapperContext Context { get;}\r\n        public UnitOfWork UnitOfWo" +
-                    "rk { get;}\r\n\r\n        public Repository(IDapperContext context, UnitOfWork unitO" +
-                    "fWork)\r\n        {\r\n            Context = context;\r\n            Conn = Context.Co" +
-                    "nnection;\r\n            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public vir" +
-                    "tual void Add(T entity, IDbTransaction transaction = null, int? commandTimeout =" +
-                    " null)\r\n        {\r\n            if (entity == null)\r\n            {\r\n             " +
-                    "   throw new ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n        " +
-                    "    }\r\n            var insertedId = Conn.Insert(entity, transaction: transaction" +
-                    ", commandTimeout: commandTimeout);\r\n            entity.DatabaseModelStatus = Mod" +
-                    "elStatus.Retrieved;\r\n            entity.DatabaseUnitOfWork = UnitOfWork;\r\n      " +
-                    "  }\r\n\r\n        public virtual void Update(T entity, IDbTransaction transaction =" +
-                    " null, int? commandTimeout = null)\r\n        {\r\n            if (entity == null)\r\n" +
-                    "            {\r\n                throw new ArgumentNullException(\"entity\", \"Update" +
-                    " in DB null entity\");\r\n            }\r\n            Conn.Update(entity, transactio" +
-                    "n: transaction, commandTimeout: commandTimeout);\r\n        }\r\n\r\n        public vi" +
-                    "rtual void Remove(T entity, IDbTransaction transaction = null, int? commandTimeo" +
-                    "ut = null)\r\n        {\r\n            if (entity == null)\r\n            {\r\n         " +
-                    "       throw new ArgumentNullException(\"entity\", \"Remove in DB null entity\");\r\n " +
-                    "           }\r\n            var deleted = Conn.Delete(entity, transaction: transac" +
-                    "tion, commandTimeout: commandTimeout);\r\n            if(deleted) { entity.Databas" +
-                    "eModelStatus = ModelStatus.Deleted; }\r\n        }\r\n\r\n        public virtual T Get" +
-                    "ByKey(object id, IDbTransaction transaction = null, int? commandTimeout = null)\r" +
-                    "\n        {\r\n            if (id == null)\r\n            {\r\n                throw ne" +
-                    "w ArgumentNullException(\"id\");\r\n            }\r\n            var item = Conn.Get<T" +
-                    ">(id, transaction: transaction, commandTimeout: commandTimeout);\r\n            it" +
-                    "em.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            item.DatabaseUnitOf" +
-                    "Work = UnitOfWork;\r\n            return item;\r\n        }\r\n\r\n        public virtua" +
-                    "l IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout =" +
-                    " null)\r\n        {\r\n            var items = Conn.GetAll<T>(transaction: transacti" +
-                    "on, commandTimeout: commandTimeout).ToList();\r\n\r\n            foreach (var item i" +
-                    "n items) \r\n            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r" +
-                    "\n                item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            " +
-                    "}\r\n            return items;\r\n        }\r\n\r\n        public virtual IEnumerable<T>" +
-                    " GetBy(object where = null, object order = null, int? pageSize = null, int? page" +
-                    " = null, IDbTransaction transaction = null, int? commandTimeout = null)\r\n       " +
-                    " {\r\n            var items = Conn.GetBy<T>(where: where, order: order, pageSize: " +
-                    "pageSize, page: page , transaction: transaction, commandTimeout: commandTimeout)" +
-                    ".ToList();\r\n\r\n            foreach (var item in items)\r\n            {\r\n          " +
-                    "      item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelS" +
-                    "tatus = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n      " +
-                    "  }\r\n\r\n        /// <summary>\r\n        /// Get the first item of the result \r\n   " +
-                    "     /// </summary>\r\n        /// <param name=\"where\">Where condition</param>\r\n  " +
-                    "      /// <param name=\"transaction\">Transaction</param>\r\n        /// <param name" +
-                    "=\"commandTimeout\">CommnadTime out</param>\r\n        /// <returns>First item or nu" +
-                    "ll</returns>\r\n        public virtual T First(object where = null, IDbTransaction" +
-                    " transaction = null, int? commandTimeout = null)\r\n        {\r\n            var ite" +
-                    "m = Conn.GetBy<T>(where: where, transaction: transaction, commandTimeout: comman" +
-                    "dTimeout, first : true).FirstOrDefault();\r\n            if (item == null)\r\n      " +
-                    "          return null;\r\n\r\n            item.DatabaseUnitOfWork = UnitOfWork;\r\n   " +
-                    "         item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            return i" +
-                    "tem;\r\n        }\t\t\r\n    }\r\n}\r\n");
+            this.Write("Repository : Repository<");
+            
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write(">\r\n\t{\r\n\t\tpublic ");
+            
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext Get() { return new ");
+            
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext(this); }\r\n\t}\r\n");
+            
+            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -119,7 +87,7 @@ namespace Genie.Templates.Infrastructure
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class RepositoryBase
+    public class RepositoryImplementationBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

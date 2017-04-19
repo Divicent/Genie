@@ -1,0 +1,60 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+
+using System;
+using System.Data;
+using System.Collections.Generic;
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
+{
+    public  abstract class BaseFilterContext
+    {
+        protected BaseFilterContext() { Expressions = new Stack<string>(); }
+        protected Stack<string> Expressions { get; set; } 
+        internal void And() { Expressions.Push("and"); }
+        internal void Add(string expression) { Expressions.Push(expression); }
+    }
+
+	public class ExpressionJoin<T,Q> where T: BaseFilterContext
+    {
+        private T _t;
+        private Q _q;
+
+        internal ExpressionJoin(T t, Q q)
+        {
+            _t = t;
+            _q = q;
+        } 
+
+        public T And()
+        {
+            _t.And();
+            return _t;
+        }
+
+        public Q Filter()
+        {
+            return _q;
+        }
+    }
+
+	public class StringFilter<T,Q> where T: BaseFilterContext
+	{
+		private string _propertyName;
+        private T _parent;
+        private Q _q;
+
+        internal StringFilter(string propertyName, T parent, Q q)
+        {
+            _parent = parent;
+            _propertyName = propertyName;
+            _q = q;
+        } 
+
+        public ExpressionJoin<T,Q> Equals(string str)
+        {
+            _parent.Add(string.Format("{0} = '{1}'", _propertyName, str));
+            return new ExpressionJoin<T,Q>(_parent, _q);
+        }	
+	}
+}

@@ -435,31 +435,31 @@ namespace Genie.Templates.Infrastructure
         }
     }
 
-    namespace EnumQueriesStoredProcedures
+    namespace Repositories
     {
-    //    public partial class QueriesAndEnum : ITemplateFile
-    //    {
-    //        private readonly List<IRelation> _relations;
-    //        private readonly List<IView> _views; 
-    //        private readonly string _path; 
-    //        internal QueriesAndEnum(List<IRelation> relations, List<IView> views, string path)
-    //        {
-    //            _relations = relations;
-    //            _views = views;
-    //            _path = path;
-    //        }
+        public partial class RepositoryImplementation
+        {
+            private readonly List<Relation> _relations;
+            private readonly List<View> _views;
+            private readonly string _path;
 
-    //        public IContentFile Generate()
-    //        {
-    //            return new ContentFile
-    //            {
-    //                Content = TransformText(),
-    //                Path = _path
-    //            };
-    //        }
-    //    }
+            internal RepositoryImplementation(string path, List<Relation> relations, List<View> views)
+            {
+                _relations = relations;
+                _path = path;
+                _views = views;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
     }
-
     namespace Interfaces
     {
         public partial class IDapperContext : ITemplateFile

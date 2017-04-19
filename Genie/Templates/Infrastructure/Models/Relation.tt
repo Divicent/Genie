@@ -38,4 +38,26 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 		public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.GetBy(new { <#=list.ReferencedPropertyName#> = <#=list.ReferencedPropertyOnThisRelation#> }, transaction: transaction); }
 <#}#>
     }
+
+	public class <#=_relation.Name#>QueryContext 
+	{
+		private <#=_relation.Name#>FilterContext _where; 
+		private <#=_relation.Name#>Repository _repo;
+		internal <#=_relation.Name#>QueryContext(<#=_relation.Name#>Repository repo) { _repo = repo; }
+		<#=_relation.Name#>FilterContext Where { get { return _where ?? (_where = new <#=_relation.Name#>FilterContext(_repo, this)); }}
+	}
+
+	public class <#=_relation.Name#>FilterContext : BaseFilterContext
+	{
+		private <#=_relation.Name#>Repository _repo;
+		private <#=_relation.Name#>QueryContext  _queryContext;
+		internal <#=_relation.Name#>FilterContext(<#=_relation.Name#>Repository repo, <#=_relation.Name#>QueryContext context) { _repo = repo; _queryContext = context; }
+
+<#foreach(var atd in _relation.Attributes){#>
+<#if(atd.DataType == "string"){#>
+		private StringFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext> <#=atd.FieldName#>;
+		public StringFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new StringFilter<<#=_relation.Name#>FilterContext,<#=_relation.Name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+<#}#>
+<#}#>
+	}
 }
