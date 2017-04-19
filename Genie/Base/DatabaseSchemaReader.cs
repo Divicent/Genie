@@ -21,7 +21,7 @@ namespace Genie.Base
             DBReader.DataSchema.DatabaseSchema schemaBase;
             try
             {
-                using (var reader = new DatabaseReader(configuration.ConnectionString, SqlType.SqlServer))
+                using (var reader = new DatabaseReader(configuration.ConnectionString, "System.Data.SqlClient"))
                 {
                     schemaBase = reader.ReadAll();
                 }

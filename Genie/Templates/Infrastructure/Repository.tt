@@ -66,6 +66,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             return item;
         }
 
+        [Obsolete("GetAll is deprecated, please use Get instead.")]
         public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
         {
             var items = Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
@@ -78,6 +79,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             return items;
         }
 
+        [Obsolete("GetBy is deprecated, please use Get instead.")]
         public virtual IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
             var items = Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page , transaction: transaction, commandTimeout: commandTimeout).ToList();
@@ -101,24 +103,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
                 item.DatabaseModelStatus = ModelStatus.Retrieved;
             }
             return items;
-        }
-
-        /// <summary>
-        /// Get the first item of the result 
-        /// </summary>
-        /// <param name="where">Where condition</param>
-        /// <param name="transaction">Transaction</param>
-        /// <param name="commandTimeout">CommnadTime out</param>
-        /// <returns>First item or null</returns>
-        public virtual T First(object where = null, IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            var item = Conn.GetBy<T>(where: where, transaction: transaction, commandTimeout: commandTimeout, first : true).FirstOrDefault();
-            if (item == null)
-                return null;
-
-            item.DatabaseUnitOfWork = UnitOfWork;
-            item.DatabaseModelStatus = ModelStatus.Retrieved;
-            return item;
         }		
     }
 }

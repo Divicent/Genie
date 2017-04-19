@@ -83,38 +83,29 @@ namespace Genie.Templates.Infrastructure
                     "w ArgumentNullException(\"id\");\r\n            }\r\n            var item = Conn.Get<T" +
                     ">(id, transaction: transaction, commandTimeout: commandTimeout);\r\n            it" +
                     "em.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            item.DatabaseUnitOf" +
-                    "Work = UnitOfWork;\r\n            return item;\r\n        }\r\n\r\n        public virtua" +
-                    "l IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout =" +
-                    " null)\r\n        {\r\n            var items = Conn.GetAll<T>(transaction: transacti" +
-                    "on, commandTimeout: commandTimeout).ToList();\r\n\r\n            foreach (var item i" +
-                    "n items) \r\n            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r" +
-                    "\n                item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            " +
-                    "}\r\n            return items;\r\n        }\r\n\r\n        public virtual IEnumerable<T>" +
-                    " GetBy(object where = null, object order = null, int? pageSize = null, int? page" +
-                    " = null, IDbTransaction transaction = null, int? commandTimeout = null)\r\n       " +
-                    " {\r\n            var items = Conn.GetBy<T>(where: where, order: order, pageSize: " +
-                    "pageSize, page: page , transaction: transaction, commandTimeout: commandTimeout)" +
-                    ".ToList();\r\n\r\n            foreach (var item in items)\r\n            {\r\n          " +
-                    "      item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelS" +
-                    "tatus = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n      " +
-                    "  }\r\n\r\n\r\n        internal virtual IEnumerable<T> Get(string targetName, Queue<st" +
-                    "ring> where, Queue<string> order, int? pageSize = null, int? page = null, int? l" +
-                    "imit = null, IDbTransaction transaction = null)\r\n        {\r\n            var item" +
-                    "s = Conn.Get<T>(targetName, where, order, pageSize, page, limit, transaction).To" +
-                    "List();\r\n\r\n            foreach (var item in items)\r\n            {\r\n             " +
-                    "   item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.DatabaseModelStat" +
-                    "us = ModelStatus.Retrieved;\r\n            }\r\n            return items;\r\n        }" +
-                    "\r\n\r\n        /// <summary>\r\n        /// Get the first item of the result \r\n      " +
-                    "  /// </summary>\r\n        /// <param name=\"where\">Where condition</param>\r\n     " +
-                    "   /// <param name=\"transaction\">Transaction</param>\r\n        /// <param name=\"c" +
-                    "ommandTimeout\">CommnadTime out</param>\r\n        /// <returns>First item or null<" +
-                    "/returns>\r\n        public virtual T First(object where = null, IDbTransaction tr" +
-                    "ansaction = null, int? commandTimeout = null)\r\n        {\r\n            var item =" +
-                    " Conn.GetBy<T>(where: where, transaction: transaction, commandTimeout: commandTi" +
-                    "meout, first : true).FirstOrDefault();\r\n            if (item == null)\r\n         " +
-                    "       return null;\r\n\r\n            item.DatabaseUnitOfWork = UnitOfWork;\r\n      " +
-                    "      item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            return item" +
-                    ";\r\n        }\t\t\r\n    }\r\n}\r\n");
+                    "Work = UnitOfWork;\r\n            return item;\r\n        }\r\n\r\n        [Obsolete(\"Ge" +
+                    "tAll is deprecated, please use Get instead.\")]\r\n        public virtual IEnumerab" +
+                    "le<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)\r\n   " +
+                    "     {\r\n            var items = Conn.GetAll<T>(transaction: transaction, command" +
+                    "Timeout: commandTimeout).ToList();\r\n\r\n            foreach (var item in items) \r\n" +
+                    "            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n          " +
+                    "      item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n        " +
+                    "    return items;\r\n        }\r\n\r\n        [Obsolete(\"GetBy is deprecated, please u" +
+                    "se Get instead.\")]\r\n        public virtual IEnumerable<T> GetBy(object where = n" +
+                    "ull, object order = null, int? pageSize = null, int? page = null, IDbTransaction" +
+                    " transaction = null, int? commandTimeout = null)\r\n        {\r\n            var ite" +
+                    "ms = Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page , " +
+                    "transaction: transaction, commandTimeout: commandTimeout).ToList();\r\n\r\n         " +
+                    "   foreach (var item in items)\r\n            {\r\n                item.DatabaseUnit" +
+                    "OfWork = UnitOfWork;\r\n                item.DatabaseModelStatus = ModelStatus.Ret" +
+                    "rieved;\r\n            }\r\n            return items;\r\n        }\r\n\r\n\r\n        intern" +
+                    "al virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<stri" +
+                    "ng> order, int? pageSize = null, int? page = null, int? limit = null, IDbTransac" +
+                    "tion transaction = null)\r\n        {\r\n            var items = Conn.Get<T>(targetN" +
+                    "ame, where, order, pageSize, page, limit, transaction).ToList();\r\n\r\n            " +
+                    "foreach (var item in items)\r\n            {\r\n                item.DatabaseUnitOfW" +
+                    "ork = UnitOfWork;\r\n                item.DatabaseModelStatus = ModelStatus.Retrie" +
+                    "ved;\r\n            }\r\n            return items;\r\n        }\t\t\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

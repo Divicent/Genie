@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class IRepository : IRepositoryBase
     {
@@ -28,21 +28,21 @@ namespace Genie.Templates.Infrastructure.Interfaces
         {
             this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\nusing ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper;\r\nusing ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -64,7 +64,6 @@ namespace Genie.Templates.Infrastructure.Interfaces
 
         IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
         IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null);
-        T First(object where = null, IDbTransaction transaction = null, int? commandTimeout = null);
     }
 }
 ");
