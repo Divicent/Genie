@@ -7,6 +7,42 @@ using System.Collections.Generic;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
 {
+	
+	public class BaseQueryContext<T>
+    {
+        protected int? _page;
+        protected int? _pageSize;
+        protected int? _limit;
+        protected int? _skip;
+        protected int? _take;
+        protected T Instance;
+
+        public T Page(int pageSize, int page)
+        {
+            _page = page;
+            _pageSize = pageSize;
+            return Instance;
+        }
+
+        public T Top(int limit)
+        {
+            _limit = limit;
+            return Instance;
+        }
+
+        public T Skip(int skip)
+        {
+            _skip = skip;
+            return Instance;
+        }
+
+        public T Take(int take)
+        {
+            _take = take;
+            return Instance;
+        }
+    }
+
     public  abstract class BaseFilterContext
     {
         protected BaseFilterContext() { Expressions = new Queue<string>(); }
