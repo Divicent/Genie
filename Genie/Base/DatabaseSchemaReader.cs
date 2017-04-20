@@ -115,8 +115,6 @@ namespace Genie.Base
             ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION
             ", connection, transaction);
 
-
-
                 using (var reader = commandToGetColumns.ExecuteReader())
                 {
                     while (reader.HasRows && reader.Read())
