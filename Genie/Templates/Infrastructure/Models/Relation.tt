@@ -31,7 +31,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 <#	if(atd.IsKey) {#>
 		[Key]
 <#	}#>
-		public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { <#=atd.FieldName#> = value; __Updated("<#=atd.Name#>"); } }
+		public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { if(<#=atd.FieldName#> == value ) { return; }  <#=atd.FieldName#> = value; __Updated("<#=atd.Name#>"); <#=atd.RefPropName != null ? atd.RefPropName + " = null;" : ""#> } }
 <#}#>
 
 <#foreach(var atd in entity.ForeignKeyAttributes){#>

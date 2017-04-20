@@ -25,5 +25,10 @@ namespace Genie.Models.Abstract
         /// Preprocessed field name of the attribute 
         /// </summary>
         string FieldName { get; set; }
+
+        /// <summary>
+        /// Reference property name if available
+        /// </summary>
+        string RefPropName { get; set; }
     }
 }

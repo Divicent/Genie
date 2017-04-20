@@ -249,6 +249,7 @@ namespace Genie.Base
                                 ReferencingTableColumnName = databaseSchemaColumn.ReferencedColumnName
                             };
 
+                            attribute.RefPropName = attribute.FieldName + "Obj";
                             table.ForeignKeyAttributes.Add(fkAttribute);
                         }
 

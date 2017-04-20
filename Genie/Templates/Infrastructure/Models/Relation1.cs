@@ -184,7 +184,14 @@ foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
-            this.Write("; } set { ");
+            this.Write("; } set { if(");
+            
+            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(" == value ) { return; }  ");
             
             #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
@@ -198,7 +205,14 @@ foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
-            this.Write("\"); } }\r\n");
+            this.Write("\"); ");
+            
+            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.RefPropName != null ? atd.RefPropName + " = null;" : ""));
+            
+            #line default
+            #line hidden
+            this.Write(" } }\r\n");
             
             #line 35 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }
