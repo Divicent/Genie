@@ -101,7 +101,7 @@ foreach(var view in _schema.Views){
             
             #line default
             #line hidden
-            this.Write("public ");
+            this.Write("private ");
             
             #line 24 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));

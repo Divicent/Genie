@@ -21,7 +21,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         <#}#>
 
         <#foreach(var view in _schema.Views){
-      #>public <#=view.Name#>Repository <#=view.FieldName#>Repository;
+      #>private <#=view.Name#>Repository <#=view.FieldName#>Repository;
         <#}#>
 
 
