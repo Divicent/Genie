@@ -450,6 +450,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	        return queryBuilder.ToString();
 	    }
 
+        private static bool AndOrOr(string str)
+	    {
+	        return str == "and" || str == "or";
+	    }
+
+
 
         private static int GetKeyTypeWhereOrder(Type type, Type where, Type order)
         {
