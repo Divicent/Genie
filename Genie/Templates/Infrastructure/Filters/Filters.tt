@@ -116,6 +116,30 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
             return new ExpressionJoin<T,Q>(_parent, _q);
         }
 
+        public ExpressionJoin<T,Q> NotStartsWith(string str)
+        {
+            _parent.Add(string.Format("[{0}] NOT LIKE '{1}%'", _propertyName, str));
+            return new ExpressionJoin<T,Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T,Q> NotEndsWith(string str)
+        {
+            _parent.Add(string.Format("[{0}] NOT LIKE '%{1}'", _propertyName, str));
+            return new ExpressionJoin<T,Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T,Q> IsEmpty()
+        {
+            _parent.Add(string.Format("[{0}] = ''", _propertyName));
+            return new ExpressionJoin<T,Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T,Q> IsNotEmpty()
+        {
+            _parent.Add(string.Format("[{0}] != ''", _propertyName));
+            return new ExpressionJoin<T,Q>(_parent, _q);
+        }
+
         public ExpressionJoin<T,Q> IsNull()
         {
             _parent.Add(string.Format("[{0}] IS NULL", _propertyName));

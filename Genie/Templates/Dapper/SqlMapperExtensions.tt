@@ -353,7 +353,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static IEnumerable<T> Get<T>(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tramTransaction = null, bool isCount = false )
         {
-	        return connection.Query<T>(GetRetriveQuer(target, where, order, pageSize, page, limit, skip, take), transaction: tramTransaction);
+	        return connection.Query<T>(GetRetriveQuery(target, where, order, pageSize, page, limit, skip, take), transaction: tramTransaction);
         }
 
 
@@ -372,21 +372,54 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static int Count(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tramTransaction = null)
         {
-            return connection.Query<int>(GetRetriveQuer(target, where, order, pageSize, page, limit, skip, take, true), transaction: tramTransaction).FirstOrDefault();
+            return connection.Query<int>(GetRetriveQuery(target, where, order, pageSize, page, limit, skip, take, true), transaction: tramTransaction).FirstOrDefault();
         }
 
 
-	    private static string GetRetriveQuer(string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, bool isCount = false)
+	    private static string GetRetriveQuery(string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, bool isCount = false)
 	    {
             var queryBuilder = new StringBuilder(string.Format("select {0} {1} from " + target, limit != null ? " top " + limit : "", isCount ? "count(*)" : "*"));
+            
             if (where != null && where.Count > 0)
             {
                 queryBuilder.Append(" where ");
+
+                var first = true;
+                var previous = "";
+
                 while (where.Count > 0)
                 {
-                    var item = where.Dequeue();
+                    var current = where.Dequeue();
 
-                    queryBuilder.Append(string.Format(" {0} ", item));
+                    if (AndOrOr(current))
+                    {
+                        if (first)
+                        {
+                            first = false;
+                            continue;
+                        }
+
+                        if (AndOrOr(previous))
+                        {
+                            first = false;
+                            continue;
+                        }
+
+                        previous = current;
+                        queryBuilder.Append(string.Format(" {0} ", current));
+                    }
+                    else
+                    {
+                        if (!first && !AndOrOr(previous))
+                        {
+                            queryBuilder.Append(string.Format(" {0} ", "and"));
+                        }
+
+                        previous = current;
+                        queryBuilder.Append(string.Format(" {0} ", current));
+                    }
+
+                    first = false;
                 }
             }
 
