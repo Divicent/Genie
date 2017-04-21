@@ -33,7 +33,7 @@ namespace Genie.Templates.Infrastructure.Repositories
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\nusing ");
+            this.Write(".Infrastructure.Models.Abstract;\r\nusing ");
             
             #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
@@ -47,107 +47,191 @@ namespace Genie.Templates.Infrastructure.Repositories
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Repositories\r\n{\r\n");
+            this.Write(".Infrastructure.Repositories\r\n{\r\n\r\n    namespace Abstract\r\n    {\r\n");
             
-            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 12 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
 foreach(var relation in _relations){
             
             #line default
             #line hidden
-            this.Write("\tpublic class ");
+            this.Write("\t        public interface I");
             
-            #line 10 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 13 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
-            this.Write("Repository : Repository<");
+            this.Write("Repository : IRepository<");
             
-            #line 10 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 13 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
-            this.Write(">\r\n\t{\r\n        public ");
+            this.Write(">\r\n\t        {\r\n\t\t        I");
             
-            #line 12 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
-            this.Write("Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOf" +
-                    "Work)\r\n        {\r\n        }\r\n\r\n\t\tpublic ");
+            this.Write("QueryContext Get();\r\n\t        }\r\n");
             
-            #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext Get() { return new ");
-            
-            #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext(this); }\r\n\t}\r\n");
-            
-            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 17 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
 foreach(var view in _views){
             
             #line default
             #line hidden
-            this.Write("\tpublic class ");
+            this.Write("\t        public interface I");
             
-            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository : IReadOnlyRepository<");
+            
+            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write(">\r\n\t        {\r\n\t\t        I");
+            
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext Get();\r\n\t        }\r\n");
+            
+            #line 24 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n    }\r\n\r\n    namespace Concrete\r\n    {\r\n");
+            
+            #line 30 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+foreach(var relation in _relations){
+            
+            #line default
+            #line hidden
+            this.Write("\t        internal class ");
+            
+            #line 31 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository : Repository<");
+            
+            #line 31 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("> , I");
+            
+            #line 31 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository\r\n\t        {\r\n                internal ");
+            
+            #line 33 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOf" +
+                    "Work)\r\n                {\r\n                }\r\n\r\n\t\t        public I");
+            
+            #line 37 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext Get() { return new ");
+            
+            #line 37 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext(this); }\r\n\t        }\r\n");
+            
+            #line 39 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 41 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+foreach(var view in _views){
+            
+            #line default
+            #line hidden
+            this.Write("\t        internal class ");
+            
+            #line 42 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Repository : ReadOnlyRepository<");
             
-            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 42 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
-            this.Write(">\r\n\t{\r\n        public ");
+            this.Write(">, I");
             
-            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 42 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
-            this.Write("Repository(IDapperContext context) : base(context)\r\n        {\r\n        }\r\n\r\n\t\tpub" +
-                    "lic ");
+            this.Write("Repository\r\n\t        {\r\n                public ");
             
-            #line 27 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 44 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            
+            #line default
+            #line hidden
+            this.Write("Repository(IDapperContext context) : base(context)\r\n                {\r\n          " +
+                    "      }\r\n\r\n\t\t        public I");
+            
+            #line 48 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("QueryContext Get() { return new ");
             
-            #line 27 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 48 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
-            this.Write("QueryContext(this); }\r\n\t}\r\n");
+            this.Write("QueryContext(this); }\r\n\t        }\r\n");
             
-            #line 29 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 50 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
 }
             
             #line default
             #line hidden
-            this.Write("}");
+            this.Write("    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
