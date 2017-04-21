@@ -301,7 +301,7 @@ namespace Genie.Base
 
                 foreach (var storedProcedure in storedProcedures)
                 {
-                    var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current + string.Format("{0} {1}", CommonTools.GetCSharpDataType(param.DataType, false), param.Name.Replace("@", "")) + ",");
+                    var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current + string.Format("{0} {1} = null", CommonTools.GetCSharpDataType(param.DataType, true), param.Name.Replace("@", "")) + ",");
                     var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => current + string.Format("{1} = '\"+{0}+\"'", param.Name.Replace("@", ""), param.Name) + ",");
 
                     storedProcedure.ParamString = parameterString.TrimEnd(',');
