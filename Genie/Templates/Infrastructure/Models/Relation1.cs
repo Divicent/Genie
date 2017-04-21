@@ -17,7 +17,7 @@ namespace Genie.Templates.Infrastructure.Models
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class Relation : RelationBase
     {
@@ -30,35 +30,35 @@ namespace Genie.Templates.Infrastructure.Models
             this.Write("using System;\r\nusing System.Data;\r\nusing System.Linq;\r\nusing System.Collections.G" +
                     "eneric;\r\nusing ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Repositories;\r\nusing ");
             
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper;\r\nusing ");
             
-            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 10 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
-            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 11 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Filters;\r\n\r\n");
             
-            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 13 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 var entity = _relation;
 var name = _relation.Name;
 
@@ -67,56 +67,56 @@ var name = _relation.Name;
             #line hidden
             this.Write("namespace ");
             
-            #line 16 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models\r\n{\r\n    [Table(\"[dbo].[");
             
-            #line 18 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("]\")]\r\n    public class ");
             
-            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(" : BaseModel\r\n    {\r\n");
             
-            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
             this.Write("\t\tprivate ");
             
-            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 25 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 25 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 foreach(var atd in
  entity.ForeignKeyAttributes){
             
@@ -124,118 +124,118 @@ foreach(var atd in
             #line hidden
             this.Write("\t\tprivate ");
             
-            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 27 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingRelationName));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 27 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
             
             #line default
             #line hidden
             this.Write("Obj;\r\n");
             
-            #line 28 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 28 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 30 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 30 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
             
-            #line 31 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 31 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 	if(atd.IsKey) {
             
             #line default
             #line hidden
             this.Write("\t\t[Key]\r\n");
             
-            #line 33 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 33 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 	}
             
             #line default
             #line hidden
             this.Write("\t\tpublic ");
             
-            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 34 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 34 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get { return ");
             
-            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 34 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write("; } set { if(");
             
-            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 34 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" == value ) { return; }  ");
             
-            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 34 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" = value; __Updated(\"");
             
-            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 34 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write("\"); ");
             
-            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 34 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.RefPropName != null ? atd.RefPropName + " = null;" : ""));
             
             #line default
             #line hidden
             this.Write(" } }\r\n");
             
-            #line 35 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 35 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 37 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 37 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 foreach(var atd in entity.ForeignKeyAttributes){
             
             #line default
             #line hidden
             this.Write("\t\tpublic ");
             
-            #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 38 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingRelationName));
             
             #line default
             #line hidden
             this.Write(" Get");
             
-            #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 38 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.Name));
             
             #line default
@@ -243,188 +243,216 @@ foreach(var atd in entity.ForeignKeyAttributes){
             this.Write("(IDbTransaction transaction =null)\r\n        {\r\n            return DatabaseUnitOfW" +
                     "ork != null ? ");
             
-            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
             
             #line default
             #line hidden
             this.Write("Obj ?? (");
             
-            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
             
             #line default
             #line hidden
             this.Write("Obj = DatabaseUnitOfWork.");
             
-            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingRelationName));
             
             #line default
             #line hidden
             this.Write("Repository.Get().Where.");
             
-            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingTableColumnName));
             
             #line default
             #line hidden
             this.Write(".Equals(");
             
-            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
             
             #line default
             #line hidden
             
-            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ?  ".GetValueOrDefault()" : ""));
             
             #line default
             #line hidden
             this.Write(").Filter().Top(1).Query(transaction).FirstOrDefault()) : null;\r\n        }\r\n");
             
-            #line 42 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 42 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 44 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 44 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 foreach(var list in entity.ReferenceLists){
             
             #line default
             #line hidden
             this.Write("\t\tpublic IEnumerable<");
             
-            #line 45 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferncedRelationName));
             
             #line default
             #line hidden
             this.Write("> ");
             
-            #line 45 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferncedRelationName.ToPlural()));
             
             #line default
             #line hidden
             this.Write("WhereThisIs");
             
-            #line 45 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferencedPropertyName));
             
             #line default
             #line hidden
             this.Write("(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.");
             
-            #line 45 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferncedRelationName));
             
             #line default
             #line hidden
             this.Write("Repository.Get().Where.");
             
-            #line 45 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferencedPropertyName));
             
             #line default
             #line hidden
             this.Write(".Equals(");
             
-            #line 45 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferencedPropertyOnThisRelation));
             
             #line default
             #line hidden
             this.Write(").Filter().Query(transaction); }\r\n");
             
-            #line 46 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 46 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }
             
             #line default
             #line hidden
             this.Write("    }\r\n\r\n\tpublic class ");
             
-            #line 49 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 49 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
-            this.Write("QueryContext : BaseQueryContext<");
+            this.Write("QueryContext\r\n\t{\r\n\t\tprivate ");
             
-            #line 49 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext>\r\n\t{\r\n\t\tprivate ");
-            
-            #line 51 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 51 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext _where; \r\n\t    private ");
             
-            #line 52 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 52 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("OrderContext _order;\r\n\t\tprivate readonly ");
             
-            #line 53 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 53 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
-            this.Write("Repository _repo;\r\n\t\t\r\n\t\tinternal ");
+            this.Write("Repository _repo;\r\n\r\n        private int? _page;\r\n        private int? _pageSize;" +
+                    "\r\n        private int? _limit;\r\n        private int? _skip;\r\n        private int" +
+                    "? _take;\r\n\r\n        public ");
             
-            #line 55 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 61 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext Page(int pageSize, int page)\r\n        {\r\n            _page = page;\r\n" +
+                    "            _pageSize = pageSize;\r\n            return this;\r\n        }\r\n\r\n      " +
+                    "  public ");
+            
+            #line 68 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext Top(int limit)\r\n        {\r\n            _limit = limit;\r\n            " +
+                    "return this;\r\n        }\r\n\r\n        public ");
+            
+            #line 74 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext Skip(int skip)\r\n        {\r\n            _skip = skip;\r\n            re" +
+                    "turn this;\r\n        }\r\n\r\n        public ");
+            
+            #line 80 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext Take(int take)\r\n        {\r\n            _take = take;\r\n            re" +
+                    "turn this;\r\n        }\r\n\t\t\r\n\t\tinternal ");
+            
+            #line 86 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext(");
             
-            #line 55 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 86 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Repository repo) { _repo = repo; }\r\n\t\t\r\n\t\tpublic ");
             
-            #line 57 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 88 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext Where { get { return _where ?? (_where = new ");
             
-            #line 57 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 88 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext(this)); }}\r\n        \r\n\t\tpublic ");
             
-            #line 59 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 90 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("OrderContext OrderBy { get { return _order ?? (_order = new ");
             
-            #line 59 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 90 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("OrderContext(this)); } }\r\n\r\n\t    public IEnumerable<");
             
-            #line 61 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 92 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
@@ -432,7 +460,16 @@ foreach(var list in entity.ReferenceLists){
             this.Write("> Query(IDbTransaction transaction = null)\r\n\t    {\r\n\t        return _repo.Get(\"[d" +
                     "bo].[");
             
-            #line 63 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 94 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("]\", _where?.GetFilterExpressions(), _order?.GetOrderExpressions(), _pageSize, _pa" +
+                    "ge, _limit, _skip, _take, transaction);\r\n\t    }\r\n\r\n\t    public int Count(IDbTran" +
+                    "saction transaction = null)\r\n\t    {\r\n\t        return _repo.Count(\"[dbo].[");
+            
+            #line 99 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
@@ -440,418 +477,502 @@ foreach(var list in entity.ReferenceLists){
             this.Write("]\", _where?.GetFilterExpressions(), _order?.GetOrderExpressions(), _pageSize, _pa" +
                     "ge, _limit, _skip, _take, transaction);\r\n\t    }\r\n\t}\r\n\r\n\tpublic class ");
             
-            #line 67 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 103 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext : BaseFilterContext\r\n\t{\r\n\t\tprivate readonly ");
             
-            #line 69 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 105 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext  _queryContext;\r\n\t\tinternal ");
             
-            #line 70 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 106 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext(");
             
-            #line 70 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 106 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext context) { _queryContext = context; }\r\n\r\n");
             
-            #line 72 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 108 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
             
-            #line 73 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 109 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 if(atd.DataType == "string"){
             
             #line default
             #line hidden
             this.Write("\t\tprivate StringFilter<");
             
-            #line 74 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 110 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 74 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 110 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 74 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 110 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\tpublic StringFilter<");
             
-            #line 75 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 111 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 75 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 111 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 75 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 111 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get { return ");
             
-            #line 75 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 111 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" ?? ( ");
             
-            #line 75 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 111 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" = new StringFilter<");
             
-            #line 75 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 111 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 75 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 111 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext>(\"");
             
-            #line 75 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 111 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write("\", this, _queryContext)); } }\r\n");
             
-            #line 76 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 112 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 } else if(atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" || atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" || atd.DataType == "long" || atd.DataType == "long?" ){
             
             #line default
             #line hidden
             this.Write("\t\tprivate NumberFilter<");
             
-            #line 77 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 113 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 77 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 113 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 77 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 113 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\tpublic NumberFilter<");
             
-            #line 78 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 114 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 78 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 114 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 78 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 114 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get { return ");
             
-            #line 78 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 114 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" ?? ( ");
             
-            #line 78 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 114 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" = new NumberFilter<");
             
-            #line 78 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 114 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 78 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 114 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext>(\"");
             
-            #line 78 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 114 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write("\", this, _queryContext)); } }\r\n");
             
-            #line 79 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 115 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }else if(atd.DataType == "DateTime" || atd.DataType == "DateTime?"){
             
             #line default
             #line hidden
             this.Write("    \tprivate DateFilter<");
             
-            #line 80 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 116 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 80 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 116 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 80 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 116 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\tpublic DateFilter<");
             
-            #line 81 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 117 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 81 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 117 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 81 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 117 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get { return ");
             
-            #line 81 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 117 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" ?? ( ");
             
-            #line 81 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 117 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" = new DateFilter<");
             
-            #line 81 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 117 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("FilterContext,");
             
-            #line 81 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 117 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext>(\"");
             
-            #line 81 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 117 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write("\", this, _queryContext)); } }\r\n");
             
-            #line 82 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-}
+            #line 118 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+}else if(atd.DataType == "bool" || atd.DataType == "bool?"){
             
             #line default
             #line hidden
+            this.Write("    \tprivate BoolFilter<");
             
-            #line 83 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-}
-            
-            #line default
-            #line hidden
-            this.Write("\t}\r\n\r\n    public class  ");
-            
-            #line 86 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 119 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
-            this.Write("OrderContext : BaseOrderContext\r\n    {\r\n\t\tprivate readonly ");
+            this.Write("FilterContext,");
             
-            #line 88 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext  _queryContext;\r\n\t\tinternal ");
-            
-            #line 89 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(name));
-            
-            #line default
-            #line hidden
-            this.Write("OrderContext(");
-            
-            #line 89 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext context) { _queryContext = context; }\r\n\r\n");
-            
-            #line 91 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-foreach(var atd in entity.Attributes){
-            
-            #line default
-            #line hidden
-            this.Write("        private OrderElement<");
-            
-            #line 92 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(name));
-            
-            #line default
-            #line hidden
-            this.Write("OrderContext,");
-            
-            #line 92 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 119 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 92 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 119 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
-            this.Write(";\r\n\t\tpublic OrderElement<");
+            this.Write(";\r\n\t\tpublic BoolFilter<");
             
-            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 120 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
-            this.Write("OrderContext,");
+            this.Write("FilterContext,");
             
-            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 120 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 120 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get { return ");
             
-            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 120 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
             this.Write(" ?? ( ");
             
-            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 120 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
             
             #line default
             #line hidden
-            this.Write(" = new OrderElement<");
+            this.Write(" = new BoolFilter<");
             
-            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 120 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
-            this.Write("OrderContext,");
+            this.Write("FilterContext,");
             
-            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 120 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("QueryContext>(\"");
             
-            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 120 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write("\", this, _queryContext)); } }\r\n");
             
-            #line 94 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            #line 121 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+}
+            
+            #line default
+            #line hidden
+            
+            #line 122 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\t}\r\n\r\n    public class  ");
+            
+            #line 125 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("OrderContext : BaseOrderContext\r\n    {\r\n\t\tprivate readonly ");
+            
+            #line 127 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext  _queryContext;\r\n\t\tinternal ");
+            
+            #line 128 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("OrderContext(");
+            
+            #line 128 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext context) { _queryContext = context; }\r\n\r\n");
+            
+            #line 130 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+foreach(var atd in entity.Attributes){
+            
+            #line default
+            #line hidden
+            this.Write("        private OrderElement<");
+            
+            #line 131 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("OrderContext,");
+            
+            #line 131 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext> ");
+            
+            #line 131 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n\t\tpublic OrderElement<");
+            
+            #line 132 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("OrderContext,");
+            
+            #line 132 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext> ");
+            
+            #line 132 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" { get { return ");
+            
+            #line 132 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(" ?? ( ");
+            
+            #line 132 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(" = new OrderElement<");
+            
+            #line 132 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("OrderContext,");
+            
+            #line 132 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext>(\"");
+            
+            #line 132 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\", this, _queryContext)); } }\r\n");
+            
+            #line 133 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
 }
             
             #line default

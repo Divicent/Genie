@@ -88,31 +88,37 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
 
         public ExpressionJoin<T,Q> Equals(string str)
         {
-            _parent.Add(string.Format("{0} = '{1}'", _propertyName, str));
+            _parent.Add(string.Format("[{0}] = '{1}'", _propertyName, str));
             return new ExpressionJoin<T,Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> NotEquals(string str)
         {
-            _parent.Add(string.Format("{0} != '{1}'", _propertyName, str));
+            _parent.Add(string.Format("[{0}] != '{1}'", _propertyName, str));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T,Q> Contains(string str)
         {
-            _parent.Add(string.Format("{0} LIKE '%{1}%'", _propertyName, str));
+            _parent.Add(string.Format("[{0}] LIKE '%{1}%'", _propertyName, str));
             return new ExpressionJoin<T,Q>(_parent, _q);
         }
 
         public ExpressionJoin<T,Q> StartsWith(string str)
         {
-            _parent.Add(string.Format("{0} LIKE '{1}%'", _propertyName, str));
+            _parent.Add(string.Format("[{0}] LIKE '{1}%'", _propertyName, str));
             return new ExpressionJoin<T,Q>(_parent, _q);
         }
 
         public ExpressionJoin<T,Q> EndsWith(string str)
         {
-            _parent.Add(string.Format("{0} LIKE '%{1}'", _propertyName, str));
+            _parent.Add(string.Format("[{0}] LIKE '%{1}'", _propertyName, str));
+            return new ExpressionJoin<T,Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T,Q> IsNull()
+        {
+            _parent.Add(string.Format("[{0}] IS NULL", _propertyName));
             return new ExpressionJoin<T,Q>(_parent, _q);
         }
 	}
@@ -132,44 +138,50 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
 
         public ExpressionJoin<T, Q> Equals(double number)
         {
-            _parent.Add(string.Format("{0} = {1}", _propertyName, number));
+            _parent.Add(string.Format("[{0}] = {1}", _propertyName, number));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> NotEquals(double number)
         {
-            _parent.Add(string.Format("{0} != {1}", _propertyName, number));
+            _parent.Add(string.Format("[{0}] != {1}", _propertyName, number));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> LargerThan(double number)
         {
-            _parent.Add(string.Format("{0} > {1}", _propertyName, number));
+            _parent.Add(string.Format("[{0}] > {1}", _propertyName, number));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> LessThan(double number)
         {
-            _parent.Add(string.Format("{0} < {1}", _propertyName, number));
+            _parent.Add(string.Format("[{0}] < {1}", _propertyName, number));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> LargerThanOrEqualTo(double number)
         {
-            _parent.Add(string.Format("{0} >= {1}", _propertyName, number));
+            _parent.Add(string.Format("[{0}] >= {1}", _propertyName, number));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> LessThanOrEqualTo(double number)
         {
-            _parent.Add(string.Format("{0} <= {1}", _propertyName, number));
+            _parent.Add(string.Format("[{0}] <= {1}", _propertyName, number));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> Between(double from, double to)
         {
-            _parent.Add(string.Format("{0} <= {1} and {0} >= {2}", _propertyName, from, to));
+            _parent.Add(string.Format("[{0}] <= {1} and {0} >= {2}", _propertyName, from, to));
             return new ExpressionJoin<T, Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T,Q> IsNull()
+        {
+            _parent.Add(string.Format("[{0}] IS NULL", _propertyName));
+            return new ExpressionJoin<T,Q>(_parent, _q);
         }
     }
 
@@ -188,44 +200,88 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
 
         public ExpressionJoin<T, Q> Equals(DateTime date)
         {
-            _parent.Add(string.Format("{0} = '{1}'", _propertyName, date));
+            _parent.Add(string.Format("[{0}] = '{1}'", _propertyName, date));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> NotEquals(DateTime date)
         {
-            _parent.Add(string.Format("{0} != '{1}'", _propertyName, date));
+            _parent.Add(string.Format("[{0}] != '{1}'", _propertyName, date));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> LargerThan(DateTime number)
         {
-            _parent.Add(string.Format("{0} > '{1}'", _propertyName, number));
+            _parent.Add(string.Format("[{0}] > '{1}'", _propertyName, number));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> LessThan(DateTime date)
         {
-            _parent.Add(string.Format("{0} < '{1}'", _propertyName, date));
+            _parent.Add(string.Format("[{0}] < '{1}'", _propertyName, date));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> LargerThanOrEqualTo(DateTime date)
         {
-            _parent.Add(string.Format("{0} >= '{1}'", _propertyName, date));
+            _parent.Add(string.Format("[{0}] >= '{1}'", _propertyName, date));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> LessThanOrEqualTo(DateTime date)
         {
-            _parent.Add(string.Format("{0} <= '{1}'", _propertyName, date));
+            _parent.Add(string.Format("[{0}] <= '{1}'", _propertyName, date));
             return new ExpressionJoin<T, Q>(_parent, _q);
         }
 
         public ExpressionJoin<T, Q> Between(DateTime from, DateTime to)
         {
-            _parent.Add(string.Format("{0} <= '{1}' and {0} >= '{2}'", _propertyName, from, to));
+            _parent.Add(string.Format("[{0}] <= '{1}' and {0} >= '{2}'", _propertyName, from, to));
             return new ExpressionJoin<T, Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T,Q> IsNull()
+        {
+            _parent.Add(string.Format("[{0}] IS NULL", _propertyName));
+            return new ExpressionJoin<T,Q>(_parent, _q);
+        }
+    }
+
+    public class BoolFilter<T, Q> where T : BaseFilterContext
+    {
+        private readonly string _propertyName;
+        private readonly T _parent;
+        private readonly Q _q;
+
+        internal BoolFilter(string propertyName, T parent, Q q)
+        {
+            _parent = parent;
+            _propertyName = propertyName;
+            _q = q;
+        }
+
+        public ExpressionJoin<T, Q> Is(bool value)
+        {
+            _parent.Add(string.Format("[{0}] = {1}", _propertyName, value ? 1 : 0));
+            return new ExpressionJoin<T, Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T, Q> IsFalse()
+        {
+            _parent.Add(string.Format("[{0}] != 0", _propertyName));
+            return new ExpressionJoin<T, Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T, Q> IsTrue()
+        {
+            _parent.Add(string.Format("[{0}] != 1", _propertyName));
+            return new ExpressionJoin<T, Q>(_parent, _q);
+        }
+
+        public ExpressionJoin<T,Q> IsNull()
+        {
+            _parent.Add(string.Format("[{0}] IS NULL", _propertyName));
+            return new ExpressionJoin<T,Q>(_parent, _q);
         }
     }
 
@@ -273,13 +329,13 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
 
         public OrderJoin<T, Q> Ascending()
         {
-            _parent.Add(string.Format("{0} ASC", _propertyName));
+            _parent.Add(string.Format("[{0}] ASC", _propertyName));
             return new OrderJoin<T, Q>(_parent , _q);
         }
 
         public OrderJoin<T, Q> Descending()
         {
-            _parent.Add(string.Format("{0} DESC", _propertyName));
+            _parent.Add(string.Format("[{0}] DESC", _propertyName));
             return new OrderJoin<T, Q>(_parent, _q);
         }
     }

@@ -174,12 +174,16 @@ namespace Genie.Base
                 }
 
                 var commandToGetParameters = new SqlCommand(
-                    @"SELECT 
-	                 p.SPECIFIC_NAME AS SP
-	                ,p.PARAMETER_NAME AS [Name]
-	                ,p.DATA_TYPE AS DataType
-                FROM INFORMATION_SCHEMA.PARAMETERS p
-                ORDER BY p.SCOPE_NAME , p.ORDINAL_POSITION", connection, transaction);
+                    @"
+                    SELECT 
+	                        p.SPECIFIC_NAME AS SP
+	                    ,p.PARAMETER_NAME AS [Name]
+	                    ,p.DATA_TYPE AS DataType
+                    FROM INFORMATION_SCHEMA.PARAMETERS p
+	                    INNER JOIN INFORMATION_SCHEMA.ROUTINES r
+		                    ON p.SPECIFIC_NAME = r.SPECIFIC_NAME
+                    WHERE r.ROUTINE_TYPE = 'PROCEDURE'
+                    ORDER BY p.SCOPE_NAME , p.ORDINAL_POSITION", connection, transaction);
 
                 using (var reader = commandToGetParameters.ExecuteReader()) 
                 {

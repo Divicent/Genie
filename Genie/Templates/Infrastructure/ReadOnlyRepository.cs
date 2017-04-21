@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class ReadOnlyRepository : ReadOnlyRepositoryBase
     {
@@ -29,21 +29,21 @@ namespace Genie.Templates.Infrastructure
             this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\nusing System.Linq;\r\nusing " +
                     "");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper;\r\nusing ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
+            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
             
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
+            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\ReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -67,7 +67,11 @@ namespace Genie.Templates.Infrastructure
                     "ge = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction" +
                     " transaction = null)\r\n        {\r\n            return Conn.Get<T>(targetName, wher" +
                     "e, order,  pageSize, page, limit, skip, take, transaction).ToList();\r\n        }\r" +
-                    "\n    }\r\n}\r\n");
+                    "\n\r\n        internal virtual int Count(string targetName, Queue<string> where, Qu" +
+                    "eue<string> order, int? pageSize = null, int? page = null, int? limit = null, in" +
+                    "t? skip = null, int? take = null, IDbTransaction transaction = null)\r\n        {\r" +
+                    "\n            return Conn.Count(targetName, where, order, pageSize, page, limit, " +
+                    "skip, take, transaction);\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

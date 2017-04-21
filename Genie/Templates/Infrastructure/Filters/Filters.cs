@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Filters
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Filters.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Filters.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class Filters : FiltersBase
     {
@@ -29,7 +29,7 @@ namespace Genie.Templates.Infrastructure.Filters
             this.Write("\r\nusing System;\r\nusing System.Data;\r\nusing System.Collections.Generic;\r\n\r\nnamespa" +
                     "ce ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Filters.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Filters.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -61,88 +61,111 @@ namespace Genie.Templates.Infrastructure.Filters
                     "ropertyName, T parent, Q q)\r\n        {\r\n            _parent = parent;\r\n         " +
                     "   _propertyName = propertyName;\r\n            _q = q;\r\n        } \r\n\r\n        pub" +
                     "lic ExpressionJoin<T,Q> Equals(string str)\r\n        {\r\n            _parent.Add(s" +
-                    "tring.Format(\"{0} = \'{1}\'\", _propertyName, str));\r\n            return new Expres" +
-                    "sionJoin<T,Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> No" +
-                    "tEquals(string str)\r\n        {\r\n            _parent.Add(string.Format(\"{0} != \'{" +
-                    "1}\'\", _propertyName, str));\r\n            return new ExpressionJoin<T, Q>(_parent" +
-                    ", _q);\r\n        }\r\n\r\n        public ExpressionJoin<T,Q> Contains(string str)\r\n  " +
-                    "      {\r\n            _parent.Add(string.Format(\"{0} LIKE \'%{1}%\'\", _propertyName" +
-                    ", str));\r\n            return new ExpressionJoin<T,Q>(_parent, _q);\r\n        }\r\n\r" +
-                    "\n        public ExpressionJoin<T,Q> StartsWith(string str)\r\n        {\r\n         " +
-                    "   _parent.Add(string.Format(\"{0} LIKE \'{1}%\'\", _propertyName, str));\r\n         " +
-                    "   return new ExpressionJoin<T,Q>(_parent, _q);\r\n        }\r\n\r\n        public Exp" +
-                    "ressionJoin<T,Q> EndsWith(string str)\r\n        {\r\n            _parent.Add(string" +
-                    ".Format(\"{0} LIKE \'%{1}\'\", _propertyName, str));\r\n            return new Express" +
-                    "ionJoin<T,Q>(_parent, _q);\r\n        }\r\n\t}\r\n\r\n    public class NumberFilter<T, Q>" +
-                    " where T : BaseFilterContext\r\n    {\r\n        private readonly string _propertyNa" +
-                    "me;\r\n        private readonly T _parent;\r\n        private readonly Q _q;\r\n\r\n    " +
-                    "    internal NumberFilter(string propertyName, T parent, Q q)\r\n        {\r\n      " +
-                    "      _parent = parent;\r\n            _propertyName = propertyName;\r\n            " +
-                    "_q = q;\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> Equals(double number)\r" +
-                    "\n        {\r\n            _parent.Add(string.Format(\"{0} = {1}\", _propertyName, nu" +
+                    "tring.Format(\"[{0}] = \'{1}\'\", _propertyName, str));\r\n            return new Expr" +
+                    "essionJoin<T,Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> " +
+                    "NotEquals(string str)\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] !" +
+                    "= \'{1}\'\", _propertyName, str));\r\n            return new ExpressionJoin<T, Q>(_pa" +
+                    "rent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T,Q> Contains(string str)" +
+                    "\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] LIKE \'%{1}%\'\", _proper" +
+                    "tyName, str));\r\n            return new ExpressionJoin<T,Q>(_parent, _q);\r\n      " +
+                    "  }\r\n\r\n        public ExpressionJoin<T,Q> StartsWith(string str)\r\n        {\r\n   " +
+                    "         _parent.Add(string.Format(\"[{0}] LIKE \'{1}%\'\", _propertyName, str));\r\n " +
+                    "           return new ExpressionJoin<T,Q>(_parent, _q);\r\n        }\r\n\r\n        pu" +
+                    "blic ExpressionJoin<T,Q> EndsWith(string str)\r\n        {\r\n            _parent.Ad" +
+                    "d(string.Format(\"[{0}] LIKE \'%{1}\'\", _propertyName, str));\r\n            return n" +
+                    "ew ExpressionJoin<T,Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin" +
+                    "<T,Q> IsNull()\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] IS NULL\"" +
+                    ", _propertyName));\r\n            return new ExpressionJoin<T,Q>(_parent, _q);\r\n  " +
+                    "      }\r\n\t}\r\n\r\n    public class NumberFilter<T, Q> where T : BaseFilterContext\r\n" +
+                    "    {\r\n        private readonly string _propertyName;\r\n        private readonly " +
+                    "T _parent;\r\n        private readonly Q _q;\r\n\r\n        internal NumberFilter(stri" +
+                    "ng propertyName, T parent, Q q)\r\n        {\r\n            _parent = parent;\r\n     " +
+                    "       _propertyName = propertyName;\r\n            _q = q;\r\n        }\r\n\r\n        " +
+                    "public ExpressionJoin<T, Q> Equals(double number)\r\n        {\r\n            _paren" +
+                    "t.Add(string.Format(\"[{0}] = {1}\", _propertyName, number));\r\n            return " +
+                    "new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJo" +
+                    "in<T, Q> NotEquals(double number)\r\n        {\r\n            _parent.Add(string.For" +
+                    "mat(\"[{0}] != {1}\", _propertyName, number));\r\n            return new ExpressionJ" +
+                    "oin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> Larger" +
+                    "Than(double number)\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] > {" +
+                    "1}\", _propertyName, number));\r\n            return new ExpressionJoin<T, Q>(_pare" +
+                    "nt, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> LessThan(double numbe" +
+                    "r)\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] < {1}\", _propertyNam" +
+                    "e, number));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n       " +
+                    " }\r\n\r\n        public ExpressionJoin<T, Q> LargerThanOrEqualTo(double number)\r\n  " +
+                    "      {\r\n            _parent.Add(string.Format(\"[{0}] >= {1}\", _propertyName, nu" +
                     "mber));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r" +
-                    "\n        public ExpressionJoin<T, Q> NotEquals(double number)\r\n        {\r\n      " +
-                    "      _parent.Add(string.Format(\"{0} != {1}\", _propertyName, number));\r\n        " +
-                    "    return new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public E" +
-                    "xpressionJoin<T, Q> LargerThan(double number)\r\n        {\r\n            _parent.Ad" +
-                    "d(string.Format(\"{0} > {1}\", _propertyName, number));\r\n            return new Ex" +
-                    "pressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, " +
-                    "Q> LessThan(double number)\r\n        {\r\n            _parent.Add(string.Format(\"{0" +
-                    "} < {1}\", _propertyName, number));\r\n            return new ExpressionJoin<T, Q>(" +
-                    "_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> LargerThanOrEqua" +
-                    "lTo(double number)\r\n        {\r\n            _parent.Add(string.Format(\"{0} >= {1}" +
-                    "\", _propertyName, number));\r\n            return new ExpressionJoin<T, Q>(_parent" +
-                    ", _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> LessThanOrEqualTo(doubl" +
-                    "e number)\r\n        {\r\n            _parent.Add(string.Format(\"{0} <= {1}\", _prope" +
-                    "rtyName, number));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n " +
-                    "       }\r\n\r\n        public ExpressionJoin<T, Q> Between(double from, double to)\r" +
-                    "\n        {\r\n            _parent.Add(string.Format(\"{0} <= {1} and {0} >= {2}\", _" +
-                    "propertyName, from, to));\r\n            return new ExpressionJoin<T, Q>(_parent, " +
-                    "_q);\r\n        }\r\n    }\r\n\r\n    public class DateFilter<T, Q> where T : BaseFilter" +
-                    "Context\r\n    {\r\n        private readonly string _propertyName;\r\n        private " +
-                    "readonly T _parent;\r\n        private readonly Q _q;\r\n\r\n        internal DateFilt" +
-                    "er(string propertyName, T parent, Q q)\r\n        {\r\n            _parent = parent;" +
-                    "\r\n            _propertyName = propertyName;\r\n            _q = q;\r\n        }\r\n\r\n " +
-                    "       public ExpressionJoin<T, Q> Equals(DateTime date)\r\n        {\r\n           " +
-                    " _parent.Add(string.Format(\"{0} = \'{1}\'\", _propertyName, date));\r\n            re" +
+                    "\n        public ExpressionJoin<T, Q> LessThanOrEqualTo(double number)\r\n        {" +
+                    "\r\n            _parent.Add(string.Format(\"[{0}] <= {1}\", _propertyName, number));" +
+                    "\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n      " +
+                    "  public ExpressionJoin<T, Q> Between(double from, double to)\r\n        {\r\n      " +
+                    "      _parent.Add(string.Format(\"[{0}] <= {1} and {0} >= {2}\", _propertyName, fr" +
+                    "om, to));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r" +
+                    "\n\r\n        public ExpressionJoin<T,Q> IsNull()\r\n        {\r\n            _parent.A" +
+                    "dd(string.Format(\"[{0}] IS NULL\", _propertyName));\r\n            return new Expre" +
+                    "ssionJoin<T,Q>(_parent, _q);\r\n        }\r\n    }\r\n\r\n    public class DateFilter<T," +
+                    " Q> where T : BaseFilterContext\r\n    {\r\n        private readonly string _propert" +
+                    "yName;\r\n        private readonly T _parent;\r\n        private readonly Q _q;\r\n\r\n " +
+                    "       internal DateFilter(string propertyName, T parent, Q q)\r\n        {\r\n     " +
+                    "       _parent = parent;\r\n            _propertyName = propertyName;\r\n           " +
+                    " _q = q;\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> Equals(DateTime date)" +
+                    "\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] = \'{1}\'\", _propertyNam" +
+                    "e, date));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n        }" +
+                    "\r\n\r\n        public ExpressionJoin<T, Q> NotEquals(DateTime date)\r\n        {\r\n   " +
+                    "         _parent.Add(string.Format(\"[{0}] != \'{1}\'\", _propertyName, date));\r\n   " +
+                    "         return new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        pub" +
+                    "lic ExpressionJoin<T, Q> LargerThan(DateTime number)\r\n        {\r\n            _pa" +
+                    "rent.Add(string.Format(\"[{0}] > \'{1}\'\", _propertyName, number));\r\n            re" +
                     "turn new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public Express" +
-                    "ionJoin<T, Q> NotEquals(DateTime date)\r\n        {\r\n            _parent.Add(strin" +
-                    "g.Format(\"{0} != \'{1}\'\", _propertyName, date));\r\n            return new Expressi" +
+                    "ionJoin<T, Q> LessThan(DateTime date)\r\n        {\r\n            _parent.Add(string" +
+                    ".Format(\"[{0}] < \'{1}\'\", _propertyName, date));\r\n            return new Expressi" +
                     "onJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> Lar" +
-                    "gerThan(DateTime number)\r\n        {\r\n            _parent.Add(string.Format(\"{0} " +
-                    "> \'{1}\'\", _propertyName, number));\r\n            return new ExpressionJoin<T, Q>(" +
-                    "_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> LessThan(DateTim" +
-                    "e date)\r\n        {\r\n            _parent.Add(string.Format(\"{0} < \'{1}\'\", _proper" +
-                    "tyName, date));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n    " +
-                    "    }\r\n\r\n        public ExpressionJoin<T, Q> LargerThanOrEqualTo(DateTime date)\r" +
-                    "\n        {\r\n            _parent.Add(string.Format(\"{0} >= \'{1}\'\", _propertyName," +
-                    " date));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r\n" +
-                    "\r\n        public ExpressionJoin<T, Q> LessThanOrEqualTo(DateTime date)\r\n        " +
-                    "{\r\n            _parent.Add(string.Format(\"{0} <= \'{1}\'\", _propertyName, date));\r" +
-                    "\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n       " +
-                    " public ExpressionJoin<T, Q> Between(DateTime from, DateTime to)\r\n        {\r\n   " +
-                    "         _parent.Add(string.Format(\"{0} <= \'{1}\' and {0} >= \'{2}\'\", _propertyNam" +
-                    "e, from, to));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n     " +
-                    "   }\r\n    }\r\n\r\n\r\n    public abstract class BaseOrderContext\r\n    {\r\n        prot" +
-                    "ected BaseOrderContext() { Expressions = new Queue<string>(); }\r\n        protect" +
-                    "ed Queue<string> Expressions { get; set; }\r\n        internal void And() { Expres" +
-                    "sions.Enqueue(\",\"); }\r\n        internal void Add(string expression) { Expression" +
-                    "s.Enqueue(expression); }\r\n        internal Queue<string> GetOrderExpressions() {" +
-                    " return Expressions; }\r\n    }\r\n\r\n    public class OrderJoin<T, TQ> where T : Bas" +
-                    "eOrderContext\r\n    {\r\n        private readonly T _t;\r\n        private readonly T" +
-                    "Q _q;\r\n\r\n        internal OrderJoin(T t, TQ q)\r\n        {\r\n            _t = t;\r\n" +
-                    "            _q = q;\r\n        }\r\n\r\n        public T And { get { _t.And(); return " +
-                    "_t; } }\r\n\r\n        public TQ Order()\r\n        {\r\n            return _q;\r\n       " +
-                    " }\r\n    }\r\n\r\n    public class OrderElement<T, Q> where T : BaseOrderContext\r\n   " +
-                    " {\r\n        private readonly string _propertyName;\r\n        private readonly T _" +
-                    "parent;\r\n        private readonly Q _q;\r\n\r\n        internal OrderElement(string " +
-                    "propertyName, T parent, Q q)\r\n        {\r\n            _parent = parent;\r\n        " +
-                    "    _propertyName = propertyName;\r\n            _q = q;\r\n        }\r\n\r\n        pub" +
-                    "lic OrderJoin<T, Q> Ascending()\r\n        {\r\n            _parent.Add(string.Forma" +
-                    "t(\"{0} ASC\", _propertyName));\r\n            return new OrderJoin<T, Q>(_parent , " +
+                    "gerThanOrEqualTo(DateTime date)\r\n        {\r\n            _parent.Add(string.Forma" +
+                    "t(\"[{0}] >= \'{1}\'\", _propertyName, date));\r\n            return new ExpressionJoi" +
+                    "n<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> LessThan" +
+                    "OrEqualTo(DateTime date)\r\n        {\r\n            _parent.Add(string.Format(\"[{0}" +
+                    "] <= \'{1}\'\", _propertyName, date));\r\n            return new ExpressionJoin<T, Q>" +
+                    "(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, Q> Between(DateTim" +
+                    "e from, DateTime to)\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] <=" +
+                    " \'{1}\' and {0} >= \'{2}\'\", _propertyName, from, to));\r\n            return new Exp" +
+                    "ressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T,Q>" +
+                    " IsNull()\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] IS NULL\", _pr" +
+                    "opertyName));\r\n            return new ExpressionJoin<T,Q>(_parent, _q);\r\n       " +
+                    " }\r\n    }\r\n\r\n    public class BoolFilter<T, Q> where T : BaseFilterContext\r\n    " +
+                    "{\r\n        private readonly string _propertyName;\r\n        private readonly T _p" +
+                    "arent;\r\n        private readonly Q _q;\r\n\r\n        internal BoolFilter(string pro" +
+                    "pertyName, T parent, Q q)\r\n        {\r\n            _parent = parent;\r\n           " +
+                    " _propertyName = propertyName;\r\n            _q = q;\r\n        }\r\n\r\n        public" +
+                    " ExpressionJoin<T, Q> Is(bool value)\r\n        {\r\n            _parent.Add(string." +
+                    "Format(\"[{0}] = {1}\", _propertyName, value ? 1 : 0));\r\n            return new Ex" +
+                    "pressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T, " +
+                    "Q> IsFalse()\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] != 0\", _pr" +
+                    "opertyName));\r\n            return new ExpressionJoin<T, Q>(_parent, _q);\r\n      " +
+                    "  }\r\n\r\n        public ExpressionJoin<T, Q> IsTrue()\r\n        {\r\n            _par" +
+                    "ent.Add(string.Format(\"[{0}] != 1\", _propertyName));\r\n            return new Exp" +
+                    "ressionJoin<T, Q>(_parent, _q);\r\n        }\r\n\r\n        public ExpressionJoin<T,Q>" +
+                    " IsNull()\r\n        {\r\n            _parent.Add(string.Format(\"[{0}] IS NULL\", _pr" +
+                    "opertyName));\r\n            return new ExpressionJoin<T,Q>(_parent, _q);\r\n       " +
+                    " }\r\n    }\r\n\r\n\r\n    public abstract class BaseOrderContext\r\n    {\r\n        protec" +
+                    "ted BaseOrderContext() { Expressions = new Queue<string>(); }\r\n        protected" +
+                    " Queue<string> Expressions { get; set; }\r\n        internal void And() { Expressi" +
+                    "ons.Enqueue(\",\"); }\r\n        internal void Add(string expression) { Expressions." +
+                    "Enqueue(expression); }\r\n        internal Queue<string> GetOrderExpressions() { r" +
+                    "eturn Expressions; }\r\n    }\r\n\r\n    public class OrderJoin<T, TQ> where T : BaseO" +
+                    "rderContext\r\n    {\r\n        private readonly T _t;\r\n        private readonly TQ " +
+                    "_q;\r\n\r\n        internal OrderJoin(T t, TQ q)\r\n        {\r\n            _t = t;\r\n  " +
+                    "          _q = q;\r\n        }\r\n\r\n        public T And { get { _t.And(); return _t" +
+                    "; } }\r\n\r\n        public TQ Order()\r\n        {\r\n            return _q;\r\n        }" +
+                    "\r\n    }\r\n\r\n    public class OrderElement<T, Q> where T : BaseOrderContext\r\n    {" +
+                    "\r\n        private readonly string _propertyName;\r\n        private readonly T _pa" +
+                    "rent;\r\n        private readonly Q _q;\r\n\r\n        internal OrderElement(string pr" +
+                    "opertyName, T parent, Q q)\r\n        {\r\n            _parent = parent;\r\n          " +
+                    "  _propertyName = propertyName;\r\n            _q = q;\r\n        }\r\n\r\n        publi" +
+                    "c OrderJoin<T, Q> Ascending()\r\n        {\r\n            _parent.Add(string.Format(" +
+                    "\"[{0}] ASC\", _propertyName));\r\n            return new OrderJoin<T, Q>(_parent , " +
                     "_q);\r\n        }\r\n\r\n        public OrderJoin<T, Q> Descending()\r\n        {\r\n     " +
-                    "       _parent.Add(string.Format(\"{0} DESC\", _propertyName));\r\n            retur" +
-                    "n new OrderJoin<T, Q>(_parent, _q);\r\n        }\r\n    }\r\n}");
+                    "       _parent.Add(string.Format(\"[{0}] DESC\", _propertyName));\r\n            ret" +
+                    "urn new OrderJoin<T, Q>(_parent, _q);\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -338,10 +338,8 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             return obj;
         }
 
-	    /// <summary>
-	    /// Returns a single entity by a single id from table "Ts". T must be of interface type. 
-	    /// Id must be marked with [Key] attribute.
-	    /// Created entity is tracked/intercepted for changes and used by the Update() extension. 
+	     /// <summary>
+	    /// Return all  
 	    /// </summary>
 	    /// <typeparam name="T">Interface type to create and populate</typeparam>
 	    /// <param name="connection">Open SqlConnection</param>
@@ -353,11 +351,36 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <param name="pageSize"></param>
 	    /// <param name="page"></param>
 	    /// <returns>Entity of T</returns>
-	    public static IEnumerable<T> Get<T>(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tramTransaction = null )
+	    public static IEnumerable<T> Get<T>(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tramTransaction = null, bool isCount = false )
         {
-            var queryBuilder = new StringBuilder(string.Format("select {0} * from " + target, limit != null ? " top " + limit : ""));
-	        if (where != null && where.Count > 0)
-	        {
+	        return connection.Query<T>(GetRetriveQuer(target, where, order, pageSize, page, limit, skip, take), transaction: tramTransaction);
+        }
+
+
+        /// <summary>
+	    /// Returns count of rows
+	    /// </summary>
+	    /// <typeparam name="T">Interface type to create and populate</typeparam>
+	    /// <param name="connection">Open SqlConnection</param>
+	    /// <param name="target"></param>
+	    /// <param name="where"></param>
+	    /// <param name="order"></param>
+	    /// <param name="limit"></param>
+	    /// <param name="tramTransaction"></param>
+	    /// <param name="pageSize"></param>
+	    /// <param name="page"></param>
+	    /// <returns>Entity of T</returns>
+	    public static int Count(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tramTransaction = null)
+        {
+            return connection.Query<int>(GetRetriveQuer(target, where, order, pageSize, page, limit, skip, take, true), transaction: tramTransaction).FirstOrDefault();
+        }
+
+
+	    private static string GetRetriveQuer(string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, bool isCount = false)
+	    {
+            var queryBuilder = new StringBuilder(string.Format("select {0} {1} from " + target, limit != null ? " top " + limit : "", isCount ? "count(*)" : "*"));
+            if (where != null && where.Count > 0)
+            {
                 queryBuilder.Append(" where ");
                 while (where.Count > 0)
                 {
@@ -377,22 +400,23 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                 }
             }
 
-	        if (page != null && pageSize != null)
-	        {
+            if (page != null && pageSize != null)
+            {
                 queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS " +
                                            " FETCH NEXT {1} ROWS ONLY ", page * pageSize, pageSize));
             }
-			else 
-			{
-				if( skip != null) 
-					queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS " , skip));
+            else
+            {
+                if (skip != null)
+                    queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS ", skip));
 
-				if( take != null)
-					queryBuilder.Append(string.Format(" FETCH NEXT {0} ROWS ONLY " , skip));
-			}
+                if (take != null)
+                    queryBuilder.Append(string.Format(" FETCH NEXT {0} ROWS ONLY ", take));
+            }
 
-	        return connection.Query<T>(queryBuilder.ToString(), transaction: tramTransaction);
-        }
+	        return queryBuilder.ToString();
+	    }
+
 
         private static int GetKeyTypeWhereOrder(Type type, Type where, Type order)
         {
