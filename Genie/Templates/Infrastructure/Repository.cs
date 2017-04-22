@@ -98,19 +98,13 @@ namespace Genie.Templates.Infrastructure
                     "transaction: transaction, commandTimeout: commandTimeout).ToList();\r\n\r\n         " +
                     "   foreach (var item in items)\r\n            {\r\n                item.DatabaseUnit" +
                     "OfWork = UnitOfWork;\r\n                item.DatabaseModelStatus = ModelStatus.Ret" +
-                    "rieved;\r\n            }\r\n            return items;\r\n        }\r\n\r\n\r\n        intern" +
-                    "al virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<stri" +
-                    "ng> order, int? pageSize = null, int? page = null, int? limit = null, int? skip " +
-                    "= null, int? take = null, IDbTransaction transaction = null)\r\n        {\r\n       " +
-                    "     var items = Conn.Get<T>(targetName, where, order, pageSize, page, limit, sk" +
-                    "ip, take, transaction).ToList();\r\n\r\n            foreach (var item in items)\r\n   " +
-                    "         {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n             " +
-                    "   item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n           " +
-                    " return items;\r\n        }\t\t\r\n\r\n        internal virtual int Count(string targetN" +
-                    "ame, Queue<string> where, Queue<string> order, int? pageSize = null, int? page =" +
-                    " null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tra" +
-                    "nsaction = null)\r\n        {\r\n            return Conn.Count(targetName, where, or" +
-                    "der, pageSize, page, limit, skip, take, transaction);\r\n        }\r\n    }\r\n}\r\n");
+                    "rieved;\r\n            }\r\n            return items;\r\n        }\r\n\r\n\r\n        public" +
+                    " virtual IEnumerable<T> Get(IRepoQuery query)\r\n        {\r\n            var items " +
+                    "= Conn.Get<T>(query).ToList();\r\n\r\n            foreach (var item in items)\r\n     " +
+                    "       {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n               " +
+                    " item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n            r" +
+                    "eturn items;\r\n        }\t\t\r\n\r\n        public virtual int Count(IRepoQuery query)\r" +
+                    "\n        {\r\n            return Conn.Count(query);\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

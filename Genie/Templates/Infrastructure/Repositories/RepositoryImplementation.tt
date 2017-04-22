@@ -1,8 +1,9 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
-
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories
 {
@@ -10,17 +11,17 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories
     namespace Abstract
     {
 <#foreach(var relation in _relations){#>
-	        public interface I<#=relation.Name#>Repository : IRepository<<#=relation.Name#>>
-	        {
-		        I<#=relation.Name#>QueryContext Get();
-	        }
+	    public interface I<#=relation.Name#>Repository : IRepository<<#=relation.Name#>>
+	    {
+		    I<#=relation.Name#>QueryContext Get();
+	    }
 <#}#>
 
 <#foreach(var view in _views){#>
-	        public interface I<#=view.Name#>Repository : IReadOnlyRepository<<#=view.Name#>>
-	        {
-		        I<#=view.Name#>QueryContext Get();
-	        }
+	    public interface I<#=view.Name#>Repository : IReadOnlyRepository<<#=view.Name#>>
+	    {
+		    I<#=view.Name#>QueryContext Get();
+	    }
 <#}#>
 
     }
@@ -28,25 +29,25 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories
     namespace Concrete
     {
 <#foreach(var relation in _relations){#>
-	        internal class <#=relation.Name#>Repository : Repository<<#=relation.Name#>> , I<#=relation.Name#>Repository
-	        {
-                internal <#=relation.Name#>Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
-                {
-                }
+	    internal class <#=relation.Name#>Repository : Repository<<#=relation.Name#>> , I<#=relation.Name#>Repository
+	    {
+            internal <#=relation.Name#>Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+            {
+            }
 
-		        public I<#=relation.Name#>QueryContext Get() { return new <#=relation.Name#>QueryContext(this); }
-	        }
+		    public I<#=relation.Name#>QueryContext Get() { return new <#=relation.Name#>QueryContext(this); }
+	    }
 <#}#>
 
 <#foreach(var view in _views){#>
-	        internal class <#=view.Name#>Repository : ReadOnlyRepository<<#=view.Name#>>, I<#=view.Name#>Repository
-	        {
-                public <#=view.Name#>Repository(IDapperContext context) : base(context)
-                {
-                }
+	    internal class <#=view.Name#>Repository : ReadOnlyRepository<<#=view.Name#>>, I<#=view.Name#>Repository
+	    {
+            internal <#=view.Name#>Repository(IDapperContext context) : base(context)
+            {
+            }
 
-		        public I<#=view.Name#>QueryContext Get() { return new <#=view.Name#>QueryContext(this); }
-	        }
+		    public I<#=view.Name#>QueryContext Get() { return new <#=view.Name#>QueryContext(this); }
+	    }
 <#}#>
     }
 }
