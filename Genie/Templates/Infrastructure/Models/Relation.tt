@@ -23,6 +23,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
     {
 	    public interface I<#=name#>QueryContext
 	    {
+            I<#=name#>QueryContext Page(int pageSize, int page);
             I<#=name#>QueryContext Top(int limit);
             I<#=name#>QueryContext Skip(int skip);
             I<#=name#>QueryContext Take(int take);
