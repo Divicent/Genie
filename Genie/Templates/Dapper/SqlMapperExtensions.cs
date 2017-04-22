@@ -42,9 +42,16 @@ namespace Genie.Templates.Dapper
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Models;\r\nusing ");
             
-            #line 15 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
+            #line 14 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
+            
+            #line 16 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -222,267 +229,253 @@ namespace Genie.Templates.Dapper
                     "eturn\r\n            }\r\n            else\r\n            {\r\n                obj = con" +
                     "nection.Query<T>(sql, dynParms, transaction: transaction, commandTimeout: comman" +
                     "dTimeout).FirstOrDefault();\r\n            }\r\n            return obj;\r\n        }\r\n" +
-                    "\r\n\t     /// <summary>\r\n\t    /// Return all  \r\n\t    /// </summary>\r\n\t    /// <typ" +
-                    "eparam name=\"T\">Interface type to create and populate</typeparam>\r\n\t    /// <par" +
-                    "am name=\"connection\">Open SqlConnection</param>\r\n\t    /// <param name=\"target\"><" +
-                    "/param>\r\n\t    /// <param name=\"where\"></param>\r\n\t    /// <param name=\"order\"></p" +
-                    "aram>\r\n\t    /// <param name=\"limit\"></param>\r\n\t    /// <param name=\"tramTransact" +
-                    "ion\"></param>\r\n\t    /// <param name=\"pageSize\"></param>\r\n\t    /// <param name=\"p" +
-                    "age\"></param>\r\n\t    /// <returns>Entity of T</returns>\r\n\t    public static IEnum" +
-                    "erable<T> Get<T>(this IDbConnection connection, string target, Queue<string> whe" +
-                    "re, Queue<string> order, int? pageSize = null, int? page = null, int? limit = nu" +
-                    "ll, int? skip = null, int? take = null, IDbTransaction tramTransaction = null, b" +
-                    "ool isCount = false )\r\n        {\r\n\t        return connection.Query<T>(GetRetrive" +
-                    "Query(target, where, order, pageSize, page, limit, skip, take), transaction: tra" +
-                    "mTransaction);\r\n        }\r\n\r\n\r\n        /// <summary>\r\n\t    /// Returns count of " +
-                    "rows\r\n\t    /// </summary>\r\n\t    /// <typeparam name=\"T\">Interface type to create" +
-                    " and populate</typeparam>\r\n\t    /// <param name=\"connection\">Open SqlConnection<" +
-                    "/param>\r\n\t    /// <param name=\"target\"></param>\r\n\t    /// <param name=\"where\"></" +
-                    "param>\r\n\t    /// <param name=\"order\"></param>\r\n\t    /// <param name=\"limit\"></pa" +
-                    "ram>\r\n\t    /// <param name=\"tramTransaction\"></param>\r\n\t    /// <param name=\"pag" +
-                    "eSize\"></param>\r\n\t    /// <param name=\"page\"></param>\r\n\t    /// <returns>Entity " +
-                    "of T</returns>\r\n\t    public static int Count(this IDbConnection connection, stri" +
-                    "ng target, Queue<string> where, Queue<string> order, int? pageSize = null, int? " +
-                    "page = null, int? limit = null, int? skip = null, int? take = null, IDbTransacti" +
-                    "on tramTransaction = null)\r\n        {\r\n            return connection.Query<int>(" +
-                    "GetRetriveQuery(target, where, order, pageSize, page, limit, skip, take, true), " +
-                    "transaction: tramTransaction).FirstOrDefault();\r\n        }\r\n\r\n\r\n\t    private sta" +
-                    "tic string GetRetriveQuery(string target, Queue<string> where, Queue<string> ord" +
-                    "er, int? pageSize = null, int? page = null, int? limit = null, int? skip = null," +
-                    " int? take = null, bool isCount = false)\r\n\t    {\r\n            var queryBuilder =" +
-                    " new StringBuilder(string.Format(\"select {0} {1} from \" + target, limit != null " +
-                    "? \" top \" + limit : \"\", isCount ? \"count(*)\" : \"*\"));\r\n            \r\n           " +
-                    " if (where != null && where.Count > 0)\r\n            {\r\n                queryBuil" +
-                    "der.Append(\" where \");\r\n\r\n                var first = true;\r\n                var" +
-                    " previous = \"\";\r\n\r\n                while (where.Count > 0)\r\n                {\r\n " +
-                    "                   var current = where.Dequeue();\r\n\r\n                    if (And" +
-                    "OrOr(current))\r\n                    {\r\n                        if (first)\r\n     " +
-                    "                   {\r\n                            first = false;\r\n              " +
-                    "              continue;\r\n                        }\r\n\r\n                        if" +
-                    " (AndOrOr(previous))\r\n                        {\r\n                            fir" +
-                    "st = false;\r\n                            continue;\r\n                        }\r\n\r" +
-                    "\n                        previous = current;\r\n                        queryBuild" +
-                    "er.Append(string.Format(\" {0} \", current));\r\n                    }\r\n            " +
-                    "        else\r\n                    {\r\n                        if (!first && !AndO" +
-                    "rOr(previous))\r\n                        {\r\n                            queryBuil" +
-                    "der.Append(string.Format(\" {0} \", \"and\"));\r\n                        }\r\n\r\n       " +
-                    "                 previous = current;\r\n                        queryBuilder.Appen" +
-                    "d(string.Format(\" {0} \", current));\r\n                    }\r\n\r\n                  " +
-                    "  first = false;\r\n                }\r\n            }\r\n\r\n            if (order != n" +
-                    "ull && order.Count > 0)\r\n            {\r\n                queryBuilder.Append(\" or" +
-                    "der by \");\r\n                while (order.Count > 0)\r\n                {\r\n        " +
-                    "            var item = order.Dequeue();\r\n                    queryBuilder.Append" +
-                    "(string.Format(\" {0} \", item));\r\n                }\r\n            }\r\n\r\n           " +
-                    " if (page != null && pageSize != null)\r\n            {\r\n                queryBuil" +
-                    "der.Append(string.Format(\" OFFSET ({0}) ROWS \" +\r\n                              " +
-                    "             \" FETCH NEXT {1} ROWS ONLY \", page * pageSize, pageSize));\r\n       " +
-                    "     }\r\n            else\r\n            {\r\n                if (skip != null)\r\n    " +
-                    "                queryBuilder.Append(string.Format(\" OFFSET ({0}) ROWS \", skip));" +
-                    "\r\n\r\n                if (take != null)\r\n                    queryBuilder.Append(s" +
-                    "tring.Format(\" FETCH NEXT {0} ROWS ONLY \", take));\r\n            }\r\n\r\n\t        re" +
-                    "turn queryBuilder.ToString();\r\n\t    }\r\n\r\n        private static bool AndOrOr(str" +
-                    "ing str)\r\n\t    {\r\n\t        return str == \"and\" || str == \"or\";\r\n\t    }\r\n\r\n\r\n\r\n  " +
-                    "      private static int GetKeyTypeWhereOrder(Type type, Type where, Type order)" +
-                    "\r\n        {\r\n            var handler = type.TypeHandle;\r\n            string wher" +
-                    "eCondition = @where != null ? @where.TypeHandle.Value.ToString() : string.Empty;" +
-                    "\r\n            string orderCondition = order != null ? order.TypeHandle.Value.ToS" +
-                    "tring() : string.Empty; ;\r\n            var str = string.Format(\"{0}{1}{2}\", hand" +
-                    "ler.Value, whereCondition, orderCondition);\r\n            return str.GetHashCode(" +
-                    ");\r\n        }\r\n\r\n        private static IEnumerable<string> GetListOfNames(Prope" +
-                    "rtyInfo[] list)\r\n        {\r\n            List<string> lst = new List<string>();\r\n" +
-                    "            foreach (PropertyInfo info in list)\r\n            {\r\n                " +
-                    "lst.Add(info.Name);\r\n            }\r\n            return lst.AsEnumerable();\r\n    " +
-                    "    }\r\n\r\n        private static string GetTableName(Type type)\r\n        {\r\n     " +
-                    "       string name;\r\n            if (!TypeTableName.TryGetValue(type.TypeHandle," +
-                    " out name))\r\n            {\r\n                name = type.Name + \"s\";\r\n           " +
-                    "     if (type.IsInterface && name.StartsWith(\"I\"))\r\n                    name = n" +
-                    "ame.Substring(1);\r\n\r\n                //NOTE: This as dynamic trick should be abl" +
-                    "e to handle both our own Table-attribute as well as the one in EntityFramework \r" +
-                    "\n                var tableattr = type.GetCustomAttributes(false).Where(attr => a" +
-                    "ttr.GetType().Name == \"TableAttribute\").SingleOrDefault() as\r\n                  " +
-                    "  dynamic;\r\n                if (tableattr != null)\r\n                    name = t" +
-                    "ableattr.Name;\r\n                TypeTableName[type.TypeHandle] = name;\r\n        " +
-                    "    }\r\n            return name;\r\n        }\r\n\r\n        /// <summary>\r\n        ///" +
-                    " Inserts an entity into table \"Ts\" and returns identity id.\r\n        /// </summa" +
-                    "ry>\r\n        /// <param name=\"connection\">Open SqlConnection</param>\r\n        //" +
-                    "/ <param name=\"entityToInsert\">Entity to insert</param>\r\n        /// <returns>Id" +
-                    "entity of inserted entity</returns>\r\n        public static long Insert<T>(this I" +
-                    "DbConnection connection, T entityToInsert, IDbTransaction transaction = null, in" +
-                    "t? commandTimeout = null) where T : class\r\n        {\r\n\r\n            var type = t" +
-                    "ypeof(T);\r\n\r\n            var name = GetTableName(type);\r\n\r\n            var sbCol" +
-                    "umnList = new StringBuilder(null);\r\n\r\n            var allProperties = TypeProper" +
-                    "tiesCache(type);\r\n            var keyProperties = KeyPropertiesCache(type);\r\n   " +
-                    "         var allPropertiesExceptKey = allProperties.Except(keyProperties);\r\n\r\n  " +
-                    "          for (var i = 0; i < allPropertiesExceptKey.Count(); i++)\r\n            " +
-                    "{\r\n                var property = allPropertiesExceptKey.ElementAt(i);\r\n        " +
-                    "        sbColumnList.AppendFormat(\"[{0}]\", property.Name);\r\n                if (" +
-                    "i < allPropertiesExceptKey.Count() - 1)\r\n                    sbColumnList.Append" +
-                    "(\", \");\r\n            }\r\n\r\n            var sbParameterList = new StringBuilder(nu" +
-                    "ll);\r\n            for (var i = 0; i < allPropertiesExceptKey.Count(); i++)\r\n    " +
-                    "        {\r\n                var property = allPropertiesExceptKey.ElementAt(i);\r\n" +
-                    "                sbParameterList.AppendFormat(\"@{0}\", property.Name);\r\n          " +
-                    "      if (i < allPropertiesExceptKey.Count() - 1)\r\n                    sbParamet" +
-                    "erList.Append(\", \");\r\n            }\r\n            ISqlAdapter adapter = GetFormat" +
-                    "ter(connection);\r\n            int id = adapter.Insert(connection, transaction, c" +
-                    "ommandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyPro" +
-                    "perties, entityToInsert);\r\n            return id;\r\n        }\r\n\r\n        /// <sum" +
-                    "mary>\r\n        /// Updates entity in table \"Ts\", checks if the entity is modifie" +
-                    "d if the entity is tracked by the Get() extension.\r\n        /// </summary>\r\n    " +
-                    "    /// <typeparam name=\"T\">Type to be updated</typeparam>\r\n        /// <param n" +
-                    "ame=\"connection\">Open SqlConnection</param>\r\n        /// <param name=\"entityToUp" +
-                    "date\">Entity to be updated</param>\r\n        /// <returns>true if updated, false " +
-                    "if not found or not modified (tracked entities)</returns>\r\n        public static" +
-                    " bool Update<T>(this IDbConnection connection, T entityToUpdate, IDbTransaction " +
-                    "transaction = null, int? commandTimeout = null) where T : BaseModel\r\n        {\r\n" +
-                    "            if (entityToUpdate.DatabaseModelStatus != ModelStatus.Retrieved)\r\n  " +
-                    "              return false;\r\n\r\n            if (entityToUpdate.UpdatedProperties." +
-                    "Count < 1)\r\n                return false;\r\n\r\n            var type = typeof(T);\r\n" +
-                    "\r\n            var keyProperties = KeyPropertiesCache(type).ToList();\r\n          " +
-                    "  if (!keyProperties.Any())\r\n                throw new ArgumentException(\"Entity" +
-                    " must have at least one [Key] property\");\r\n\r\n            var name = GetTableName" +
-                    "(type);\r\n\r\n            var sb = new StringBuilder();\r\n            sb.AppendForma" +
-                    "t(\"update {0} set \", name);\r\n\r\n            var allProperties = TypePropertiesCac" +
-                    "he(type);\r\n            var nonIdProps = allProperties.Where(a => !keyProperties." +
-                    "Contains(a) && entityToUpdate.UpdatedProperties.Contains(a.Name)).ToList(); // O" +
-                    "nly updated properties\r\n\r\n\r\n            for (var i = 0; i < nonIdProps.Count(); " +
-                    "i++)\r\n            {\r\n                var property = nonIdProps.ElementAt(i);\r\n  " +
-                    "              sb.AppendFormat(\"[{0}] = @{1}\", property.Name, property.Name);\r\n  " +
-                    "              if (i < nonIdProps.Count() - 1)\r\n                    sb.AppendForm" +
-                    "at(\", \");\r\n            }\r\n\r\n            sb.Append(\" where \");\r\n            for (" +
-                    "var i = 0; i < keyProperties.Count(); i++)\r\n            {\r\n                var p" +
-                    "roperty = keyProperties.ElementAt(i);\r\n                sb.AppendFormat(\"[{0}] = " +
-                    "@{1}\", property.Name, property.Name);\r\n                if (i < keyProperties.Cou" +
-                    "nt() - 1)\r\n                    sb.AppendFormat(\" and \");\r\n            }\r\n       " +
-                    "     var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTime" +
-                    "out: commandTimeout, transaction: transaction);\r\n            return updated > 0;" +
-                    "\r\n        }\r\n\r\n        /// <summary>\r\n        /// Delete entity in table \"Ts\".\r\n" +
-                    "        /// </summary>\r\n        /// <typeparam name=\"T\">Type of entity</typepara" +
-                    "m>\r\n        /// <param name=\"connection\">Open SqlConnection</param>\r\n        ///" +
-                    " <param name=\"entityToDelete\">Entity to delete</param>\r\n        /// <returns>tru" +
-                    "e if deleted, false if not found</returns>\r\n        public static bool Delete<T>" +
-                    "(this IDbConnection connection, T entityToDelete, IDbTransaction transaction = n" +
-                    "ull, int? commandTimeout = null) where T : BaseModel\r\n        {\r\n            if " +
-                    "(entityToDelete == null)\r\n                throw new ArgumentException(\"Cannot De" +
-                    "lete null Object\", \"entityToDelete\");\r\n\r\n            var type = typeof(T);\r\n\r\n  " +
-                    "          var keyProperties = KeyPropertiesCache(type).ToList();\r\n\r\n            " +
-                    "if (!keyProperties.Any())\r\n                throw new ArgumentException(\"Entity m" +
-                    "ust have at least one [Key] property\");\r\n\r\n            var name = GetTableName(t" +
-                    "ype);\r\n\r\n            var sb = new StringBuilder();\r\n            sb.AppendFormat(" +
-                    "\"delete from {0} where \", name);\r\n\r\n            for (var i = 0; i < keyPropertie" +
+                    "\t    /// <summary>\r\n\t    /// Return all  \r\n\t    /// </summary>\r\n\t    /// <typepa" +
+                    "ram name=\"T\">Interface type to create and populate</typeparam>\r\n\t    /// <param " +
+                    "name=\"connection\">Open SqlConnection</param>\r\n\t    /// <param name=\"query\"></par" +
+                    "am>\r\n\t    /// <returns>Entity of T</returns>\r\n\t    public static IEnumerable<T> " +
+                    "Get<T>(this IDbConnection connection, IRepoQuery query)\r\n        {\r\n\t        ret" +
+                    "urn connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);" +
+                    "\r\n        }\r\n\r\n\t    /// <summary>\r\n\t    /// Returns count of rows\r\n\t    /// </su" +
+                    "mmary>\r\n\t    /// <param name=\"connection\">Open SqlConnection</param>\r\n\t    /// <" +
+                    "param name=\"query\"></param>\r\n\t    /// <returns>Entity of T</returns>\r\n\t    publi" +
+                    "c static int Count(this IDbConnection connection, IRepoQuery query)\r\n        {\r\n" +
+                    "            return connection.Query<int>(GetRetriveQuery(query, true), transacti" +
+                    "on: query.Transaction).FirstOrDefault();\r\n        }\r\n\r\n\t    private static strin" +
+                    "g GetRetriveQuery(IRepoQuery query, bool isCount = false)\r\n\t    {\r\n            v" +
+                    "ar queryBuilder = new StringBuilder(string.Format(\"select {0} {1} from \" + query" +
+                    ".Target, query.Limit != null ? \" top \" + query.Limit : \"\", isCount ? \"count(*)\" " +
+                    ": \"*\"));\r\n            \r\n            if (query.Where != null && query.Where.Count" +
+                    " > 0)\r\n            {\r\n                queryBuilder.Append(\" where \");\r\n\r\n       " +
+                    "         var first = true;\r\n                var previous = \"\";\r\n\r\n              " +
+                    "  while (query.Where.Count > 0)\r\n                {\r\n                    var curr" +
+                    "ent = query.Where.Dequeue();\r\n\r\n                    if (AndOrOr(current))\r\n     " +
+                    "               {\r\n                        if (first)\r\n                        {\r" +
+                    "\n                            first = false;\r\n                            continu" +
+                    "e;\r\n                        }\r\n\r\n                        if (AndOrOr(previous))\r" +
+                    "\n                        {\r\n                            first = false;\r\n        " +
+                    "                    continue;\r\n                        }\r\n\r\n                    " +
+                    "    previous = current;\r\n                        queryBuilder.Append(string.Form" +
+                    "at(\" {0} \", current));\r\n                    }\r\n                    else\r\n       " +
+                    "             {\r\n                        if (!first && !AndOrOr(previous))\r\n     " +
+                    "                   {\r\n                            queryBuilder.Append(string.For" +
+                    "mat(\" {0} \", \"and\"));\r\n                        }\r\n\r\n                        prev" +
+                    "ious = current;\r\n                        queryBuilder.Append(string.Format(\" {0}" +
+                    " \", current));\r\n                    }\r\n\r\n                    first = false;\r\n   " +
+                    "             }\r\n            }\r\n\r\n            if (query.Order != null && query.Or" +
+                    "der.Count > 0)\r\n            {\r\n                queryBuilder.Append(\" order by \")" +
+                    ";\r\n                while (query.Order.Count > 0)\r\n                {\r\n           " +
+                    "         var item = query.Order.Dequeue();\r\n                    queryBuilder.App" +
+                    "end(string.Format(\" {0} \", item));\r\n                }\r\n            }\r\n\r\n        " +
+                    "    if (query.Page != null && query.PageSize != null)\r\n            {\r\n          " +
+                    "      queryBuilder.Append(string.Format(\" OFFSET ({0}) ROWS \" +\r\n               " +
+                    "                            \" FETCH NEXT {1} ROWS ONLY \", query.Page * query.Pag" +
+                    "eSize, query.PageSize));\r\n            }\r\n            else\r\n            {\r\n      " +
+                    "          if (query.Skip != null)\r\n                    queryBuilder.Append(strin" +
+                    "g.Format(\" OFFSET ({0}) ROWS \", query.Skip));\r\n\r\n                if (query.Take " +
+                    "!= null)\r\n                    queryBuilder.Append(string.Format(\" FETCH NEXT {0}" +
+                    " ROWS ONLY \", query.Take));\r\n            }\r\n\r\n\t        return queryBuilder.ToStr" +
+                    "ing();\r\n\t    }\r\n\r\n        private static bool AndOrOr(string str)\r\n\t    {\r\n\t    " +
+                    "    return str == \"and\" || str == \"or\";\r\n\t    }\r\n\r\n        private static int Ge" +
+                    "tKeyTypeWhereOrder(Type type, Type where, Type order)\r\n        {\r\n            va" +
+                    "r handler = type.TypeHandle;\r\n            string whereCondition = @where != null" +
+                    " ? @where.TypeHandle.Value.ToString() : string.Empty;\r\n            string orderC" +
+                    "ondition = order != null ? order.TypeHandle.Value.ToString() : string.Empty; ;\r\n" +
+                    "            var str = string.Format(\"{0}{1}{2}\", handler.Value, whereCondition, " +
+                    "orderCondition);\r\n            return str.GetHashCode();\r\n        }\r\n\r\n        pr" +
+                    "ivate static IEnumerable<string> GetListOfNames(PropertyInfo[] list)\r\n        {\r" +
+                    "\n            List<string> lst = new List<string>();\r\n            foreach (Proper" +
+                    "tyInfo info in list)\r\n            {\r\n                lst.Add(info.Name);\r\n      " +
+                    "      }\r\n            return lst.AsEnumerable();\r\n        }\r\n\r\n        private st" +
+                    "atic string GetTableName(Type type)\r\n        {\r\n            string name;\r\n      " +
+                    "      if (!TypeTableName.TryGetValue(type.TypeHandle, out name))\r\n            {\r" +
+                    "\n                name = type.Name + \"s\";\r\n                if (type.IsInterface &" +
+                    "& name.StartsWith(\"I\"))\r\n                    name = name.Substring(1);\r\n\r\n      " +
+                    "          //NOTE: This as dynamic trick should be able to handle both our own Ta" +
+                    "ble-attribute as well as the one in EntityFramework \r\n                var tablea" +
+                    "ttr = type.GetCustomAttributes(false).Where(attr => attr.GetType().Name == \"Tabl" +
+                    "eAttribute\").SingleOrDefault() as\r\n                    dynamic;\r\n               " +
+                    " if (tableattr != null)\r\n                    name = tableattr.Name;\r\n           " +
+                    "     TypeTableName[type.TypeHandle] = name;\r\n            }\r\n            return n" +
+                    "ame;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Inserts an entity into tab" +
+                    "le \"Ts\" and returns identity id.\r\n        /// </summary>\r\n        /// <param nam" +
+                    "e=\"connection\">Open SqlConnection</param>\r\n        /// <param name=\"entityToInse" +
+                    "rt\">Entity to insert</param>\r\n        /// <returns>Identity of inserted entity</" +
+                    "returns>\r\n        public static long Insert<T>(this IDbConnection connection, T " +
+                    "entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null) w" +
+                    "here T : class\r\n        {\r\n\r\n            var type = typeof(T);\r\n\r\n            va" +
+                    "r name = GetTableName(type);\r\n\r\n            var sbColumnList = new StringBuilder" +
+                    "(null);\r\n\r\n            var allProperties = TypePropertiesCache(type);\r\n         " +
+                    "   var keyProperties = KeyPropertiesCache(type);\r\n            var allPropertiesE" +
+                    "xceptKey = allProperties.Except(keyProperties);\r\n\r\n            for (var i = 0; i" +
+                    " < allPropertiesExceptKey.Count(); i++)\r\n            {\r\n                var prop" +
+                    "erty = allPropertiesExceptKey.ElementAt(i);\r\n                sbColumnList.Append" +
+                    "Format(\"[{0}]\", property.Name);\r\n                if (i < allPropertiesExceptKey." +
+                    "Count() - 1)\r\n                    sbColumnList.Append(\", \");\r\n            }\r\n\r\n " +
+                    "           var sbParameterList = new StringBuilder(null);\r\n            for (var " +
+                    "i = 0; i < allPropertiesExceptKey.Count(); i++)\r\n            {\r\n                " +
+                    "var property = allPropertiesExceptKey.ElementAt(i);\r\n                sbParameter" +
+                    "List.AppendFormat(\"@{0}\", property.Name);\r\n                if (i < allProperties" +
+                    "ExceptKey.Count() - 1)\r\n                    sbParameterList.Append(\", \");\r\n     " +
+                    "       }\r\n            ISqlAdapter adapter = GetFormatter(connection);\r\n         " +
+                    "   int id = adapter.Insert(connection, transaction, commandTimeout, name, sbColu" +
+                    "mnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);\r\n" +
+                    "            return id;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Updates " +
+                    "entity in table \"Ts\", checks if the entity is modified if the entity is tracked " +
+                    "by the Get() extension.\r\n        /// </summary>\r\n        /// <typeparam name=\"T\"" +
+                    ">Type to be updated</typeparam>\r\n        /// <param name=\"connection\">Open SqlCo" +
+                    "nnection</param>\r\n        /// <param name=\"entityToUpdate\">Entity to be updated<" +
+                    "/param>\r\n        /// <returns>true if updated, false if not found or not modifie" +
+                    "d (tracked entities)</returns>\r\n        public static bool Update<T>(this IDbCon" +
+                    "nection connection, T entityToUpdate, IDbTransaction transaction = null, int? co" +
+                    "mmandTimeout = null) where T : BaseModel\r\n        {\r\n            if (entityToUpd" +
+                    "ate.DatabaseModelStatus != ModelStatus.Retrieved)\r\n                return false;" +
+                    "\r\n\r\n            if (entityToUpdate.UpdatedProperties.Count < 1)\r\n               " +
+                    " return false;\r\n\r\n            var type = typeof(T);\r\n\r\n            var keyProper" +
+                    "ties = KeyPropertiesCache(type).ToList();\r\n            if (!keyProperties.Any())" +
+                    "\r\n                throw new ArgumentException(\"Entity must have at least one [Ke" +
+                    "y] property\");\r\n\r\n            var name = GetTableName(type);\r\n\r\n            var " +
+                    "sb = new StringBuilder();\r\n            sb.AppendFormat(\"update {0} set \", name);" +
+                    "\r\n\r\n            var allProperties = TypePropertiesCache(type);\r\n            var " +
+                    "nonIdProps = allProperties.Where(a => !keyProperties.Contains(a) && entityToUpda" +
+                    "te.UpdatedProperties.Contains(a.Name)).ToList(); // Only updated properties\r\n\r\n\r" +
+                    "\n            for (var i = 0; i < nonIdProps.Count(); i++)\r\n            {\r\n      " +
+                    "          var property = nonIdProps.ElementAt(i);\r\n                sb.AppendForm" +
+                    "at(\"[{0}] = @{1}\", property.Name, property.Name);\r\n                if (i < nonId" +
+                    "Props.Count() - 1)\r\n                    sb.AppendFormat(\", \");\r\n            }\r\n\r" +
+                    "\n            sb.Append(\" where \");\r\n            for (var i = 0; i < keyPropertie" +
                     "s.Count(); i++)\r\n            {\r\n                var property = keyProperties.Ele" +
                     "mentAt(i);\r\n                sb.AppendFormat(\"[{0}] = @{1}\", property.Name, prope" +
                     "rty.Name);\r\n                if (i < keyProperties.Count() - 1)\r\n                " +
-                    "    sb.AppendFormat(\" and \");\r\n            }\r\n            var deleted = connecti" +
-                    "on.Execute(sb.ToString(), entityToDelete, transaction: transaction, commandTimeo" +
-                    "ut: commandTimeout) > 0;\r\n            if(deleted) { entityToDelete.DatabaseModel" +
-                    "Status = ModelStatus.Deleted; }\r\n            return deleted;\r\n        }\r\n\r\n     " +
-                    "   public static ISqlAdapter GetFormatter(IDbConnection connection)\r\n        {\r\n" +
-                    "            string name = connection.GetType().Name.ToLower();\r\n            if (" +
-                    "!AdapterDictionary.ContainsKey(name))\r\n                return new SqlServerAdapt" +
-                    "er();\r\n            return AdapterDictionary[name];\r\n        }\r\n\r\n        class P" +
-                    "roxyGenerator\r\n        {\r\n            private static readonly Dictionary<Type, o" +
-                    "bject> TypeCache = new Dictionary<Type, object>();\r\n\r\n            private static" +
-                    " AssemblyBuilder GetAsmBuilder(string name)\r\n            {\r\n                var " +
-                    "assemblyBuilder = Thread.GetDomain().DefineDynamicAssembly(new AssemblyName { Na" +
-                    "me = name },\r\n                    AssemblyBuilderAccess.Run);       //NOTE: to s" +
-                    "ave, use RunAndSave\r\n\r\n                return assemblyBuilder;\r\n            }\r\n\r" +
-                    "\n            public static T GetClassProxy<T>()\r\n            {\r\n                " +
-                    "// A class proxy could be implemented if all properties are virtual\r\n           " +
-                    "     //  otherwise there is a pretty dangerous case where internal actions will " +
-                    "not update dirty tracking\r\n                throw new NotImplementedException();\r" +
-                    "\n            }\r\n\r\n\r\n            public static T GetInterfaceProxy<T>()\r\n        " +
-                    "    {\r\n                Type typeOfT = typeof(T);\r\n\r\n                object k;\r\n " +
-                    "               if (TypeCache.TryGetValue(typeOfT, out k))\r\n                {\r\n  " +
-                    "                  return (T)k;\r\n                }\r\n                var assemblyB" +
-                    "uilder = GetAsmBuilder(typeOfT.Name);\r\n\r\n                var moduleBuilder = ass" +
-                    "emblyBuilder.DefineDynamicModule(\"SqlMapperExtensions.\" + typeOfT.Name); //NOTE:" +
-                    " to save, add \"asdasd.dll\" parameter\r\n\r\n                var interfaceType = type" +
-                    "of(IProxy);\r\n                var typeBuilder = moduleBuilder.DefineType(typeOfT." +
-                    "Name + \"_\" + Guid.NewGuid(),\r\n                    TypeAttributes.Public | TypeAt" +
-                    "tributes.Class);\r\n                typeBuilder.AddInterfaceImplementation(typeOfT" +
-                    ");\r\n                typeBuilder.AddInterfaceImplementation(interfaceType);\r\n\r\n  " +
-                    "              //create our _isDirty field, which implements IProxy\r\n            " +
-                    "    var setIsDirtyMethod = CreateIsDirtyProperty(typeBuilder);\r\n\r\n              " +
-                    "  // Generate a field for each property, which implements the T\r\n               " +
-                    " foreach (var property in typeof(T).GetProperties())\r\n                {\r\n       " +
-                    "             var isId = property.GetCustomAttributes(true).Any(a => a is KeyAttr" +
-                    "ibute);\r\n                    CreateProperty<T>(typeBuilder, property.Name, prope" +
-                    "rty.PropertyType, setIsDirtyMethod, isId);\r\n                }\r\n\r\n               " +
-                    " var generatedType = typeBuilder.CreateType();\r\n\r\n                //assemblyBuil" +
-                    "der.Save(name + \".dll\");  //NOTE: to save, uncomment\r\n\r\n                var gene" +
-                    "ratedObject = Activator.CreateInstance(generatedType);\r\n\r\n                TypeCa" +
-                    "che.Add(typeOfT, generatedObject);\r\n                return (T)generatedObject;\r\n" +
-                    "            }\r\n\r\n\r\n            private static MethodInfo CreateIsDirtyProperty(T" +
-                    "ypeBuilder typeBuilder)\r\n            {\r\n                var propType = typeof(bo" +
-                    "ol);\r\n                var field = typeBuilder.DefineField(\"_\" + \"IsDirty\", propT" +
-                    "ype, FieldAttributes.Private);\r\n                var property = typeBuilder.Defin" +
-                    "eProperty(\"IsDirty\",\r\n                                                System.Ref" +
-                    "lection.PropertyAttributes.None,\r\n                                              " +
-                    "  propType,\r\n                                                new Type[] { propTy" +
-                    "pe });\r\n\r\n                const MethodAttributes getSetAttr = MethodAttributes.P" +
-                    "ublic | MethodAttributes.NewSlot | MethodAttributes.SpecialName |\r\n             " +
-                    "                                       MethodAttributes.Final | MethodAttributes" +
-                    ".Virtual | MethodAttributes.HideBySig;\r\n\r\n                // Define the \"get\" an" +
-                    "d \"set\" accessor methods\r\n                var currGetPropMthdBldr = typeBuilder." +
-                    "DefineMethod(\"get_\" + \"IsDirty\",\r\n                                              " +
-                    "  getSetAttr,\r\n                                                propType,\r\n      " +
-                    "                                          Type.EmptyTypes);\r\n                var" +
-                    " currGetIL = currGetPropMthdBldr.GetILGenerator();\r\n                currGetIL.Em" +
-                    "it(OpCodes.Ldarg_0);\r\n                currGetIL.Emit(OpCodes.Ldfld, field);\r\n   " +
-                    "             currGetIL.Emit(OpCodes.Ret);\r\n                var currSetPropMthdBl" +
-                    "dr = typeBuilder.DefineMethod(\"set_\" + \"IsDirty\",\r\n                             " +
-                    "                   getSetAttr,\r\n                                                " +
-                    "null,\r\n                                                new Type[] { propType });" +
-                    "\r\n                var currSetIL = currSetPropMthdBldr.GetILGenerator();\r\n       " +
-                    "         currSetIL.Emit(OpCodes.Ldarg_0);\r\n                currSetIL.Emit(OpCode" +
-                    "s.Ldarg_1);\r\n                currSetIL.Emit(OpCodes.Stfld, field);\r\n            " +
-                    "    currSetIL.Emit(OpCodes.Ret);\r\n\r\n                property.SetGetMethod(currGe" +
-                    "tPropMthdBldr);\r\n                property.SetSetMethod(currSetPropMthdBldr);\r\n  " +
-                    "              var getMethod = typeof(IProxy).GetMethod(\"get_\" + \"IsDirty\");\r\n   " +
-                    "             var setMethod = typeof(IProxy).GetMethod(\"set_\" + \"IsDirty\");\r\n    " +
-                    "            typeBuilder.DefineMethodOverride(currGetPropMthdBldr, getMethod);\r\n " +
-                    "               typeBuilder.DefineMethodOverride(currSetPropMthdBldr, setMethod);" +
-                    "\r\n\r\n                return currSetPropMthdBldr;\r\n            }\r\n\r\n            pr" +
-                    "ivate static void CreateProperty<T>(TypeBuilder typeBuilder, string propertyName" +
-                    ", Type propType, MethodInfo setIsDirtyMethod, bool isIdentity)\r\n            {\r\n " +
-                    "               //Define the field and the property \r\n                var field =" +
-                    " typeBuilder.DefineField(\"_\" + propertyName, propType, FieldAttributes.Private);" +
-                    "\r\n                var property = typeBuilder.DefineProperty(propertyName,\r\n     " +
+                    "    sb.AppendFormat(\" and \");\r\n            }\r\n            var updated = connecti" +
+                    "on.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transa" +
+                    "ction: transaction);\r\n            return updated > 0;\r\n        }\r\n\r\n        /// " +
+                    "<summary>\r\n        /// Delete entity in table \"Ts\".\r\n        /// </summary>\r\n   " +
+                    "     /// <typeparam name=\"T\">Type of entity</typeparam>\r\n        /// <param name" +
+                    "=\"connection\">Open SqlConnection</param>\r\n        /// <param name=\"entityToDelet" +
+                    "e\">Entity to delete</param>\r\n        /// <returns>true if deleted, false if not " +
+                    "found</returns>\r\n        public static bool Delete<T>(this IDbConnection connect" +
+                    "ion, T entityToDelete, IDbTransaction transaction = null, int? commandTimeout = " +
+                    "null) where T : BaseModel\r\n        {\r\n            if (entityToDelete == null)\r\n " +
+                    "               throw new ArgumentException(\"Cannot Delete null Object\", \"entityT" +
+                    "oDelete\");\r\n\r\n            var type = typeof(T);\r\n\r\n            var keyProperties" +
+                    " = KeyPropertiesCache(type).ToList();\r\n\r\n            if (!keyProperties.Any())\r\n" +
+                    "                throw new ArgumentException(\"Entity must have at least one [Key]" +
+                    " property\");\r\n\r\n            var name = GetTableName(type);\r\n\r\n            var sb" +
+                    " = new StringBuilder();\r\n            sb.AppendFormat(\"delete from {0} where \", n" +
+                    "ame);\r\n\r\n            for (var i = 0; i < keyProperties.Count(); i++)\r\n          " +
+                    "  {\r\n                var property = keyProperties.ElementAt(i);\r\n               " +
+                    " sb.AppendFormat(\"[{0}] = @{1}\", property.Name, property.Name);\r\n               " +
+                    " if (i < keyProperties.Count() - 1)\r\n                    sb.AppendFormat(\" and \"" +
+                    ");\r\n            }\r\n            var deleted = connection.Execute(sb.ToString(), e" +
+                    "ntityToDelete, transaction: transaction, commandTimeout: commandTimeout) > 0;\r\n " +
+                    "           if(deleted) { entityToDelete.DatabaseModelStatus = ModelStatus.Delete" +
+                    "d; }\r\n            return deleted;\r\n        }\r\n\r\n        public static ISqlAdapte" +
+                    "r GetFormatter(IDbConnection connection)\r\n        {\r\n            string name = c" +
+                    "onnection.GetType().Name.ToLower();\r\n            if (!AdapterDictionary.Contains" +
+                    "Key(name))\r\n                return new SqlServerAdapter();\r\n            return A" +
+                    "dapterDictionary[name];\r\n        }\r\n\r\n        class ProxyGenerator\r\n        {\r\n " +
+                    "           private static readonly Dictionary<Type, object> TypeCache = new Dict" +
+                    "ionary<Type, object>();\r\n\r\n            private static AssemblyBuilder GetAsmBuil" +
+                    "der(string name)\r\n            {\r\n                var assemblyBuilder = Thread.Ge" +
+                    "tDomain().DefineDynamicAssembly(new AssemblyName { Name = name },\r\n             " +
+                    "       AssemblyBuilderAccess.Run);       //NOTE: to save, use RunAndSave\r\n\r\n    " +
+                    "            return assemblyBuilder;\r\n            }\r\n\r\n            public static " +
+                    "T GetClassProxy<T>()\r\n            {\r\n                // A class proxy could be i" +
+                    "mplemented if all properties are virtual\r\n                //  otherwise there is" +
+                    " a pretty dangerous case where internal actions will not update dirty tracking\r\n" +
+                    "                throw new NotImplementedException();\r\n            }\r\n\r\n\r\n       " +
+                    "     public static T GetInterfaceProxy<T>()\r\n            {\r\n                Type" +
+                    " typeOfT = typeof(T);\r\n\r\n                object k;\r\n                if (TypeCach" +
+                    "e.TryGetValue(typeOfT, out k))\r\n                {\r\n                    return (T" +
+                    ")k;\r\n                }\r\n                var assemblyBuilder = GetAsmBuilder(type" +
+                    "OfT.Name);\r\n\r\n                var moduleBuilder = assemblyBuilder.DefineDynamicM" +
+                    "odule(\"SqlMapperExtensions.\" + typeOfT.Name); //NOTE: to save, add \"asdasd.dll\" " +
+                    "parameter\r\n\r\n                var interfaceType = typeof(IProxy);\r\n              " +
+                    "  var typeBuilder = moduleBuilder.DefineType(typeOfT.Name + \"_\" + Guid.NewGuid()" +
+                    ",\r\n                    TypeAttributes.Public | TypeAttributes.Class);\r\n         " +
+                    "       typeBuilder.AddInterfaceImplementation(typeOfT);\r\n                typeBui" +
+                    "lder.AddInterfaceImplementation(interfaceType);\r\n\r\n                //create our " +
+                    "_isDirty field, which implements IProxy\r\n                var setIsDirtyMethod = " +
+                    "CreateIsDirtyProperty(typeBuilder);\r\n\r\n                // Generate a field for e" +
+                    "ach property, which implements the T\r\n                foreach (var property in t" +
+                    "ypeof(T).GetProperties())\r\n                {\r\n                    var isId = pro" +
+                    "perty.GetCustomAttributes(true).Any(a => a is KeyAttribute);\r\n                  " +
+                    "  CreateProperty<T>(typeBuilder, property.Name, property.PropertyType, setIsDirt" +
+                    "yMethod, isId);\r\n                }\r\n\r\n                var generatedType = typeBu" +
+                    "ilder.CreateType();\r\n\r\n                //assemblyBuilder.Save(name + \".dll\");  /" +
+                    "/NOTE: to save, uncomment\r\n\r\n                var generatedObject = Activator.Cre" +
+                    "ateInstance(generatedType);\r\n\r\n                TypeCache.Add(typeOfT, generatedO" +
+                    "bject);\r\n                return (T)generatedObject;\r\n            }\r\n\r\n\r\n        " +
+                    "    private static MethodInfo CreateIsDirtyProperty(TypeBuilder typeBuilder)\r\n  " +
+                    "          {\r\n                var propType = typeof(bool);\r\n                var f" +
+                    "ield = typeBuilder.DefineField(\"_\" + \"IsDirty\", propType, FieldAttributes.Privat" +
+                    "e);\r\n                var property = typeBuilder.DefineProperty(\"IsDirty\",\r\n     " +
                     "                                           System.Reflection.PropertyAttributes." +
                     "None,\r\n                                                propType,\r\n              " +
                     "                                  new Type[] { propType });\r\n\r\n                c" +
-                    "onst MethodAttributes getSetAttr = MethodAttributes.Public | MethodAttributes.Vi" +
-                    "rtual |\r\n                                                    MethodAttributes.Hi" +
-                    "deBySig;\r\n\r\n                // Define the \"get\" and \"set\" accessor methods\r\n    " +
-                    "            var currGetPropMthdBldr = typeBuilder.DefineMethod(\"get_\" + property" +
-                    "Name,\r\n                                                getSetAttr,\r\n            " +
+                    "onst MethodAttributes getSetAttr = MethodAttributes.Public | MethodAttributes.Ne" +
+                    "wSlot | MethodAttributes.SpecialName |\r\n                                        " +
+                    "            MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes" +
+                    ".HideBySig;\r\n\r\n                // Define the \"get\" and \"set\" accessor methods\r\n " +
+                    "               var currGetPropMthdBldr = typeBuilder.DefineMethod(\"get_\" + \"IsDi" +
+                    "rty\",\r\n                                                getSetAttr,\r\n            " +
                     "                                    propType,\r\n                                 " +
-                    "               Type.EmptyTypes);\r\n\r\n                var currGetIL = currGetPropM" +
-                    "thdBldr.GetILGenerator();\r\n                currGetIL.Emit(OpCodes.Ldarg_0);\r\n   " +
-                    "             currGetIL.Emit(OpCodes.Ldfld, field);\r\n                currGetIL.Em" +
-                    "it(OpCodes.Ret);\r\n\r\n                var currSetPropMthdBldr = typeBuilder.Define" +
-                    "Method(\"set_\" + propertyName,\r\n                                                g" +
-                    "etSetAttr,\r\n                                                null,\r\n             " +
-                    "                                   new Type[] { propType });\r\n\r\n                " +
-                    "//store value in private field and set the isdirty flag\r\n                var cur" +
-                    "rSetIL = currSetPropMthdBldr.GetILGenerator();\r\n                currSetIL.Emit(O" +
-                    "pCodes.Ldarg_0);\r\n                currSetIL.Emit(OpCodes.Ldarg_1);\r\n            " +
-                    "    currSetIL.Emit(OpCodes.Stfld, field);\r\n                currSetIL.Emit(OpCode" +
-                    "s.Ldarg_0);\r\n                currSetIL.Emit(OpCodes.Ldc_I4_1);\r\n                " +
-                    "currSetIL.Emit(OpCodes.Call, setIsDirtyMethod);\r\n                currSetIL.Emit(" +
-                    "OpCodes.Ret);\r\n\r\n                //TODO: Should copy all attributes defined by t" +
-                    "he interface?\r\n                if (isIdentity)\r\n                {\r\n             " +
-                    "       var keyAttribute = typeof(KeyAttribute);\r\n                    var myConst" +
-                    "ructorInfo = keyAttribute.GetConstructor(new Type[] { });\r\n                    v" +
-                    "ar attributeBuilder = new CustomAttributeBuilder(myConstructorInfo, new object[]" +
-                    " { });\r\n                    property.SetCustomAttribute(attributeBuilder);\r\n    " +
-                    "            }\r\n\r\n                property.SetGetMethod(currGetPropMthdBldr);\r\n  " +
-                    "              property.SetSetMethod(currSetPropMthdBldr);\r\n                var g" +
-                    "etMethod = typeof(T).GetMethod(\"get_\" + propertyName);\r\n                var setM" +
-                    "ethod = typeof(T).GetMethod(\"set_\" + propertyName);\r\n                typeBuilder" +
-                    ".DefineMethodOverride(currGetPropMthdBldr, getMethod);\r\n                typeBuil" +
-                    "der.DefineMethodOverride(currSetPropMthdBldr, setMethod);\r\n            }\r\n\r\n    " +
-                    "    }\r\n    }\r\n}");
+                    "               Type.EmptyTypes);\r\n                var currGetIL = currGetPropMth" +
+                    "dBldr.GetILGenerator();\r\n                currGetIL.Emit(OpCodes.Ldarg_0);\r\n     " +
+                    "           currGetIL.Emit(OpCodes.Ldfld, field);\r\n                currGetIL.Emit" +
+                    "(OpCodes.Ret);\r\n                var currSetPropMthdBldr = typeBuilder.DefineMeth" +
+                    "od(\"set_\" + \"IsDirty\",\r\n                                                getSetAt" +
+                    "tr,\r\n                                                null,\r\n                    " +
+                    "                            new Type[] { propType });\r\n                var currS" +
+                    "etIL = currSetPropMthdBldr.GetILGenerator();\r\n                currSetIL.Emit(OpC" +
+                    "odes.Ldarg_0);\r\n                currSetIL.Emit(OpCodes.Ldarg_1);\r\n              " +
+                    "  currSetIL.Emit(OpCodes.Stfld, field);\r\n                currSetIL.Emit(OpCodes." +
+                    "Ret);\r\n\r\n                property.SetGetMethod(currGetPropMthdBldr);\r\n          " +
+                    "      property.SetSetMethod(currSetPropMthdBldr);\r\n                var getMethod" +
+                    " = typeof(IProxy).GetMethod(\"get_\" + \"IsDirty\");\r\n                var setMethod " +
+                    "= typeof(IProxy).GetMethod(\"set_\" + \"IsDirty\");\r\n                typeBuilder.Def" +
+                    "ineMethodOverride(currGetPropMthdBldr, getMethod);\r\n                typeBuilder." +
+                    "DefineMethodOverride(currSetPropMthdBldr, setMethod);\r\n\r\n                return " +
+                    "currSetPropMthdBldr;\r\n            }\r\n\r\n            private static void CreatePro" +
+                    "perty<T>(TypeBuilder typeBuilder, string propertyName, Type propType, MethodInfo" +
+                    " setIsDirtyMethod, bool isIdentity)\r\n            {\r\n                //Define the" +
+                    " field and the property \r\n                var field = typeBuilder.DefineField(\"_" +
+                    "\" + propertyName, propType, FieldAttributes.Private);\r\n                var prope" +
+                    "rty = typeBuilder.DefineProperty(propertyName,\r\n                                " +
+                    "                System.Reflection.PropertyAttributes.None,\r\n                    " +
+                    "                            propType,\r\n                                         " +
+                    "       new Type[] { propType });\r\n\r\n                const MethodAttributes getSe" +
+                    "tAttr = MethodAttributes.Public | MethodAttributes.Virtual |\r\n                  " +
+                    "                                  MethodAttributes.HideBySig;\r\n\r\n               " +
+                    " // Define the \"get\" and \"set\" accessor methods\r\n                var currGetProp" +
+                    "MthdBldr = typeBuilder.DefineMethod(\"get_\" + propertyName,\r\n                    " +
+                    "                            getSetAttr,\r\n                                       " +
+                    "         propType,\r\n                                                Type.EmptyTy" +
+                    "pes);\r\n\r\n                var currGetIL = currGetPropMthdBldr.GetILGenerator();\r\n" +
+                    "                currGetIL.Emit(OpCodes.Ldarg_0);\r\n                currGetIL.Emit" +
+                    "(OpCodes.Ldfld, field);\r\n                currGetIL.Emit(OpCodes.Ret);\r\n\r\n       " +
+                    "         var currSetPropMthdBldr = typeBuilder.DefineMethod(\"set_\" + propertyNam" +
+                    "e,\r\n                                                getSetAttr,\r\n               " +
+                    "                                 null,\r\n                                        " +
+                    "        new Type[] { propType });\r\n\r\n                //store value in private fi" +
+                    "eld and set the isdirty flag\r\n                var currSetIL = currSetPropMthdBld" +
+                    "r.GetILGenerator();\r\n                currSetIL.Emit(OpCodes.Ldarg_0);\r\n         " +
+                    "       currSetIL.Emit(OpCodes.Ldarg_1);\r\n                currSetIL.Emit(OpCodes." +
+                    "Stfld, field);\r\n                currSetIL.Emit(OpCodes.Ldarg_0);\r\n              " +
+                    "  currSetIL.Emit(OpCodes.Ldc_I4_1);\r\n                currSetIL.Emit(OpCodes.Call" +
+                    ", setIsDirtyMethod);\r\n                currSetIL.Emit(OpCodes.Ret);\r\n\r\n          " +
+                    "      //TODO: Should copy all attributes defined by the interface?\r\n            " +
+                    "    if (isIdentity)\r\n                {\r\n                    var keyAttribute = t" +
+                    "ypeof(KeyAttribute);\r\n                    var myConstructorInfo = keyAttribute.G" +
+                    "etConstructor(new Type[] { });\r\n                    var attributeBuilder = new C" +
+                    "ustomAttributeBuilder(myConstructorInfo, new object[] { });\r\n                   " +
+                    " property.SetCustomAttribute(attributeBuilder);\r\n                }\r\n\r\n          " +
+                    "      property.SetGetMethod(currGetPropMthdBldr);\r\n                property.SetS" +
+                    "etMethod(currSetPropMthdBldr);\r\n                var getMethod = typeof(T).GetMet" +
+                    "hod(\"get_\" + propertyName);\r\n                var setMethod = typeof(T).GetMethod" +
+                    "(\"set_\" + propertyName);\r\n                typeBuilder.DefineMethodOverride(currG" +
+                    "etPropMthdBldr, getMethod);\r\n                typeBuilder.DefineMethodOverride(cu" +
+                    "rrSetPropMthdBldr, setMethod);\r\n            }\r\n\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

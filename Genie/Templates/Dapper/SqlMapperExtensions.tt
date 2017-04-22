@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
@@ -337,59 +338,43 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             }
             return obj;
         }
-
-	     /// <summary>
+	    /// <summary>
 	    /// Return all  
 	    /// </summary>
 	    /// <typeparam name="T">Interface type to create and populate</typeparam>
 	    /// <param name="connection">Open SqlConnection</param>
-	    /// <param name="target"></param>
-	    /// <param name="where"></param>
-	    /// <param name="order"></param>
-	    /// <param name="limit"></param>
-	    /// <param name="tramTransaction"></param>
-	    /// <param name="pageSize"></param>
-	    /// <param name="page"></param>
+	    /// <param name="query"></param>
 	    /// <returns>Entity of T</returns>
-	    public static IEnumerable<T> Get<T>(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tramTransaction = null, bool isCount = false )
+	    public static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
         {
-	        return connection.Query<T>(GetRetriveQuery(target, where, order, pageSize, page, limit, skip, take), transaction: tramTransaction);
+	        return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
         }
 
-
-        /// <summary>
+	    /// <summary>
 	    /// Returns count of rows
 	    /// </summary>
-	    /// <typeparam name="T">Interface type to create and populate</typeparam>
 	    /// <param name="connection">Open SqlConnection</param>
-	    /// <param name="target"></param>
-	    /// <param name="where"></param>
-	    /// <param name="order"></param>
-	    /// <param name="limit"></param>
-	    /// <param name="tramTransaction"></param>
-	    /// <param name="pageSize"></param>
-	    /// <param name="page"></param>
+	    /// <param name="query"></param>
 	    /// <returns>Entity of T</returns>
-	    public static int Count(this IDbConnection connection, string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction tramTransaction = null)
+	    public static int Count(this IDbConnection connection, IRepoQuery query)
         {
-            return connection.Query<int>(GetRetriveQuery(target, where, order, pageSize, page, limit, skip, take, true), transaction: tramTransaction).FirstOrDefault();
+            return connection.Query<int>(GetRetriveQuery(query, true), transaction: query.Transaction).FirstOrDefault();
         }
 
-
-	    private static string GetRetriveQuery(string target, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, bool isCount = false)
+	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false)
 	    {
-            var queryBuilder = new StringBuilder(string.Format("select {0} {1} from " + target, limit != null ? " top " + limit : "", isCount ? "count(*)" : "*"));
+            var queryBuilder = new StringBuilder(string.Format("select {0} {1} from " + query.Target, query.Limit != null ? " top " + query.Limit : "", isCount ? "count(*)" : "*"));
             
-            if (where != null && where.Count > 0)
+            if (query.Where != null && query.Where.Count > 0)
             {
                 queryBuilder.Append(" where ");
 
                 var first = true;
                 var previous = "";
 
-                while (where.Count > 0)
+                while (query.Where.Count > 0)
                 {
-                    var current = where.Dequeue();
+                    var current = query.Where.Dequeue();
 
                     if (AndOrOr(current))
                     {
@@ -423,28 +408,28 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                 }
             }
 
-            if (order != null && order.Count > 0)
+            if (query.Order != null && query.Order.Count > 0)
             {
                 queryBuilder.Append(" order by ");
-                while (order.Count > 0)
+                while (query.Order.Count > 0)
                 {
-                    var item = order.Dequeue();
+                    var item = query.Order.Dequeue();
                     queryBuilder.Append(string.Format(" {0} ", item));
                 }
             }
 
-            if (page != null && pageSize != null)
+            if (query.Page != null && query.PageSize != null)
             {
                 queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS " +
-                                           " FETCH NEXT {1} ROWS ONLY ", page * pageSize, pageSize));
+                                           " FETCH NEXT {1} ROWS ONLY ", query.Page * query.PageSize, query.PageSize));
             }
             else
             {
-                if (skip != null)
-                    queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS ", skip));
+                if (query.Skip != null)
+                    queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS ", query.Skip));
 
-                if (take != null)
-                    queryBuilder.Append(string.Format(" FETCH NEXT {0} ROWS ONLY ", take));
+                if (query.Take != null)
+                    queryBuilder.Append(string.Format(" FETCH NEXT {0} ROWS ONLY ", query.Take));
             }
 
 	        return queryBuilder.ToString();
@@ -454,8 +439,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    {
 	        return str == "and" || str == "or";
 	    }
-
-
 
         private static int GetKeyTypeWhereOrder(Type type, Type where, Type order)
         {

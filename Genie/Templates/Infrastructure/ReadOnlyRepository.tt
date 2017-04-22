@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
@@ -32,15 +33,14 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             return Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page,  transaction: transaction, commandTimeout: commandTimeout).ToList();
         }
 
-        
-        internal virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction transaction = null)
+        public virtual IEnumerable<T> Get(IRepoQuery query)
         {
-            return Conn.Get<T>(targetName, where, order,  pageSize, page, limit, skip, take, transaction).ToList();
+            return Conn.Get<T>(query).ToList();
         }
 
-        internal virtual int Count(string targetName, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction transaction = null)
+        public virtual int Count(IRepoQuery query)
         {
-            return Conn.Count(targetName, where, order, pageSize, page, limit, skip, take, transaction);
+            return Conn.Count(query);
         }
     }
 }

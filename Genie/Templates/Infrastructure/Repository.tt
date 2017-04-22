@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
@@ -93,9 +94,9 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         }
 
 
-        internal virtual IEnumerable<T> Get(string targetName, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction transaction = null)
+        public virtual IEnumerable<T> Get(IRepoQuery query)
         {
-            var items = Conn.Get<T>(targetName, where, order, pageSize, page, limit, skip, take, transaction).ToList();
+            var items = Conn.Get<T>(query).ToList();
 
             foreach (var item in items)
             {
@@ -105,9 +106,9 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             return items;
         }		
 
-        internal virtual int Count(string targetName, Queue<string> where, Queue<string> order, int? pageSize = null, int? page = null, int? limit = null, int? skip = null, int? take = null, IDbTransaction transaction = null)
+        public virtual int Count(IRepoQuery query)
         {
-            return Conn.Count(targetName, where, order, pageSize, page, limit, skip, take, transaction);
+            return Conn.Count(query);
         }
     }
 }

@@ -33,14 +33,14 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".Dapper;\r\nusing ");
+            this.Write(".Infrastructure.Models;\r\nusing ");
             
             #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
             
             #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
@@ -64,6 +64,9 @@ namespace Genie.Templates.Infrastructure.Interfaces
 
         IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
         IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null);
+
+        IEnumerable<T> Get(IRepoQuery query);
+	    int Count(IRepoQuery query);
     }
 }
 ");

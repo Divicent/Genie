@@ -7,7 +7,8 @@ using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Concrete;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
@@ -17,16 +18,16 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         private readonly IRepositoryFactory _factory;
 
         <#foreach(var relation in _schema.Relations){
-      #>private <#=relation.Name#>Repository <#=relation.FieldName#>Repository;
+      #>private I<#=relation.Name#>Repository <#=relation.FieldName#>Repository;
         <#}#>
 
         <#foreach(var view in _schema.Views){
-      #>private <#=view.Name#>Repository <#=view.FieldName#>Repository;
+      #>private I<#=view.Name#>Repository <#=view.FieldName#>Repository;
         <#}#>
 
 
-        public IDapperContext Context { get;}
-        public IDbTransaction Transaction { get; private set; }
+        private IDapperContext Context { get;}
+        private IDbTransaction Transaction { get; set; }
 
         public UnitOfWork(IDapperContext context, IRepositoryFactory factory)
         {
@@ -37,39 +38,17 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             
             
         <#foreach(var relation in _schema.Relations){
-      #>public <#=relation.Name#>Repository <#=relation.Name#>Repository { get { return <#=relation.FieldName#>Repository ?? (<#=relation.FieldName#>Repository = new <#=relation.Name#>Repository(Context, this)); } }
+      #>public I<#=relation.Name#>Repository <#=relation.Name#>Repository { get { return <#=relation.FieldName#>Repository ?? (<#=relation.FieldName#>Repository = new <#=relation.Name#>Repository(Context, this)); } }
         <#}#>
 
         <#foreach(var view in _schema.Views){
-      #>public <#=view.Name#>Repository <#=view.Name#>Repository { get { return <#=view.FieldName#>Repository ?? (<#=view.FieldName#>Repository = new <#=view.Name#>Repository(Context)); } }
+      #>public I<#=view.Name#>Repository <#=view.Name#>Repository { get { return <#=view.FieldName#>Repository ?? (<#=view.FieldName#>Repository = new <#=view.Name#>Repository(Context)); } }
         <#}#>
 
         <#foreach(var sp in _schema.Procedures){
       #>public List<T> <#=sp.Name#><T>(<#=sp.ParamString#>) { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>").ToList(); }
         <#}#>
             
-            
-        public IRepository<TSet> GetRepository<TSet>() where TSet : BaseModel
-        {
-            if (_repositories.Keys.Contains(typeof(TSet)))
-                return _repositories[typeof(TSet)] as IRepository<TSet>;
-
-            var repository = _factory.CreateRepository<TSet>(Context, this);
-            _repositories.Add(typeof(TSet), repository);
-
-            return repository;
-        }
-
-        public IReadOnlyRepository<TSet> GetReadonlyRepository<TSet>() where TSet : class 
-        {
-            if (_repositories.Keys.Contains(typeof(TSet)))
-                return _repositories[typeof(TSet)] as IReadOnlyRepository<TSet>;
-
-            var repository = _factory.CreateReadOnlyRepository<TSet>(Context);
-            _repositories.Add(typeof(TSet), repository);
-
-            return repository;
-        }
 
         public IDbTransaction BeginTransaction()
         {

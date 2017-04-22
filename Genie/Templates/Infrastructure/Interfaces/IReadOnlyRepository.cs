@@ -26,9 +26,16 @@ namespace Genie.Templates.Infrastructure.Interfaces
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\n\r\nnamespace ");
+            this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\nusing ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
+            
+            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -43,6 +50,9 @@ namespace Genie.Templates.Infrastructure.Interfaces
 
 		IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
 		IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null);
+
+        IEnumerable<T> Get(IRepoQuery query);
+	    int Count(IRepoQuery query);
 	}
 }
 ");
