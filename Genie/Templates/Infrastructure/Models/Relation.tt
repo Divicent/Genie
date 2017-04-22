@@ -8,18 +8,19 @@ using System.Collections.Generic;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 
 <#var entity = _relation;
 var name = _relation.Name;
 #>
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 {
-
     namespace Abstract
     {
-        
 	    public interface I<#=name#>QueryContext
 	    {
             I<#=name#>QueryContext Top(int limit);
@@ -31,25 +32,25 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 	        int Count(IDbTransaction transaction = null);
 	    }
 
-	    public interface I<#=name#>FilterContext
+	    public interface I<#=name#>FilterContext : IFilterContext
 	    {
 <#foreach(var atd in entity.Attributes){#>
 <#if(atd.DataType == "string"){#>
-		    StringFilter<I<#=name#>FilterContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
+		    IStringFilter<I<#=name#>FilterContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
 <#} else if(atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" || atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" || atd.DataType == "long" || atd.DataType == "long?" ){#>
-		    NumberFilter<I<#=name#>FilterContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
+		    INumberFilter<I<#=name#>FilterContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
 <#}else if(atd.DataType == "DateTime" || atd.DataType == "DateTime?"){#>
-		    DateFilter<I<#=name#>FilterContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
+		    IDateFilter<I<#=name#>FilterContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
 <#}else if(atd.DataType == "bool" || atd.DataType == "bool?"){#>
-		    BoolFilter<I<#=name#>FilterContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
+		    IBoolFilter<I<#=name#>FilterContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
 <#}#>
 <#}#>
 	    }
 
-        public interface I<#=name#>OrderContext
+        public interface I<#=name#>OrderContext: IOrderContext
         {
 <#foreach(var atd in entity.Attributes){#>
-		    OrderElement<I<#=name#>OrderContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
+		    IOrderElement<I<#=name#>OrderContext,I<#=name#>QueryContext> <#=atd.Name#> { get; }
 <#}#>
         }
     }
@@ -87,11 +88,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 <#}#>
         }
 
-	    internal class <#=name#>QueryContext I<#=name#>QueryContext
+	    internal class <#=name#>QueryContext: I<#=name#>QueryContext
 	    {
-		    private <#=name#>FilterContext _where; 
-	        private <#=name#>OrderContext _order;
-		    private readonly <#=name#>Repository _repo;
+		    private I<#=name#>FilterContext _where; 
+	        private I<#=name#>OrderContext _order;
+		    private readonly I<#=name#>Repository _repo;
 
             private int? _page;
             private int? _pageSize;
@@ -99,36 +100,36 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
             private int? _skip;
             private int? _take;
 
-            public <#=name#>QueryContext Page(int pageSize, int page)
+            public I<#=name#>QueryContext Page(int pageSize, int page)
             {
                 _page = page;
                 _pageSize = pageSize;
                 return this;
             }
 
-            public <#=name#>QueryContext Top(int limit)
+            public I<#=name#>QueryContext Top(int limit)
             {
                 _limit = limit;
                 return this;
             }
 
-            public <#=name#>QueryContext Skip(int skip)
+            public I<#=name#>QueryContext Skip(int skip)
             {
                 _skip = skip;
                 return this;
             }
 
-            public <#=name#>QueryContext Take(int take)
+            public I<#=name#>QueryContext Take(int take)
             {
                 _take = take;
                 return this;
             }
 		
-		    internal <#=name#>QueryContext(<#=name#>Repository repo) { _repo = repo; }
+		    internal <#=name#>QueryContext(I<#=name#>Repository repo) { _repo = repo; }
 		
-		    public <#=name#>FilterContext Where { get { return _where ?? (_where = new <#=name#>FilterContext(this)); }}
+		    public I<#=name#>FilterContext Where { get { return _where ?? (_where = new <#=name#>FilterContext(this)); }}
         
-		    public <#=name#>OrderContext OrderBy { get { return _order ?? (_order = new <#=name#>OrderContext(this)); } }
+		    public I<#=name#>OrderContext OrderBy { get { return _order ?? (_order = new <#=name#>OrderContext(this)); } }
 
 	        public IEnumerable<<#=name#>> Query(IDbTransaction transaction = null)
 	        {
@@ -143,34 +144,34 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 
 	    internal class <#=name#>FilterContext : BaseFilterContext, I<#=name#>FilterContext 
 	    {
-		    private readonly <#=name#>QueryContext  _queryContext;
+		    private readonly I<#=name#>QueryContext  _queryContext;
 		    internal <#=name#>FilterContext(<#=name#>QueryContext context) { _queryContext = context; }
 
 <#foreach(var atd in entity.Attributes){#>
 <#if(atd.DataType == "string"){#>
-		    private StringFilter<<#=name#>FilterContext,<#=name#>QueryContext> <#=atd.FieldName#>;
-		    public StringFilter<<#=name#>FilterContext,<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new StringFilter<<#=name#>FilterContext,<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+		    private IStringFilter<I<#=name#>FilterContext, I<#=name#>QueryContext> <#=atd.FieldName#>;
+		    public IStringFilter<I<#=name#>FilterContext, I<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new StringFilter<I<#=name#>FilterContext, I<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
 <#} else if(atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" || atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" || atd.DataType == "long" || atd.DataType == "long?" ){#>
-		    private NumberFilter<<#=name#>FilterContext,<#=name#>QueryContext> <#=atd.FieldName#>;
-		    public NumberFilter<<#=name#>FilterContext,<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new NumberFilter<<#=name#>FilterContext,<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+		    private INumberFilter<I<#=name#>FilterContext, I<#=name#>QueryContext> <#=atd.FieldName#>;
+		    public INumberFilter<I<#=name#>FilterContext, I<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new NumberFilter<I<#=name#>FilterContext, I<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
 <#}else if(atd.DataType == "DateTime" || atd.DataType == "DateTime?"){#>
-    	    private DateFilter<<#=name#>FilterContext,<#=name#>QueryContext> <#=atd.FieldName#>;
-		    public DateFilter<<#=name#>FilterContext,<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new DateFilter<<#=name#>FilterContext,<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+    	    private IDateFilter<I<#=name#>FilterContext, I<#=name#>QueryContext> <#=atd.FieldName#>;
+		    public IDateFilter<I<#=name#>FilterContext, I<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new DateFilter<I<#=name#>FilterContext, I<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
 <#}else if(atd.DataType == "bool" || atd.DataType == "bool?"){#>
-    	    private BoolFilter<<#=name#>FilterContext,<#=name#>QueryContext> <#=atd.FieldName#>;
-		    public BoolFilter<<#=name#>FilterContext,<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new BoolFilter<<#=name#>FilterContext,<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+    	    private IBoolFilter<I<#=name#>FilterContext, I<#=name#>QueryContext> <#=atd.FieldName#>;
+		    public IBoolFilter<I<#=name#>FilterContext, I<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new BoolFilter<I<#=name#>FilterContext, I<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
 <#}#>
 <#}#>
 	    }
 
         public class  <#=name#>OrderContext : BaseOrderContext, I<#=name#>OrderContext
         {
-		    private readonly <#=name#>QueryContext  _queryContext;
-		    internal <#=name#>OrderContext(<#=name#>QueryContext context) { _queryContext = context; }
+		    private readonly I<#=name#>QueryContext  _queryContext;
+		    internal <#=name#>OrderContext(I<#=name#>QueryContext context) { _queryContext = context; }
 
 <#foreach(var atd in entity.Attributes){#>
-            private OrderElement<<#=name#>OrderContext,<#=name#>QueryContext> <#=atd.FieldName#>;
-		    public OrderElement<<#=name#>OrderContext,<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new OrderElement<<#=name#>OrderContext,<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+            private IOrderElement<I<#=name#>OrderContext, I<#=name#>QueryContext> <#=atd.FieldName#>;
+		    public IOrderElement<I<#=name#>OrderContext, I<#=name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new OrderElement<I<#=name#>OrderContext, I<#=name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
 <#}#>
         }
     }
