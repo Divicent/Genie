@@ -55,9 +55,16 @@ namespace Genie.Templates.Infrastructure
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Repositories;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Repositories.Abstract;\r\nusing ");
             
-            #line 12 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 11 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Repositories.Concrete;\r\n\r\nnamespace ");
+            
+            #line 13 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -66,66 +73,66 @@ namespace Genie.Templates.Infrastructure
                     "\r\n        private readonly Dictionary<Type, object> _repositories;\r\n        priv" +
                     "ate readonly IRepositoryFactory _factory;\r\n\r\n        ");
             
-            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 foreach(var relation in _schema.Relations){
       
             
             #line default
             #line hidden
-            this.Write("private ");
+            this.Write("private I");
             
-            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository ");
             
-            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.FieldName));
             
             #line default
             #line hidden
             this.Write("Repository;\r\n        ");
             
-            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n        ");
             
-            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 24 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 foreach(var view in _schema.Views){
       
             
             #line default
             #line hidden
-            this.Write("private ");
+            this.Write("private I");
             
-            #line 24 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 25 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Repository ");
             
-            #line 24 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 25 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.FieldName));
             
             #line default
             #line hidden
             this.Write("Repository;\r\n        ");
             
-            #line 25 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 26 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 }
             
             #line default
             #line hidden
             this.Write(@"
 
-        public IDapperContext Context { get;}
-        public IDbTransaction Transaction { get; private set; }
+        private IDapperContext Context { get;}
+        private IDbTransaction Transaction { get; set; }
 
         public UnitOfWork(IDapperContext context, IRepositoryFactory factory)
         {
@@ -137,107 +144,107 @@ foreach(var view in _schema.Views){
             
         ");
             
-            #line 39 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 foreach(var relation in _schema.Relations){
       
             
             #line default
             #line hidden
-            this.Write("public ");
+            this.Write("public I");
             
-            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 41 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository ");
             
-            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 41 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository { get { return ");
             
-            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 41 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.FieldName));
             
             #line default
             #line hidden
             this.Write("Repository ?? (");
             
-            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 41 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.FieldName));
             
             #line default
             #line hidden
             this.Write("Repository = new ");
             
-            #line 40 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 41 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository(Context, this)); } }\r\n        ");
             
-            #line 41 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 42 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n        ");
             
-            #line 43 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 44 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 foreach(var view in _schema.Views){
       
             
             #line default
             #line hidden
-            this.Write("public ");
+            this.Write("public I");
             
-            #line 44 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Repository ");
             
-            #line 44 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Repository { get { return ");
             
-            #line 44 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.FieldName));
             
             #line default
             #line hidden
             this.Write("Repository ?? (");
             
-            #line 44 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.FieldName));
             
             #line default
             #line hidden
             this.Write("Repository = new ");
             
-            #line 44 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Repository(Context)); } }\r\n        ");
             
-            #line 45 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 46 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n        ");
             
-            #line 47 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 48 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 foreach(var sp in _schema.Procedures){
       
             
@@ -245,63 +252,79 @@ foreach(var sp in _schema.Procedures){
             #line hidden
             this.Write("public List<T> ");
             
-            #line 48 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 49 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write("<T>(");
             
-            #line 48 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 49 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
             
             #line default
             #line hidden
             this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
             
-            #line 48 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 49 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 48 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 49 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.PassString));
             
             #line default
             #line hidden
             this.Write("\").ToList(); }\r\n        ");
             
-            #line 49 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
+            #line 50 "D:\Projects\Genie\Genie\Templates\Infrastructure\UnitOfWork.tt"
 }
             
             #line default
             #line hidden
-            this.Write("            \r\n            \r\n        public IRepository<TSet> GetRepository<TSet>(" +
-                    ") where TSet : BaseModel\r\n        {\r\n            if (_repositories.Keys.Contains" +
-                    "(typeof(TSet)))\r\n                return _repositories[typeof(TSet)] as IReposito" +
-                    "ry<TSet>;\r\n\r\n            var repository = _factory.CreateRepository<TSet>(Contex" +
-                    "t, this);\r\n            _repositories.Add(typeof(TSet), repository);\r\n\r\n         " +
-                    "   return repository;\r\n        }\r\n\r\n        public IReadOnlyRepository<TSet> Get" +
-                    "ReadonlyRepository<TSet>() where TSet : class \r\n        {\r\n            if (_repo" +
-                    "sitories.Keys.Contains(typeof(TSet)))\r\n                return _repositories[type" +
-                    "of(TSet)] as IReadOnlyRepository<TSet>;\r\n\r\n            var repository = _factory" +
-                    ".CreateReadOnlyRepository<TSet>(Context);\r\n            _repositories.Add(typeof(" +
-                    "TSet), repository);\r\n\r\n            return repository;\r\n        }\r\n\r\n        publ" +
-                    "ic IDbTransaction BeginTransaction()\r\n        {\r\n            if (Transaction != " +
-                    "null)\r\n            {\r\n                throw new NullReferenceException(\"Not fini" +
-                    "shed previous transaction\");\r\n            }\r\n            Transaction = Context.C" +
-                    "onnection.BeginTransaction();\r\n            return Transaction;\r\n        }\r\n\r\n   " +
-                    "     public void Commit()\r\n        {\r\n            if (Transaction != null)\r\n    " +
-                    "        {\r\n                Transaction.Commit();\r\n                Transaction.Di" +
-                    "spose();\r\n                Transaction = null;\r\n            }\r\n            else\r\n" +
-                    "            {\r\n                throw new NullReferenceException(\"Tried commit no" +
-                    "t opened transaction\");\r\n            }\r\n        }\r\n\r\n        public void Dispose" +
-                    "()\r\n        {\r\n            if (Transaction != null)\r\n            {\r\n            " +
-                    "    Transaction.Dispose();\r\n            }\r\n            if (Context != null)\r\n   " +
-                    "         {\r\n                Context.Dispose();\r\n            }\r\n        }\r\n    }\r" +
-                    "\n}\r\n");
+            this.Write(@"            
+
+        public IDbTransaction BeginTransaction()
+        {
+            if (Transaction != null)
+            {
+                throw new NullReferenceException(""Not finished previous transaction"");
+            }
+            Transaction = Context.Connection.BeginTransaction();
+            return Transaction;
+        }
+
+        public void Commit()
+        {
+            if (Transaction != null)
+            {
+                Transaction.Commit();
+                Transaction.Dispose();
+                Transaction = null;
+            }
+            else
+            {
+                throw new NullReferenceException(""Tried commit not opened transaction"");
+            }
+        }
+
+        public void Dispose()
+        {
+            if (Transaction != null)
+            {
+                Transaction.Dispose();
+            }
+            if (Context != null)
+            {
+                Context.Dispose();
+            }
+        }
+    }
+}
+");
             return this.GenerationEnvironment.ToString();
         }
     }

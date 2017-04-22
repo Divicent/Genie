@@ -4,24 +4,21 @@ using System;
 using System.Data;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 using System.Collections.Generic;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
 {
 	public interface IUnitOfWork
     {
-        IDapperContext Context { get; }
-        IDbTransaction Transaction { get; }
-        IRepository<TSet> GetRepository<TSet>() where TSet : BaseModel;
-		IReadOnlyRepository<TSet> GetReadonlyRepository<TSet>() where TSet : class;
+
         IDbTransaction BeginTransaction();
 
 		<#foreach(var relation in _schema.Relations){
-      #><#=relation.Name#>Repository <#=relation.Name#>Repository { get; }
+      #>I<#=relation.Name#>Repository <#=relation.Name#>Repository { get; }
         <#}#>
 
         <#foreach(var view in _schema.Views){
-      #><#=view.Name#>Repository <#=view.Name#>Repository { get; }
+      #>I<#=view.Name#>Repository <#=view.Name#>Repository { get; }
         <#}#>
 
         <#foreach(var sp in _schema.Procedures){
