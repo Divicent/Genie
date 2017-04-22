@@ -105,14 +105,30 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
         
 		    public I<#=name#>OrderContext OrderBy { get { return _order ?? (_order = new <#=name#>OrderContext(this)); } }
 
-	        public IEnumerable<<#=name#>> Query(IDbTransaction transaction = null)
+            public IEnumerable<Bank> Query(IDbTransaction transaction = null)
 	        {
-	            return _repo.Get("[dbo].[<#=name#>]", _where?.GetFilterExpressions(), _order?.GetOrderExpressions(), _pageSize, _page, _limit, _skip, _take, transaction);
+	            return _repo.Get(GetQuery(transaction));
 	        }
 
 	        public int Count(IDbTransaction transaction = null)
 	        {
-	            return _repo.Count("[dbo].[<#=name#>]", _where?.GetFilterExpressions(), _order?.GetOrderExpressions(), _pageSize, _page, _limit, _skip, _take, transaction);
+                return _repo.Count(GetQuery(transaction));
+	        }
+
+	        private IRepoQuery GetQuery(IDbTransaction transaction)
+	        {
+	            return new RepoQuery
+	            {
+	                Target = "[dbo].[<#=name#>]",
+	                Where = _where?.GetFilterExpressions(),
+	                Order = _order?.GetOrderExpressions(),
+	                PageSize = _pageSize,
+	                Page = _page,
+	                Limit = _limit,
+	                Skip = _skip,
+	                Take = _take,
+	                Transaction = transaction
+	            };
 	        }
 	    }
 
