@@ -131,7 +131,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
         
 		    public I<#=name#>OrderContext OrderBy { get { return _order ?? (_order = new <#=name#>OrderContext(this)); } }
 
-            public IEnumerable<Bank> Query(IDbTransaction transaction = null)
+            public IEnumerable<<#=name#>> Query(IDbTransaction transaction = null)
 	        {
 	            return _repo.Get(GetQuery(transaction));
 	        }

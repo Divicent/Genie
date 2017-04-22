@@ -474,9 +474,14 @@ foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
-            this.Write(@"OrderContext(this)); } }
-
-            public IEnumerable<Bank> Query(IDbTransaction transaction = null)
+            this.Write("OrderContext(this)); } }\r\n\r\n            public IEnumerable<");
+            
+            #line 108 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write(@"> Query(IDbTransaction transaction = null)
 	        {
 	            return _repo.Get(GetQuery(transaction));
 	        }

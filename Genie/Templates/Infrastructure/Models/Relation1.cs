@@ -716,9 +716,14 @@ foreach(var list in entity.ReferenceLists){
             
             #line default
             #line hidden
-            this.Write(@"OrderContext(this)); } }
-
-            public IEnumerable<Bank> Query(IDbTransaction transaction = null)
+            this.Write("OrderContext(this)); } }\r\n\r\n            public IEnumerable<");
+            
+            #line 134 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
+            
+            #line default
+            #line hidden
+            this.Write(@"> Query(IDbTransaction transaction = null)
 	        {
 	            return _repo.Get(GetQuery(transaction));
 	        }

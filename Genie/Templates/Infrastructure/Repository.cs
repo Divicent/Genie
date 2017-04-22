@@ -34,23 +34,30 @@ namespace Genie.Templates.Infrastructure
             
             #line default
             #line hidden
-            this.Write(".Dapper;\r\nusing ");
+            this.Write(".Infrastructure.Filters.Abstract;\r\nusing ");
             
             #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\nusing ");
+            this.Write(".Dapper;\r\nusing ");
             
             #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
+            this.Write(".Infrastructure.Interfaces;\r\nusing ");
+            
+            #line 10 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 11 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 12 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
