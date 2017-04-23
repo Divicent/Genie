@@ -176,6 +176,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IDapperContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Infrastructure\Interfaces\IProcedureContainer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IProcedureContainer.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IReadOnlyRepository.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -210,6 +215,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>View.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\ProcedureContainer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProcedureContainer.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\ReadOnlyRepository.cs">
       <AutoGen>True</AutoGen>
@@ -363,6 +373,10 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IDapperContext.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\Infrastructure\Interfaces\IProcedureContainer.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IProcedureContainer.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IReadOnlyRepository.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IReadOnlyRepository.cs</LastGenOutput>
@@ -390,6 +404,10 @@
     <Content Include="Templates\Infrastructure\Models\View.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>View.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\ProcedureContainer.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ProcedureContainer.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\ReadOnlyRepository.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

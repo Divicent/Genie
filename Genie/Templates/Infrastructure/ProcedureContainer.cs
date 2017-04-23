@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure.Interfaces
+namespace Genie.Templates.Infrastructure
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure.Interfaces
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class IUnitOfWork : IUnitOfWorkBase
+    public partial class ProcedureContainer : ProcedureContainerBase
     {
 #line hidden
         /// <summary>
@@ -26,88 +26,99 @@ namespace Genie.Templates.Infrastructure.Interfaces
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Data;\r\nusing ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\nusing System.Collections.Generic;\r\nusing ");
+            this.Write(".Infrastructure\r\n{\r\n\tpublic class ProcedureContainer\r\n    {\r\n\t\tinternal Procedure" +
+                    "Container() { }\r\n\r\n");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Infrastructure.Repositories.Abstract;\r\n\r\nnamespace ");
-            
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            #line 12 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+foreach(var sp in _schema.Procedures){ 
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces\r\n{\r\n\tpublic interface IUnitOfWork\r\n    {\r\n\r\n        ID" +
-                    "bTransaction BeginTransaction();\r\n\r\n\t\t");
+            this.Write("\t\tpublic IEnumerable<T> ");
             
-            #line 16 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-foreach(var relation in _schema.Relations){
-      
+            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
-            this.Write("I");
+            this.Write("List<T>(");
             
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Repository ");
-            
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
             
             #line default
             #line hidden
-            this.Write("Repository { get; }\r\n        ");
+            this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
             
-            #line 18 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.PassString));
+            
+            #line default
+            #line hidden
+            this.Write("\"); }\r\n");
+            
+            #line 14 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
 }
             
             #line default
             #line hidden
-            this.Write("\r\n        ");
+            this.Write("\r\n");
             
-            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-foreach(var view in _schema.Views){
-      
-            
-            #line default
-            #line hidden
-            this.Write("I");
-            
-            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            #line 16 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+foreach(var sp in _schema.Procedures){ 
             
             #line default
             #line hidden
-            this.Write("Repository ");
+            this.Write("\t\tpublic T ");
             
-            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
-            this.Write("Repository { get; }\r\n        ");
+            this.Write("Single<T>(");
             
-            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
+            
+            #line default
+            #line hidden
+            this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
+            
+            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.PassString));
+            
+            #line default
+            #line hidden
+            this.Write("\").FirstOrDefault(); }\r\n");
+            
+            #line 18 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
 }
             
             #line default
             #line hidden
-            this.Write("\r\n\t\tIProcedureContainer Procedures { get; }\r\n        \r\n        void Commit();\r\n  " +
-                    "  }\r\n}\r\n");
+            this.Write("    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -119,7 +130,7 @@ foreach(var view in _schema.Views){
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class IUnitOfWorkBase
+    public class ProcedureContainerBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

@@ -1,0 +1,20 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+using System;
+using System.Collections.Generic;
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
+{
+	public class ProcedureContainer
+    {
+		internal ProcedureContainer() { }
+
+<#foreach(var sp in _schema.Procedures){ #>
+		public IEnumerable<T> <#=sp.Name#>List<T>(<#=sp.ParamString#>) { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>"); }
+<#}#>
+
+<#foreach(var sp in _schema.Procedures){ #>
+		public T <#=sp.Name#>Single<T>(<#=sp.ParamString#>) { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>").FirstOrDefault(); }
+<#}#>
+    }
+}

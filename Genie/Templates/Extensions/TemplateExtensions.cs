@@ -274,10 +274,6 @@ namespace Genie.Templates.Dapper
     }
 }
 
-namespace Genie.Templates.General
-{
-}
-
 namespace Genie.Templates.Infrastructure
 {
     public partial class DapperContext : ITemplateFile
@@ -362,6 +358,27 @@ namespace Genie.Templates.Infrastructure
         public ReadOnlyRepository(string path)
         {
             _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class ProcedureContainer : ITemplateFile
+    {
+        private readonly string _path;
+        private readonly IDatabaseSchema _schema;
+
+        internal ProcedureContainer(string path, IDatabaseSchema schema)
+        {
+            _path = path;
+            _schema = schema;
         }
 
         public IContentFile Generate()
@@ -522,6 +539,26 @@ namespace Genie.Templates.Infrastructure
             public IReadOnlyRepository(string path)
             {
                 _path = path;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+        public partial class IProcedureContainer : ITemplateFile
+        {
+            private readonly string _path;
+            private readonly IDatabaseSchema _schema;
+
+            internal IProcedureContainer(string path, IDatabaseSchema schema)
+            {
+                _path = path;
+                _schema = schema;
             }
 
             public IContentFile Generate()

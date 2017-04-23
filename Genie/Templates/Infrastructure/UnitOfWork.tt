@@ -16,6 +16,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
     {
         private readonly Dictionary<Type, object> _repositories;
         private readonly IRepositoryFactory _factory;
+		private IProcedureContaner _procedureContainer;
 
         <#foreach(var relation in _schema.Relations){
       #>private I<#=relation.Name#>Repository <#=relation.FieldName#>Repository;
@@ -25,6 +26,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
       #>private I<#=view.Name#>Repository <#=view.FieldName#>Repository;
         <#}#>
 
+		IProcedureContainer Procedures { get { return _procedureContainer ?? ( _procedureContainer = new ProcedureContainer()); } }
 
         private IDapperContext Context { get;}
         private IDbTransaction Transaction { get; set; }
@@ -44,12 +46,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         <#foreach(var view in _schema.Views){
       #>public I<#=view.Name#>Repository <#=view.Name#>Repository { get { return <#=view.FieldName#>Repository ?? (<#=view.FieldName#>Repository = new <#=view.Name#>Repository(Context)); } }
         <#}#>
-
-        <#foreach(var sp in _schema.Procedures){
-      #>public List<T> <#=sp.Name#><T>(<#=sp.ParamString#>) { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>").ToList(); }
-        <#}#>
             
-
         public IDbTransaction BeginTransaction()
         {
             if (Transaction != null)

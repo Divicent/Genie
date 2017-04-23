@@ -50,14 +50,17 @@ namespace Genie.Base
                     new IRepository(@"Infrastructure\Interfaces\IRepository"),
                     new IUnitOfWork(schema, @"Infrastructure\Interfaces\IUnitOfWork"),
                     new IReadOnlyRepository(@"Infrastructure\Interfaces\IReadOnlyRepository"),
+                    new IProcedureContainer(@"Infrastructure\Interfaces\IProcedureContainer", schema),
 
                     new DapperContext(@"Infrastructure\DapperContext"),
                     new RepositoryFactory(@"Infrastructure\RepositoryFactory"),
                     new Repository(@"Infrastructure\Repository"),
                     new UnitOfWork(schema, @"Infrastructure\UnitOfWork"),
                     new ReadOnlyRepository(@"Infrastructure\ReadOnlyRepository"),
+                    new ProcedureContainer(@"Infrastructure\ProcedureContainer", schema),
 
                     new BaseModel(@"Infrastructure\Models\BaseModel"),
+
 
                     new QueryMaker(@"SqlMaker\QueryMaker"),
                     new ISqlFirst(@"SqlMaker\Interfaces\ISqlFirst"),
