@@ -3,10 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Concrete;
 
@@ -14,9 +11,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly Dictionary<Type, object> _repositories;
-        private readonly IRepositoryFactory _factory;
-		private IProcedureContaner _procedureContainer;
+		private IProcedureContainer _procedureContainer;
 
         <#foreach(var relation in _schema.Relations){
       #>private I<#=relation.Name#>Repository <#=relation.FieldName#>Repository;
@@ -26,7 +21,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
       #>private I<#=view.Name#>Repository <#=view.FieldName#>Repository;
         <#}#>
 
-		IProcedureContainer Procedures { get { return _procedureContainer ?? ( _procedureContainer = new ProcedureContainer()); } }
+		public IProcedureContainer Procedures { get { return _procedureContainer ?? ( _procedureContainer = new ProcedureContainer(Context)); } }
 
         private IDapperContext Context { get;}
         private IDbTransaction Transaction { get; set; }

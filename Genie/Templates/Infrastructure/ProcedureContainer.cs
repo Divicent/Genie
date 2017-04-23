@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class ProcedureContainer : ProcedureContainerBase
     {
@@ -26,94 +26,109 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure\r\n{\r\n\tpublic class ProcedureContainer\r\n    {\r\n\t\tinternal Procedure" +
-                    "Container() { }\r\n\r\n");
+            this.Write(".Dapper;\r\nusing ");
             
-            #line 12 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
+            
+            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure\r\n{\r\n\tpublic class ProcedureContainer: IProcedureContainer\r\n    {\r" +
+                    "\n\t\tprivate IDapperContext Context { get; }\r\n\r\n\t\tinternal ProcedureContainer(IDap" +
+                    "perContext context)\r\n\t\t{\r\n\t\t    Context = context;\r\n\t\t}\r\n\r\n\r\n");
+            
+            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
 foreach(var sp in _schema.Procedures){ 
             
             #line default
             #line hidden
             this.Write("\t\tpublic IEnumerable<T> ");
             
-            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
-            this.Write("List<T>(");
+            this.Write("_List<T>(");
             
-            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
             
             #line default
             #line hidden
-            this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
+            this.Write(") where T: class  { return Context.Connection.Query<T>(\"EXEC ");
             
-            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.PassString));
             
             #line default
             #line hidden
             this.Write("\"); }\r\n");
             
-            #line 14 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 16 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 25 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
 foreach(var sp in _schema.Procedures){ 
             
             #line default
             #line hidden
             this.Write("\t\tpublic T ");
             
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 26 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
-            this.Write("Single<T>(");
+            this.Write("_Single<T>(");
             
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 26 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
             
             #line default
             #line hidden
-            this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
+            this.Write(") where T: class  { return Context.Connection.Query<T>(\"EXEC ");
             
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 26 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 26 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.PassString));
             
             #line default
             #line hidden
             this.Write("\").FirstOrDefault(); }\r\n");
             
-            #line 18 "F:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            #line 27 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
 }
             
             #line default
