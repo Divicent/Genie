@@ -29,8 +29,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         public UnitOfWork(IDapperContext context, IRepositoryFactory factory)
         {
             Context = context;
-            _factory = factory;
-            _repositories = new Dictionary<Type, object>();
         }
             
             

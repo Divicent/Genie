@@ -150,7 +150,7 @@ var name = _relation.Name;
             
             #line default
             #line hidden
-            this.Write("OrderContext OrderBy { get; }\r\n\t        IEnumerable<");
+            this.Write("OrderContext OrderBy { get; }\r\n\t        IEnumerable<Concrete.");
             
             #line 32 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));

@@ -25,7 +25,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
             I<#=name#>QueryContext Take(int take);
 		    I<#=name#>FilterContext Where { get; }
 		    I<#=name#>OrderContext OrderBy { get; }
-	        IEnumerable<<#=name#>> Query(IDbTransaction transaction = null);
+	        IEnumerable<Concrete.<#=name#>> Query(IDbTransaction transaction = null);
 	        int Count(IDbTransaction transaction = null);
 	    }
 

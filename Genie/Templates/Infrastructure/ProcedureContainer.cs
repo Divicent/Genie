@@ -70,7 +70,7 @@ foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
-            this.Write(") where T: class  { return Context.Connection.Query<T>(\"EXEC ");
+            this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
             
             #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
@@ -112,7 +112,7 @@ foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
-            this.Write(") where T: class  { return Context.Connection.Query<T>(\"EXEC ");
+            this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
             
             #line 26 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
@@ -129,6 +129,48 @@ foreach(var sp in _schema.Procedures){
             this.Write("\").FirstOrDefault(); }\r\n");
             
             #line 27 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 29 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+foreach(var sp in _schema.Procedures){ 
+            
+            #line default
+            #line hidden
+            this.Write("\t\tpublic void ");
+            
+            #line 30 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
+            
+            #line default
+            #line hidden
+            this.Write("_Void(");
+            
+            #line 30 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
+            
+            #line default
+            #line hidden
+            this.Write(") { Context.Connection.Query<T>(\"EXEC ");
+            
+            #line 30 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 30 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.PassString));
+            
+            #line default
+            #line hidden
+            this.Write("\"); }\r\n");
+            
+            #line 31 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
 }
             
             #line default

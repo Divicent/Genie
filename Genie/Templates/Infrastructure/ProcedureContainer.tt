@@ -19,11 +19,15 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 
 
 <#foreach(var sp in _schema.Procedures){ #>
-		public IEnumerable<T> <#=sp.Name#>_List<T>(<#=sp.ParamString#>) where T: class  { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>"); }
+		public IEnumerable<T> <#=sp.Name#>_List<T>(<#=sp.ParamString#>) { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>"); }
 <#}#>
 
 <#foreach(var sp in _schema.Procedures){ #>
-		public T <#=sp.Name#>_Single<T>(<#=sp.ParamString#>) where T: class  { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>").FirstOrDefault(); }
+		public T <#=sp.Name#>_Single<T>(<#=sp.ParamString#>) { return Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>").FirstOrDefault(); }
+<#}#>
+
+<#foreach(var sp in _schema.Procedures){ #>
+		public void <#=sp.Name#>_Void(<#=sp.ParamString#>) { Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>"); }
 <#}#>
     }
 }

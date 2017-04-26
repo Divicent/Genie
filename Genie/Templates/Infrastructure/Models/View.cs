@@ -139,7 +139,7 @@ var name = _view.Name;
             
             #line default
             #line hidden
-            this.Write("OrderContext OrderBy { get; }\r\n\t        IEnumerable<");
+            this.Write("OrderContext OrderBy { get; }\r\n\t        IEnumerable<Concrete.");
             
             #line 28 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\View.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));

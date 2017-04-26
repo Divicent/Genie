@@ -54,7 +54,7 @@ foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
-            this.Write(") where T: class;\r\n");
+            this.Write(");\r\n");
             
             #line 12 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
 }
@@ -82,9 +82,37 @@ foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
-            this.Write(") where T: class;\r\n");
+            this.Write(");\r\n");
             
             #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+foreach(var sp in _schema.Procedures){
+            
+            #line default
+            #line hidden
+            this.Write("\t\tvoid ");
+            
+            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
+            
+            #line default
+            #line hidden
+            this.Write("_Void(");
+            
+            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
+            
+            #line default
+            #line hidden
+            this.Write(");\r\n");
+            
+            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
 }
             
             #line default
