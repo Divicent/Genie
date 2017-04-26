@@ -27,7 +27,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 <#}#>
 
 <#foreach(var sp in _schema.Procedures){ #>
-		public void <#=sp.Name#>_Void(<#=sp.ParamString#>) { Context.Connection.Query<T>("EXEC <#=sp.Name#> <#=sp.PassString#>"); }
+		public void <#=sp.Name#>_Void(<#=sp.ParamString#>) { Context.Connection.Execute("EXEC <#=sp.Name#> <#=sp.PassString#>"); }
 <#}#>
     }
 }

@@ -154,7 +154,7 @@ foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
-            this.Write(") { Context.Connection.Query<T>(\"EXEC ");
+            this.Write(") { Context.Connection.Execute(\"EXEC ");
             
             #line 30 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
