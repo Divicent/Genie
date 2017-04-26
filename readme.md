@@ -134,15 +134,18 @@ A generic parameter should be provided in order to execute a procedure and the r
 UnitOfWork.Procedures.SPC_GetOrders<OrderDetailModel>_List(100);
 ```
 
-There are two functions for each procedure (List and Single)
+There are three functions for each procedure (List, Single and Void)
 List is for getting list of objects as the result
 Single is for getting single object as the result
+Void is for no result
 
 ```CS
 // List
-IEnumarable<>UnitOfWork.Procedures.SPC_GetOrders<OrderDetailModel>_List();
+IEnumarable<>UnitOfWork.Procedures.SPC_GetOrders_List<OrderDetailModel>();
 // Single
-int deleted = UnitOfWork.Procedures.SPC_DeleteOrder<bool>_Single(100);
+int deleted = UnitOfWork.Procedures.SPC_DeleteOrder_Single<bool>(100);
+// Void
+UnitOfWork.Procedures.SPC_DeleteOrder_Void(100);
 ```
 
 ## Querying
