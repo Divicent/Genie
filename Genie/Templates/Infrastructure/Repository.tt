@@ -25,7 +25,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             UnitOfWork = unitOfWork;
         }
 
-        public virtual void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+        public virtual long Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
         {
             if (entity == null)
             {
@@ -34,6 +34,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             var insertedId = Conn.Insert(entity, transaction: transaction, commandTimeout: commandTimeout);
             entity.DatabaseModelStatus = ModelStatus.Retrieved;
             entity.DatabaseUnitOfWork = UnitOfWork;
+            return insertedId;
         }
 
         public virtual void Update(T entity, IDbTransaction transaction = null, int? commandTimeout = null)

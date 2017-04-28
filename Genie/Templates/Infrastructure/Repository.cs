@@ -68,50 +68,51 @@ namespace Genie.Templates.Infrastructure
                     "k { get;}\r\n\r\n        public Repository(IDapperContext context, IUnitOfWork unitO" +
                     "fWork)\r\n        {\r\n            Context = context;\r\n            Conn = Context.Co" +
                     "nnection;\r\n            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public vir" +
-                    "tual void Add(T entity, IDbTransaction transaction = null, int? commandTimeout =" +
+                    "tual long Add(T entity, IDbTransaction transaction = null, int? commandTimeout =" +
                     " null)\r\n        {\r\n            if (entity == null)\r\n            {\r\n             " +
                     "   throw new ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n        " +
                     "    }\r\n            var insertedId = Conn.Insert(entity, transaction: transaction" +
                     ", commandTimeout: commandTimeout);\r\n            entity.DatabaseModelStatus = Mod" +
                     "elStatus.Retrieved;\r\n            entity.DatabaseUnitOfWork = UnitOfWork;\r\n      " +
-                    "  }\r\n\r\n        public virtual void Update(T entity, IDbTransaction transaction =" +
-                    " null, int? commandTimeout = null)\r\n        {\r\n            if (entity == null)\r\n" +
-                    "            {\r\n                throw new ArgumentNullException(\"entity\", \"Update" +
-                    " in DB null entity\");\r\n            }\r\n            Conn.Update(entity, transactio" +
-                    "n: transaction, commandTimeout: commandTimeout);\r\n        }\r\n\r\n        public vi" +
-                    "rtual void Remove(T entity, IDbTransaction transaction = null, int? commandTimeo" +
-                    "ut = null)\r\n        {\r\n            if (entity == null)\r\n            {\r\n         " +
-                    "       throw new ArgumentNullException(\"entity\", \"Remove in DB null entity\");\r\n " +
-                    "           }\r\n            var deleted = Conn.Delete(entity, transaction: transac" +
-                    "tion, commandTimeout: commandTimeout);\r\n            if(deleted) { entity.Databas" +
-                    "eModelStatus = ModelStatus.Deleted; }\r\n        }\r\n\r\n        public virtual T Get" +
-                    "ByKey(object id, IDbTransaction transaction = null, int? commandTimeout = null)\r" +
-                    "\n        {\r\n            if (id == null)\r\n            {\r\n                throw ne" +
-                    "w ArgumentNullException(\"id\");\r\n            }\r\n            var item = Conn.Get<T" +
-                    ">(id, transaction: transaction, commandTimeout: commandTimeout);\r\n            it" +
-                    "em.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            item.DatabaseUnitOf" +
-                    "Work = UnitOfWork;\r\n            return item;\r\n        }\r\n\r\n        [Obsolete(\"Ge" +
-                    "tAll is deprecated, please use Get instead.\")]\r\n        public virtual IEnumerab" +
-                    "le<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)\r\n   " +
-                    "     {\r\n            var items = Conn.GetAll<T>(transaction: transaction, command" +
-                    "Timeout: commandTimeout).ToList();\r\n\r\n            foreach (var item in items) \r\n" +
-                    "            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n          " +
-                    "      item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n        " +
-                    "    return items;\r\n        }\r\n\r\n        [Obsolete(\"GetBy is deprecated, please u" +
-                    "se Get instead.\")]\r\n        public virtual IEnumerable<T> GetBy(object where = n" +
-                    "ull, object order = null, int? pageSize = null, int? page = null, IDbTransaction" +
-                    " transaction = null, int? commandTimeout = null)\r\n        {\r\n            var ite" +
-                    "ms = Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page , " +
-                    "transaction: transaction, commandTimeout: commandTimeout).ToList();\r\n\r\n         " +
-                    "   foreach (var item in items)\r\n            {\r\n                item.DatabaseUnit" +
+                    "      return insertedId;\r\n        }\r\n\r\n        public virtual void Update(T enti" +
+                    "ty, IDbTransaction transaction = null, int? commandTimeout = null)\r\n        {\r\n " +
+                    "           if (entity == null)\r\n            {\r\n                throw new Argumen" +
+                    "tNullException(\"entity\", \"Update in DB null entity\");\r\n            }\r\n          " +
+                    "  Conn.Update(entity, transaction: transaction, commandTimeout: commandTimeout);" +
+                    "\r\n        }\r\n\r\n        public virtual void Remove(T entity, IDbTransaction trans" +
+                    "action = null, int? commandTimeout = null)\r\n        {\r\n            if (entity ==" +
+                    " null)\r\n            {\r\n                throw new ArgumentNullException(\"entity\"," +
+                    " \"Remove in DB null entity\");\r\n            }\r\n            var deleted = Conn.Del" +
+                    "ete(entity, transaction: transaction, commandTimeout: commandTimeout);\r\n        " +
+                    "    if(deleted) { entity.DatabaseModelStatus = ModelStatus.Deleted; }\r\n        }" +
+                    "\r\n\r\n        public virtual T GetByKey(object id, IDbTransaction transaction = nu" +
+                    "ll, int? commandTimeout = null)\r\n        {\r\n            if (id == null)\r\n       " +
+                    "     {\r\n                throw new ArgumentNullException(\"id\");\r\n            }\r\n " +
+                    "           var item = Conn.Get<T>(id, transaction: transaction, commandTimeout: " +
+                    "commandTimeout);\r\n            item.DatabaseModelStatus = ModelStatus.Retrieved;\r" +
+                    "\n            item.DatabaseUnitOfWork = UnitOfWork;\r\n            return item;\r\n  " +
+                    "      }\r\n\r\n        [Obsolete(\"GetAll is deprecated, please use Get instead.\")]\r\n" +
+                    "        public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, " +
+                    "int? commandTimeout = null)\r\n        {\r\n            var items = Conn.GetAll<T>(t" +
+                    "ransaction: transaction, commandTimeout: commandTimeout).ToList();\r\n\r\n          " +
+                    "  foreach (var item in items) \r\n            {\r\n                item.DatabaseUnit" +
                     "OfWork = UnitOfWork;\r\n                item.DatabaseModelStatus = ModelStatus.Ret" +
-                    "rieved;\r\n            }\r\n            return items;\r\n        }\r\n\r\n\r\n        public" +
-                    " virtual IEnumerable<T> Get(IRepoQuery query)\r\n        {\r\n            var items " +
-                    "= Conn.Get<T>(query).ToList();\r\n\r\n            foreach (var item in items)\r\n     " +
-                    "       {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n               " +
-                    " item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n            r" +
-                    "eturn items;\r\n        }\t\t\r\n\r\n        public virtual int Count(IRepoQuery query)\r" +
-                    "\n        {\r\n            return Conn.Count(query);\r\n        }\r\n    }\r\n}\r\n");
+                    "rieved;\r\n            }\r\n            return items;\r\n        }\r\n\r\n        [Obsolet" +
+                    "e(\"GetBy is deprecated, please use Get instead.\")]\r\n        public virtual IEnum" +
+                    "erable<T> GetBy(object where = null, object order = null, int? pageSize = null, " +
+                    "int? page = null, IDbTransaction transaction = null, int? commandTimeout = null)" +
+                    "\r\n        {\r\n            var items = Conn.GetBy<T>(where: where, order: order, p" +
+                    "ageSize: pageSize, page: page , transaction: transaction, commandTimeout: comman" +
+                    "dTimeout).ToList();\r\n\r\n            foreach (var item in items)\r\n            {\r\n " +
+                    "               item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.Datab" +
+                    "aseModelStatus = ModelStatus.Retrieved;\r\n            }\r\n            return items" +
+                    ";\r\n        }\r\n\r\n\r\n        public virtual IEnumerable<T> Get(IRepoQuery query)\r\n " +
+                    "       {\r\n            var items = Conn.Get<T>(query).ToList();\r\n\r\n            fo" +
+                    "reach (var item in items)\r\n            {\r\n                item.DatabaseUnitOfWor" +
+                    "k = UnitOfWork;\r\n                item.DatabaseModelStatus = ModelStatus.Retrieve" +
+                    "d;\r\n            }\r\n            return items;\r\n        }\t\t\r\n\r\n        public virt" +
+                    "ual int Count(IRepoQuery query)\r\n        {\r\n            return Conn.Count(query)" +
+                    ";\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

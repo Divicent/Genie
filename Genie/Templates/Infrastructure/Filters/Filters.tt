@@ -29,7 +29,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
 
         public interface IStringFilter<out T, out TQ> where T : IFilterContext
         {
-            IExpressionJoin<T, TQ> Equals(string str);
+            IExpressionJoin<T, TQ> EqualsTo(string str);
             IExpressionJoin<T, TQ> NotEquals(string str);
             IExpressionJoin<T, TQ> Contains(string str);
             IExpressionJoin<T, TQ> StartsWith(string str);
@@ -43,7 +43,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
 
         public interface INumberFilter<out T, out TQ> where T : IFilterContext
         {
-            IExpressionJoin<T, TQ> Equals(double number);
+            IExpressionJoin<T, TQ> EqualsTo(double number);
             IExpressionJoin<T, TQ> NotEquals(double number);
             IExpressionJoin<T, TQ> LargerThan(double number);
             IExpressionJoin<T, TQ> LessThan(double number);
@@ -56,7 +56,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
         public interface IDateFilter<out T, out TQ> where T : IFilterContext
         {
 
-            IExpressionJoin<T, TQ> Equals(DateTime date);
+            IExpressionJoin<T, TQ> EqualsTo(DateTime date);
             IExpressionJoin<T, TQ> NotEquals(DateTime date);
             IExpressionJoin<T, TQ> LargerThan(DateTime number);
             IExpressionJoin<T, TQ> LessThan(DateTime date);
@@ -199,7 +199,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
                 _q = q;
             }
 
-            public IExpressionJoin<T, TQ> Equals(string str)
+            public IExpressionJoin<T, TQ> EqualsTo(string str)
             {
                 _parent.Add(string.Format("[{0}] = '{1}'", _propertyName, str));
                 return new ExpressionJoin<T, TQ>(_parent, _q);
@@ -273,7 +273,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
                 _q = q;
             }
 
-            public IExpressionJoin<T, TQ> Equals(double number)
+            public IExpressionJoin<T, TQ> EqualsTo(double number)
             {
                 _parent.Add(string.Format("[{0}] = {1}", _propertyName, number));
                 return new ExpressionJoin<T, TQ>(_parent, _q);
@@ -335,7 +335,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
                 _q = q;
             }
 
-            public IExpressionJoin<T, TQ> Equals(DateTime date)
+            public IExpressionJoin<T, TQ> EqualsTo(DateTime date)
             {
                 _parent.Add(string.Format("[{0}] = '{1}'", _propertyName, date));
                 return new ExpressionJoin<T, TQ>(_parent, _q);
@@ -373,7 +373,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters
 
             public IExpressionJoin<T, TQ> Between(DateTime from, DateTime to)
             {
-                _parent.Add(string.Format("[{0}] <= '{1}' and {0} >= '{2}'", _propertyName, from, to));
+                _parent.Add(string.Format("([{0}] >= '{1}' and [{0}] <= '{2}')", _propertyName, from, to));
                 return new ExpressionJoin<T, TQ>(_parent, _q);
             }
 

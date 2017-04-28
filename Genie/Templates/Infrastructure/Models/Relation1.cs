@@ -535,7 +535,7 @@ foreach(var atd in entity.ForeignKeyAttributes){
             
             #line default
             #line hidden
-            this.Write(".Equals(");
+            this.Write(".EqualsTo(");
             
             #line 83 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
@@ -597,7 +597,7 @@ foreach(var list in entity.ReferenceLists){
             
             #line default
             #line hidden
-            this.Write(".Equals(");
+            this.Write(".EqualsTo(");
             
             #line 88 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferencedPropertyOnThisRelation));

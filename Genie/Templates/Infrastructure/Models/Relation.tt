@@ -80,12 +80,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 <#foreach(var atd in entity.ForeignKeyAttributes){#>
 		    public <#=atd.ReferencingRelationName#> Get<#=atd.ReferencingNonForeignKeyAttribute.Name#>(IDbTransaction transaction =null)
             {
-                return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.Get().Where.<#=atd.ReferencingTableColumnName#>.Equals(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#><#=atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ?  ".GetValueOrDefault()" : ""#>).Filter().Top(1).Query(transaction).FirstOrDefault()) : null;
+                return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.Get().Where.<#=atd.ReferencingTableColumnName#>.EqualsTo(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#><#=atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ?  ".GetValueOrDefault()" : ""#>).Filter().Top(1).Query(transaction).FirstOrDefault()) : null;
             }
 <#}#>
 
 <#foreach(var list in entity.ReferenceLists){#>
-		    public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.Get().Where.<#=list.ReferencedPropertyName#>.Equals(<#=list.ReferencedPropertyOnThisRelation#>).Filter().Query(transaction); }
+		    public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.Get().Where.<#=list.ReferencedPropertyName#>.EqualsTo(<#=list.ReferencedPropertyOnThisRelation#>).Filter().Query(transaction); }
 <#}#>
         }
 

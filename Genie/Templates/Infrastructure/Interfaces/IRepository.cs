@@ -56,7 +56,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
         IDapperContext Context { get; }
 
 
-        void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
+        long Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
         void Update(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
         void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
 
