@@ -51,6 +51,7 @@ namespace Genie.Base
                     new IUnitOfWork(schema, @"Infrastructure\Interfaces\IUnitOfWork"),
                     new IReadOnlyRepository(@"Infrastructure\Interfaces\IReadOnlyRepository"),
                     new IProcedureContainer(@"Infrastructure\Interfaces\IProcedureContainer", schema),
+                    new IOperation(@"Infrastructure\Interfaces\IOperation"),
 
                     new DapperContext(@"Infrastructure\DapperContext"),
                     new RepositoryFactory(@"Infrastructure\RepositoryFactory"),
@@ -58,6 +59,7 @@ namespace Genie.Base
                     new UnitOfWork(schema, @"Infrastructure\UnitOfWork"),
                     new ReadOnlyRepository(@"Infrastructure\ReadOnlyRepository"),
                     new ProcedureContainer(@"Infrastructure\ProcedureContainer", schema),
+                    new Operation(@"Infrastructure\Operation"),
 
                     new BaseModel(@"Infrastructure\Models\BaseModel"),
 

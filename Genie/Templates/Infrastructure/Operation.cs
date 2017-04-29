@@ -7,18 +7,19 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure.Interfaces
+namespace Genie.Templates.Infrastructure
 {
     using Genie.Base;
+    using Genie.Extensions;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class IRepository : IRepositoryBase
+    public partial class Operation : OperationBase
     {
 #line hidden
         /// <summary>
@@ -26,40 +27,39 @@ namespace Genie.Templates.Infrastructure.Interfaces
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\nusing ");
+            this.Write("\r\nusing ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\nusing ");
+            this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(@".Infrastructure.Interfaces
+            this.Write(@".Infrastructure
 {
-	public interface IRepository<T>
-        where T : BaseModel
+    internal class Operation : IOperation
     {
-        IDbConnection Conn { get; }
-        IDapperContext Context { get; }
+        internal Operation(OperationType type, BaseModel model)
+        {
+            Type = type;
+            Object = model;
+        }
 
-        void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
-        void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
-
-        IEnumerable<T> Get(IRepoQuery query);
-	    int Count(IRepoQuery query);
+        public OperationType Type { get; }
+        public BaseModel Object { get; }
     }
 }
 ");
@@ -74,7 +74,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class IRepositoryBase
+    public class OperationBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

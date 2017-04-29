@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class DapperContext : DapperContextBase
     {
@@ -29,14 +29,14 @@ namespace Genie.Templates.Infrastructure
             this.Write("using System.Configuration;\r\nusing System.Data;\r\nusing System.Data.SqlClient;\r\nus" +
                     "ing ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -73,6 +73,11 @@ namespace Genie.Templates.Infrastructure
                     _connection.Open();
                 return _connection;
             }
+        }
+
+        public IUnitOfWork Unit() 
+        {
+            return new UnitOfWork(this);
         }
 
 		/// <summary>

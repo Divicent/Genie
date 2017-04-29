@@ -55,6 +55,7 @@ namespace Genie.Templates.Infrastructure.Models
         internal HashSet<string> UpdatedProperties { get; set; }
         internal ModelStatus DatabaseModelStatus { get; set; }
         internal IUnitOfWork DatabaseUnitOfWork { get; set; }
+        internal abstract void SetId(object id);
 
 		/// <summary>
         /// Checks the status of the object , and registers as updated property

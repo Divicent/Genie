@@ -1,6 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
 <#@ import namespace="Genie.Extensions"#>
+<#@ import namespace="System.Linq"#>
 using System;
 using System.Data;
 using System.Linq;
@@ -87,6 +88,13 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 <#foreach(var list in entity.ReferenceLists){#>
 		    public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.Get().Where.<#=list.ReferencedPropertyName#>.EqualsTo(<#=list.ReferencedPropertyOnThisRelation#>).Filter().Query(transaction); }
 <#}#>
+            internal override void SetId(object id)
+            {
+<#var keys = entity.Attributes.Where(e => e.IsKey);#>
+<#foreach(var k in keys){#>
+                <#=k.Name#> = (<#=k.DataType#>)id;
+<#}#>
+            }
         }
 
 	    internal class <#=name#>QueryContext: I<#=name#>QueryContext

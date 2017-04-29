@@ -391,6 +391,24 @@ namespace Genie.Templates.Infrastructure
         }
     }
 
+    public partial class Operation : ITemplateFile
+    {
+        private readonly string _path;
+        public Operation(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
     namespace Enum
     {
         public partial class ConditionExtension : ITemplateFile
@@ -458,6 +476,7 @@ namespace Genie.Templates.Infrastructure
             }
         }
     }
+
     namespace Interfaces
     {
         public partial class IDapperContext : ITemplateFile
@@ -550,6 +569,7 @@ namespace Genie.Templates.Infrastructure
                 };
             }
         }
+
         public partial class IProcedureContainer : ITemplateFile
         {
             private readonly string _path;
@@ -559,6 +579,25 @@ namespace Genie.Templates.Infrastructure
             {
                 _path = path;
                 _schema = schema;
+            }
+
+            public IContentFile Generate()
+            {
+                return new ContentFile
+                {
+                    Content = TransformText(),
+                    Path = _path
+                };
+            }
+        }
+
+        public partial class IOperation : ITemplateFile
+        {
+            private readonly string _path;
+
+            internal IOperation(string path)
+            {
+                _path = path;
             }
 
             public IContentFile Generate()

@@ -8,10 +8,13 @@ using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
 {
-	public interface IUnitOfWork
+	public interface IUnitOfWork : IDisposable
     {
 
         IDbTransaction BeginTransaction();
+
+	    void AddOp(IOperation operation);
+        void AddObj(BaseModel obj);
 
 		<#foreach(var relation in _schema.Relations){
       #>I<#=relation.Name#>Repository <#=relation.Name#>Repository { get; }

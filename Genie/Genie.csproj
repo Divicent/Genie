@@ -176,6 +176,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IDapperContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Infrastructure\Interfaces\IOperation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IOperation.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IProcedureContainer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -215,6 +220,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>View.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Operation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Operation.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\ProcedureContainer.cs">
       <AutoGen>True</AutoGen>
@@ -373,6 +383,10 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IDapperContext.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\Infrastructure\Interfaces\IOperation.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IOperation.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IProcedureContainer.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IProcedureContainer.cs</LastGenOutput>
@@ -404,6 +418,10 @@
     <Content Include="Templates\Infrastructure\Models\View.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>View.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Operation.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Operation.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\ProcedureContainer.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

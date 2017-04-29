@@ -39,6 +39,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             }
         }
 
+        public IUnitOfWork Unit() 
+        {
+            return new UnitOfWork(this);
+        }
+
 		/// <summary>
         /// Dispose the context
         /// </summary>
