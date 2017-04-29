@@ -628,7 +628,7 @@ foreach(var k in keys){
             this.Write("                ");
             
             #line 95 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(k.Name));
+            this.Write(this.ToStringHelper.ToStringWithCulture(k.FieldName));
             
             #line default
             #line hidden

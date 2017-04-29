@@ -69,18 +69,6 @@ namespace Genie.Templates.Infrastructure
             Conn = Context.Connection;
         }
 
-        [System.Obsolete(""GetAll is deprecated, please use Get instead."")]
-        public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            return Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
-        }
-        
-        [System.Obsolete(""GetBy is deprecated, please use Get instead."")]
-        public virtual IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            return Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page,  transaction: transaction, commandTimeout: commandTimeout).ToList();
-        }
-
         public virtual IEnumerable<T> Get(IRepoQuery query)
         {
             return Conn.Get<T>(query).ToList();

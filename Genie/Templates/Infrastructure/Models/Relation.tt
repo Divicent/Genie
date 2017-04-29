@@ -92,7 +92,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
             {
 <#var keys = entity.Attributes.Where(e => e.IsKey);#>
 <#foreach(var k in keys){#>
-                <#=k.Name#> = (<#=k.DataType#>)id;
+                <#=k.FieldName#> = (<#=k.DataType#>)id;
 <#}#>
             }
         }
