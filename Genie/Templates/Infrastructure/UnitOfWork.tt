@@ -60,36 +60,49 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 
         public void Commit()
         {
-            if (Transaction != null)
+            var updated = _objects.Where(o => o.UpdatedProperties.Count > 0).ToList();
+
+            try
             {
-                Transaction.Commit();
-                Transaction.Dispose();
-                Transaction = null;
-            }
+                if (updated.Count > 0)
+                    _operations.AddRange(updated.Select(u => new Operation(OperationType.Update, u)));
 
-            var updated = _objects.Where(o => o.UpdatedProperties.Count > 0);
-            _operations.AddRange(updated.Select(u => new Operation(OperationType.Update, u)));
-
-            if (_operations.Count > 0)
-            {
-                var connection = Context.Connection;
-
-                var toAdd = _operations.Where(o => o.Type == OperationType.Add).ToList();
-                var toDelete = _operations.Where(o => o.Type == OperationType.Remove).ToList();
-                var toUpdate = _operations.Where(o => o.Type == OperationType.Update).ToList();
-
-                foreach (var operation in toAdd)
+                if (_operations.Count > 0)
                 {
-                    var newId = connection.Insert(operation.Object);
-                    operation.Object.SetId(newId);
+                    var toAdd = _operations.Where(o => o.Type == OperationType.Add).ToList();
+                    var toDelete = _operations.Where(o => o.Type == OperationType.Remove).ToList();
+                    var toUpdate = _operations.Where(o => o.Type == OperationType.Update).ToList();
+
+                    var connection = Context.Connection;
+
+                    foreach (var operation in toAdd)
+                    {
+                        var newId = connection.Insert(operation.Object);
+                        operation.Object.SetId(newId);
+                    }
+
+                    if (toUpdate.Count > 0)
+                    {
+                        foreach (var operation in toUpdate)
+                            connection.Update(operation.Object);
+                    }
+
+                    if (toDelete.Count > 0)
+                    {
+                        foreach (var operation in toDelete)
+                            connection.Delete(operation.Object);
+                    }
                 }
-                    
-
-                foreach (var operation in toUpdate)
-                    connection.Update(operation.Object);
-
-                foreach (var operation in toDelete)
-                    connection.Delete(operation.Object);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to commit changes", e);
+            }
+            finally
+            {
+                _operations.Clear();
+                foreach (var entity in updated)
+                    entity.UpdatedProperties.Clear();
             }
         }
 
@@ -109,6 +122,5 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         public void AddObj(BaseModel obj)
         {
             _objects.Add(obj);
-        }
-    }
+        }    }
 }

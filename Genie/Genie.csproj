@@ -251,7 +251,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RepositoryImplementation.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\UnitOfWork.cs">
+    <Compile Include="Templates\Infrastructure\UnitOfWork1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnitOfWork.tt</DependentUpon>
@@ -445,7 +445,7 @@
     </Content>
     <Content Include="Templates\Infrastructure\UnitOfWork.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>UnitOfWork.cs</LastGenOutput>
+      <LastGenOutput>UnitOfWork1.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\SqlMaker\Interfaces\ISqlFirst.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

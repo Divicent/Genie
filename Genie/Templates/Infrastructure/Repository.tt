@@ -18,7 +18,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         public IDapperContext Context { get;}
         public IUnitOfWork UnitOfWork { get;}
 
-        public Repository(IDapperContext context, IUnitOfWork unitOfWork)
+        protected Repository(IDapperContext context, IUnitOfWork unitOfWork)
         {
             Context = context;
             Conn = Context.Connection;

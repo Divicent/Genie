@@ -15,7 +15,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         public IDbConnection Conn { get; }
         public IDapperContext Context { get;}
 
-        public ReadOnlyRepository(IDapperContext context)
+        protected ReadOnlyRepository(IDapperContext context)
         {
             Context = context;
             Conn = Context.Connection;

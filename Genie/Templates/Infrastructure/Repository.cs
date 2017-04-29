@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class Repository : RepositoryBase
     {
@@ -29,35 +29,35 @@ namespace Genie.Templates.Infrastructure
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
                     "m.Linq;\r\nusing ");
             
-            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Filters.Abstract;\r\nusing ");
             
-            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper;\r\nusing ");
             
-            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
-            #line 10 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
             
-            #line 12 "D:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
+            #line 12 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -65,28 +65,28 @@ namespace Genie.Templates.Infrastructure
             this.Write(".Infrastructure\r\n{\r\n    public abstract class Repository<T> : IRepository<T>\r\n   " +
                     "     where T : BaseModel\r\n    {\r\n        public IDbConnection Conn { get; }\r\n   " +
                     "     public IDapperContext Context { get;}\r\n        public IUnitOfWork UnitOfWor" +
-                    "k { get;}\r\n\r\n        public Repository(IDapperContext context, IUnitOfWork unitO" +
-                    "fWork)\r\n        {\r\n            Context = context;\r\n            Conn = Context.Co" +
-                    "nnection;\r\n            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public vir" +
-                    "tual void Add(T entity, IDbTransaction transaction = null, int? commandTimeout =" +
-                    " null)\r\n        {\r\n            if (entity == null)\r\n            {\r\n             " +
-                    "   throw new ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n        " +
-                    "    }\r\n            \r\n            entity.DatabaseModelStatus = ModelStatus.Retrie" +
-                    "ved;\r\n            entity.DatabaseUnitOfWork = UnitOfWork;           \r\n          " +
-                    "  var operation = new Operation(OperationType.Add, entity);\r\n            UnitOfW" +
-                    "ork.AddOp(operation);    \r\n        }\r\n\r\n        public virtual void Remove(T ent" +
-                    "ity, IDbTransaction transaction = null, int? commandTimeout = null)\r\n        {\r\n" +
-                    "            if (entity == null)\r\n            {\r\n                throw new Argume" +
-                    "ntNullException(\"entity\", \"Remove in DB null entity\");\r\n            }\r\n         " +
-                    "   \r\n            var operation = new Operation(OperationType.Remove, entity);\r\n " +
-                    "           UnitOfWork.AddOp(operation);\r\n        }\r\n\r\n        public virtual IEn" +
-                    "umerable<T> Get(IRepoQuery query)\r\n        {\r\n            var items = Conn.Get<T" +
-                    ">(query).ToList();\r\n\r\n            foreach (var item in items)\r\n            {\r\n  " +
-                    "              item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.Databa" +
-                    "seModelStatus = ModelStatus.Retrieved;\r\n                UnitOfWork.AddObj(item);" +
-                    "\r\n            }\r\n            return items;\r\n        }\r\n\r\n        public virtual " +
-                    "int Count(IRepoQuery query)\r\n        {\r\n            return Conn.Count(query);\r\n " +
-                    "       }\r\n    }\r\n}\r\n");
+                    "k { get;}\r\n\r\n        protected Repository(IDapperContext context, IUnitOfWork un" +
+                    "itOfWork)\r\n        {\r\n            Context = context;\r\n            Conn = Context" +
+                    ".Connection;\r\n            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public " +
+                    "virtual void Add(T entity, IDbTransaction transaction = null, int? commandTimeou" +
+                    "t = null)\r\n        {\r\n            if (entity == null)\r\n            {\r\n          " +
+                    "      throw new ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n     " +
+                    "       }\r\n            \r\n            entity.DatabaseModelStatus = ModelStatus.Ret" +
+                    "rieved;\r\n            entity.DatabaseUnitOfWork = UnitOfWork;           \r\n       " +
+                    "     var operation = new Operation(OperationType.Add, entity);\r\n            Unit" +
+                    "OfWork.AddOp(operation);    \r\n        }\r\n\r\n        public virtual void Remove(T " +
+                    "entity, IDbTransaction transaction = null, int? commandTimeout = null)\r\n        " +
+                    "{\r\n            if (entity == null)\r\n            {\r\n                throw new Arg" +
+                    "umentNullException(\"entity\", \"Remove in DB null entity\");\r\n            }\r\n      " +
+                    "      \r\n            var operation = new Operation(OperationType.Remove, entity);" +
+                    "\r\n            UnitOfWork.AddOp(operation);\r\n        }\r\n\r\n        public virtual " +
+                    "IEnumerable<T> Get(IRepoQuery query)\r\n        {\r\n            var items = Conn.Ge" +
+                    "t<T>(query).ToList();\r\n\r\n            foreach (var item in items)\r\n            {\r" +
+                    "\n                item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.Dat" +
+                    "abaseModelStatus = ModelStatus.Retrieved;\r\n                UnitOfWork.AddObj(ite" +
+                    "m);\r\n            }\r\n            return items;\r\n        }\r\n\r\n        public virtu" +
+                    "al int Count(IRepoQuery query)\r\n        {\r\n            return Conn.Count(query);" +
+                    "\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
