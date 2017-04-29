@@ -263,25 +263,23 @@ foreach(var view in _schema.Views){
                     "List();\r\n                    var toDelete = _operations.Where(o => o.Type == Ope" +
                     "rationType.Remove).ToList();\r\n                    var toUpdate = _operations.Whe" +
                     "re(o => o.Type == OperationType.Update).ToList();\r\n\r\n                    var con" +
-                    "nection = Context.Connection;\r\n\r\n                    foreach (var operation in t" +
-                    "oAdd)\r\n                    {\r\n                        var newId = connection.Ins" +
-                    "ert(operation.Object);\r\n                        operation.Object.SetId(newId);\r\n" +
-                    "                    }\r\n\r\n                    if (toUpdate.Count > 0)\r\n          " +
-                    "          {\r\n                        foreach (var operation in toUpdate)\r\n      " +
-                    "                      connection.Update(operation.Object);\r\n                    " +
-                    "}\r\n\r\n                    if (toDelete.Count > 0)\r\n                    {\r\n       " +
-                    "                 foreach (var operation in toDelete)\r\n                          " +
-                    "  connection.Delete(operation.Object);\r\n                    }\r\n                }" +
-                    "\r\n            }\r\n            catch (Exception e)\r\n            {\r\n               " +
-                    " throw new Exception(\"Unable to commit changes\", e);\r\n            }\r\n           " +
-                    " finally\r\n            {\r\n                _operations.Clear();\r\n                f" +
-                    "oreach (var entity in updated)\r\n                    entity.UpdatedProperties.Cle" +
-                    "ar();\r\n            }\r\n        }\r\n\r\n        public void Dispose()\r\n        {\r\n   " +
-                    "         if (Transaction != null)\r\n            {\r\n                Transaction.Di" +
-                    "spose();\r\n            }\r\n        }\r\n\r\n        public void AddOp(IOperation opera" +
-                    "tion)\r\n        {\r\n            _operations.Add(operation);\r\n        }\r\n\r\n        " +
-                    "public void AddObj(BaseModel obj)\r\n        {\r\n            _objects.Add(obj);\r\n  " +
-                    "      }    }\r\n}\r\n");
+                    "nection = Context.Connection;\r\n\r\n\t\t\t\t\tconnection.Open();\r\n\r\n\t\t\t\t\ttry \r\n\t\t\t\t\t{\r\n\t" +
+                    "\t\t\t\t\tforeach (var operation in toAdd)\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\tvar newId = connection.In" +
+                    "sert(operation.Object);\r\n\t\t\t\t\t\t\toperation.Object.SetId(newId);\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t" +
+                    "\tif (toUpdate.Count > 0)\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\tforeach (var operation in toUpdate)\r\n\t" +
+                    "\t\t\t\t\t\t\tconnection.Update(operation.Object);\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (toDelete.Count" +
+                    " > 0)\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\tforeach (var operation in toDelete)\r\n\t\t\t\t\t\t\t\tconnection.D" +
+                    "elete(operation.Object);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tfinally \r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tconnecti" +
+                    "on.Close();\r\n\t\t\t\t\t}\r\n                }\r\n            }\r\n            catch (Except" +
+                    "ion e)\r\n            {\r\n                throw new Exception(\"Unable to commit cha" +
+                    "nges\", e);\r\n            }\r\n            finally\r\n            {\r\n                _" +
+                    "operations.Clear();\r\n                foreach (var entity in updated)\r\n          " +
+                    "          entity.UpdatedProperties.Clear();\r\n            }\r\n        }\r\n\r\n       " +
+                    " public void Dispose()\r\n        {\r\n            if (Transaction != null)\r\n       " +
+                    "     {\r\n                Transaction.Dispose();\r\n            }\r\n        }\r\n\r\n    " +
+                    "    public void AddOp(IOperation operation)\r\n        {\r\n            _operations." +
+                    "Add(operation);\r\n        }\r\n\r\n        public void AddObj(BaseModel obj)\r\n       " +
+                    " {\r\n            _objects.Add(obj);\r\n        }    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

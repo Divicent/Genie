@@ -256,16 +256,8 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             }
             var adapter = GetFormatter(connection);
 
-	        try
-	        {
-                connection.Open();
-                var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
-                return id;
-            }
-	        finally
-	        {
-	            connection.Close();
-	        }
+            var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
+            return id;
         }
 
 	    /// <summary>
@@ -316,16 +308,8 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                     sb.AppendFormat(" and ");
             }
 
-            try
-	        {
-                connection.Open();
-                var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
-                return updated > 0;
-            }
-	        finally
-	        {
-	            connection.Close();
-	        }
+            var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
+            return updated > 0;
         }
 
 	    /// <summary>
@@ -361,18 +345,9 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                 if (i < keyProperties.Count() - 1)
                     sb.AppendFormat(" and ");
             }
-	        try
-	        {
-                connection.Open();
-                var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
-                if (deleted) { entity.DatabaseModelStatus = ModelStatus.Deleted; }
-                return deleted;
-            }
-	        finally
-	        {
-	            connection.Close();   
-	        }
-            
+            var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
+            if (deleted) { entity.DatabaseModelStatus = ModelStatus.Deleted; }
+            return deleted;
         }
 
         public static ISqlAdapter GetFormatter(IDbConnection connection)

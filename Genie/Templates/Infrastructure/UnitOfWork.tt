@@ -75,23 +75,32 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 
                     var connection = Context.Connection;
 
-                    foreach (var operation in toAdd)
-                    {
-                        var newId = connection.Insert(operation.Object);
-                        operation.Object.SetId(newId);
-                    }
+					connection.Open();
 
-                    if (toUpdate.Count > 0)
-                    {
-                        foreach (var operation in toUpdate)
-                            connection.Update(operation.Object);
-                    }
+					try 
+					{
+						foreach (var operation in toAdd)
+						{
+							var newId = connection.Insert(operation.Object);
+							operation.Object.SetId(newId);
+						}
 
-                    if (toDelete.Count > 0)
-                    {
-                        foreach (var operation in toDelete)
-                            connection.Delete(operation.Object);
-                    }
+						if (toUpdate.Count > 0)
+						{
+							foreach (var operation in toUpdate)
+								connection.Update(operation.Object);
+						}
+
+						if (toDelete.Count > 0)
+						{
+							foreach (var operation in toDelete)
+								connection.Delete(operation.Object);
+						}
+					}
+					finally 
+					{
+						connection.Close();
+					}
                 }
             }
             catch (Exception e)
