@@ -6,10 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
-using System.Threading;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Enum;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 
@@ -63,6 +60,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             KeyProperties[type.TypeHandle] = keyProperties;
             return keyProperties;
         }
+
         private static IEnumerable<PropertyInfo> TypePropertiesCache(Type type)
         {
             IEnumerable<PropertyInfo> pis;
@@ -79,12 +77,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         public static bool IsWriteable(PropertyInfo pi)
         {
             var attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false);
-            if (attributes.Length == 1)
-            {
-                var write = (WriteAttribute)attributes[0];
-                return write.Write;
-            }
-            return true;
+            if (attributes.Length != 1)
+                return true;
+            var write = (WriteAttribute)attributes[0];
+            return write.Write;
         }
 
 	    /// <summary>
@@ -96,7 +92,15 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
         {
-	        return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
+	        try
+	        {
+                connection.Open();
+                return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
+            }
+	        finally
+	        {
+	            connection.Close();
+	        }
         }
 
 	    /// <summary>
@@ -107,7 +111,15 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static int Count(this IDbConnection connection, IRepoQuery query)
         {
-            return connection.Query<int>(GetRetriveQuery(query, true), transaction: query.Transaction).FirstOrDefault();
+	        try
+	        {
+                connection.Open();
+	            return connection.Query<int>(GetRetriveQuery(query, true), transaction: query.Transaction).FirstOrDefault();
+	        }
+	        finally
+	        {
+                connection.Close();
+	        }
         }
 
 	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false)
@@ -192,18 +204,16 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         private static string GetTableName(Type type)
         {
             string name;
-            if (!TypeTableName.TryGetValue(type.TypeHandle, out name))
-            {
-                name = type.Name + "s";
-                if (type.IsInterface && name.StartsWith("I"))
-                    name = name.Substring(1);
+            if (TypeTableName.TryGetValue(type.TypeHandle, out name)) return name;
+            name = type.Name + "s";
+            if (type.IsInterface && name.StartsWith("I"))
+                name = name.Substring(1);
 
-                var tableattr = type.GetCustomAttributes(false).SingleOrDefault(attr => attr.GetType().Name == "TableAttribute") as
-                    dynamic;
-                if (tableattr != null)
-                    name = tableattr.Name;
-                TypeTableName[type.TypeHandle] = name;
-            }
+            var tableattr = type.GetCustomAttributes(false).SingleOrDefault(attr => attr.GetType().Name == "TableAttribute") as
+                dynamic;
+            if (tableattr != null)
+                name = tableattr.Name;
+            TypeTableName[type.TypeHandle] = name;
             return name;
         }
 
@@ -245,8 +255,17 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                     sbParameterList.Append(", ");
             }
             var adapter = GetFormatter(connection);
-            var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
-            return id;
+
+	        try
+	        {
+                connection.Open();
+                var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
+                return id;
+            }
+	        finally
+	        {
+	            connection.Close();
+	        }
         }
 
 	    /// <summary>
@@ -296,26 +315,35 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                 if (i < keyProperties.Count() - 1)
                     sb.AppendFormat(" and ");
             }
-            var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
-            return updated > 0;
+
+            try
+	        {
+                connection.Open();
+                var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
+                return updated > 0;
+            }
+	        finally
+	        {
+	            connection.Close();
+	        }
         }
 
 	    /// <summary>
 	    /// Delete entity in table "Ts".
 	    /// </summary>
-	    /// <typeparam name="T">Type of entity</typeparam>
 	    /// <param name="connection">Open SqlConnection</param>
-	    /// <param name="entityToDelete">Entity to delete</param>
+	    /// <param name="entity"></param>
 	    /// <param name="transaction"></param>
 	    /// <param name="commandTimeout"></param>
 	    /// <returns>true if deleted, false if not found</returns>
-	    public static bool Delete<T>(this IDbConnection connection, T entityToDelete, IDbTransaction transaction = null, int? commandTimeout = null) where T : BaseModel
+	    public static bool Delete(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            if (entityToDelete == null)
-                throw new ArgumentException("Cannot Delete null Object", "entityToDelete");
+	        if (entity == null)
+	        {
+                throw new ArgumentException("The entity is null, cannot delete a null entity", "entity");
+            }
 
-            var type = typeof(T);
-
+            var type = entity.GetType();
             var keyProperties = KeyPropertiesCache(type).ToList();
 
             if (!keyProperties.Any())
@@ -333,9 +361,18 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                 if (i < keyProperties.Count() - 1)
                     sb.AppendFormat(" and ");
             }
-            var deleted = connection.Execute(sb.ToString(), entityToDelete, transaction: transaction, commandTimeout: commandTimeout) > 0;
-            if(deleted) { entityToDelete.DatabaseModelStatus = ModelStatus.Deleted; }
-            return deleted;
+	        try
+	        {
+                connection.Open();
+                var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
+                if (deleted) { entity.DatabaseModelStatus = ModelStatus.Deleted; }
+                return deleted;
+            }
+	        finally
+	        {
+	            connection.Close();   
+	        }
+            
         }
 
         public static ISqlAdapter GetFormatter(IDbConnection connection)
