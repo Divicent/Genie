@@ -216,6 +216,8 @@ namespace Genie.Base
 
             foreach (var databaseSchemaColumn in columns)
             {
+                string dataType;
+                bool lit;
                 switch (databaseSchemaColumn.Type)
                 {
                     case "BASE TABLE":
@@ -235,12 +237,15 @@ namespace Genie.Base
 
                             tables.Add(table);
                         }
+                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType, databaseSchemaColumn.Nullable);
+                        lit = dataType == "string" || dataType.StartsWith("DateTime");
 
                         var attribute = new Models.Attribute
                         {
+                            IsLiteralType =  lit,
                             IsKey = databaseSchemaColumn.IsPrimaryKey,
                             Name = databaseSchemaColumn.Name,
-                            DataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType, databaseSchemaColumn.Nullable),
+                            DataType = dataType,
                             FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() + databaseSchemaColumn.Name.Substring(1)
                         };
 
@@ -275,11 +280,15 @@ namespace Genie.Base
                             views.Add(view);
                         }
 
+                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType, databaseSchemaColumn.Nullable);
+                        lit = dataType == "string" || dataType.StartsWith("DateTime");
+
                         view.Attributes.Add(new SimpleAttribute
                         {
                             Name = databaseSchemaColumn.Name,
+                            IsLiteralType = lit,
                             FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() + databaseSchemaColumn.Name.Substring(1),
-                            DataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType, databaseSchemaColumn.Nullable)
+                            DataType = dataType
                         });
                         break;
                 }

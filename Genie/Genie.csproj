@@ -339,6 +339,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Infrastructure\Models\Concrete\Context\BaseQueryContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseQueryContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\Models\Concrete\Context\ModelFilterContext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -614,6 +619,10 @@
     <Content Include="Templates\Infrastructure\Models\Concrete\BaseModel.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>BaseModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Models\Concrete\Context\BaseQueryContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BaseQueryContext.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Models\Concrete\Context\ModelFilterContext.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

@@ -16,6 +16,11 @@
         string Name { get; set; }
 
         /// <summary>
+        /// Is the type is a literal type or and integral type
+        /// </summary>
+        bool IsLiteralType { get; set; }
+
+        /// <summary>
         /// Name of the field
         /// </summary>
         string FieldName { get; set; }

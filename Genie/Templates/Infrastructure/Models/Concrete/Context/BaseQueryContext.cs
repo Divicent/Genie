@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure.Filters.Concrete
+namespace Genie.Templates.Infrastructure.Models.Concrete.Context
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\BaseQueryContext.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class QueryMaker : QueryMakerBase
+    public partial class BaseQueryContext : BaseQueryContextBase
     {
 #line hidden
         /// <summary>
@@ -26,59 +26,74 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System.Collections.Generic;\r\nusing System.Linq;\r\nusing ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\BaseQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Filters.Concrete\r\n{\r\n    internal static class QueryMaker\r\n    {\r" +
-                    "\n        internal static string EqualsTo(string propertyName, object value, bool" +
-                    " quoted)\r\n        {\r\n            return string.Format(\"[{0}] = {2}{1}{2}\", prope" +
-                    "rtyName, value, quoted ? \"\'\":\"\");\r\n        }\r\n\r\n        internal static string N" +
-                    "otEquals(string propertyName, object value, bool quoted)\r\n        {\r\n           " +
-                    " return string.Format(\"[{0}] != {2}{1}{2}\", propertyName, value, quoted ? \"\'\" : " +
-                    "\"\");\r\n        }\r\n\r\n        internal static string Contains(string propertyName, " +
-                    "object value)\r\n        {\r\n            return string.Format(\"[{0}] LIKE \'%{1}%\'\"," +
-                    " propertyName, value);\r\n        }\r\n\r\n        internal static string NotContains(" +
-                    "string propertyName, object value)\r\n        {\r\n            return string.Format(" +
-                    "\"[{0}] NOT LIKE \'%{1}%\'\", propertyName, value);\r\n        }\r\n\r\n        internal s" +
-                    "tatic string StartsWith(string propertyName, object value)\r\n        {\r\n         " +
-                    "   return string.Format(\"[{0}] LIKE \'{1}%\'\", propertyName, value);\r\n        }\r\n\r" +
-                    "\n        internal static string NotStartsWith(string propertyName, object value)" +
-                    "\r\n        {\r\n            return string.Format(\"[{0}] NOT LIKE \'{1}%\'\", propertyN" +
-                    "ame, value);\r\n        }\r\n\r\n        internal static string EndsWith(string proper" +
-                    "tyName, object value)\r\n        {\r\n            return string.Format(\"[{0}] LIKE \'" +
-                    "%{1}\'\", propertyName, value);\r\n        }\r\n\r\n        internal static string NotEn" +
-                    "dsWith(string propertyName, object value)\r\n        {\r\n            return string." +
-                    "Format(\"[{0}] NOT LIKE \'%{1}\'\", propertyName, value);\r\n        }\r\n\r\n        inte" +
-                    "rnal static string IsEmpty(string propertyName)\r\n        {\r\n            return s" +
-                    "tring.Format(\"[{0}] = \'\'\", propertyName);\r\n        }\r\n\r\n        internal static " +
-                    "string IsNotEmpty(string propertyName)\r\n        {\r\n            return string.For" +
-                    "mat(\"[{0}] != \'\'\", propertyName);\r\n        }\r\n\r\n        internal static string I" +
-                    "sNull(string propertyName)\r\n        {\r\n            return string.Format(\"[{0}] I" +
-                    "S NULL\", propertyName);\r\n        }\r\n\r\n        internal static string IsNotNull(s" +
-                    "tring propertyName)\r\n        {\r\n            return string.Format(\"[{0}] IS NOT N" +
-                    "ULL\", propertyName);\r\n        }\r\n\r\n        internal static string GreaterThan(st" +
-                    "ring propertyName, object value, bool quoted)\r\n        {\r\n            return str" +
-                    "ing.Format(\"[{0}] > {2}{1}{2}\", propertyName, value, quoted ? \"\'\" : \"\");\r\n      " +
-                    "  }\r\n\r\n        internal static string LessThan(string propertyName, object value" +
-                    ", bool quoted)\r\n        {\r\n            return string.Format(\"[{0}] < {2}{1}{2}\"," +
-                    " propertyName, value, quoted ? \"\'\" : \"\");\r\n        }\r\n\r\n        internal static " +
-                    "string GreaterThanOrEquals(string propertyName, object value, bool quoted)\r\n    " +
-                    "    {\r\n            return string.Format(\"[{0}] >= {2}{1}{2}\", propertyName, valu" +
-                    "e, quoted ? \"\'\" : \"\");\r\n        }\r\n\r\n        internal static string LessThanOrEq" +
-                    "uals(string propertyName, object value, bool quoted)\r\n        {\r\n            ret" +
-                    "urn string.Format(\"[{0}] <= {2}{1}{2}\", propertyName, value, quoted ? \"\'\" : \"\");" +
-                    "\r\n        }\r\n\r\n        internal static string Between(string propertyName, objec" +
-                    "t from, object to, bool quoted)\r\n        {\r\n            return string.Format(\"([" +
-                    "{0}] >= {2}{1}{2} AND [{0}] <= {2}{3}{2})\", propertyName, from, quoted ? \"\'\" : \"" +
-                    "\", to);\r\n        }\r\n\r\n        internal static string IsTrue(string propertyName)" +
-                    "\r\n        {\r\n            return string.Format(\"[{0}] = 1\", propertyName);\r\n     " +
-                    "   }\r\n\r\n        internal static string IsFalse(string propertyName)\r\n        {\r\n" +
-                    "            return string.Format(\"[{0}] = 0\", propertyName);\r\n        }\r\n    }\r\n" +
-                    "}\r\n");
+            this.Write(".Infrastructure.Filters.Abstract;\r\nusing ");
+            
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\BaseQueryContext.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Filters.Concrete;\r\n\r\nnamespace ");
+            
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\BaseQueryContext.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Models.Concrete.Context\r\n{\r\n    public abstract class BaseQueryCo" +
+                    "ntext\r\n    {\r\n        protected int? _page;\r\n        protected int? _pageSize;\r\n" +
+                    "        protected int? _limit;\r\n        protected int? _skip;\r\n        protected" +
+                    " int? _take;\r\n\r\n\t\tprotected abstract bool? IsQuoted(string propertyName);\r\n\t\t\r\n\t" +
+                    "\tprotected void ProcessFilter(Queue<string> queue, IEnumerable<IPropertyFilter> " +
+                    "f)  \r\n\t\t{\r\n\t\t    var filters = f?.ToList();\r\n            if(filters == null)\r\n  " +
+                    "              return;\r\n            if(filters.Count < 1)\r\n                return" +
+                    ";\r\n\r\n\t\t    foreach (var propertyFilter in filters)\r\n\t\t    {\r\n\t\t        var qotd " +
+                    "= IsQuoted(propertyFilter.PropertyName);\r\n                if(qotd == null)\r\n    " +
+                    "                continue;\r\n\t\t        \r\n                queue.Enqueue(\"and\");\r\n\t\t" +
+                    "        queue.Enqueue(GetExpression(propertyFilter.Type, propertyFilter.Property" +
+                    "Name, propertyFilter.Value,\r\n\t\t            qotd.GetValueOrDefault()));\r\n\t\t    }\r" +
+                    "\n\t\t}\r\n\r\n        private static string GetExpression(string type, string propName" +
+                    ", object value, bool quoted )\r\n        {\r\n            switch (type.ToLower())\r\n " +
+                    "           {\r\n                case \"equals\":\r\n                case \"eq\":\r\n      " +
+                    "              return QueryMaker.EqualsTo(propName, value, quoted);\r\n            " +
+                    "    case \"notequals\":\r\n                case \"neq\":\r\n                case \"ne\":\r\n" +
+                    "                    return QueryMaker.NotEquals(propName, value, quoted);\r\n     " +
+                    "           case \"contains\":\r\n                case \"c\":\r\n                    retu" +
+                    "rn QueryMaker.Contains(propName, value);\r\n                case \"notcontains\":\r\n " +
+                    "               case \"nc\":\r\n                    return QueryMaker.NotContains(pro" +
+                    "pName, value);\r\n                case \"startswith\":\r\n                case \"sw\":\r\n" +
+                    "                    return QueryMaker.StartsWith(propName, value);\r\n            " +
+                    "    case \"notstartswith\":\r\n                case \"nsw\":\r\n                    retu" +
+                    "rn QueryMaker.NotStartsWith(propName, value);\r\n                case \"endswith\":\r" +
+                    "\n                case \"ew\":\r\n                    return QueryMaker.EndsWith(prop" +
+                    "Name, value);\r\n                case \"notendswith\":\r\n                case \"new\":\r" +
+                    "\n                    return QueryMaker.NotEndsWith(propName, value);\r\n          " +
+                    "      case \"isempty\":\r\n                case \"ie\":\r\n                    return Qu" +
+                    "eryMaker.IsEmpty(propName);\r\n                case \"isnotempty\":\r\n               " +
+                    " case \"ino\":\r\n                    return QueryMaker.IsNotEmpty(propName);\r\n     " +
+                    "           case \"isnull\":\r\n                case \"in\":\r\n                    retur" +
+                    "n QueryMaker.IsNull(propName);\r\n                case \"isnotnull\":\r\n             " +
+                    "   case \"inn\":\r\n                    return QueryMaker.IsNotNull(propName);\r\n    " +
+                    "            case \"greaterthan\":\r\n                case \"gt\":\r\n                   " +
+                    " return QueryMaker.GreaterThan(propName, value, quoted);\r\n                case \"" +
+                    "lessthan\":\r\n                case \"lt\":\r\n                    return QueryMaker.Le" +
+                    "ssThan(propName, value, quoted);\r\n                case \"greaterthanorequals\":\r\n " +
+                    "               case \"gtoe\":\r\n                case \"gte\":\r\n                    re" +
+                    "turn QueryMaker.GreaterThanOrEquals(propName, value, quoted);\r\n                c" +
+                    "ase \"lessthanorequals\":\r\n                case \"ltoe\":\r\n                case \"lte" +
+                    "\":\r\n                    return QueryMaker.LessThanOrEquals(propName, value, quot" +
+                    "ed);\r\n                case \"istrue\":\r\n                case \"it\":\r\n              " +
+                    "      return QueryMaker.IsTrue(propName);\r\n                case \"isfalse\":\r\n    " +
+                    "            case \"if\":\r\n                    return QueryMaker.IsFalse(propName);" +
+                    "\r\n                default:\r\n                    return \"\";\r\n            }\r\n     " +
+                    "   }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -90,7 +105,7 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class QueryMakerBase
+    public class BaseQueryContextBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

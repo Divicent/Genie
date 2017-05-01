@@ -16,7 +16,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
 
         internal static string Contains(string propertyName, object value)
         {
-            return string.Format("[{0}] LIKE '{1}'", propertyName, value);
+            return string.Format("[{0}] LIKE '%{1}%'", propertyName, value);
+        }
+
+        internal static string NotContains(string propertyName, object value)
+        {
+            return string.Format("[{0}] NOT LIKE '%{1}%'", propertyName, value);
         }
 
         internal static string StartsWith(string propertyName, object value)

@@ -403,15 +403,39 @@ namespace Genie.Templates.Infrastructure
         {
             namespace Context
             {
+                public partial class BaseQueryContext : ITemplateFile
+                {
+                    private readonly string _path;
+
+                    internal BaseQueryContext( string path)
+                    {
+                        _path = path;
+                    }
+
+                    public IContentFile Generate()
+                    {
+
+                        return new ContentFile
+                        {
+                            Content = TransformText(),
+                            Path = _path
+                        };
+                    }
+                }
+
+
+
                 public partial class ModelQueryContext : ITemplateFile
                 {
                     private readonly string _name;
                     private readonly string _path;
-
-                    internal ModelQueryContext(string name, string path)
+                    private IEnumerable<ISimpleAttribute> _attributes;
+                     
+                    internal ModelQueryContext(string name, IEnumerable<ISimpleAttribute> attributes, string path)
                     {
                         _name = name;
                         _path = path;
+                        _attributes = attributes;
                     }
 
                     public IContentFile Generate()

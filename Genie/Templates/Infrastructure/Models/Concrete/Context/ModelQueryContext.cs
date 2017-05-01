@@ -77,7 +77,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
             
             #line default
             #line hidden
-            this.Write("QueryContext: I");
+            this.Write("QueryContext: BaseQueryContext, I");
             
             #line 15 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
@@ -105,11 +105,9 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
             
             #line default
             #line hidden
-            this.Write("Repository _repo;\r\n\r\n        private int? _page;\r\n        private int? _pageSize;" +
-                    "\r\n        private int? _limit;\r\n        private int? _skip;\r\n        private int" +
-                    "? _take;\r\n\r\n        public I");
+            this.Write("Repository _repo;\r\n\r\n        public I");
             
-            #line 27 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -118,7 +116,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
                     "            _pageSize = pageSize;\r\n            return this;\r\n        }\r\n\r\n      " +
                     "  public I");
             
-            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 28 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -126,7 +124,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
             this.Write("QueryContext Top(int limit)\r\n        {\r\n            _limit = limit;\r\n            " +
                     "return this;\r\n        }\r\n\r\n        public I");
             
-            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 34 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -134,7 +132,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
             this.Write("QueryContext Skip(int skip)\r\n        {\r\n            _skip = skip;\r\n            re" +
                     "turn this;\r\n        }\r\n\r\n        public I");
             
-            #line 46 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -142,49 +140,49 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
             this.Write("QueryContext Take(int take)\r\n        {\r\n            _take = take;\r\n            re" +
                     "turn this;\r\n        }\r\n\t\t\r\n\t\tinternal ");
             
-            #line 52 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 46 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("QueryContext(I");
             
-            #line 52 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 46 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("Repository repo) { _repo = repo; }\r\n\t\t\r\n\t\tpublic I");
             
-            #line 54 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 48 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("FilterContext Where { get { return _where ?? (_where = new ");
             
-            #line 54 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 48 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("FilterContext(this)); }}\r\n        \r\n\t\tpublic I");
             
-            #line 56 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 50 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("OrderContext OrderBy { get { return _order ?? (_order = new ");
             
-            #line 56 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 50 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("OrderContext(this)); } }\r\n\r\n        public IEnumerable<");
             
-            #line 58 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 52 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -194,7 +192,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
                     " = null)\r\n\t    {\r\n            return _repo.Count(GetQuery(transaction));\r\n\t    }" +
                     "\r\n\r\n\t\tpublic I");
             
-            #line 68 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 62 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -203,7 +201,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
                     "\r\n\t\t}\r\n\r\n\t    private IRepoQuery GetQuery(IDbTransaction transaction)\r\n\t    {\r\n\t" +
                     "        return new RepoQuery\r\n\t        {\r\n\t            Target = \"[dbo].[");
             
-            #line 77 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            #line 71 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
@@ -219,8 +217,111 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
 	            Transaction = transaction
 	        };
 	    }
-	}
-}");
+
+		protected override bool? IsQuoted(string propertyName) 
+		{
+");
+            
+            #line 85 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+var lit = _attributes.Where(a => a.IsLiteralType).ToList();
+            
+            #line default
+            #line hidden
+            
+            #line 86 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+var nonLit = _attributes.Where(a => !a.IsLiteralType).ToList();
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 88 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+if(_attributes.Count() == lit.Count || nonLit.Count < 1){
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\treturn true;\r\n");
+            
+            #line 90 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+}
+            
+            #line default
+            #line hidden
+            
+            #line 91 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+else if(_attributes.Count() == lit.Count || lit.Count < 1){
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\treturn false;\r\n");
+            
+            #line 93 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+}
+            
+            #line default
+            #line hidden
+            
+            #line 94 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+else
+            
+            #line default
+            #line hidden
+            
+            #line 95 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+{
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\tswitch(propertyName) \r\n\t\t\t{\r\n");
+            
+            #line 98 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+foreach(var a in lit){
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\tcase \"");
+            
+            #line 99 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(a.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\":\r\n");
+            
+            #line 100 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\t\treturn true;\r\n");
+            
+            #line 102 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+foreach(var a in nonLit){
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\tcase \"");
+            
+            #line 103 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(a.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\":\r\n");
+            
+            #line 104 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\t\treturn false;\r\n\t\t\t\tdefault: return null;\r\n\t\t\t}\r\n");
+            
+            #line 108 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\t\t}\r\n\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

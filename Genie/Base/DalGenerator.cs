@@ -9,10 +9,8 @@ using Genie.Templates.Infrastructure;
 using Genie.Templates.Infrastructure.Enum;
 using Genie.Templates.Infrastructure.Filters.Abstract;
 using Genie.Templates.Infrastructure.Interfaces;
-using Genie.Templates.Infrastructure.Models;
 using Genie.Templates.Infrastructure.Repositories;
 using Genie.Templates.Infrastructure.Filters.Concrete;
-using Genie.Templates.Infrastructure.Models.Abstract;
 using Genie.Templates.Infrastructure.Models.Abstract.Context;
 using Genie.Templates.Infrastructure.Models.Concrete;
 using Genie.Templates.Infrastructure.Models.Concrete.Context;
@@ -90,6 +88,7 @@ namespace Genie.Base
                     new Operation(@"Infrastructure\Operation"),
 
                     new BaseModel(@"Infrastructure\Models\Concrete\BaseModel"),
+                    new BaseQueryContext(@"Infrastructure\Models\Concrete\Context\BaseQueryContext")
                 };
 
 
@@ -101,7 +100,7 @@ namespace Genie.Base
                     files.Add(new IModelFilterContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Abstract\Context\I" + relation.Name + "FilterContext"));
                     files.Add(new IModelOrderContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Abstract\Context\I" + relation.Name + "OrderContext"));
 
-                    files.Add(new ModelQueryContext(relation.Name, @"Infrastructure\Models\Concrete\Context\" + relation.Name + "QueryContext"));
+                    files.Add(new ModelQueryContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Concrete\Context\" + relation.Name + "QueryContext"));
                     files.Add(new ModelFilterContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Concrete\Context\" + relation.Name + "FilterContext"));
                     files.Add(new ModelOrderContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Concrete\Context\" + relation.Name + "OrderContext"));
                 }
@@ -114,7 +113,7 @@ namespace Genie.Base
                     files.Add(new IModelFilterContext(view.Name, view.Attributes, @"Infrastructure\Models\Abstract\Context\I" + view.Name + "FilterContext"));
                     files.Add(new IModelOrderContext(view.Name, view.Attributes, @"Infrastructure\Models\Abstract\Context\I" + view.Name + "OrderContext"));
 
-                    files.Add(new ModelQueryContext(view.Name, @"Infrastructure\Models\Concrete\Context\" + view.Name + "QueryContext"));
+                    files.Add(new ModelQueryContext(view.Name, view.Attributes, @"Infrastructure\Models\Concrete\Context\" + view.Name + "QueryContext"));
                     files.Add(new ModelFilterContext(view.Name, view.Attributes, @"Infrastructure\Models\Concrete\Context\" + view.Name + "FilterContext"));
                     files.Add(new ModelOrderContext(view.Name, view.Attributes, @"Infrastructure\Models\Concrete\Context\" + view.Name + "OrderContext"));
                 }
