@@ -1,5 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
 {
     public interface IDateFilter<out T, out TQ> where T : IFilterContext

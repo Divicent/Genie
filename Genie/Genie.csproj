@@ -260,9 +260,9 @@
       <DependentUpon>OrderElement.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\Filters\Concrete\OrderJoin.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>OrderJoin.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Templates\Infrastructure\Filters\Concrete\PropertyFilter.cs">
       <AutoGen>True</AutoGen>

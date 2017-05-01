@@ -65,12 +65,15 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public IDbConnection Connection
         {
-			if(_connection = null) 
-				_connection = new SqlConnection(_connectionString);
-			if(_connection.State != ConnectionState.Open)
-				_connection.Open();
+		    get
+		    {
+                if (_connection == null)
+                    _connection = new SqlConnection(_connectionString);
+                if (_connection.State != ConnectionState.Open)
+                    _connection.Open();
 
-			return _connection;
+                return _connection;
+            }
         }
 
         public IUnitOfWork Unit() 

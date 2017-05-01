@@ -1,5 +1,8 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System.Collections.Generic;
+using System.Data;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
 {
     public interface IRepoQuery

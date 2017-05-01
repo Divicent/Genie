@@ -1,5 +1,6 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete

@@ -26,16 +26,16 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Collections.Generic;\r\nusing ");
+            this.Write("using System.Collections.Generic;\r\nusing System.Data;\r\nusing ");
             
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\RepoQuery.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\RepoQuery.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\RepoQuery.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\RepoQuery.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

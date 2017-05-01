@@ -165,7 +165,7 @@ var name = _relation.Name;
             
             #line default
             #line hidden
-            this.Write("OrderContext Filter(IEnumerable<IPropertyFilter> filters);\r\n\t        int Count(ID" +
+            this.Write("QueryContext Filter(IEnumerable<IPropertyFilter> filters);\r\n\t        int Count(ID" +
                     "bTransaction transaction = null);\r\n\t    }\r\n\r\n\t    public interface I");
             
             #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
@@ -789,7 +789,7 @@ foreach(var k in keys){
             
             #line default
             #line hidden
-            this.Write(@"OrderContext Filter(IEnumerable<IPropertyFilter> filters) 
+            this.Write(@"QueryContext Filter(IEnumerable<IPropertyFilter> filters) 
 			{
 				return this;	
 			}

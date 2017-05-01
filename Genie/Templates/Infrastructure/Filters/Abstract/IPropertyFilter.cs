@@ -45,7 +45,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         /// <summary>
         /// Expression type
         /// </summary>
-        FilterType Type { get; set; }
+        string Type { get; set; }
             
         /// <summary>
         /// Value if available

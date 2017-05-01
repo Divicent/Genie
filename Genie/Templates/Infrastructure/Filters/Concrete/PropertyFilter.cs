@@ -42,8 +42,8 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
             #line hidden
             this.Write(".Infrastructure.Filters.Concrete\r\n{\r\n    internal class PropertyFilter : IPropert" +
                     "yFilter\r\n    {\r\n        public string PropertyName { get; set; }\r\n        public" +
-                    " FilterType Type { get; set; }\r\n        public object Value { get; set; }\r\n    }" +
-                    "\r\n}\r\n");
+                    " string Type { get; set; }\r\n        public object Value { get; set; }\r\n    }\r\n}\r" +
+                    "\n");
             return this.GenerationEnvironment.ToString();
         }
     }

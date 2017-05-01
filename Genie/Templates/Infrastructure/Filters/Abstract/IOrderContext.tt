@@ -1,5 +1,6 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System.Collections.Generic;
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
 {
 	public interface IOrderContext

@@ -26,9 +26,9 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System.Collections.Generic;\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IOrderContext.tt"
+            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IOrderContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
