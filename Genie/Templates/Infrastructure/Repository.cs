@@ -55,7 +55,7 @@ namespace Genie.Templates.Infrastructure
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Models.Concrete;\r\n\r\nnamespace ");
             
             #line 12 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));

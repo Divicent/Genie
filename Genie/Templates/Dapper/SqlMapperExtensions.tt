@@ -7,7 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Dapper
@@ -266,7 +266,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             if (entityToUpdate.DatabaseModelStatus != ModelStatus.Retrieved)
                 return false;
 
-            if (entityToUpdate.UpdatedProperties.Count < 1)
+            if (entityToUpdate.UpdatedProperties == null || entityToUpdate.UpdatedProperties.Count < 1)
                 return false;
 
             var type = entityToUpdate.GetType();

@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Concrete;
 
@@ -60,7 +60,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 
         public void Commit()
         {
-            var updated = _objects.Where(o => o.UpdatedProperties.Count > 0).ToList();
+            var updated = _objects.Where(o => o.UpdatedProperties != null && o.UpdatedProperties.Count > 0).ToList();
 
             try
             {

@@ -33,7 +33,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Models.Concrete;\r\n\r\nnamespace ");
             
             #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepositoryFactory.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));

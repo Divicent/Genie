@@ -7,7 +7,7 @@ using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {

@@ -17,7 +17,7 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class Operation : OperationBase
     {
@@ -29,21 +29,21 @@ namespace Genie.Templates.Infrastructure
         {
             this.Write("\r\nusing ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Models.Concrete;\r\n\r\nnamespace ");
             
-            #line 8 "D:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
+            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\Operation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

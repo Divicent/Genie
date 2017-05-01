@@ -2,7 +2,7 @@
 <#@ import namespace="Genie.Base" #>
 using System;
 using System.Data;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 using System.Collections.Generic;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 

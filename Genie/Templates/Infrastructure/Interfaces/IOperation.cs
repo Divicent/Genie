@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IOperation.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IOperation.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class IOperation : IOperationBase
     {
@@ -28,14 +28,14 @@ namespace Genie.Templates.Infrastructure.Interfaces
         {
             this.Write("using ");
             
-            #line 3 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IOperation.tt"
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IOperation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Models.Concrete;\r\n\r\nnamespace ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IOperation.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IOperation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

@@ -40,7 +40,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete
             
             #line default
             #line hidden
-            this.Write(@".Infrastructure.Models
+            this.Write(@".Infrastructure.Models.Concrete
 {
     internal enum ModelStatus
     {
@@ -51,7 +51,6 @@ namespace Genie.Templates.Infrastructure.Models.Concrete
 
     public abstract class BaseModel
     {
-        protected BaseModel() { UpdatedProperties = new HashSet<string>(); DatabaseModelStatus = ModelStatus.JustInMemory; }
         internal HashSet<string> UpdatedProperties { get; set; }
         internal ModelStatus DatabaseModelStatus { get; set; }
         internal IUnitOfWork DatabaseUnitOfWork { get; set; }
@@ -63,6 +62,9 @@ namespace Genie.Templates.Infrastructure.Models.Concrete
         /// <param name=""propertyName"">The updated property name</param>
 		protected void __Updated(string propertyName) 
 		{
+		    if(UpdatedProperties == null)
+                UpdatedProperties = new HashSet<string>();
+
 			if( DatabaseModelStatus == ModelStatus.Retrieved ) 
 				UpdatedProperties.Add(propertyName);
 		}
