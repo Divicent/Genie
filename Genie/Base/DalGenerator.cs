@@ -6,6 +6,8 @@ using Genie.Models.Abstract;
 using Genie.Templates.Dapper;
 using Genie.Templates.Extensions;
 using Genie.Templates.Infrastructure;
+using Genie.Templates.Infrastructure.Collections.Abstract;
+using Genie.Templates.Infrastructure.Collections.Concrete;
 using Genie.Templates.Infrastructure.Enum;
 using Genie.Templates.Infrastructure.Filters.Abstract;
 using Genie.Templates.Infrastructure.Interfaces;
@@ -72,7 +74,6 @@ namespace Genie.Base
 
                     new RepositoryImplementation(@"Infrastructure\Repositories\Repositories", schema.Relations, schema.Views),
                     new IDapperContext(@"Infrastructure\Interfaces\IDapperContext"),
-                    new IRepositoryFactory(@"Infrastructure\Interfaces\IRepositoryFactory"),
                     new IRepository(@"Infrastructure\Interfaces\IRepository"),
                     new IUnitOfWork(schema, @"Infrastructure\Interfaces\IUnitOfWork"),
                     new IReadOnlyRepository(@"Infrastructure\Interfaces\IReadOnlyRepository"),
@@ -80,12 +81,14 @@ namespace Genie.Base
                     new IOperation(@"Infrastructure\Interfaces\IOperation"),
 
                     new DapperContext(@"Infrastructure\DapperContext"),
-                    new RepositoryFactory(@"Infrastructure\RepositoryFactory"),
                     new Repository(@"Infrastructure\Repository"),
                     new UnitOfWork(schema, @"Infrastructure\UnitOfWork"),
                     new ReadOnlyRepository(@"Infrastructure\ReadOnlyRepository"),
                     new ProcedureContainer(@"Infrastructure\ProcedureContainer", schema),
                     new Operation(@"Infrastructure\Operation"),
+
+                    new IReferencedEntityCollection(@"Infrastructure\Collections\Abstract\IReferencedEntityCollection"),
+                    new ReferencedEntityCollection(@"Infrastructure\Collections\Concrete\ReferencedEntityCollection"),
 
                     new BaseModel(@"Infrastructure\Models\Concrete\BaseModel"),
                     new BaseQueryContext(@"Infrastructure\Models\Concrete\Context\BaseQueryContext")

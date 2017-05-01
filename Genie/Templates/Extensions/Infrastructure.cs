@@ -24,25 +24,7 @@ namespace Genie.Templates.Infrastructure
             };
         }
     }
-
-    public partial class RepositoryFactory : ITemplateFile
-    {
-        private readonly string _path;
-        public RepositoryFactory(string path)
-        {
-            _path = path;
-        }
-
-        public IContentFile Generate()
-        {
-            return new ContentFile
-            {
-                Content = TransformText(),
-                Path = _path
-            };
-        }
-    }
-
+    
     public partial class Repository : ITemplateFile
     {
         private readonly string _path;
@@ -205,25 +187,7 @@ namespace Genie.Templates.Infrastructure
                 };
             }
         }
-
-        public partial class IRepositoryFactory : ITemplateFile
-        {
-            private readonly string _path;
-            public IRepositoryFactory(string path)
-            {
-                _path = path;
-            }
-
-            public IContentFile Generate()
-            {
-                return new ContentFile
-                {
-                    Content = TransformText(),
-                    Path = _path
-                };
-            }
-        }
-
+        
         public partial class IRepository : ITemplateFile
         {
             private readonly string _path;
@@ -316,6 +280,53 @@ namespace Genie.Templates.Infrastructure
                     Content = TransformText(),
                     Path = _path
                 };
+            }
+        }
+    }
+
+    namespace Collections
+    {
+        namespace Abstract
+        {
+            public partial class IReferencedEntityCollection : ITemplateFile
+            {
+                private readonly string _path;
+
+                internal IReferencedEntityCollection(string path)
+                {
+                    _path = path;
+                }
+
+                public IContentFile Generate()
+                {
+                    return new ContentFile
+                    {
+                        Content = TransformText(),
+                        Path = _path
+                    };
+                }
+            }
+        }
+
+        namespace Concrete
+        {
+            public partial class ReferencedEntityCollection : ITemplateFile
+            {
+                private readonly string _path;
+
+                internal ReferencedEntityCollection(string path)
+                {
+                    _path = path;
+                }
+
+                public IContentFile Generate()
+                {
+                    return new ContentFile
+                    {
+                        Content = TransformText(),
+                        Path = _path
+                    };
+                }
             }
         }
     }

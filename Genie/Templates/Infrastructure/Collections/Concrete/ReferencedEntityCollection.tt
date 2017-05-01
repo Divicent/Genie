@@ -1,0 +1,29 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+using System.Collections.Generic;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Abstract;
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Concrete
+{
+    internal class ReferencedEntityCollection<T> : IReferencedEntityCollection<T> where T: BaseModel
+	{
+		private readonly IEnumerable<T> _collection;
+		private readonly Action<T> _addAction;
+
+		internal ReferencedEntityCollection(IEnumerable<T> collection, Action<T> addAction)
+		{
+			_collection = collection;
+			_addAction = addAction;
+		}
+
+		public void Add(T entityToAdd) 
+		{
+			if( entityToAdd == null) 
+				return;
+			addAction(entityToAdd);
+			_collection.Add(entityToAdd);
+		}
+	}
+}
+

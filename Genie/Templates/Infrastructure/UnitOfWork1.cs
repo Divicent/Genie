@@ -264,20 +264,26 @@ foreach(var view in _schema.Views){
                     "ations.Where(o => o.Type == OperationType.Remove).ToList();\r\n                   " +
                     " var toUpdate = _operations.Where(o => o.Type == OperationType.Update).ToList();" +
                     "\r\n\r\n                    var connection = Context.Connection;\r\n\r\n\t\t\t\t\tconnection." +
-                    "Open();\r\n\r\n\t\t\t\t\ttry \r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tforeach (var operation in toAdd)\r\n\t\t\t\t\t\t{\r\n\t" +
-                    "\t\t\t\t\t\tvar newId = connection.Insert(operation.Object);\r\n\t\t\t\t\t\t\toperation.Object." +
-                    "SetId(newId);\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (toUpdate.Count > 0)\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\tforeach" +
-                    " (var operation in toUpdate)\r\n\t\t\t\t\t\t\t\tconnection.Update(operation.Object);\r\n\t\t\t\t" +
-                    "\t\t}\r\n\r\n\t\t\t\t\t\tif (toDelete.Count > 0)\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\tforeach (var operation in " +
-                    "toDelete)\r\n\t\t\t\t\t\t\t\tconnection.Delete(operation.Object);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tf" +
-                    "inally \r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tconnection.Close();\r\n\t\t\t\t\t}\r\n                }\r\n         " +
-                    "   }\r\n            catch (Exception e)\r\n            {\r\n                throw new " +
-                    "Exception(\"Unable to commit changes\", e);\r\n            }\r\n        }\r\n\r\n        p" +
-                    "ublic void Dispose()\r\n        {\r\n            if (Transaction != null)\r\n         " +
-                    "   {\r\n                Transaction.Dispose();\r\n            }\r\n        }\r\n\r\n      " +
-                    "  public void AddOp(IOperation operation)\r\n        {\r\n            _operations.Ad" +
-                    "d(operation);\r\n        }\r\n\r\n        public void AddObj(BaseModel obj)\r\n        {" +
-                    "\r\n            _objects.Add(obj);\r\n        }    }\r\n}\r\n");
+                    "Open();\r\n\r\n\t\t\t\t\ttry \r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tif (toAdd.Count > 0)\r\n\t\t\t\t\t    {\r\n          " +
+                    "                  foreach (var operation in toAdd)\r\n                            " +
+                    "{\r\n                                var newId = connection.Insert(operation.Objec" +
+                    "t);\r\n                                operation.Object.SetId(newId);\r\n           " +
+                    "                     operation.Object.DatabaseModelStatus = ModelStatus.Retrieve" +
+                    "d;\r\n                            }\r\n                        }\r\n\r\n\t\t\t\t\t\tif (toUpda" +
+                    "te.Count > 0)\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t    foreach (var operation in toUpdate)\r\n\t\t\t\t\t\t   " +
+                    " {\r\n                                connection.Update(operation.Object);\r\n      " +
+                    "                          operation.Object.UpdatedProperties.Clear();\r\n         " +
+                    "                   }\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif (toDelete.Count > 0)\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t " +
+                    "   foreach (var operation in toDelete)\r\n\t\t\t\t\t\t    {\r\n                           " +
+                    "     connection.Delete(operation.Object);\r\n                            }\r\n\t\t\t\t\t\t" +
+                    "}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tfinally \r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tconnection.Close();\r\n\t\t\t\t\t}\r\n           " +
+                    "     }\r\n            }\r\n            catch (Exception e)\r\n            {\r\n         " +
+                    "       throw new Exception(\"Unable to commit changes\", e);\r\n            }\r\n     " +
+                    "   }\r\n\r\n        public void Dispose()\r\n        {\r\n            if (Transaction !=" +
+                    " null)\r\n            {\r\n                Transaction.Dispose();\r\n            }\r\n  " +
+                    "      }\r\n\r\n        public void AddOp(IOperation operation)\r\n        {\r\n         " +
+                    "   _operations.Add(operation);\r\n        }\r\n\r\n        public void AddObj(BaseMode" +
+                    "l obj)\r\n        {\r\n            _objects.Add(obj);\r\n        }    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

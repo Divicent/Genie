@@ -159,6 +159,16 @@
     <Compile Include="Templates\Extensions\Filters.Abstract.cs" />
     <Compile Include="Templates\Extensions\Infrastructure.cs" />
     <Compile Include="Templates\Extensions\TemplateExtensions.cs" />
+    <Compile Include="Templates\Infrastructure\Collections\Abstract\IReferencedEntityCollection.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IReferencedEntityCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReferencedEntityCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\DapperContext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -309,11 +319,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Interfaces\IRepositoryFactory.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IRepositoryFactory.tt</DependentUpon>
-    </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IUnitOfWork.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -388,11 +393,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Repository.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Infrastructure\RepositoryFactory.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RepositoryFactory.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\Repositories\RepositoryImplementation.cs">
       <AutoGen>True</AutoGen>
@@ -475,6 +475,14 @@
     <Content Include="Templates\Dapper\WriteAttribute.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>WriteAttribute.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Collections\Abstract\IReferencedEntityCollection.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IReferencedEntityCollection.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ReferencedEntityCollection.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\DapperContext.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
@@ -596,10 +604,6 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IRepository.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\Infrastructure\Interfaces\IRepositoryFactory.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>IRepositoryFactory.cs</LastGenOutput>
-    </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IUnitOfWork.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IUnitOfWork.cs</LastGenOutput>
@@ -659,10 +663,6 @@
     <Content Include="Templates\Infrastructure\Repository.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>Repository.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\Infrastructure\RepositoryFactory.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>RepositoryFactory.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Repositories\RepositoryImplementation.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

@@ -79,22 +79,31 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 
 					try 
 					{
-						foreach (var operation in toAdd)
-						{
-							var newId = connection.Insert(operation.Object);
-							operation.Object.SetId(newId);
-						}
+						if (toAdd.Count > 0)
+					    {
+                            foreach (var operation in toAdd)
+                            {
+                                var newId = connection.Insert(operation.Object);
+                                operation.Object.SetId(newId);
+                                operation.Object.DatabaseModelStatus = ModelStatus.Retrieved;
+                            }
+                        }
 
 						if (toUpdate.Count > 0)
 						{
-							foreach (var operation in toUpdate)
-								connection.Update(operation.Object);
+						    foreach (var operation in toUpdate)
+						    {
+                                connection.Update(operation.Object);
+                                operation.Object.UpdatedProperties.Clear();
+                            }
 						}
 
 						if (toDelete.Count > 0)
 						{
-							foreach (var operation in toDelete)
-								connection.Delete(operation.Object);
+						    foreach (var operation in toDelete)
+						    {
+                                connection.Delete(operation.Object);
+                            }
 						}
 					}
 					finally 

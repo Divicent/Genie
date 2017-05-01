@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure.Interfaces
+namespace Genie.Templates.Infrastructure.Collections.Concrete
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure.Interfaces
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepositoryFactory.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class IRepositoryFactory : IRepositoryFactoryBase
+    public partial class ReferencedEntityCollection : ReferencedEntityCollectionBase
     {
 #line hidden
         /// <summary>
@@ -26,46 +26,51 @@ namespace Genie.Templates.Infrastructure.Interfaces
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\nusing ");
+            this.Write("using System.Collections.Generic;\r\nusing ");
             
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepositoryFactory.tt"
+            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models.Concrete;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Models.Concrete;\r\nusing ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepositoryFactory.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(@".Infrastructure.Interfaces
+            this.Write(".Infrastructure.Collections.Abstract;\r\n\r\nnamespace ");
+            
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(@".Infrastructure.Collections.Concrete
 {
-	/// <summary>
-    /// Factory for creating repositories 
-    /// </summary>
-	public interface IRepositoryFactory
-    {
-        /// <summary>
-        /// Creates a normal repository
-        /// </summary>
-        /// <typeparam name=""T"">Type of the repository</typeparam>
-        /// <param name=""context"">Content of the repository</param>
-        /// <param name=""unit"">Unit of work of the repository</param>
-        /// <returns>A new repository</returns>
-        IRepository<T> CreateRepository<T>(IDapperContext context, UnitOfWork unit) where T : BaseModel;
+    internal class ReferencedEntityCollection<T> : IReferencedEntityCollection<T> where T: BaseModel
+	{
+		private readonly IEnumerable<T> _collection;
+		private readonly Action<T> _addAction;
 
-        /// <summary>
-        /// Creates a read only repository
-        /// </summary>
-        /// <typeparam name=""T"">Type of the repository</typeparam>
-        /// <param name=""context"">Context that the repository is created</param>
-        /// <returns>A new repository</returns>
-        IReadOnlyRepository<T> CreateReadOnlyRepository<T>(IDapperContext context) where T : class;
-    }
+		internal ReferencedEntityCollection(IEnumerable<T> collection, Action<T> addAction)
+		{
+			_collection = collection;
+			_addAction = addAction;
+		}
+
+		public void Add(T entityToAdd) 
+		{
+			if( entityToAdd == null) 
+				return;
+			addAction(entityToAdd);
+			_collection.Add(entityToAdd);
+		}
+	}
 }
-    ");
+
+");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -77,7 +82,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class IRepositoryFactoryBase
+    public class ReferencedEntityCollectionBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
