@@ -99,130 +99,129 @@ namespace Genie.Templates.Dapper
                     "ummary>\r\n\t    /// <param name=\"connection\">Open SqlConnection</param>\r\n\t    /// " +
                     "<param name=\"query\"></param>\r\n\t    /// <returns>Entity of T</returns>\r\n\t    publ" +
                     "ic static int Count(this IDbConnection connection, IRepoQuery query)\r\n        {\r" +
-                    "\n\t        try\r\n\t        {\r\n                connection.Open();\r\n\t            retu" +
-                    "rn connection.Query<int>(GetRetriveQuery(query, true), transaction: query.Transa" +
-                    "ction).FirstOrDefault();\r\n\t        }\r\n\t        finally\r\n\t        {\r\n            " +
-                    "    connection.Close();\r\n\t        }\r\n        }\r\n\r\n\t    private static string Get" +
-                    "RetriveQuery(IRepoQuery query, bool isCount = false)\r\n\t    {\r\n            var qu" +
-                    "eryBuilder = new StringBuilder(string.Format(\"select {0} {1} from \" + query.Targ" +
-                    "et, query.Limit != null ? \" top \" + query.Limit : \"\", isCount ? \"count(*)\" : \"*\"" +
-                    "));\r\n            \r\n            if (query.Where != null && query.Where.Count > 0)" +
-                    "\r\n            {\r\n                queryBuilder.Append(\" where \");\r\n\r\n            " +
-                    "    var first = true;\r\n                var previous = \"\";\r\n\r\n                whi" +
-                    "le (query.Where.Count > 0)\r\n                {\r\n                    var current =" +
-                    " query.Where.Dequeue();\r\n\r\n                    if (AndOrOr(current))\r\n          " +
-                    "          {\r\n                        if (first)\r\n                        {\r\n    " +
-                    "                        first = false;\r\n                            continue;\r\n " +
-                    "                       }\r\n\r\n                        if (AndOrOr(previous))\r\n    " +
-                    "                    {\r\n                            continue;\r\n                  " +
-                    "      }\r\n\r\n                        previous = current;\r\n                        " +
-                    "queryBuilder.Append(string.Format(\" {0} \", current));\r\n                    }\r\n  " +
-                    "                  else\r\n                    {\r\n                        if (!firs" +
-                    "t && !AndOrOr(previous))\r\n                        {\r\n                           " +
-                    " queryBuilder.Append(string.Format(\" {0} \", \"and\"));\r\n                        }\r" +
-                    "\n\r\n                        previous = current;\r\n                        queryBui" +
-                    "lder.Append(string.Format(\" {0} \", current));\r\n                    }\r\n\r\n        " +
-                    "            first = false;\r\n                }\r\n            }\r\n\r\n            if (" +
-                    "query.Order != null && query.Order.Count > 0)\r\n            {\r\n                qu" +
-                    "eryBuilder.Append(\" order by \");\r\n                while (query.Order.Count > 0)\r" +
-                    "\n                {\r\n                    var item = query.Order.Dequeue();\r\n     " +
-                    "               queryBuilder.Append(string.Format(\" {0} \", item));\r\n             " +
-                    "   }\r\n            }\r\n\r\n            if (query.Page != null && query.PageSize != n" +
-                    "ull)\r\n            {\r\n                queryBuilder.Append(string.Format(\" OFFSET " +
-                    "({0}) ROWS \" +\r\n                                           \" FETCH NEXT {1} ROWS" +
-                    " ONLY \", query.Page * query.PageSize, query.PageSize));\r\n            }\r\n        " +
-                    "    else\r\n            {\r\n                if (query.Skip != null)\r\n              " +
-                    "      queryBuilder.Append(string.Format(\" OFFSET ({0}) ROWS \", query.Skip));\r\n\r\n" +
-                    "                if (query.Take != null)\r\n                    queryBuilder.Append" +
-                    "(string.Format(\" FETCH NEXT {0} ROWS ONLY \", query.Take));\r\n            }\r\n\r\n\t  " +
-                    "      return queryBuilder.ToString();\r\n\t    }\r\n\r\n        private static bool And" +
-                    "OrOr(string str)\r\n\t    {\r\n\t        return str == \"and\" || str == \"or\";\r\n\t    }\r\n" +
-                    "\r\n\r\n        private static string GetTableName(Type type)\r\n        {\r\n          " +
-                    "  string name;\r\n            if (TypeTableName.TryGetValue(type.TypeHandle, out n" +
-                    "ame)) return name;\r\n            name = type.Name + \"s\";\r\n            if (type.Is" +
-                    "Interface && name.StartsWith(\"I\"))\r\n                name = name.Substring(1);\r\n\r" +
-                    "\n            var tableattr = type.GetCustomAttributes(false).SingleOrDefault(att" +
-                    "r => attr.GetType().Name == \"TableAttribute\") as\r\n                dynamic;\r\n    " +
-                    "        if (tableattr != null)\r\n                name = tableattr.Name;\r\n        " +
-                    "    TypeTableName[type.TypeHandle] = name;\r\n            return name;\r\n        }\r" +
-                    "\n\r\n\t    /// <summary>\r\n\t    /// Inserts an entity into table \"Ts\" and returns id" +
-                    "entity id.\r\n\t    /// </summary>\r\n\t    /// <param name=\"connection\">Open SqlConne" +
-                    "ction</param>\r\n\t    /// <param name=\"entityToInsert\">Entity to insert</param>\r\n\t" +
-                    "    /// <param name=\"transaction\"></param>\r\n\t    /// <param name=\"commandTimeout" +
-                    "\"></param>\r\n\t    /// <returns>Identity of inserted entity</returns>\r\n\t    public" +
-                    " static long Insert<T>(this IDbConnection connection, T entityToInsert, IDbTrans" +
-                    "action transaction = null, int? commandTimeout = null) where T : class\r\n        " +
-                    "{\r\n\r\n            var type = typeof(T);\r\n\r\n            var name = GetTableName(ty" +
-                    "pe);\r\n\r\n            var sbColumnList = new StringBuilder(null);\r\n\r\n            v" +
-                    "ar allProperties = TypePropertiesCache(type);\r\n            var keyProperties = K" +
-                    "eyPropertiesCache(type).ToList();\r\n            var allPropertiesExceptKey = allP" +
-                    "roperties.Except(keyProperties).ToList();\r\n\r\n            for (var i = 0; i < all" +
-                    "PropertiesExceptKey.Count(); i++)\r\n            {\r\n                var property =" +
-                    " allPropertiesExceptKey.ElementAt(i);\r\n                sbColumnList.AppendFormat" +
-                    "(\"[{0}]\", property.Name);\r\n                if (i < allPropertiesExceptKey.Count(" +
-                    ") - 1)\r\n                    sbColumnList.Append(\", \");\r\n            }\r\n\r\n       " +
-                    "     var sbParameterList = new StringBuilder(null);\r\n            for (var i = 0;" +
-                    " i < allPropertiesExceptKey.Count(); i++)\r\n            {\r\n                var pr" +
-                    "operty = allPropertiesExceptKey.ElementAt(i);\r\n                sbParameterList.A" +
-                    "ppendFormat(\"@{0}\", property.Name);\r\n                if (i < allPropertiesExcept" +
-                    "Key.Count() - 1)\r\n                    sbParameterList.Append(\", \");\r\n           " +
-                    " }\r\n            var adapter = GetFormatter(connection);\r\n\r\n            var id = " +
-                    "adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToStr" +
-                    "ing(), sbParameterList.ToString(), keyProperties, entityToInsert);\r\n            " +
-                    "return id;\r\n        }\r\n\r\n\t    /// <summary>\r\n\t    /// Updates entity in table \"T" +
-                    "s\", checks if the entity is modified if the entity is tracked by the Get() exten" +
-                    "sion.\r\n\t    /// </summary>\r\n\t    /// <param name=\"connection\">Open SqlConnection" +
-                    "</param>\r\n\t    /// <param name=\"entityToUpdate\">Entity to be updated</param>\r\n\t " +
-                    "   /// <param name=\"transaction\"></param>\r\n\t    /// <param name=\"commandTimeout\"" +
-                    "></param>\r\n\t    /// <returns>true if updated, false if not found or not modified" +
-                    " (tracked entities)</returns>\r\n\t    public static bool Update(this IDbConnection" +
-                    " connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? c" +
-                    "ommandTimeout = null)\r\n        {\r\n            if (entityToUpdate.DatabaseModelSt" +
-                    "atus != ModelStatus.Retrieved)\r\n                return false;\r\n\r\n            if " +
-                    "(entityToUpdate.UpdatedProperties.Count < 1)\r\n                return false;\r\n\r\n " +
-                    "           var type = entityToUpdate.GetType();\r\n\r\n            var keyProperties" +
-                    " = KeyPropertiesCache(type).ToList();\r\n            if (!keyProperties.Any())\r\n  " +
-                    "              throw new ArgumentException(\"Entity must have at least one [Key] p" +
-                    "roperty\");\r\n\r\n            var name = GetTableName(type);\r\n\r\n            var sb =" +
-                    " new StringBuilder();\r\n            sb.AppendFormat(\"update {0} set \", name);\r\n\r\n" +
-                    "            var allProperties = TypePropertiesCache(type);\r\n            var nonI" +
-                    "dProps = allProperties.Where(a => !keyProperties.Contains(a) && entityToUpdate.U" +
-                    "pdatedProperties.Contains(a.Name)).ToList(); // Only updated properties\r\n\r\n\r\n   " +
-                    "         for (var i = 0; i < nonIdProps.Count(); i++)\r\n            {\r\n          " +
-                    "      var property = nonIdProps.ElementAt(i);\r\n                sb.AppendFormat(\"" +
-                    "[{0}] = @{1}\", property.Name, property.Name);\r\n                if (i < nonIdProp" +
-                    "s.Count() - 1)\r\n                    sb.AppendFormat(\", \");\r\n            }\r\n\r\n   " +
-                    "         sb.Append(\" where \");\r\n            for (var i = 0; i < keyProperties.Co" +
-                    "unt(); i++)\r\n            {\r\n                var property = keyProperties.Element" +
-                    "At(i);\r\n                sb.AppendFormat(\"[{0}] = @{1}\", property.Name, property." +
-                    "Name);\r\n                if (i < keyProperties.Count() - 1)\r\n                    " +
-                    "sb.AppendFormat(\" and \");\r\n            }\r\n\r\n            var updated = connection" +
-                    ".Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transact" +
-                    "ion: transaction);\r\n            return updated > 0;\r\n        }\r\n\r\n\t    /// <summ" +
-                    "ary>\r\n\t    /// Delete entity in table \"Ts\".\r\n\t    /// </summary>\r\n\t    /// <para" +
-                    "m name=\"connection\">Open SqlConnection</param>\r\n\t    /// <param name=\"entity\"></" +
-                    "param>\r\n\t    /// <param name=\"transaction\"></param>\r\n\t    /// <param name=\"comma" +
-                    "ndTimeout\"></param>\r\n\t    /// <returns>true if deleted, false if not found</retu" +
-                    "rns>\r\n\t    public static bool Delete(this IDbConnection connection, BaseModel en" +
-                    "tity, IDbTransaction transaction = null, int? commandTimeout = null)\r\n        {\r" +
-                    "\n\t        if (entity == null)\r\n\t        {\r\n                throw new ArgumentExc" +
-                    "eption(\"The entity is null, cannot delete a null entity\", \"entity\");\r\n          " +
-                    "  }\r\n\r\n            var type = entity.GetType();\r\n            var keyProperties =" +
-                    " KeyPropertiesCache(type).ToList();\r\n\r\n            if (!keyProperties.Any())\r\n  " +
-                    "              throw new ArgumentException(\"Entity must have at least one [Key] p" +
-                    "roperty\");\r\n\r\n            var name = GetTableName(type);\r\n\r\n            var sb =" +
-                    " new StringBuilder();\r\n            sb.AppendFormat(\"delete from {0} where \", nam" +
-                    "e);\r\n\r\n            for (var i = 0; i < keyProperties.Count(); i++)\r\n            " +
-                    "{\r\n                var property = keyProperties.ElementAt(i);\r\n                s" +
-                    "b.AppendFormat(\"[{0}] = @{1}\", property.Name, property.Name);\r\n                i" +
-                    "f (i < keyProperties.Count() - 1)\r\n                    sb.AppendFormat(\" and \");" +
-                    "\r\n            }\r\n            var deleted = connection.Execute(sb.ToString(), ent" +
-                    "ity, transaction: transaction, commandTimeout: commandTimeout) > 0;\r\n           " +
-                    " if (deleted) { entity.DatabaseModelStatus = ModelStatus.Deleted; }\r\n           " +
-                    " return deleted;\r\n        }\r\n\r\n        public static ISqlAdapter GetFormatter(ID" +
-                    "bConnection connection)\r\n        {\r\n            var name = connection.GetType()." +
-                    "Name.ToLower();\r\n            return !AdapterDictionary.ContainsKey(name) ? new S" +
-                    "qlServerAdapter() : AdapterDictionary[name];\r\n        }\r\n    }\r\n}");
+                    "\n            connection.Open();\r\n\t        return connection.Query<int>(GetRetriv" +
+                    "eQuery(query, true), transaction: query.Transaction).FirstOrDefault();\r\n        " +
+                    "}\r\n\r\n\t    private static string GetRetriveQuery(IRepoQuery query, bool isCount =" +
+                    " false)\r\n\t    {\r\n            var queryBuilder = new StringBuilder(string.Format(" +
+                    "\"select {0} {1} from \" + query.Target, query.Limit != null ? \" top \" + query.Lim" +
+                    "it : \"\", isCount ? \"count(*)\" : \"*\"));\r\n            \r\n            if (query.Wher" +
+                    "e != null && query.Where.Count > 0)\r\n            {\r\n                queryBuilder" +
+                    ".Append(\" where \");\r\n\r\n                var first = true;\r\n                var pr" +
+                    "evious = \"\";\r\n\r\n                while (query.Where.Count > 0)\r\n                {" +
+                    "\r\n                    var current = query.Where.Dequeue();\r\n\r\n                  " +
+                    "  if (AndOrOr(current))\r\n                    {\r\n                        if (firs" +
+                    "t)\r\n                        {\r\n                            first = false;\r\n     " +
+                    "                       continue;\r\n                        }\r\n\r\n                 " +
+                    "       if (AndOrOr(previous))\r\n                        {\r\n                      " +
+                    "      continue;\r\n                        }\r\n\r\n                        previous =" +
+                    " current;\r\n                        queryBuilder.Append(string.Format(\" {0} \", cu" +
+                    "rrent));\r\n                    }\r\n                    else\r\n                    {" +
+                    "\r\n                        if (!first && !AndOrOr(previous))\r\n                   " +
+                    "     {\r\n                            queryBuilder.Append(string.Format(\" {0} \", \"" +
+                    "and\"));\r\n                        }\r\n\r\n                        previous = current" +
+                    ";\r\n                        queryBuilder.Append(string.Format(\" {0} \", current));" +
+                    "\r\n                    }\r\n\r\n                    first = false;\r\n                }" +
+                    "\r\n            }\r\n\r\n            if (query.Order != null && query.Order.Count > 0)" +
+                    "\r\n            {\r\n                queryBuilder.Append(\" order by \");\r\n           " +
+                    "     while (query.Order.Count > 0)\r\n                {\r\n                    var i" +
+                    "tem = query.Order.Dequeue();\r\n                    queryBuilder.Append(string.For" +
+                    "mat(\" {0} \", item));\r\n                }\r\n            }\r\n\r\n            if (query." +
+                    "Page != null && query.PageSize != null)\r\n            {\r\n                queryBui" +
+                    "lder.Append(string.Format(\" OFFSET ({0}) ROWS \" +\r\n                             " +
+                    "              \" FETCH NEXT {1} ROWS ONLY \", query.Page * query.PageSize, query.P" +
+                    "ageSize));\r\n            }\r\n            else\r\n            {\r\n                if (" +
+                    "query.Skip != null)\r\n                    queryBuilder.Append(string.Format(\" OFF" +
+                    "SET ({0}) ROWS \", query.Skip));\r\n\r\n                if (query.Take != null)\r\n    " +
+                    "                queryBuilder.Append(string.Format(\" FETCH NEXT {0} ROWS ONLY \", " +
+                    "query.Take));\r\n            }\r\n\r\n\t        return queryBuilder.ToString();\r\n\t    }" +
+                    "\r\n\r\n        private static bool AndOrOr(string str)\r\n\t    {\r\n\t        return str" +
+                    " == \"and\" || str == \"or\";\r\n\t    }\r\n\r\n\r\n        private static string GetTableNam" +
+                    "e(Type type)\r\n        {\r\n            string name;\r\n            if (TypeTableName" +
+                    ".TryGetValue(type.TypeHandle, out name)) return name;\r\n            name = type.N" +
+                    "ame + \"s\";\r\n            if (type.IsInterface && name.StartsWith(\"I\"))\r\n         " +
+                    "       name = name.Substring(1);\r\n\r\n            var tableattr = type.GetCustomAt" +
+                    "tributes(false).SingleOrDefault(attr => attr.GetType().Name == \"TableAttribute\")" +
+                    " as\r\n                dynamic;\r\n            if (tableattr != null)\r\n             " +
+                    "   name = tableattr.Name;\r\n            TypeTableName[type.TypeHandle] = name;\r\n " +
+                    "           return name;\r\n        }\r\n\r\n\t    /// <summary>\r\n\t    /// Inserts an en" +
+                    "tity into table \"Ts\" and returns identity id.\r\n\t    /// </summary>\r\n\t    /// <pa" +
+                    "ram name=\"connection\">Open SqlConnection</param>\r\n\t    /// <param name=\"entityTo" +
+                    "Insert\">Entity to insert</param>\r\n\t    /// <param name=\"transaction\"></param>\r\n\t" +
+                    "    /// <param name=\"commandTimeout\"></param>\r\n\t    /// <returns>Identity of ins" +
+                    "erted entity</returns>\r\n\t    public static long Insert<T>(this IDbConnection con" +
+                    "nection, T entityToInsert, IDbTransaction transaction = null, int? commandTimeou" +
+                    "t = null) where T : class\r\n        {\r\n\r\n            var type = typeof(T);\r\n\r\n   " +
+                    "         var name = GetTableName(type);\r\n\r\n            var sbColumnList = new St" +
+                    "ringBuilder(null);\r\n\r\n            var allProperties = TypePropertiesCache(type);" +
+                    "\r\n            var keyProperties = KeyPropertiesCache(type).ToList();\r\n          " +
+                    "  var allPropertiesExceptKey = allProperties.Except(keyProperties).ToList();\r\n\r\n" +
+                    "            for (var i = 0; i < allPropertiesExceptKey.Count(); i++)\r\n          " +
+                    "  {\r\n                var property = allPropertiesExceptKey.ElementAt(i);\r\n      " +
+                    "          sbColumnList.AppendFormat(\"[{0}]\", property.Name);\r\n                if" +
+                    " (i < allPropertiesExceptKey.Count() - 1)\r\n                    sbColumnList.Appe" +
+                    "nd(\", \");\r\n            }\r\n\r\n            var sbParameterList = new StringBuilder(" +
+                    "null);\r\n            for (var i = 0; i < allPropertiesExceptKey.Count(); i++)\r\n  " +
+                    "          {\r\n                var property = allPropertiesExceptKey.ElementAt(i);" +
+                    "\r\n                sbParameterList.AppendFormat(\"@{0}\", property.Name);\r\n        " +
+                    "        if (i < allPropertiesExceptKey.Count() - 1)\r\n                    sbParam" +
+                    "eterList.Append(\", \");\r\n            }\r\n            var adapter = GetFormatter(co" +
+                    "nnection);\r\n\r\n            var id = adapter.Insert(connection, transaction, comma" +
+                    "ndTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyPropert" +
+                    "ies, entityToInsert);\r\n            return id;\r\n        }\r\n\r\n\t    /// <summary>\r\n" +
+                    "\t    /// Updates entity in table \"Ts\", checks if the entity is modified if the e" +
+                    "ntity is tracked by the Get() extension.\r\n\t    /// </summary>\r\n\t    /// <param n" +
+                    "ame=\"connection\">Open SqlConnection</param>\r\n\t    /// <param name=\"entityToUpdat" +
+                    "e\">Entity to be updated</param>\r\n\t    /// <param name=\"transaction\"></param>\r\n\t " +
+                    "   /// <param name=\"commandTimeout\"></param>\r\n\t    /// <returns>true if updated," +
+                    " false if not found or not modified (tracked entities)</returns>\r\n\t    public st" +
+                    "atic bool Update(this IDbConnection connection, BaseModel entityToUpdate, IDbTra" +
+                    "nsaction transaction = null, int? commandTimeout = null)\r\n        {\r\n           " +
+                    " if (entityToUpdate.DatabaseModelStatus != ModelStatus.Retrieved)\r\n             " +
+                    "   return false;\r\n\r\n            if (entityToUpdate.UpdatedProperties.Count < 1)\r" +
+                    "\n                return false;\r\n\r\n            var type = entityToUpdate.GetType(" +
+                    ");\r\n\r\n            var keyProperties = KeyPropertiesCache(type).ToList();\r\n      " +
+                    "      if (!keyProperties.Any())\r\n                throw new ArgumentException(\"En" +
+                    "tity must have at least one [Key] property\");\r\n\r\n            var name = GetTable" +
+                    "Name(type);\r\n\r\n            var sb = new StringBuilder();\r\n            sb.AppendF" +
+                    "ormat(\"update {0} set \", name);\r\n\r\n            var allProperties = TypePropertie" +
+                    "sCache(type);\r\n            var nonIdProps = allProperties.Where(a => !keyPropert" +
+                    "ies.Contains(a) && entityToUpdate.UpdatedProperties.Contains(a.Name)).ToList(); " +
+                    "// Only updated properties\r\n\r\n\r\n            for (var i = 0; i < nonIdProps.Count" +
+                    "(); i++)\r\n            {\r\n                var property = nonIdProps.ElementAt(i);" +
+                    "\r\n                sb.AppendFormat(\"[{0}] = @{1}\", property.Name, property.Name);" +
+                    "\r\n                if (i < nonIdProps.Count() - 1)\r\n                    sb.Append" +
+                    "Format(\", \");\r\n            }\r\n\r\n            sb.Append(\" where \");\r\n            f" +
+                    "or (var i = 0; i < keyProperties.Count(); i++)\r\n            {\r\n                v" +
+                    "ar property = keyProperties.ElementAt(i);\r\n                sb.AppendFormat(\"[{0}" +
+                    "] = @{1}\", property.Name, property.Name);\r\n                if (i < keyProperties" +
+                    ".Count() - 1)\r\n                    sb.AppendFormat(\" and \");\r\n            }\r\n\r\n " +
+                    "           var updated = connection.Execute(sb.ToString(), entityToUpdate, comma" +
+                    "ndTimeout: commandTimeout, transaction: transaction);\r\n            return update" +
+                    "d > 0;\r\n        }\r\n\r\n\t    /// <summary>\r\n\t    /// Delete entity in table \"Ts\".\r\n" +
+                    "\t    /// </summary>\r\n\t    /// <param name=\"connection\">Open SqlConnection</param" +
+                    ">\r\n\t    /// <param name=\"entity\"></param>\r\n\t    /// <param name=\"transaction\"></" +
+                    "param>\r\n\t    /// <param name=\"commandTimeout\"></param>\r\n\t    /// <returns>true i" +
+                    "f deleted, false if not found</returns>\r\n\t    public static bool Delete(this IDb" +
+                    "Connection connection, BaseModel entity, IDbTransaction transaction = null, int?" +
+                    " commandTimeout = null)\r\n        {\r\n\t        if (entity == null)\r\n\t        {\r\n  " +
+                    "              throw new ArgumentException(\"The entity is null, cannot delete a n" +
+                    "ull entity\", \"entity\");\r\n            }\r\n\r\n            var type = entity.GetType(" +
+                    ");\r\n            var keyProperties = KeyPropertiesCache(type).ToList();\r\n\r\n      " +
+                    "      if (!keyProperties.Any())\r\n                throw new ArgumentException(\"En" +
+                    "tity must have at least one [Key] property\");\r\n\r\n            var name = GetTable" +
+                    "Name(type);\r\n\r\n            var sb = new StringBuilder();\r\n            sb.AppendF" +
+                    "ormat(\"delete from {0} where \", name);\r\n\r\n            for (var i = 0; i < keyPro" +
+                    "perties.Count(); i++)\r\n            {\r\n                var property = keyProperti" +
+                    "es.ElementAt(i);\r\n                sb.AppendFormat(\"[{0}] = @{1}\", property.Name," +
+                    " property.Name);\r\n                if (i < keyProperties.Count() - 1)\r\n          " +
+                    "          sb.AppendFormat(\" and \");\r\n            }\r\n            var deleted = co" +
+                    "nnection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout" +
+                    ": commandTimeout) > 0;\r\n            if (deleted) { entity.DatabaseModelStatus = " +
+                    "ModelStatus.Deleted; }\r\n            return deleted;\r\n        }\r\n\r\n        public" +
+                    " static ISqlAdapter GetFormatter(IDbConnection connection)\r\n        {\r\n         " +
+                    "   var name = connection.GetType().Name.ToLower();\r\n            return !AdapterD" +
+                    "ictionary.ContainsKey(name) ? new SqlServerAdapter() : AdapterDictionary[name];\r" +
+                    "\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

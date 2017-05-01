@@ -1,0 +1,18 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
+{
+    public interface IRepoQuery
+    {
+        string Target { get; set; }
+        Queue<string> Where { get; set; }
+        Queue<string> Order { get; set; }
+        int? PageSize { get; set; }
+        int? Page { get; set; }
+        int? Limit { get; set; }
+        int? Skip { get; set; }
+        int? Take { get; set; }
+        IDbTransaction Transaction { get; set; }
+    }
+}
+

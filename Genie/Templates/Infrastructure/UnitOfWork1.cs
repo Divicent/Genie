@@ -272,14 +272,12 @@ foreach(var view in _schema.Views){
                     "elete(operation.Object);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tfinally \r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tconnecti" +
                     "on.Close();\r\n\t\t\t\t\t}\r\n                }\r\n            }\r\n            catch (Except" +
                     "ion e)\r\n            {\r\n                throw new Exception(\"Unable to commit cha" +
-                    "nges\", e);\r\n            }\r\n            finally\r\n            {\r\n                _" +
-                    "operations.Clear();\r\n                foreach (var entity in updated)\r\n          " +
-                    "          entity.UpdatedProperties.Clear();\r\n            }\r\n        }\r\n\r\n       " +
-                    " public void Dispose()\r\n        {\r\n            if (Transaction != null)\r\n       " +
-                    "     {\r\n                Transaction.Dispose();\r\n            }\r\n        }\r\n\r\n    " +
-                    "    public void AddOp(IOperation operation)\r\n        {\r\n            _operations." +
-                    "Add(operation);\r\n        }\r\n\r\n        public void AddObj(BaseModel obj)\r\n       " +
-                    " {\r\n            _objects.Add(obj);\r\n        }    }\r\n}\r\n");
+                    "nges\", e);\r\n            }\r\n        }\r\n\r\n        public void Dispose()\r\n        {" +
+                    "\r\n            if (Transaction != null)\r\n            {\r\n                Transacti" +
+                    "on.Dispose();\r\n            }\r\n        }\r\n\r\n        public void AddOp(IOperation " +
+                    "operation)\r\n        {\r\n            _operations.Add(operation);\r\n        }\r\n\r\n   " +
+                    "     public void AddObj(BaseModel obj)\r\n        {\r\n            _objects.Add(obj)" +
+                    ";\r\n        }    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

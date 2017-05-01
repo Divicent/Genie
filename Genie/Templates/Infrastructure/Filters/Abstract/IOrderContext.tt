@@ -1,0 +1,12 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
+{
+	public interface IOrderContext
+    {
+        void And();
+        void Add(string expression);
+        Queue<string> GetOrderExpressions();
+    }
+}
+

@@ -1,0 +1,18 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
+{
+    public interface IDateFilter<out T, out TQ> where T : IFilterContext
+    {
+        IExpressionJoin<T, TQ> EqualsTo(DateTime date);
+        IExpressionJoin<T, TQ> NotEquals(DateTime date);
+        IExpressionJoin<T, TQ> LargerThan(DateTime number);
+        IExpressionJoin<T, TQ> LessThan(DateTime date);
+        IExpressionJoin<T, TQ> LargerThanOrEqualTo(DateTime date);
+        IExpressionJoin<T, TQ> LessThanOrEqualTo(DateTime date);
+        IExpressionJoin<T, TQ> Between(DateTime from, DateTime to);
+        IExpressionJoin<T, TQ> IsNull();
+        IExpressionJoin<T, TQ> IsNotNull();
+    }
+}
+

@@ -1,0 +1,18 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
+{
+    public interface INumberFilter<out T, out TQ> where T : IFilterContext
+    {
+        IExpressionJoin<T, TQ> EqualsTo(double number);
+        IExpressionJoin<T, TQ> NotEquals(double number);
+        IExpressionJoin<T, TQ> LargerThan(double number);
+        IExpressionJoin<T, TQ> LessThan(double number);
+        IExpressionJoin<T, TQ> LargerThanOrEqualTo(double number);
+        IExpressionJoin<T, TQ> LessThanOrEqualTo(double number);
+        IExpressionJoin<T, TQ> Between(double from, double to);
+        IExpressionJoin<T, TQ> IsNull();
+        IExpressionJoin<T, TQ> IsNotNull();
+    }
+}
+

@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure
+namespace Genie.Templates.Infrastructure.Filters.Concrete
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\BoolFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class DapperContext : DapperContextBase
+    public partial class BoolFilter : BoolFilterBase
     {
 #line hidden
         /// <summary>
@@ -26,69 +26,63 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Configuration;\r\nusing System.Data;\r\nusing System.Data.SqlClient;\r\nus" +
-                    "ing ");
+            this.Write("using ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\BoolFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\BoolFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(@".Infrastructure
+            this.Write(@".Infrastructure.Filters.Concrete
 {
-	/// <summary>
-    /// An Implementation that uses SqlConnection
-    /// </summary>
-	public class DapperContext : IDapperContext
+    public class BoolFilter<T, TQ> : IBoolFilter<T, TQ> where T : IFilterContext
     {
-        private readonly string _connectionString;
-        private IDbConnection _connection;
+        private readonly string _propertyName;
+        private readonly T _parent;
+        private readonly TQ _q;
 
-		/// <summary>
-        /// Initialize  a new dapper context 
-        /// </summary>
-        public DapperContext()
+        internal BoolFilter(string propertyName, T parent, TQ q)
         {
-            var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
-            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString; ;
+            _parent = parent;
+            _propertyName = propertyName;
+            _q = q;
         }
 
-		/// <summary>
-        /// Get the connection to the database
-        /// </summary>
-        public IDbConnection Connection
+        public IExpressionJoin<T, TQ> Is(bool value)
         {
-			if(_connection = null) 
-				_connection = new SqlConnection(_connectionString);
-			if(_connection.State != ConnectionState.Open)
-				_connection.Open();
-
-			return _connection;
+            _parent.Add(QueryMaker.EqualsTo(_propertyName, value ? ""1"": ""0"", false));
+            return new ExpressionJoin<T, TQ>(_parent, _q);
         }
 
-        public IUnitOfWork Unit() 
+        public IExpressionJoin<T, TQ> IsFalse()
         {
-            return new UnitOfWork(this);
+            _parent.Add(QueryMaker.IsFalse(_propertyName));
+            return new ExpressionJoin<T, TQ>(_parent, _q);
         }
 
-		/// <summary>
-        /// Dispose the context
-        /// </summary>
-        public void Dispose()
+        public IExpressionJoin<T, TQ> IsTrue()
         {
-		    if (_connection == null)
-                return;
+            _parent.Add(QueryMaker.IsTrue(_propertyName));
+            return new ExpressionJoin<T, TQ>(_parent, _q);
+        }
 
-		    if (_connection.State != ConnectionState.Closed)
-		        _connection.Close();
-		    _connection.Dispose();
+        public IExpressionJoin<T, TQ> IsNull()
+        {
+            _parent.Add(QueryMaker.IsNull(_propertyName));
+            return new ExpressionJoin<T, TQ>(_parent, _q);
+        }
+
+        public IExpressionJoin<T, TQ> IsNotNull()
+        {
+            _parent.Add(QueryMaker.IsNotNull(_propertyName));
+            return new ExpressionJoin<T, TQ>(_parent, _q);
         }
     }
 }
@@ -104,7 +98,7 @@ namespace Genie.Templates.Infrastructure
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class DapperContextBase
+    public class BoolFilterBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

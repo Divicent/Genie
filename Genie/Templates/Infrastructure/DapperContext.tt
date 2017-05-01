@@ -29,7 +29,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         /// </summary>
         public IDbConnection Connection
         {
-             get { return _connection ?? (_connection = new SqlConnection(_connectionString)); }
+			if(_connection = null) 
+				_connection = new SqlConnection(_connectionString);
+			if(_connection.State != ConnectionState.Open)
+				_connection.Open();
+
+			return _connection;
         }
 
         public IUnitOfWork Unit() 

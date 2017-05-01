@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure
+namespace Genie.Templates.Infrastructure.Filters.Concrete
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class DapperContext : DapperContextBase
+    public partial class QueryMaker : QueryMakerBase
     {
 #line hidden
         /// <summary>
@@ -26,73 +26,56 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Configuration;\r\nusing System.Data;\r\nusing System.Data.SqlClient;\r\nus" +
-                    "ing ");
+            this.Write("namespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
-            
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(@".Infrastructure
-{
-	/// <summary>
-    /// An Implementation that uses SqlConnection
-    /// </summary>
-	public class DapperContext : IDapperContext
-    {
-        private readonly string _connectionString;
-        private IDbConnection _connection;
-
-		/// <summary>
-        /// Initialize  a new dapper context 
-        /// </summary>
-        public DapperContext()
-        {
-            var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
-            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString; ;
-        }
-
-		/// <summary>
-        /// Get the connection to the database
-        /// </summary>
-        public IDbConnection Connection
-        {
-			if(_connection = null) 
-				_connection = new SqlConnection(_connectionString);
-			if(_connection.State != ConnectionState.Open)
-				_connection.Open();
-
-			return _connection;
-        }
-
-        public IUnitOfWork Unit() 
-        {
-            return new UnitOfWork(this);
-        }
-
-		/// <summary>
-        /// Dispose the context
-        /// </summary>
-        public void Dispose()
-        {
-		    if (_connection == null)
-                return;
-
-		    if (_connection.State != ConnectionState.Closed)
-		        _connection.Close();
-		    _connection.Dispose();
-        }
-    }
-}
-");
+            this.Write(".Infrastructure.Filters.Concrete\r\n{\r\n    internal static class QueryMaker\r\n    {\r" +
+                    "\n        internal static string EqualsTo(string propertyName, object value, bool" +
+                    " quoted)\r\n        {\r\n            return string.Format(\"[{0}] = {2}{1}{2}\", prope" +
+                    "rtyName, value, quoted ? \"\'\":\"\");\r\n        }\r\n\r\n        internal static string N" +
+                    "otEquals(string propertyName, object value, bool quoted)\r\n        {\r\n           " +
+                    " return string.Format(\"[{0}] != {2}{1}{2}\", propertyName, value, quoted ? \"\'\" : " +
+                    "\"\");\r\n        }\r\n\r\n        internal static string Contains(string propertyName, " +
+                    "object value)\r\n        {\r\n            return string.Format(\"[{0}] LIKE \'{1}\'\", p" +
+                    "ropertyName, value);\r\n        }\r\n\r\n        internal static string StartsWith(str" +
+                    "ing propertyName, object value)\r\n        {\r\n            return string.Format(\"[{" +
+                    "0}] LIKE \'{1}%\'\", propertyName, value);\r\n        }\r\n\r\n        internal static st" +
+                    "ring NotStartsWith(string propertyName, object value)\r\n        {\r\n            re" +
+                    "turn string.Format(\"[{0}] NOT LIKE \'{1}%\'\", propertyName, value);\r\n        }\r\n\r\n" +
+                    "        internal static string EndsWith(string propertyName, object value)\r\n    " +
+                    "    {\r\n            return string.Format(\"[{0}] LIKE \'%{1}\'\", propertyName, value" +
+                    ");\r\n        }\r\n\r\n        internal static string NotEndsWith(string propertyName," +
+                    " object value)\r\n        {\r\n            return string.Format(\"[{0}] NOT LIKE \'%{1" +
+                    "}\'\", propertyName, value);\r\n        }\r\n\r\n        internal static string IsEmpty(" +
+                    "string propertyName)\r\n        {\r\n            return string.Format(\"[{0}] = \'\'\", " +
+                    "propertyName);\r\n        }\r\n\r\n        internal static string IsNotEmpty(string pr" +
+                    "opertyName)\r\n        {\r\n            return string.Format(\"[{0}] != \'\'\", property" +
+                    "Name);\r\n        }\r\n\r\n        internal static string IsNull(string propertyName)\r" +
+                    "\n        {\r\n            return string.Format(\"[{0}] IS NULL\", propertyName);\r\n  " +
+                    "      }\r\n\r\n        internal static string IsNotNull(string propertyName)\r\n      " +
+                    "  {\r\n            return string.Format(\"[{0}] IS NOT NULL\", propertyName);\r\n     " +
+                    "   }\r\n\r\n        internal static string GreaterThan(string propertyName, object v" +
+                    "alue, bool quoted)\r\n        {\r\n            return string.Format(\"[{0}] > {2}{1}{" +
+                    "2}\", propertyName, value, quoted ? \"\'\" : \"\");\r\n        }\r\n\r\n        internal sta" +
+                    "tic string LessThan(string propertyName, object value, bool quoted)\r\n        {\r\n" +
+                    "            return string.Format(\"[{0}] < {2}{1}{2}\", propertyName, value, quote" +
+                    "d ? \"\'\" : \"\");\r\n        }\r\n\r\n        internal static string GreaterThanOrEquals(" +
+                    "string propertyName, object value, bool quoted)\r\n        {\r\n            return s" +
+                    "tring.Format(\"[{0}] >= {2}{1}{2}\", propertyName, value, quoted ? \"\'\" : \"\");\r\n   " +
+                    "     }\r\n\r\n        internal static string LessThanOrEquals(string propertyName, o" +
+                    "bject value, bool quoted)\r\n        {\r\n            return string.Format(\"[{0}] <=" +
+                    " {2}{1}{2}\", propertyName, value, quoted ? \"\'\" : \"\");\r\n        }\r\n\r\n        inte" +
+                    "rnal static string Between(string propertyName, object from, object to, bool quo" +
+                    "ted)\r\n        {\r\n            return string.Format(\"([{0}] >= {2}{1}{2} AND [{0}]" +
+                    " <= {2}{3}{2})\", propertyName, from, quoted ? \"\'\" : \"\", to);\r\n        }\r\n\r\n     " +
+                    "   internal static string IsTrue(string propertyName)\r\n        {\r\n            re" +
+                    "turn string.Format(\"[{0}] = 1\", propertyName);\r\n        }\r\n\r\n        internal st" +
+                    "atic string IsFalse(string propertyName)\r\n        {\r\n            return string.F" +
+                    "ormat(\"[{0}] = 0\", propertyName);\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -104,7 +87,7 @@ namespace Genie.Templates.Infrastructure
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class DapperContextBase
+    public class QueryMakerBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

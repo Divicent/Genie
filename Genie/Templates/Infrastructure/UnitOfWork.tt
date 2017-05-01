@@ -107,12 +107,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             {
                 throw new Exception("Unable to commit changes", e);
             }
-            finally
-            {
-                _operations.Clear();
-                foreach (var entity in updated)
-                    entity.UpdatedProperties.Clear();
-            }
         }
 
         public void Dispose()

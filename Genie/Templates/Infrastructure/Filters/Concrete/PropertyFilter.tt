@@ -1,0 +1,13 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
+{
+    internal class PropertyFilter : IPropertyFilter
+    {
+        public string PropertyName { get; set; }
+        public FilterType Type { get; set; }
+        public object Value { get; set; }
+    }
+}

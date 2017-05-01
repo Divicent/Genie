@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure
+namespace Genie.Templates.Infrastructure.Filters.Concrete
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\NumberFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class DapperContext : DapperContextBase
+    public partial class NumberFilter : NumberFilterBase
     {
 #line hidden
         /// <summary>
@@ -26,73 +26,51 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Configuration;\r\nusing System.Data;\r\nusing System.Data.SqlClient;\r\nus" +
-                    "ing ");
+            this.Write("using ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\NumberFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\NumberFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(@".Infrastructure
-{
-	/// <summary>
-    /// An Implementation that uses SqlConnection
-    /// </summary>
-	public class DapperContext : IDapperContext
-    {
-        private readonly string _connectionString;
-        private IDbConnection _connection;
-
-		/// <summary>
-        /// Initialize  a new dapper context 
-        /// </summary>
-        public DapperContext()
-        {
-            var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
-            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString; ;
-        }
-
-		/// <summary>
-        /// Get the connection to the database
-        /// </summary>
-        public IDbConnection Connection
-        {
-			if(_connection = null) 
-				_connection = new SqlConnection(_connectionString);
-			if(_connection.State != ConnectionState.Open)
-				_connection.Open();
-
-			return _connection;
-        }
-
-        public IUnitOfWork Unit() 
-        {
-            return new UnitOfWork(this);
-        }
-
-		/// <summary>
-        /// Dispose the context
-        /// </summary>
-        public void Dispose()
-        {
-		    if (_connection == null)
-                return;
-
-		    if (_connection.State != ConnectionState.Closed)
-		        _connection.Close();
-		    _connection.Dispose();
-        }
-    }
-}
-");
+            this.Write(".Infrastructure.Filters.Concrete\r\n{\r\n    public class NumberFilter<T, TQ> : INumb" +
+                    "erFilter<T, TQ> where T : IFilterContext\r\n    {\r\n        private readonly string" +
+                    " _propertyName;\r\n        private readonly T _parent;\r\n        private readonly T" +
+                    "Q _q;\r\n\r\n        internal NumberFilter(string propertyName, T parent, TQ q)\r\n   " +
+                    "     {\r\n            _parent = parent;\r\n            _propertyName = propertyName;" +
+                    "\r\n            _q = q;\r\n        }\r\n\r\n        public IExpressionJoin<T, TQ> Equals" +
+                    "To(double number)\r\n        {\r\n            _parent.Add(QueryMaker.EqualsTo(_prope" +
+                    "rtyName, number, false));\r\n            return new ExpressionJoin<T, TQ>(_parent," +
+                    " _q);\r\n        }\r\n\r\n        public IExpressionJoin<T, TQ> NotEquals(double numbe" +
+                    "r)\r\n        {\r\n            _parent.Add(QueryMaker.NotEquals(_propertyName, numbe" +
+                    "r, false));\r\n            return new ExpressionJoin<T, TQ>(_parent, _q);\r\n       " +
+                    " }\r\n\r\n        public IExpressionJoin<T, TQ> LargerThan(double number)\r\n        {" +
+                    "\r\n            _parent.Add(QueryMaker.GreaterThan(_propertyName,number,false));\r\n" +
+                    "            return new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n       " +
+                    " public IExpressionJoin<T, TQ> LessThan(double number)\r\n        {\r\n            _" +
+                    "parent.Add(QueryMaker.LessThan(_propertyName, number, false));\r\n            retu" +
+                    "rn new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public IExpress" +
+                    "ionJoin<T, TQ> LargerThanOrEqualTo(double number)\r\n        {\r\n            _paren" +
+                    "t.Add(QueryMaker.GreaterThanOrEquals(_propertyName, number, false));\r\n          " +
+                    "  return new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public IE" +
+                    "xpressionJoin<T, TQ> LessThanOrEqualTo(double number)\r\n        {\r\n            _p" +
+                    "arent.Add(QueryMaker.LessThanOrEquals(_propertyName, number, false));\r\n         " +
+                    "   return new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public I" +
+                    "ExpressionJoin<T, TQ> Between(double from, double to)\r\n        {\r\n            _p" +
+                    "arent.Add(QueryMaker.Between(_propertyName, from, to, false));\r\n            retu" +
+                    "rn new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public IExpress" +
+                    "ionJoin<T, TQ> IsNull()\r\n        {\r\n            _parent.Add(QueryMaker.IsNull(_p" +
+                    "ropertyName));\r\n            return new ExpressionJoin<T, TQ>(_parent, _q);\r\n    " +
+                    "    }\r\n\r\n        public IExpressionJoin<T, TQ> IsNotNull()\r\n        {\r\n         " +
+                    "   _parent.Add(QueryMaker.IsNotNull(_propertyName));\r\n            return new Exp" +
+                    "ressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -104,7 +82,7 @@ namespace Genie.Templates.Infrastructure
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class DapperContextBase
+    public class NumberFilterBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

@@ -1,0 +1,11 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
+{
+    public interface IOrderJoin<out T, out TQ> where T : IOrderContext
+    {
+        T And { get; }
+        TQ Order();
+    }
+}
+

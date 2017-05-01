@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure
+namespace Genie.Templates.Infrastructure.Filters.Concrete
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\OrderJoin.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class DapperContext : DapperContextBase
+    public partial class OrderJoin : OrderJoinBase
     {
 #line hidden
         /// <summary>
@@ -26,69 +26,38 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Configuration;\r\nusing System.Data;\r\nusing System.Data.SqlClient;\r\nus" +
-                    "ing ");
+            this.Write("using ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\OrderJoin.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\OrderJoin.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(@".Infrastructure
+            this.Write(@".Infrastructure.Filters.Concrete
 {
-	/// <summary>
-    /// An Implementation that uses SqlConnection
-    /// </summary>
-	public class DapperContext : IDapperContext
+    public class OrderJoin<T, TQ> : IOrderJoin<T, TQ> where T : IOrderContext
     {
-        private readonly string _connectionString;
-        private IDbConnection _connection;
+        private readonly T _t;
+        private readonly TQ _q;
 
-		/// <summary>
-        /// Initialize  a new dapper context 
-        /// </summary>
-        public DapperContext()
+        internal OrderJoin(T t, TQ q)
         {
-            var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
-            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString; ;
+            _t = t;
+            _q = q;
         }
 
-		/// <summary>
-        /// Get the connection to the database
-        /// </summary>
-        public IDbConnection Connection
+        public T And { get { _t.And(); return _t; } }
+
+        public TQ Order()
         {
-			if(_connection = null) 
-				_connection = new SqlConnection(_connectionString);
-			if(_connection.State != ConnectionState.Open)
-				_connection.Open();
-
-			return _connection;
-        }
-
-        public IUnitOfWork Unit() 
-        {
-            return new UnitOfWork(this);
-        }
-
-		/// <summary>
-        /// Dispose the context
-        /// </summary>
-        public void Dispose()
-        {
-		    if (_connection == null)
-                return;
-
-		    if (_connection.State != ConnectionState.Closed)
-		        _connection.Close();
-		    _connection.Dispose();
+            return _q;
         }
     }
 }
@@ -104,7 +73,7 @@ namespace Genie.Templates.Infrastructure
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class DapperContextBase
+    public class OrderJoinBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

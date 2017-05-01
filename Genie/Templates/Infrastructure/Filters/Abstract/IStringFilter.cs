@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure
+namespace Genie.Templates.Infrastructure.Filters.Abstract
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IStringFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class DapperContext : DapperContextBase
+    public partial class IStringFilter : IStringFilterBase
     {
 #line hidden
         /// <summary>
@@ -26,72 +26,31 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Configuration;\r\nusing System.Data;\r\nusing System.Data.SqlClient;\r\nus" +
-                    "ing ");
+            this.Write("namespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
+            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IStringFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
-            
-            #line 8 "F:\Projects\Genie\Genie\Templates\Infrastructure\DapperContext.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(@".Infrastructure
+            this.Write(@".Infrastructure.Filters.Abstract
 {
-	/// <summary>
-    /// An Implementation that uses SqlConnection
-    /// </summary>
-	public class DapperContext : IDapperContext
+    public interface IStringFilter<out T, out TQ> where T : IFilterContext
     {
-        private readonly string _connectionString;
-        private IDbConnection _connection;
-
-		/// <summary>
-        /// Initialize  a new dapper context 
-        /// </summary>
-        public DapperContext()
-        {
-            var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
-            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString; ;
-        }
-
-		/// <summary>
-        /// Get the connection to the database
-        /// </summary>
-        public IDbConnection Connection
-        {
-			if(_connection = null) 
-				_connection = new SqlConnection(_connectionString);
-			if(_connection.State != ConnectionState.Open)
-				_connection.Open();
-
-			return _connection;
-        }
-
-        public IUnitOfWork Unit() 
-        {
-            return new UnitOfWork(this);
-        }
-
-		/// <summary>
-        /// Dispose the context
-        /// </summary>
-        public void Dispose()
-        {
-		    if (_connection == null)
-                return;
-
-		    if (_connection.State != ConnectionState.Closed)
-		        _connection.Close();
-		    _connection.Dispose();
-        }
+        IExpressionJoin<T, TQ> EqualsTo(string str);
+        IExpressionJoin<T, TQ> NotEquals(string str);
+        IExpressionJoin<T, TQ> Contains(string str);
+        IExpressionJoin<T, TQ> StartsWith(string str);
+        IExpressionJoin<T, TQ> EndsWith(string str);
+        IExpressionJoin<T, TQ> NotStartsWith(string str);
+        IExpressionJoin<T, TQ> NotEndsWith(string str);
+        IExpressionJoin<T, TQ> IsEmpty();
+        IExpressionJoin<T, TQ> IsNotEmpty();
+        IExpressionJoin<T, TQ> IsNull();
+        IExpressionJoin<T, TQ> IsNotNull();
     }
 }
+
 ");
             return this.GenerationEnvironment.ToString();
         }
@@ -104,7 +63,7 @@ namespace Genie.Templates.Infrastructure
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class DapperContextBase
+    public class IStringFilterBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
