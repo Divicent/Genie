@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure.Models
+namespace Genie.Templates.Infrastructure.Models.Concrete
 {
     using Genie.Base;
     using System;
@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Models
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class BaseModel : BaseModelBase
     {
@@ -28,14 +28,14 @@ namespace Genie.Templates.Infrastructure.Models
         {
             this.Write("using System.Collections.Generic;\r\nusing ");
             
-            #line 4 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
+            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\n\r\nnamespace ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\BaseModel.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

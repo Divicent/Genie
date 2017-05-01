@@ -12,6 +12,10 @@ using Genie.Templates.Infrastructure.Interfaces;
 using Genie.Templates.Infrastructure.Models;
 using Genie.Templates.Infrastructure.Repositories;
 using Genie.Templates.Infrastructure.Filters.Concrete;
+using Genie.Templates.Infrastructure.Models.Abstract;
+using Genie.Templates.Infrastructure.Models.Abstract.Context;
+using Genie.Templates.Infrastructure.Models.Concrete;
+using Genie.Templates.Infrastructure.Models.Concrete.Context;
 
 namespace Genie.Base
 {
@@ -85,14 +89,35 @@ namespace Genie.Base
                     new ProcedureContainer(@"Infrastructure\ProcedureContainer", schema),
                     new Operation(@"Infrastructure\Operation"),
 
-                    new BaseModel(@"Infrastructure\Models\BaseModel"),
+                    new BaseModel(@"Infrastructure\Models\Concrete\BaseModel"),
                 };
 
-                files.AddRange(schema.Relations
-                    .Select(relation => new Relation(relation, @"Infrastructure\Models\" + relation.Name)));
 
-                files.AddRange(schema.Views
-                    .Select(view => new View(view, @"Infrastructure\Models\" + view.Name)));
+                foreach (var relation in schema.Relations)
+                {
+                    files.Add(new Relation(relation, @"Infrastructure\Models\Concrete\" + relation.Name));
+
+                    files.Add(new IModelQueryContext(relation.Name, @"Infrastructure\Models\Abstract\Context\I" + relation.Name + "QueryContext"));
+                    files.Add(new IModelFilterContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Abstract\Context\I" + relation.Name + "FilterContext"));
+                    files.Add(new IModelOrderContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Abstract\Context\I" + relation.Name + "OrderContext"));
+
+                    files.Add(new ModelQueryContext(relation.Name, @"Infrastructure\Models\Concrete\Context\" + relation.Name + "QueryContext"));
+                    files.Add(new ModelFilterContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Concrete\Context\" + relation.Name + "FilterContext"));
+                    files.Add(new ModelOrderContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Concrete\Context\" + relation.Name + "OrderContext"));
+                }
+
+                foreach (var view in schema.Views)
+                {
+                    files.Add(new View(view, @"Infrastructure\Models\Concrete\" + view.Name));
+
+                    files.Add(new IModelQueryContext(view.Name, @"Infrastructure\Models\Abstract\Context\I" + view.Name + "QueryContext"));
+                    files.Add(new IModelFilterContext(view.Name, view.Attributes, @"Infrastructure\Models\Abstract\Context\I" + view.Name + "FilterContext"));
+                    files.Add(new IModelOrderContext(view.Name, view.Attributes, @"Infrastructure\Models\Abstract\Context\I" + view.Name + "OrderContext"));
+
+                    files.Add(new ModelQueryContext(view.Name, @"Infrastructure\Models\Concrete\Context\" + view.Name + "QueryContext"));
+                    files.Add(new ModelFilterContext(view.Name, view.Attributes, @"Infrastructure\Models\Concrete\Context\" + view.Name + "FilterContext"));
+                    files.Add(new ModelOrderContext(view.Name, view.Attributes, @"Infrastructure\Models\Concrete\Context\" + view.Name + "OrderContext"));
+                }
 
                 output.WriteInformation(string.Format("{0} file found.", files.Count));
             }

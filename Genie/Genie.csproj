@@ -319,17 +319,47 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IUnitOfWork.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Models\BaseModel.cs">
+    <Compile Include="Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IModelFilterContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IModelOrderContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Models\Abstract\Context\IModelQueryContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IModelQueryContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Models\Concrete\BaseModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BaseModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Models\Relation1.cs">
+    <Compile Include="Templates\Infrastructure\Models\Concrete\Context\ModelFilterContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelFilterContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Models\Concrete\Context\ModelOrderContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelOrderContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelQueryContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Models\Concrete\Relation1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Relation.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Models\View.cs">
+    <Compile Include="Templates\Infrastructure\Models\Concrete\View.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>View.tt</DependentUpon>
@@ -569,15 +599,39 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>IUnitOfWork.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\Infrastructure\Models\BaseModel.tt">
+    <Content Include="Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IModelFilterContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IModelOrderContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Models\Abstract\Context\IModelQueryContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IModelQueryContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Models\Concrete\BaseModel.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>BaseModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\Infrastructure\Models\Relation.tt">
+    <Content Include="Templates\Infrastructure\Models\Concrete\Context\ModelFilterContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ModelFilterContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Models\Concrete\Context\ModelOrderContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ModelOrderContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Models\Concrete\Context\ModelQueryContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ModelQueryContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Models\Concrete\Relation.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>Relation1.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\Infrastructure\Models\View.tt">
+    <Content Include="Templates\Infrastructure\Models\Concrete\View.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>View.cs</LastGenOutput>
     </Content>

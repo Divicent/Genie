@@ -1,0 +1,89 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Extensions"#>
+<#@ import namespace="System.Linq"#>
+using System.Data;
+using System.Collections.Generic;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Context;
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Context
+{
+    internal class <#=_name#>QueryContext: I<#=_name#>QueryContext
+	{
+		private I<#=_name#>FilterContext _where; 
+	    private I<#=_name#>OrderContext _order;
+		private readonly I<#=_name#>Repository _repo;
+
+        private int? _page;
+        private int? _pageSize;
+        private int? _limit;
+        private int? _skip;
+        private int? _take;
+
+        public I<#=_name#>QueryContext Page(int pageSize, int page)
+        {
+            _page = page;
+            _pageSize = pageSize;
+            return this;
+        }
+
+        public I<#=_name#>QueryContext Top(int limit)
+        {
+            _limit = limit;
+            return this;
+        }
+
+        public I<#=_name#>QueryContext Skip(int skip)
+        {
+            _skip = skip;
+            return this;
+        }
+
+        public I<#=_name#>QueryContext Take(int take)
+        {
+            _take = take;
+            return this;
+        }
+		
+		internal <#=_name#>QueryContext(I<#=_name#>Repository repo) { _repo = repo; }
+		
+		public I<#=_name#>FilterContext Where { get { return _where ?? (_where = new <#=_name#>FilterContext(this)); }}
+        
+		public I<#=_name#>OrderContext OrderBy { get { return _order ?? (_order = new <#=_name#>OrderContext(this)); } }
+
+        public IEnumerable<<#=_name#>> Query(IDbTransaction transaction = null)
+	    {
+	        return _repo.Get(GetQuery(transaction));
+	    }
+
+	    public int Count(IDbTransaction transaction = null)
+	    {
+            return _repo.Count(GetQuery(transaction));
+	    }
+
+		public I<#=_name#>QueryContext Filter(IEnumerable<IPropertyFilter> filters) 
+		{
+			return this;	
+		}
+
+	    private IRepoQuery GetQuery(IDbTransaction transaction)
+	    {
+	        return new RepoQuery
+	        {
+	            Target = "[dbo].[<#=_name#>]",
+	            Where = _where?.GetFilterExpressions(),
+	            Order = _order?.GetOrderExpressions(),
+	            PageSize = _pageSize,
+	            Page = _page,
+	            Limit = _limit,
+	            Skip = _skip,
+	            Take = _take,
+	            Transaction = transaction
+	        };
+	    }
+	}
+}

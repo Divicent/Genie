@@ -1,0 +1,15 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Extensions"#>
+<#@ import namespace="System.Linq"#>
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Context
+{
+    public interface I<#=_name#>OrderContext: IOrderContext
+    {
+<#foreach(var atd in _attributes){#>
+		IOrderElement<I<#=_name#>OrderContext,I<#=_name#>QueryContext> <#=atd.Name#> { get; }
+<#}#>
+    }
+}

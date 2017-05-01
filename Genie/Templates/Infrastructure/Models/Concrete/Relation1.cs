@@ -7,18 +7,20 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure.Repositories
+namespace Genie.Templates.Infrastructure.Models.Concrete
 {
     using Genie.Base;
+    using Genie.Extensions;
+    using System.Linq;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class RepositoryImplementation : RepositoryImplementationBase
+    public partial class Relation : RelationBase
     {
 #line hidden
         /// <summary>
@@ -26,233 +28,338 @@ namespace Genie.Templates.Infrastructure.Repositories
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using ");
+            this.Write("using System;\r\nusing System.Linq;\r\nusing System.Data;\r\nusing System.Collections.G" +
+                    "eneric;\r\nusing ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\nusing ");
+            this.Write(".Dapper;\r\n\r\n");
             
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+var entity = _relation;
+var name = _relation.Name;
+
+            
+            #line default
+            #line hidden
+            this.Write("namespace ");
+            
+            #line 14 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models.Abstract.Context;\r\nusing ");
+            this.Write(".Infrastructure.Models.Concrete\r\n{\r\n    [Table(\"[dbo].[");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Infrastructure.Models.Concrete;\r\nusing ");
-            
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            #line 16 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models.Concrete.Context;\r\nusing ");
+            this.Write("]\")]\r\n    public class ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(".Infrastructure.Repositories.Abstract;\r\n\r\nnamespace ");
-            
-            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Repositories\r\n{\r\n\r\n    namespace Abstract\r\n    {\r\n");
+            this.Write(" : BaseModel\r\n    {\r\n");
             
-            #line 14 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-foreach(var relation in _relations){
-            
-            #line default
-            #line hidden
-            this.Write("\t    public interface I");
-            
-            #line 15 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
-            this.Write("Repository : IRepository<");
+            this.Write("\t\tprivate ");
             
-            #line 15 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write(">\r\n\t    {\r\n\t\t    I");
-            
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
+            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
             
             #line default
             #line hidden
-            this.Write("QueryContext Get();\r\n\t    }\r\n");
+            this.Write(" ");
             
-            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n");
+            
+            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-foreach(var view in _views){
+            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+foreach(var atd in
+entity.ForeignKeyAttributes){
             
             #line default
             #line hidden
-            this.Write("\t    public interface I");
+            this.Write("\t\tprivate ");
             
-            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Repository : IReadOnlyRepository<");
-            
-            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            #line 25 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingRelationName));
             
             #line default
             #line hidden
-            this.Write(">\r\n\t    {\r\n\t\t    I");
+            this.Write(" ");
             
-            #line 24 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext Get();\r\n\t    }\r\n");
-            
-            #line 26 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-}
+            #line 25 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
             
             #line default
             #line hidden
-            this.Write("\r\n    }\r\n\r\n    namespace Concrete\r\n    {\r\n");
+            this.Write("Obj;\r\n");
             
-            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-foreach(var relation in _relations){
-            
-            #line default
-            #line hidden
-            this.Write("\t    internal class ");
-            
-            #line 33 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Repository : Repository<");
-            
-            #line 33 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("> , I");
-            
-            #line 33 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Repository\r\n\t    {\r\n            internal ");
-            
-            #line 35 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOf" +
-                    "Work)\r\n            {\r\n            }\r\n\r\n\t\t    public I");
-            
-            #line 39 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext Get() { return new ");
-            
-            #line 39 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext(this); }\r\n\t    }\r\n");
-            
-            #line 41 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 26 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 43 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-foreach(var view in _views){
+            #line 28 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
-            this.Write("\t    internal class ");
             
-            #line 44 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Repository : ReadOnlyRepository<");
-            
-            #line 44 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            #line 29 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+	if(atd.IsKey) {
             
             #line default
             #line hidden
-            this.Write(">, I");
+            this.Write("\t\t[Key]\r\n");
             
-            #line 44 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
-            
-            #line default
-            #line hidden
-            this.Write("Repository\r\n\t    {\r\n            internal ");
-            
-            #line 46 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            #line 31 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+	}
             
             #line default
             #line hidden
-            this.Write("Repository(IDapperContext context) : base(context)\r\n            {\r\n            }\r" +
-                    "\n\r\n\t\t    public I");
+            this.Write("\t\tpublic ");
             
-            #line 50 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
-            
-            #line default
-            #line hidden
-            this.Write("QueryContext Get() { return new ");
-            
-            #line 50 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
             
             #line default
             #line hidden
-            this.Write("QueryContext(this); }\r\n\t    }\r\n");
+            this.Write(" ");
             
-            #line 52 "F:\Projects\Genie\Genie\Templates\Infrastructure\Repositories\RepositoryImplementation.tt"
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" { get { return ");
+            
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write("; } set { if(");
+            
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(" == value ) { return; }  ");
+            
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(" = value; __Updated(\"");
+            
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\"); ");
+            
+            #line 32 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.RefPropName != null ? atd.RefPropName + " = null;" : ""));
+            
+            #line default
+            #line hidden
+            this.Write(" } }\r\n");
+            
+            #line 33 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
 }
             
             #line default
             #line hidden
-            this.Write("    }\r\n}");
+            this.Write("\r\n");
+            
+            #line 35 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+foreach(var atd in entity.ForeignKeyAttributes){
+            
+            #line default
+            #line hidden
+            this.Write("\t\tpublic ");
+            
+            #line 36 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingRelationName));
+            
+            #line default
+            #line hidden
+            this.Write(" Get");
+            
+            #line 36 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(IDbTransaction transaction =null)\r\n        {\r\n            return DatabaseUnitOfW" +
+                    "ork != null ? ");
+            
+            #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write("Obj ?? (");
+            
+            #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write("Obj = DatabaseUnitOfWork.");
+            
+            #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingRelationName));
+            
+            #line default
+            #line hidden
+            this.Write("Repository.Get().Where.");
+            
+            #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingTableColumnName));
+            
+            #line default
+            #line hidden
+            this.Write(".EqualsTo(");
+            
+            #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.FieldName));
+            
+            #line default
+            #line hidden
+            
+            #line 38 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ?  ".GetValueOrDefault()" : ""));
+            
+            #line default
+            #line hidden
+            this.Write(").Filter().Top(1).Query(transaction).FirstOrDefault()) : null;\r\n        }\r\n");
+            
+            #line 40 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 42 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+foreach(var list in entity.ReferenceLists){
+            
+            #line default
+            #line hidden
+            this.Write("\t\tpublic IEnumerable<");
+            
+            #line 43 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferncedRelationName));
+            
+            #line default
+            #line hidden
+            this.Write("> ");
+            
+            #line 43 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferncedRelationName.ToPlural()));
+            
+            #line default
+            #line hidden
+            this.Write("WhereThisIs");
+            
+            #line 43 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferencedPropertyName));
+            
+            #line default
+            #line hidden
+            this.Write("(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.");
+            
+            #line 43 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferncedRelationName));
+            
+            #line default
+            #line hidden
+            this.Write("Repository.Get().Where.");
+            
+            #line 43 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferencedPropertyName));
+            
+            #line default
+            #line hidden
+            this.Write(".EqualsTo(");
+            
+            #line 43 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(list.ReferencedPropertyOnThisRelation));
+            
+            #line default
+            #line hidden
+            this.Write(").Filter().Query(transaction); }\r\n");
+            
+            #line 44 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("        internal override void SetId(object id)\r\n        {\r\n");
+            
+            #line 47 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+var keys = entity.Attributes.Where(e => e.IsKey);
+            
+            #line default
+            #line hidden
+            
+            #line 48 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+foreach(var k in keys){
+            
+            #line default
+            #line hidden
+            this.Write("            ");
+            
+            #line 49 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(k.FieldName));
+            
+            #line default
+            #line hidden
+            this.Write(" = (");
+            
+            #line 49 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(k.DataType));
+            
+            #line default
+            #line hidden
+            this.Write(")id;\r\n");
+            
+            #line 50 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\Relation.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -264,7 +371,7 @@ foreach(var view in _views){
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class RepositoryImplementationBase
+    public class RelationBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

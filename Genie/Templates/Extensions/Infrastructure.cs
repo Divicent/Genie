@@ -322,63 +322,218 @@ namespace Genie.Templates.Infrastructure
 
     namespace Models
     {
-        public partial class BaseModel : ITemplateFile
+        namespace Abstract
         {
-            private readonly string _path;
-            public BaseModel(string path)
+            namespace Context
             {
-                _path = path;
+                public partial class IModelQueryContext : ITemplateFile
+                {
+                    private readonly string _name;
+                    private readonly string _path;
+
+                    internal IModelQueryContext(string name, string path)
+                    {
+                        _name = name;
+                        _path = path;
+                    }
+
+                    public IContentFile Generate()
+                    {
+
+                        return new ContentFile
+                        {
+                            Content = TransformText(),
+                            Path = _path
+                        };
+                    }
+                }
+
+                public partial class IModelFilterContext : ITemplateFile
+                {
+                    private readonly string _name;
+                    private readonly string _path;
+                    private readonly List<ISimpleAttribute> _attributes;
+
+                    internal IModelFilterContext(string name, List<ISimpleAttribute> attributes, string path)
+                    {
+                        _name = name;
+                        _path = path;
+                        _attributes = attributes;
+                    }
+
+                    public IContentFile Generate()
+                    {
+
+                        return new ContentFile
+                        {
+                            Content = TransformText(),
+                            Path = _path
+                        };
+                    }
+                }
+
+                public partial class IModelOrderContext : ITemplateFile
+                {
+                    private readonly string _name;
+                    private readonly string _path;
+                    private readonly List<ISimpleAttribute> _attributes;
+
+                    internal IModelOrderContext(string name, List<ISimpleAttribute> attributes, string path)
+                    {
+                        _name = name;
+                        _path = path;
+                        _attributes = attributes;
+                    }
+
+                    public IContentFile Generate()
+                    {
+
+                        return new ContentFile
+                        {
+                            Content = TransformText(),
+                            Path = _path
+                        };
+                    }
+                }
             }
 
-            public IContentFile Generate()
-            {
-                return new ContentFile
-                {
-                    Content = TransformText(),
-                    Path = _path
-                };
-            }
         }
-        public partial class Relation : ITemplateFile
+
+        namespace Concrete
         {
-            private readonly IRelation _relation;
-            private readonly string _path;
-
-            internal Relation(IRelation relation, string path)
+            namespace Context
             {
-                _relation = relation;
-                _path = path;
-            }
-
-            public IContentFile Generate()
-            {
-
-                return new ContentFile
+                public partial class ModelQueryContext : ITemplateFile
                 {
-                    Content = TransformText(),
-                    Path = _path
-                };
-            }
-        }
+                    private readonly string _name;
+                    private readonly string _path;
 
-        public partial class View : ITemplateFile
-        {
-            private readonly IView _view;
-            private readonly string _path;
+                    internal ModelQueryContext(string name, string path)
+                    {
+                        _name = name;
+                        _path = path;
+                    }
 
-            internal View(IView view, string path)
-            {
-                _view = view;
-                _path = path;
-            }
+                    public IContentFile Generate()
+                    {
 
-            public IContentFile Generate()
-            {
-                return new ContentFile
+                        return new ContentFile
+                        {
+                            Content = TransformText(),
+                            Path = _path
+                        };
+                    }
+                }
+
+                public partial class ModelFilterContext : ITemplateFile
                 {
-                    Content = TransformText(),
-                    Path = _path
-                };
+                    private readonly string _name;
+                    private readonly string _path;
+                    private readonly List<ISimpleAttribute> _attributes;
+
+                    internal ModelFilterContext(string name, List<ISimpleAttribute> attributes, string path)
+                    {
+                        _name = name;
+                        _path = path;
+                        _attributes = attributes;
+                    }
+
+                    public IContentFile Generate()
+                    {
+
+                        return new ContentFile
+                        {
+                            Content = TransformText(),
+                            Path = _path
+                        };
+                    }
+                }
+
+                public partial class ModelOrderContext : ITemplateFile
+                {
+                    private readonly string _name;
+                    private readonly string _path;
+                    private readonly List<ISimpleAttribute> _attributes;
+
+                    internal ModelOrderContext(string name, List<ISimpleAttribute> attributes, string path)
+                    {
+                        _name = name;
+                        _path = path;
+                        _attributes = attributes;
+                    }
+
+                    public IContentFile Generate()
+                    {
+
+                        return new ContentFile
+                        {
+                            Content = TransformText(),
+                            Path = _path
+                        };
+                    }
+                }
+
+            }
+
+            public partial class BaseModel : ITemplateFile
+            {
+                private readonly string _path;
+                public BaseModel(string path)
+                {
+                    _path = path;
+                }
+
+                public IContentFile Generate()
+                {
+                    return new ContentFile
+                    {
+                        Content = TransformText(),
+                        Path = _path
+                    };
+                }
+            }
+
+            public partial class Relation : ITemplateFile
+            {
+                private readonly IRelation _relation;
+                private readonly string _path;
+
+                internal Relation(IRelation relation, string path)
+                {
+                    _relation = relation;
+                    _path = path;
+                }
+
+                public IContentFile Generate()
+                {
+
+                    return new ContentFile
+                    {
+                        Content = TransformText(),
+                        Path = _path
+                    };
+                }
+            }
+
+            public partial class View : ITemplateFile
+            {
+                private readonly IView _view;
+                private readonly string _path;
+
+                internal View(IView view, string path)
+                {
+                    _view = view;
+                    _path = path;
+                }
+
+                public IContentFile Generate()
+                {
+                    return new ContentFile
+                    {
+                        Content = TransformText(),
+                        Path = _path
+                    };
+                }
             }
         }
     }
