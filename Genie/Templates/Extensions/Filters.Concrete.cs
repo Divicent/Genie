@@ -219,5 +219,4 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
             };
         }
     }
-
 }

@@ -26,6 +26,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 		    I<#=name#>FilterContext Where { get; }
 		    I<#=name#>OrderContext OrderBy { get; }
 	        IEnumerable<Concrete.<#=name#>> Query(IDbTransaction transaction = null);
+			I<#=name#>OrderContext Filter(IEnumerable<IPropertyFilter> filters);
 	        int Count(IDbTransaction transaction = null);
 	    }
 
@@ -115,6 +116,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models
 	        {
                 return _repo.Count(GetQuery(transaction));
 	        }
+
+			
+			public I<#=name#>OrderContext Filter(IEnumerable<IPropertyFilter> filters) 
+			{
+				return this;	
+			}
 
 	        private IRepoQuery GetQuery(IDbTransaction transaction)
 	        {

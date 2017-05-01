@@ -155,6 +155,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WriteAttribute.tt</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Extensions\Dapper.cs" />
+    <Compile Include="Templates\Extensions\Filters.Abstract.cs" />
+    <Compile Include="Templates\Extensions\Infrastructure.cs" />
     <Compile Include="Templates\Extensions\TemplateExtensions.cs" />
     <Compile Include="Templates\Infrastructure\DapperContext.cs">
       <AutoGen>True</AutoGen>
@@ -166,10 +169,120 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ConditionExtension.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Filters\Filters.cs">
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IBoolFilter.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Filters.tt</DependentUpon>
+      <DependentUpon>IBoolFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IDateFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IDateFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IExpressionJoin.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IExpressionJoin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IFilterContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IFilterContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\INumberFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>INumberFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IOrderContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IOrderContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IOrderElement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IOrderElement.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IOrderJoin.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IOrderJoin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IPropertyFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IPropertyFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IRepoQuery.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IRepoQuery.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IStringFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IStringFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\BaseFilterContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseFilterContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\BaseOrderContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseOrderContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\BoolFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BoolFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\DateFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DateFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\ExpressionJoin.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExpressionJoin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\NumberFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NumberFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\OrderElement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrderElement.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\OrderJoin.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrderJoin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\PropertyFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PropertyFilter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\QueryMaker.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QueryMaker.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\RepoQuery.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepoQuery.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Filters\Concrete\StringFilter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringFilter.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\Infrastructure\Interfaces\IDapperContext.cs">
       <AutoGen>True</AutoGen>
@@ -256,46 +369,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UnitOfWork.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\SqlMaker\Interfaces\ISqlFirst.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ISqlFirst.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\SqlMaker\Interfaces\ISqlMaker.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ISqlMaker.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\SqlMaker\Interfaces\ISqlMkrBase.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ISqlMkrBase.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\SqlMaker\Interfaces\ISqlMakerDelete.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ISqlMakerDelete.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\SqlMaker\Interfaces\ISqlMakerInsert.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ISqlMakerInsert.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\SqlMaker\Interfaces\ISqlMakerSelect.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ISqlMakerSelect.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\SqlMaker\Interfaces\ISqlMakerUpdate.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ISqlMakerUpdate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\SqlMaker\QueryMaker.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>QueryMaker.tt</DependentUpon>
-    </Compile>
     <Compile Include="Tools\CommonTools.cs" />
     <Compile Include="Tools\GenieExceptionMessageFormatter.cs" />
     <Compile Include="Base\Abstract\IValidatableConfiguration.cs" />
@@ -305,6 +378,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Compile Include="Templates\Extensions\Filters.Concrete.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -375,9 +449,97 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ConditionExtension.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\Infrastructure\Filters\Filters.tt">
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IBoolFilter.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>Filters.cs</LastGenOutput>
+      <LastGenOutput>IBoolFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IDateFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IDateFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IExpressionJoin.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IExpressionJoin.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IFilterContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IFilterContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\INumberFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>INumberFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IOrderContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IOrderContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IOrderElement.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IOrderElement.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IOrderJoin.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IOrderJoin.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IPropertyFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IPropertyFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IRepoQuery.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IRepoQuery.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Abstract\IStringFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IStringFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\BaseFilterContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BaseFilterContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\BaseOrderContext.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BaseOrderContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\BoolFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BoolFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\DateFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DateFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\ExpressionJoin.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ExpressionJoin.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\NumberFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>NumberFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\OrderElement.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>OrderElement.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\OrderJoin.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>OrderJoin.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\PropertyFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PropertyFilter.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\QueryMaker.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>QueryMaker.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\RepoQuery.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepoQuery.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Filters\Concrete\StringFilter.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StringFilter.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Interfaces\IDapperContext.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
@@ -446,38 +608,6 @@
     <Content Include="Templates\Infrastructure\UnitOfWork.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>UnitOfWork1.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\SqlMaker\Interfaces\ISqlFirst.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ISqlFirst.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\SqlMaker\Interfaces\ISqlMaker.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ISqlMaker.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\SqlMaker\Interfaces\ISqlMkrBase.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ISqlMkrBase.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\SqlMaker\Interfaces\ISqlMakerDelete.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ISqlMakerDelete.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\SqlMaker\Interfaces\ISqlMakerInsert.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ISqlMakerInsert.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\SqlMaker\Interfaces\ISqlMakerSelect.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ISqlMakerSelect.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\SqlMaker\Interfaces\ISqlMakerUpdate.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ISqlMakerUpdate.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\SqlMaker\QueryMaker.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>QueryMaker.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

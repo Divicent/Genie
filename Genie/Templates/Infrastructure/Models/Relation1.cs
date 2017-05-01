@@ -789,10 +789,16 @@ foreach(var k in keys){
             
             #line default
             #line hidden
-            this.Write("OrderContext Filter(IEnumerable<IPropertyFilter> filters) \r\n\t\t\t{\r\n\t\t\t\t\r\n\t\t\t}\r\n\r\n\t" +
-                    "        private IRepoQuery GetQuery(IDbTransaction transaction)\r\n\t        {\r\n\t  " +
-                    "          return new RepoQuery\r\n\t            {\r\n\t                Target = \"[dbo]" +
-                    ".[");
+            this.Write(@"OrderContext Filter(IEnumerable<IPropertyFilter> filters) 
+			{
+				return this;	
+			}
+
+	        private IRepoQuery GetQuery(IDbTransaction transaction)
+	        {
+	            return new RepoQuery
+	            {
+	                Target = ""[dbo].[");
             
             #line 163 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Relation.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
