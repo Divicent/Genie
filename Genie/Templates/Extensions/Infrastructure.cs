@@ -331,6 +331,53 @@ namespace Genie.Templates.Infrastructure
         }
     }
 
+    namespace Actions
+    {
+        namespace Abstract
+        {
+            public partial class IAddAction : ITemplateFile
+            {
+                private readonly string _path;
+
+                internal IAddAction(string path)
+                {
+                    _path = path;
+                }
+
+                public IContentFile Generate()
+                {
+                    return new ContentFile
+                    {
+                        Content = TransformText(),
+                        Path = _path
+                    };
+                }
+            }
+        }
+
+        namespace Concrete
+        {
+            public partial class AddAction : ITemplateFile
+            {
+                private readonly string _path;
+
+                internal AddAction(string path)
+                {
+                    _path = path;
+                }
+
+                public IContentFile Generate()
+                {
+                    return new ContentFile
+                    {
+                        Content = TransformText(),
+                        Path = _path
+                    };
+                }
+            }
+        }
+    }
+
     namespace Models
     {
         namespace Abstract

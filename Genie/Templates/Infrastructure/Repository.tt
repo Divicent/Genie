@@ -32,10 +32,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
                 throw new ArgumentNullException("entity", "Add to DB null entity");
             }
             
-            entity.DatabaseModelStatus = ModelStatus.Retrieved;
             entity.DatabaseUnitOfWork = UnitOfWork;           
             var operation = new Operation(OperationType.Add, entity);
             UnitOfWork.AddOp(operation);    
+            entity.DatabaseModelStatus = ModelStatus.ToAdd;  
         }
 
         public virtual void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null)

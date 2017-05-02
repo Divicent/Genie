@@ -1,0 +1,10 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Actions.Abstract
+{
+    internal interface IAddAction
+    {
+        void Run();
+    }
+}

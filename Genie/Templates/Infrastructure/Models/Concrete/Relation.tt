@@ -7,6 +7,8 @@ using System.Linq;
 using System.Data;
 using System.Collections.Generic;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Abstract;
 
 <#var entity = _relation;
 var name = _relation.Name;
@@ -40,7 +42,7 @@ entity.ForeignKeyAttributes){#>
 <#}#>
 
 <#foreach(var list in entity.ReferenceLists){#>
-		public IEnumerable<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){ return DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.Get().Where.<#=list.ReferencedPropertyName#>.EqualsTo(<#=list.ReferencedPropertyOnThisRelation#>).Filter().Query(transaction); }
+		public IReferencedEntityCollection<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){  return new ReferencedEntityCollection<<#=list.ReferncedRelationName#>>(DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.Get().Where.<#=list.ReferencedPropertyName#>.EqualsTo(<#=list.ReferencedPropertyOnThisRelation#>).Filter().Query(transaction), (i) => { ((<#=list.ReferncedRelationName#>)i).<#=list.ReferencedPropertyName#> = <#=list.ReferencedPropertyOnThisRelation#>;}, this); }
 <#}#>
         internal override void SetId(object id)
         {

@@ -58,6 +58,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             return Transaction;
         }
 
+
         public void Commit()
         {
             var updated = _objects.Where(o => o.UpdatedProperties != null && o.UpdatedProperties.Count > 0).ToList();
@@ -74,41 +75,38 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
                     var toUpdate = _operations.Where(o => o.Type == OperationType.Update).ToList();
 
                     var connection = Context.Connection;
-
-					connection.Open();
-
-					try 
+					if (toAdd.Count > 0)
 					{
-						if (toAdd.Count > 0)
-					    {
-                            foreach (var operation in toAdd)
+                        foreach (var operation in toAdd)
+                        {
+                            var newId = connection.Insert(operation.Object);
+                            operation.Object.SetId((int)newId);
+                            operation.Object.DatabaseModelStatus = ModelStatus.Retrieved;
+                            if (operation.Object.ActionsToRunWhenAdding != null && operation.Object.ActionsToRunWhenAdding.Count > 0)
                             {
-                                var newId = connection.Insert(operation.Object);
-                                operation.Object.SetId(newId);
-                                operation.Object.DatabaseModelStatus = ModelStatus.Retrieved;
+                                foreach (var addAction in operation.Object.ActionsToRunWhenAdding)
+                                    addAction.Run();
+                                operation.Object.ActionsToRunWhenAdding.Clear();
                             }
                         }
+                    }
 
-						if (toUpdate.Count > 0)
-						{
-						    foreach (var operation in toUpdate)
-						    {
-                                connection.Update(operation.Object);
-                                operation.Object.UpdatedProperties.Clear();
-                            }
-						}
-
-						if (toDelete.Count > 0)
-						{
-						    foreach (var operation in toDelete)
-						    {
-                                connection.Delete(operation.Object);
-                            }
-						}
-					}
-					finally 
+					if (toUpdate.Count > 0)
 					{
-						connection.Close();
+						foreach (var operation in toUpdate)
+						{
+                            connection.Update(operation.Object);
+                            operation.Object.UpdatedProperties.Clear();
+                        }
+					}
+
+					if (toDelete.Count > 0)
+					{
+                    	foreach (var operation in toDelete)
+						{
+                            var deleted = connection.Delete(operation.Object);
+                            if (deleted) { operation.Object.DatabaseModelStatus = ModelStatus.Deleted; }
+                        }
 					}
                 }
             }
@@ -117,6 +115,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
                 throw new Exception("Unable to commit changes", e);
             }
         }
+
 
         public void Dispose()
         {
@@ -134,5 +133,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         public void AddObj(BaseModel obj)
         {
             _objects.Add(obj);
-        }    }
+        }    
+    }
 }

@@ -159,6 +159,16 @@
     <Compile Include="Templates\Extensions\Filters.Abstract.cs" />
     <Compile Include="Templates\Extensions\Infrastructure.cs" />
     <Compile Include="Templates\Extensions\TemplateExtensions.cs" />
+    <Compile Include="Templates\Infrastructure\Actions\Abstract\IAddAction.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IAddAction.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Infrastructure\Actions\Concrete\AddAction.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AddAction.tt</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Infrastructure\Collections\Abstract\IReferencedEntityCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -475,6 +485,14 @@
     <Content Include="Templates\Dapper\WriteAttribute.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>WriteAttribute.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Actions\Abstract\IAddAction.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IAddAction.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\Infrastructure\Actions\Concrete\AddAction.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>AddAction.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Collections\Abstract\IReferencedEntityCollection.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

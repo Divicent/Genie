@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Collections.Concrete
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class ReferencedEntityCollection : ReferencedEntityCollectionBase
     {
@@ -26,23 +26,38 @@ namespace Genie.Templates.Infrastructure.Collections.Concrete
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Collections.Generic;\r\nusing ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing ");
             
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models.Concrete;\r\nusing ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Collections.Abstract;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Collections.Abstract;\r\nusing System.Collections;\r\nusing System.Li" +
+                    "nq;\r\nusing ");
             
-            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Actions.Abstract;\r\nusing ");
+            
+            #line 10 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Infrastructure.Actions.Concrete;\r\n\r\n\r\nnamespace ");
+            
+            #line 13 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -51,23 +66,42 @@ namespace Genie.Templates.Infrastructure.Collections.Concrete
 {
     internal class ReferencedEntityCollection<T> : IReferencedEntityCollection<T> where T: BaseModel
 	{
-		private readonly IEnumerable<T> _collection;
-		private readonly Action<T> _addAction;
+		private readonly List<T> _collection;
+		private readonly Action<object> _addAction;
+        private readonly BaseModel _creator;
 
-		internal ReferencedEntityCollection(IEnumerable<T> collection, Action<T> addAction)
+		internal ReferencedEntityCollection(IEnumerable<T> collection, Action<object> addAction, BaseModel creator)
 		{
-			_collection = collection;
+			_collection = collection.ToList();
 			_addAction = addAction;
+            _creator = creator;
 		}
 
 		public void Add(T entityToAdd) 
 		{
-			if( entityToAdd == null) 
-				return;
-			addAction(entityToAdd);
+            if (entityToAdd == null)
+                return;
+            if (_creator.DatabaseModelStatus == ModelStatus.Retrieved)
+                _addAction(entityToAdd);
+            else if (_creator.DatabaseModelStatus == ModelStatus.ToAdd)
+            {
+                if(_creator.ActionsToRunWhenAdding == null)
+                    _creator.ActionsToRunWhenAdding = new List<IAddAction>();
+                _creator.ActionsToRunWhenAdding.Add(new AddAction(_addAction, entityToAdd));
+            }   
 			_collection.Add(entityToAdd);
 		}
-	}
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _collection.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _collection.GetEnumerator();
+        }
+    }
 }
 
 ");

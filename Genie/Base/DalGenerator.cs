@@ -6,6 +6,8 @@ using Genie.Models.Abstract;
 using Genie.Templates.Dapper;
 using Genie.Templates.Extensions;
 using Genie.Templates.Infrastructure;
+using Genie.Templates.Infrastructure.Actions.Abstract;
+using Genie.Templates.Infrastructure.Actions.Concrete;
 using Genie.Templates.Infrastructure.Collections.Abstract;
 using Genie.Templates.Infrastructure.Collections.Concrete;
 using Genie.Templates.Infrastructure.Enum;
@@ -89,6 +91,9 @@ namespace Genie.Base
 
                     new IReferencedEntityCollection(@"Infrastructure\Collections\Abstract\IReferencedEntityCollection"),
                     new ReferencedEntityCollection(@"Infrastructure\Collections\Concrete\ReferencedEntityCollection"),
+
+                    new IAddAction(@"Infrastructure\Actions\Abstract\IAddAction"),
+                    new AddAction(@"Infrastructure\Actions\Concrete\AddAction"),
 
                     new BaseModel(@"Infrastructure\Models\Concrete\BaseModel"),
                     new BaseQueryContext(@"Infrastructure\Models\Concrete\Context\BaseQueryContext")

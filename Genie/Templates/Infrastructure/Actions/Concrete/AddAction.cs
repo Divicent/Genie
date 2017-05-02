@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Genie.Templates.Infrastructure.Models.Concrete
+namespace Genie.Templates.Infrastructure.Actions.Concrete
 {
     using Genie.Base;
     using System;
@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure.Models.Concrete
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Actions\Concrete\AddAction.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class BaseModel : BaseModelBase
+    public partial class AddAction : AddActionBase
     {
 #line hidden
         /// <summary>
@@ -26,60 +26,41 @@ namespace Genie.Templates.Infrastructure.Models.Concrete
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Collections.Generic;\r\nusing ");
+            this.Write("using System;\r\nusing ");
             
-            #line 4 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
+            #line 4 "D:\Projects\Genie\Genie\Templates\Infrastructure\Actions\Concrete\AddAction.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces;\r\nusing ");
+            this.Write(".Infrastructure.Actions.Abstract;\r\n\r\nnamespace ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Actions\Concrete\AddAction.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Actions.Concrete;\r\n\r\nnamespace ");
-            
-            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(@".Infrastructure.Models.Concrete
+            this.Write(@".Infrastructure.Actions.Concrete
 {
-    internal enum ModelStatus
+    internal class AddAction: IAddAction
     {
-        JustInMemory = 1,
-        Retrieved = 2,
-        Deleted = 3,
-        ToAdd = 4
+        private readonly Action<object> _action;
+        private readonly object _parameter;
+
+        internal AddAction(Action<object> action, object parameter )
+        {
+            _action = action;
+            _parameter = parameter;
+        }
+
+        public void Run()
+        {
+            if(_action == null || _parameter ==null)
+            { return; }
+            _action(_parameter);
+        }
     }
-
-    public abstract class BaseModel
-    {
-        internal HashSet<string> UpdatedProperties { get; set; }
-        internal ModelStatus DatabaseModelStatus { get; set; }
-        internal IUnitOfWork DatabaseUnitOfWork { get; set; }
-        internal List<IAddAction> ActionsToRunWhenAdding { get; set; } 
-        internal abstract void SetId(object id);
-
-		/// <summary>
-        /// Checks the status of the object , and registers as updated property
-        /// </summary>
-        /// <param name=""propertyName"">The updated property name</param>
-		protected void __Updated(string propertyName) 
-		{
-		    if(UpdatedProperties == null)
-                UpdatedProperties = new HashSet<string>();
-
-			if( DatabaseModelStatus == ModelStatus.Retrieved ) 
-				UpdatedProperties.Add(propertyName);
-		}
-    }
-}
-");
+}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -91,7 +72,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class BaseModelBase
+    public class AddActionBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

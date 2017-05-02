@@ -92,15 +92,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
         {
-	        try
-	        {
-                connection.Open();
-                return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
-            }
-	        finally
-	        {
-	            connection.Close();
-	        }
+           return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
         }
 
 	    /// <summary>
@@ -111,7 +103,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static int Count(this IDbConnection connection, IRepoQuery query)
         {
-            connection.Open();
 	        return connection.Query<int>(GetRetriveQuery(query, true), transaction: query.Transaction).FirstOrDefault();
         }
 
@@ -218,10 +209,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <param name="transaction"></param>
 	    /// <param name="commandTimeout"></param>
 	    /// <returns>Identity of inserted entity</returns>
-	    public static long Insert<T>(this IDbConnection connection, T entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+	    public static long Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
         {
 
-            var type = typeof(T);
+            var type = entityToInsert.GetType();
 
             var name = GetTableName(type);
 
@@ -339,7 +330,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                     sb.AppendFormat(" and ");
             }
             var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
-            if (deleted) { entity.DatabaseModelStatus = ModelStatus.Deleted; }
             return deleted;
         }
 
