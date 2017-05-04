@@ -40,7 +40,7 @@ namespace Genie.Templates.Infrastructure.Models.Concrete
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Actions.Concrete;\r\n\r\nnamespace ");
+            this.Write(".Infrastructure.Actions.Abstract;\r\n\r\nnamespace ");
             
             #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));

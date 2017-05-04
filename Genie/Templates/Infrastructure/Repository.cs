@@ -74,19 +74,29 @@ namespace Genie.Templates.Infrastructure
                     "       }\r\n            \r\n            entity.DatabaseUnitOfWork = UnitOfWork;     " +
                     "      \r\n            var operation = new Operation(OperationType.Add, entity);\r\n " +
                     "           UnitOfWork.AddOp(operation);    \r\n            entity.DatabaseModelSta" +
-                    "tus = ModelStatus.ToAdd;  \r\n        }\r\n\r\n        public virtual void Remove(T en" +
-                    "tity, IDbTransaction transaction = null, int? commandTimeout = null)\r\n        {\r" +
-                    "\n            if (entity == null)\r\n            {\r\n                throw new Argum" +
-                    "entNullException(\"entity\", \"Remove in DB null entity\");\r\n            }\r\n        " +
-                    "    \r\n            var operation = new Operation(OperationType.Remove, entity);\r\n" +
-                    "            UnitOfWork.AddOp(operation);\r\n        }\r\n\r\n        public virtual IE" +
-                    "numerable<T> Get(IRepoQuery query)\r\n        {\r\n            var items = Conn.Get<" +
-                    "T>(query).ToList();\r\n\r\n            foreach (var item in items)\r\n            {\r\n " +
-                    "               item.DatabaseUnitOfWork = UnitOfWork;\r\n                item.Datab" +
-                    "aseModelStatus = ModelStatus.Retrieved;\r\n                UnitOfWork.AddObj(item)" +
-                    ";\r\n            }\r\n            return items;\r\n        }\r\n\r\n        public virtual" +
-                    " int Count(IRepoQuery query)\r\n        {\r\n            return Conn.Count(query);\r\n" +
-                    "        }\r\n    }\r\n}\r\n");
+                    "tus = ModelStatus.ToAdd;  \r\n        }\r\n\r\n        public virtual void Add(IEnumer" +
+                    "able<T> entities, IDbTransaction transaction = null, int? commandTimeout = null)" +
+                    "\r\n        {\r\n            if (entities == null)\r\n            {\r\n                t" +
+                    "hrow new ArgumentNullException(\"entities\", \"Add to DB null entity\");\r\n          " +
+                    "  }\r\n            \r\n            foreach(var entity in entities)\r\n                " +
+                    "Add(entity, transaction, commandTimeout);\r\n        }\r\n\r\n        public virtual v" +
+                    "oid Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = nu" +
+                    "ll)\r\n        {\r\n            if (entity == null)\r\n            {\r\n                " +
+                    "throw new ArgumentNullException(\"entity\", \"Remove in DB null entity\");\r\n        " +
+                    "    }\r\n            \r\n            var operation = new Operation(OperationType.Rem" +
+                    "ove, entity);\r\n            UnitOfWork.AddOp(operation);\r\n        }\r\n\r\n        pu" +
+                    "blic virtual void Remove(IEnumerable<T> entities, IDbTransaction transaction = n" +
+                    "ull, int? commandTimeout = null)\r\n        {\r\n            if (entities == null)\r\n" +
+                    "            {\r\n                throw new ArgumentNullException(\"entities\", \"Remo" +
+                    "ve in DB null entity\");\r\n            }\r\n\r\n            foreach(var entity in enti" +
+                    "ties)\r\n                Remove(entity, transaction, commandTimeout);\r\n        }\r\n" +
+                    "\r\n        public virtual IEnumerable<T> Get(IRepoQuery query)\r\n        {\r\n      " +
+                    "      var items = Conn.Get<T>(query).ToList();\r\n\r\n            foreach (var item " +
+                    "in items)\r\n            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r" +
+                    "\n                item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            " +
+                    "    UnitOfWork.AddObj(item);\r\n            }\r\n            return items;\r\n        " +
+                    "}\r\n\r\n        public virtual int Count(IRepoQuery query)\r\n        {\r\n            " +
+                    "return Conn.Count(query);\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

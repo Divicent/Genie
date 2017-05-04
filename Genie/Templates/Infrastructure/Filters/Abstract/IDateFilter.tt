@@ -15,6 +15,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
         IExpressionJoin<T, TQ> Between(DateTime from, DateTime to);
         IExpressionJoin<T, TQ> IsNull();
         IExpressionJoin<T, TQ> IsNotNull();
+        IExpressionJoin<T, TQ> In(params DateTime[] items);
     }
 }
 

@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IDateFilter.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IDateFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class IDateFilter : IDateFilterBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         {
             this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IDateFilter.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IDateFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -46,6 +46,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         IExpressionJoin<T, TQ> Between(DateTime from, DateTime to);
         IExpressionJoin<T, TQ> IsNull();
         IExpressionJoin<T, TQ> IsNotNull();
+        IExpressionJoin<T, TQ> In(params DateTime[] items);
     }
 }
 

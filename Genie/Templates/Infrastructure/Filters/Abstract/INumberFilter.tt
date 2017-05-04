@@ -13,6 +13,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
         IExpressionJoin<T, TQ> Between(double from, double to);
         IExpressionJoin<T, TQ> IsNull();
         IExpressionJoin<T, TQ> IsNotNull();
+        IExpressionJoin<T, TQ> In(params double[] items);
     }
 }
 

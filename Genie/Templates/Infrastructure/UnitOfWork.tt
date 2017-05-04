@@ -108,6 +108,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
                             if (deleted) { operation.Object.DatabaseModelStatus = ModelStatus.Deleted; }
                         }
 					}
+                    _operations.Clear();
                 }
             }
             catch (Exception e)

@@ -126,11 +126,13 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
                         if (first)
                         {
                             first = false;
+                            previous = current;
                             continue;
                         }
 
                         if (AndOrOr(previous))
                         {
+                            previous = current;
                             continue;
                         }
 

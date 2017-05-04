@@ -38,6 +38,17 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             entity.DatabaseModelStatus = ModelStatus.ToAdd;  
         }
 
+        public virtual void Add(IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            if (entities == null)
+            {
+                throw new ArgumentNullException("entities", "Add to DB null entity");
+            }
+            
+            foreach(var entity in entities)
+                Add(entity, transaction, commandTimeout);
+        }
+
         public virtual void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
         {
             if (entity == null)
@@ -47,6 +58,17 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             
             var operation = new Operation(OperationType.Remove, entity);
             UnitOfWork.AddOp(operation);
+        }
+
+        public virtual void Remove(IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null)
+        {
+            if (entities == null)
+            {
+                throw new ArgumentNullException("entities", "Remove in DB null entity");
+            }
+
+            foreach(var entity in entities)
+                Remove(entity, transaction, commandTimeout);
         }
 
         public virtual IEnumerable<T> Get(IRepoQuery query)

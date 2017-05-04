@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class QueryMaker : QueryMakerBase
     {
@@ -26,9 +26,9 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System.Linq;\r\n\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -77,8 +77,11 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
                     "\", to);\r\n        }\r\n\r\n        internal static string IsTrue(string propertyName)" +
                     "\r\n        {\r\n            return string.Format(\"[{0}] = 1\", propertyName);\r\n     " +
                     "   }\r\n\r\n        internal static string IsFalse(string propertyName)\r\n        {\r\n" +
-                    "            return string.Format(\"[{0}] = 0\", propertyName);\r\n        }\r\n    }\r\n" +
-                    "}\r\n");
+                    "            return string.Format(\"[{0}] = 0\", propertyName);\r\n        }\r\n\r\n     " +
+                    "   internal static string In(string propertyName, object[] values, bool quoted)\r" +
+                    "\n        {\r\n            return string.Format(\"[{0}] IN({1})\", propertyName, valu" +
+                    "es.Aggregate(\"\", (c, n) => c + string.Format(\",{1}{0}{1}\", n, quoted ? \"\'\" : \"\")" +
+                    ").TrimStart(\',\'));\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

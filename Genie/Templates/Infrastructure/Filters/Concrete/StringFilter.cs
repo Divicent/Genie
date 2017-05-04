@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\StringFilter.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\StringFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class StringFilter : StringFilterBase
     {
@@ -26,16 +26,16 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using ");
+            this.Write("using System.Linq;\r\nusing ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\StringFilter.tt"
+            #line 4 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\StringFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\StringFilter.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\StringFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -74,7 +74,10 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
                     "ew ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public IExpressionJ" +
                     "oin<T, TQ> IsNotNull()\r\n        {\r\n            _parent.Add(QueryMaker.IsNotNull(" +
                     "_propertyName));\r\n            return new ExpressionJoin<T, TQ>(_parent, _q);\r\n  " +
-                    "      }\r\n    }\r\n}\r\n");
+                    "      }\r\n\r\n        public IExpressionJoin<T, TQ> In(params string[] items)\r\n    " +
+                    "    {\r\n            _parent.Add(QueryMaker.In(_propertyName, items.Cast<object>()" +
+                    ".ToArray(), true));\r\n            return new ExpressionJoin<T, TQ>(_parent, _q);\r" +
+                    "\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

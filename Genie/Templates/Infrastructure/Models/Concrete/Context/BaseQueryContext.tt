@@ -15,9 +15,9 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Co
         protected int? _skip;
         protected int? _take;
 
-		protected abstract bool? IsQuoted(string propertyName);
+		protected abstract bool? IsQuoted(ref string propertyName);
 		
-		protected void ProcessFilter(Queue<string> queue, IEnumerable<IPropertyFilter> f)  
+        protected void ProcessFilter(Queue<string> queue, IEnumerable<IPropertyFilter> f)  
 		{
 		    var filters = f?.ToList();
             if(filters == null)
@@ -27,12 +27,13 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Co
 
 		    foreach (var propertyFilter in filters)
 		    {
-		        var qotd = IsQuoted(propertyFilter.PropertyName);
+		        var propName = propertyFilter.PropertyName;
+                var qotd = IsQuoted(ref propName);
                 if(qotd == null)
                     continue;
 		        
                 queue.Enqueue("and");
-		        queue.Enqueue(GetExpression(propertyFilter.Type, propertyFilter.PropertyName, propertyFilter.Value,
+		        queue.Enqueue(GetExpression(propertyFilter.Type, propName, propertyFilter.Value,
 		            qotd.GetValueOrDefault()));
 		    }
 		}

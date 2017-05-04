@@ -281,14 +281,15 @@ foreach(var view in _schema.Views){
                     "\t\t\t\t{\r\n                    \tforeach (var operation in toDelete)\r\n\t\t\t\t\t\t{\r\n      " +
                     "                      var deleted = connection.Delete(operation.Object);\r\n      " +
                     "                      if (deleted) { operation.Object.DatabaseModelStatus = Mode" +
-                    "lStatus.Deleted; }\r\n                        }\r\n\t\t\t\t\t}\r\n                }\r\n      " +
-                    "      }\r\n            catch (Exception e)\r\n            {\r\n                throw n" +
-                    "ew Exception(\"Unable to commit changes\", e);\r\n            }\r\n        }\r\n\r\n\r\n    " +
-                    "    public void Dispose()\r\n        {\r\n            if (Transaction != null)\r\n    " +
-                    "        {\r\n                Transaction.Dispose();\r\n            }\r\n        }\r\n\r\n " +
-                    "       public void AddOp(IOperation operation)\r\n        {\r\n            _operatio" +
-                    "ns.Add(operation);\r\n        }\r\n\r\n        public void AddObj(BaseModel obj)\r\n    " +
-                    "    {\r\n            _objects.Add(obj);\r\n        }    \r\n    }\r\n}\r\n");
+                    "lStatus.Deleted; }\r\n                        }\r\n\t\t\t\t\t}\r\n                    _oper" +
+                    "ations.Clear();\r\n                }\r\n            }\r\n            catch (Exception " +
+                    "e)\r\n            {\r\n                throw new Exception(\"Unable to commit changes" +
+                    "\", e);\r\n            }\r\n        }\r\n\r\n\r\n        public void Dispose()\r\n        {\r\n" +
+                    "            if (Transaction != null)\r\n            {\r\n                Transaction" +
+                    ".Dispose();\r\n            }\r\n        }\r\n\r\n        public void AddOp(IOperation op" +
+                    "eration)\r\n        {\r\n            _operations.Add(operation);\r\n        }\r\n\r\n     " +
+                    "   public void AddObj(BaseModel obj)\r\n        {\r\n            _objects.Add(obj);\r" +
+                    "\n        }    \r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

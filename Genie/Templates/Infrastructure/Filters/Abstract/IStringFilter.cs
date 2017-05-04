@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IStringFilter.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IStringFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class IStringFilter : IStringFilterBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         {
             this.Write("namespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IStringFilter.tt"
+            #line 3 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IStringFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -48,6 +48,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         IExpressionJoin<T, TQ> IsNotEmpty();
         IExpressionJoin<T, TQ> IsNull();
         IExpressionJoin<T, TQ> IsNotNull();
+        IExpressionJoin<T, TQ> In(params string[] items);
     }
 }
 

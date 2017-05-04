@@ -1,5 +1,6 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
@@ -68,6 +69,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
         public IExpressionJoin<T, TQ> IsNotNull()
         {
             _parent.Add(QueryMaker.IsNotNull(_propertyName));
+            return new ExpressionJoin<T, TQ>(_parent, _q);
+        }
+
+        public IExpressionJoin<T, TQ> In(params double[] items)
+        {
+            _parent.Add(QueryMaker.In(_propertyName, items.Cast<object>().ToArray(), false));
             return new ExpressionJoin<T, TQ>(_parent, _q);
         }
     }

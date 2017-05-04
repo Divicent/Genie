@@ -16,7 +16,7 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class DateFilter : DateFilterBase
     {
@@ -26,16 +26,16 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing ");
+            this.Write("using System;\r\nusing System.Linq;\r\nusing ");
             
-            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
+            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -70,7 +70,10 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
                     "         return new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        pu" +
                     "blic IExpressionJoin<T, TQ> IsNotNull()\r\n        {\r\n            _parent.Add(Quer" +
                     "yMaker.IsNotNull(_propertyName));\r\n            return new ExpressionJoin<T, TQ>(" +
-                    "_parent, _q);\r\n        }\r\n    }\r\n}\r\n");
+                    "_parent, _q);\r\n        }\r\n\r\n        public IExpressionJoin<T, TQ> In(params Date" +
+                    "Time[] items)\r\n        {\r\n            _parent.Add(QueryMaker.In(_propertyName, i" +
+                    "tems.Cast<object>().ToArray(), true));\r\n            return new ExpressionJoin<T," +
+                    " TQ>(_parent, _q);\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

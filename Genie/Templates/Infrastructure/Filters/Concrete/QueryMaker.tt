@@ -1,5 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+using System.Linq;
+
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
 {
     internal static class QueryMaker
@@ -97,6 +99,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
         internal static string IsFalse(string propertyName)
         {
             return string.Format("[{0}] = 0", propertyName);
+        }
+
+        internal static string In(string propertyName, object[] values, bool quoted)
+        {
+            return string.Format("[{0}] IN({1})", propertyName, values.Aggregate("", (c, n) => c + string.Format(",{1}{0}{1}", n, quoted ? "'" : "")).TrimStart(','));
         }
     }
 }
