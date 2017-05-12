@@ -1,0 +1,55 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Extensions"#>
+<#@ import namespace="System.Linq"#>
+using System;
+using System.Linq;
+using System.Data;
+using System.Collections.Generic;
+using <#=GenerationContext.BaseNamespace#>.Dapper;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Abstract;
+
+<#var entity = _relation;
+var name = _relation.Name;
+#>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete
+{
+    [Table("[dbo].[<#=name#>]")]
+    public class <#=name#> : BaseModel
+    {
+<#foreach(var atd in entity.Attributes){#>
+		private <#=atd.DataType#> <#=atd.FieldName#>;
+<#}#>
+
+<#foreach(var atd in
+entity.ForeignKeyAttributes){#>
+		private <#=atd.ReferencingRelationName#> <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj;
+<#}#>
+
+<#foreach(var atd in entity.Attributes){#>
+<#	if(atd.IsKey) {#>
+		[Key]
+<#	}#>
+		public <#=atd.DataType#> <#=atd.Name#> { get { return <#=atd.FieldName#>; } set { if(<#=atd.FieldName#> == value ) { return; }  <#=atd.FieldName#> = value; __Updated("<#=atd.Name#>"); <#=atd.RefPropName != null ? atd.RefPropName + " = null;" : ""#> } }
+<#}#>
+
+<#foreach(var atd in entity.ForeignKeyAttributes){#>
+		public <#=atd.ReferencingRelationName#> Get<#=atd.ReferencingNonForeignKeyAttribute.Name#>(IDbTransaction transaction =null)
+        {
+            return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.Get().Where.<#=atd.ReferencingTableColumnName#>.EqualsTo(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#><#=atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ?  ".GetValueOrDefault()" : ""#>).Filter().Top(1).Query(transaction).FirstOrDefault()) : null;
+        }
+<#}#>
+
+<#foreach(var list in entity.ReferenceLists){#>
+		public IReferencedEntityCollection<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){  return new ReferencedEntityCollection<<#=list.ReferncedRelationName#>>(DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.Get().Where.<#=list.ReferencedPropertyName#>.EqualsTo(<#=list.ReferencedPropertyOnThisRelation#>).Filter().Query(transaction), (i) => { ((<#=list.ReferncedRelationName#>)i).<#=list.ReferencedPropertyName#> = <#=list.ReferencedPropertyOnThisRelation#>;}, this); }
+<#}#>
+        internal override void SetId(object id)
+        {
+<#var keys = entity.Attributes.Where(e => e.IsKey);#>
+<#foreach(var k in keys){#>
+            <#=k.FieldName#> = (<#=k.DataType#>)id;
+<#}#>
+        }
+    }
+}

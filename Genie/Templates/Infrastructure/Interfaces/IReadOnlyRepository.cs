@@ -48,9 +48,6 @@ namespace Genie.Templates.Infrastructure.Interfaces
 		IDbConnection Conn { get; }
 		IDapperContext Context { get; }
 
-		IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
-		IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null);
-
         IEnumerable<T> Get(IRepoQuery query);
 	    int Count(IRepoQuery query);
 	}

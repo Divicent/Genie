@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\SqlServerAdapter.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\SqlServerAdapter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class SqlServerAdapter : SqlServerAdapterBase
     {
@@ -29,7 +29,7 @@ namespace Genie.Templates.Dapper
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
                     "m.Linq;\r\nusing System.Reflection;\r\n\r\nnamespace ");
             
-            #line 9 "F:\Projects\Genie\Genie\Templates\Dapper\SqlServerAdapter.tt"
+            #line 9 "D:\Projects\Genie\Genie\Templates\Dapper\SqlServerAdapter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -38,18 +38,25 @@ namespace Genie.Templates.Dapper
 {
 	public class SqlServerAdapter : ISqlAdapter
     {
-        public int Insert(IDbConnection connection, IDbTransaction transaction, int? commandTimeout, String tableName, string columnList, string parameterList, IEnumerable<PropertyInfo> keyProperties, object entityToInsert)
+        public int? Insert(IDbConnection connection, IDbTransaction transaction, int? commandTimeout, String tableName, string columnList, string parameterList, List<PropertyInfo> keyProperties, object entityToInsert)
         {
-            string cmd = String.Format(""insert into {0} ({1}) values ({2})"", tableName, columnList, parameterList);
+            var cmd = string.Format(""insert into {0} ({1}) values ({2})"", tableName, columnList, parameterList);
+            connection.Execute(cmd, entityToInsert, transaction, commandTimeout);
+            var r = connection.Query(""select @@IDENTITY id"", transaction: transaction, commandTimeout: commandTimeout).ToList();
+            if (r.Any())
+            {
+                try
+                {
+                    var id = (int)r.First().id;
+                    return id;
+                }
+                catch (Exception)
+                {
 
-            connection.Execute(cmd, entityToInsert, transaction: transaction, commandTimeout: commandTimeout);
-
-            //NOTE: would prefer to use IDENT_CURRENT('tablename') or IDENT_SCOPE but these are not available on SQLCE
-            var r = connection.Query(""select @@IDENTITY id"", transaction: transaction, commandTimeout: commandTimeout);
-            int id = (int)r.First().id;
-            if (keyProperties.Any())
-                keyProperties.First().SetValue(entityToInsert, id, null);
-            return id;
+                    return null;
+                }
+            }
+            return null;
         }
     }
 }");

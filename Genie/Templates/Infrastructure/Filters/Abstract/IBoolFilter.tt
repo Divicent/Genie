@@ -1,0 +1,14 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
+{
+	public interface IBoolFilter<out T, out TQ> where T : IFilterContext
+	{
+		IExpressionJoin<T, TQ> Is(bool value);
+		IExpressionJoin<T, TQ> IsFalse();
+		IExpressionJoin<T, TQ> IsTrue();
+		IExpressionJoin<T, TQ> IsNull();
+		IExpressionJoin<T, TQ> IsNotNull();
+	}
+}
+

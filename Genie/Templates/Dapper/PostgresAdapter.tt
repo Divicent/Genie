@@ -11,7 +11,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
 	public class PostgresAdapter : ISqlAdapter
     {
-        public int Insert(IDbConnection connection, IDbTransaction transaction, int? commandTimeout, String tableName, string columnList, string parameterList, IEnumerable<PropertyInfo> keyProperties, object entityToInsert)
+        public int? Insert(IDbConnection connection, IDbTransaction transaction, int? commandTimeout, String tableName, string columnList, string parameterList, List<PropertyInfo> keyProperties, object entityToInsert)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("insert into {0} ({1}) values ({2})", tableName, columnList, parameterList);

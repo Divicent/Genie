@@ -2,16 +2,19 @@
 <#@ import namespace="Genie.Base" #>
 using System;
 using System.Data;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 using System.Collections.Generic;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces
 {
-	public interface IUnitOfWork
+	public interface IUnitOfWork : IDisposable
     {
 
         IDbTransaction BeginTransaction();
+
+	    void AddOp(IOperation operation);
+        void AddObj(BaseModel obj);
 
 		<#foreach(var relation in _schema.Relations){
       #>I<#=relation.Name#>Repository <#=relation.Name#>Repository { get; }

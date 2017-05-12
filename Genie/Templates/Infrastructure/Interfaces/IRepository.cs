@@ -33,7 +33,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\nusing ");
+            this.Write(".Infrastructure.Models.Concrete;\r\nusing ");
             
             #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IRepository.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
@@ -55,15 +55,10 @@ namespace Genie.Templates.Infrastructure.Interfaces
         IDbConnection Conn { get; }
         IDapperContext Context { get; }
 
-
-        long Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
-        void Update(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
+        void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
+        void Add(IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null);
         void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
-
-        T GetByKey(object key, IDbTransaction transaction = null, int? commandTimeout = null);
-
-        IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null);
-        IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null);
+        void Remove(IEnumerable<T> entity, IDbTransaction transaction = null, int? commandTimeout = null);
 
         IEnumerable<T> Get(IRepoQuery query);
 	    int Count(IRepoQuery query);

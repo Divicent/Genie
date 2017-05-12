@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\PostgresAdapter.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\PostgresAdapter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class PostgresAdapter : PostgresAdapterBase
     {
@@ -29,32 +29,32 @@ namespace Genie.Templates.Dapper
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
                     "m.Linq;\r\nusing System.Reflection;\r\nusing System.Text;\r\n\r\nnamespace ");
             
-            #line 10 "F:\Projects\Genie\Genie\Templates\Dapper\PostgresAdapter.tt"
+            #line 10 "D:\Projects\Genie\Genie\Templates\Dapper\PostgresAdapter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper\r\n{\r\n\tpublic class PostgresAdapter : ISqlAdapter\r\n    {\r\n        public in" +
-                    "t Insert(IDbConnection connection, IDbTransaction transaction, int? commandTimeo" +
-                    "ut, String tableName, string columnList, string parameterList, IEnumerable<Prope" +
-                    "rtyInfo> keyProperties, object entityToInsert)\r\n        {\r\n            StringBui" +
-                    "lder sb = new StringBuilder();\r\n            sb.AppendFormat(\"insert into {0} ({1" +
-                    "}) values ({2})\", tableName, columnList, parameterList);\r\n\r\n            // If no" +
-                    " primary key then safe to assume a join table with not too much data to return\r\n" +
-                    "            if (!keyProperties.Any())\r\n                sb.Append(\" RETURNING *\")" +
-                    ";\r\n            else\r\n            {\r\n                sb.Append(\" RETURNING \");\r\n " +
-                    "               bool first = true;\r\n                foreach (var property in keyP" +
-                    "roperties)\r\n                {\r\n                    if (!first)\r\n                " +
-                    "        sb.Append(\", \");\r\n                    first = false;\r\n                  " +
-                    "  sb.Append(property.Name);\r\n                }\r\n            }\r\n\r\n            var" +
-                    " results = connection.Query(sb.ToString(), entityToInsert, transaction: transact" +
-                    "ion, commandTimeout: commandTimeout);\r\n\r\n            // Return the key by assing" +
-                    "ing the corresponding property in the object - by product is that it supports co" +
-                    "mpound primary keys\r\n            int id = 0;\r\n            foreach (var p in keyP" +
-                    "roperties)\r\n            {\r\n                var value = ((IDictionary<string, obj" +
-                    "ect>)results.First())[p.Name.ToLower()];\r\n                p.SetValue(entityToIns" +
-                    "ert, value, null);\r\n                if (id == 0)\r\n                    id = Conve" +
-                    "rt.ToInt32(value);\r\n            }\r\n            return id;\r\n        }\r\n    }\r\n}");
+                    "t? Insert(IDbConnection connection, IDbTransaction transaction, int? commandTime" +
+                    "out, String tableName, string columnList, string parameterList, List<PropertyInf" +
+                    "o> keyProperties, object entityToInsert)\r\n        {\r\n            StringBuilder s" +
+                    "b = new StringBuilder();\r\n            sb.AppendFormat(\"insert into {0} ({1}) val" +
+                    "ues ({2})\", tableName, columnList, parameterList);\r\n\r\n            // If no prima" +
+                    "ry key then safe to assume a join table with not too much data to return\r\n      " +
+                    "      if (!keyProperties.Any())\r\n                sb.Append(\" RETURNING *\");\r\n   " +
+                    "         else\r\n            {\r\n                sb.Append(\" RETURNING \");\r\n       " +
+                    "         bool first = true;\r\n                foreach (var property in keyPropert" +
+                    "ies)\r\n                {\r\n                    if (!first)\r\n                      " +
+                    "  sb.Append(\", \");\r\n                    first = false;\r\n                    sb.A" +
+                    "ppend(property.Name);\r\n                }\r\n            }\r\n\r\n            var resul" +
+                    "ts = connection.Query(sb.ToString(), entityToInsert, transaction: transaction, c" +
+                    "ommandTimeout: commandTimeout);\r\n\r\n            // Return the key by assinging th" +
+                    "e corresponding property in the object - by product is that it supports compound" +
+                    " primary keys\r\n            int id = 0;\r\n            foreach (var p in keyPropert" +
+                    "ies)\r\n            {\r\n                var value = ((IDictionary<string, object>)r" +
+                    "esults.First())[p.Name.ToLower()];\r\n                p.SetValue(entityToInsert, v" +
+                    "alue, null);\r\n                if (id == 0)\r\n                    id = Convert.ToI" +
+                    "nt32(value);\r\n            }\r\n            return id;\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -3,7 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Concrete;
 
@@ -12,6 +15,9 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
 		private IProcedureContainer _procedureContainer;
+
+        private readonly List<IOperation> _operations;
+        private readonly HashSet<BaseModel> _objects;
 
         <#foreach(var relation in _schema.Relations){
       #>private I<#=relation.Name#>Repository <#=relation.FieldName#>Repository;
@@ -26,9 +32,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         private IDapperContext Context { get;}
         private IDbTransaction Transaction { get; set; }
 
-        public UnitOfWork(IDapperContext context, IRepositoryFactory factory)
+        public UnitOfWork(IDapperContext context)
         {
             Context = context;
+            _objects = new HashSet<BaseModel>();
+            _operations = new List<IOperation>();
         }
             
             
@@ -50,19 +58,66 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             return Transaction;
         }
 
+
         public void Commit()
         {
-            if (Transaction != null)
+            var updated = _objects.Where(o => o.UpdatedProperties != null && o.UpdatedProperties.Count > 0).ToList();
+
+            try
             {
-                Transaction.Commit();
-                Transaction.Dispose();
-                Transaction = null;
+                if (updated.Count > 0)
+                    _operations.AddRange(updated.Select(u => new Operation(OperationType.Update, u)));
+
+                if (_operations.Count > 0)
+                {
+                    var toAdd = _operations.Where(o => o.Type == OperationType.Add).ToList();
+                    var toDelete = _operations.Where(o => o.Type == OperationType.Remove).ToList();
+                    var toUpdate = _operations.Where(o => o.Type == OperationType.Update).ToList();
+
+                    var connection = Context.Connection;
+					if (toAdd.Count > 0)
+					{
+                        foreach (var operation in toAdd)
+                        {
+                            var newId = connection.Insert(operation.Object);
+                             if(newId != null)
+                                operation.Object.SetId((int)newId);
+                            operation.Object.DatabaseModelStatus = ModelStatus.Retrieved;
+                            if (operation.Object.ActionsToRunWhenAdding != null && operation.Object.ActionsToRunWhenAdding.Count > 0)
+                            {
+                                foreach (var addAction in operation.Object.ActionsToRunWhenAdding)
+                                    addAction.Run();
+                                operation.Object.ActionsToRunWhenAdding.Clear();
+                            }
+                        }
+                    }
+
+					if (toUpdate.Count > 0)
+					{
+						foreach (var operation in toUpdate)
+						{
+                            connection.Update(operation.Object);
+                            operation.Object.UpdatedProperties.Clear();
+                        }
+					}
+
+					if (toDelete.Count > 0)
+					{
+                    	foreach (var operation in toDelete)
+						{
+                            var deleted = connection.Delete(operation.Object);
+                            if (deleted) { operation.Object.DatabaseModelStatus = ModelStatus.Deleted; }
+                        }
+					}
+                    _operations.Clear();
+                }
             }
-            else
+            catch (Exception e)
             {
-                throw new NullReferenceException("Tried commit not opened transaction");
+                throw new Exception("Unable to commit changes", e);
             }
         }
+
 
         public void Dispose()
         {
@@ -70,10 +125,16 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             {
                 Transaction.Dispose();
             }
-            if (Context != null)
-            {
-                Context.Dispose();
-            }
         }
+
+        public void AddOp(IOperation operation)
+        {
+            _operations.Add(operation);
+        }
+
+        public void AddObj(BaseModel obj)
+        {
+            _objects.Add(obj);
+        }    
     }
 }

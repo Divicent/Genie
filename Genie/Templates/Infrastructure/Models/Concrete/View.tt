@@ -1,0 +1,17 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+using System;
+using <#=GenerationContext.BaseNamespace#>.Dapper;
+<#var entity = _view;#>
+<#var name = _view.Name;#>
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete
+{
+    [Table("[dbo].[<#=name#>]")]
+    public class <#=name#> 
+    {
+
+<#foreach(var atd in entity.Attributes){#>
+		public <#=atd.DataType#> <#=atd.Name#> { get; set; } 
+<#}#>
+    }
+}

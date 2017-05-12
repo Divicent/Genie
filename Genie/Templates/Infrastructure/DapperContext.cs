@@ -65,14 +65,20 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public IDbConnection Connection
         {
-            get
-            {
+		    get
+		    {
                 if (_connection == null)
                     _connection = new SqlConnection(_connectionString);
                 if (_connection.State != ConnectionState.Open)
                     _connection.Open();
+
                 return _connection;
             }
+        }
+
+        public IUnitOfWork Unit() 
+        {
+            return new UnitOfWork(this);
         }
 
 		/// <summary>
@@ -80,8 +86,12 @@ namespace Genie.Templates.Infrastructure
         /// </summary>
         public void Dispose()
         {
-            if (_connection != null && _connection.State == ConnectionState.Open)
-                _connection.Close();
+		    if (_connection == null)
+                return;
+
+		    if (_connection.State != ConnectionState.Closed)
+		        _connection.Close();
+		    _connection.Dispose();
         }
     }
 }

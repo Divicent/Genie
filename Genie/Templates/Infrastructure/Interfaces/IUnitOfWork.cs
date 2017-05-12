@@ -33,7 +33,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Models;\r\nusing System.Collections.Generic;\r\nusing ");
+            this.Write(".Infrastructure.Models.Concrete;\r\nusing System.Collections.Generic;\r\nusing ");
             
             #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
@@ -47,10 +47,11 @@ namespace Genie.Templates.Infrastructure.Interfaces
             
             #line default
             #line hidden
-            this.Write(".Infrastructure.Interfaces\r\n{\r\n\tpublic interface IUnitOfWork\r\n    {\r\n\r\n        ID" +
-                    "bTransaction BeginTransaction();\r\n\r\n\t\t");
+            this.Write(".Infrastructure.Interfaces\r\n{\r\n\tpublic interface IUnitOfWork : IDisposable\r\n    {" +
+                    "\r\n\r\n        IDbTransaction BeginTransaction();\r\n\r\n\t    void AddOp(IOperation ope" +
+                    "ration);\r\n        void AddObj(BaseModel obj);\r\n\r\n\t\t");
             
-            #line 16 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
 foreach(var relation in _schema.Relations){
       
             
@@ -58,28 +59,28 @@ foreach(var relation in _schema.Relations){
             #line hidden
             this.Write("I");
             
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository ");
             
-            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write("Repository { get; }\r\n        ");
             
-            #line 18 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n        ");
             
-            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 23 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
 foreach(var view in _schema.Views){
       
             
@@ -87,21 +88,21 @@ foreach(var view in _schema.Views){
             #line hidden
             this.Write("I");
             
-            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 24 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Repository ");
             
-            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 24 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(view.Name));
             
             #line default
             #line hidden
             this.Write("Repository { get; }\r\n        ");
             
-            #line 22 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
+            #line 25 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IUnitOfWork.tt"
 }
             
             #line default

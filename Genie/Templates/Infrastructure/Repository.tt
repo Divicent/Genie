@@ -7,7 +7,7 @@ using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
@@ -18,32 +18,35 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         public IDapperContext Context { get;}
         public IUnitOfWork UnitOfWork { get;}
 
-        public Repository(IDapperContext context, IUnitOfWork unitOfWork)
+        protected Repository(IDapperContext context, IUnitOfWork unitOfWork)
         {
             Context = context;
             Conn = Context.Connection;
             UnitOfWork = unitOfWork;
         }
 
-        public virtual long Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+        public virtual void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException("entity", "Add to DB null entity");
             }
-            var insertedId = Conn.Insert(entity, transaction: transaction, commandTimeout: commandTimeout);
-            entity.DatabaseModelStatus = ModelStatus.Retrieved;
-            entity.DatabaseUnitOfWork = UnitOfWork;
-            return insertedId;
+            
+            entity.DatabaseUnitOfWork = UnitOfWork;           
+            var operation = new Operation(OperationType.Add, entity);
+            UnitOfWork.AddOp(operation);    
+            entity.DatabaseModelStatus = ModelStatus.ToAdd;  
         }
 
-        public virtual void Update(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
+        public virtual void Add(IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            if (entity == null)
+            if (entities == null)
             {
-                throw new ArgumentNullException("entity", "Update in DB null entity");
+                throw new ArgumentNullException("entities", "Add to DB null entity");
             }
-            Conn.Update(entity, transaction: transaction, commandTimeout: commandTimeout);
+            
+            foreach(var entity in entities)
+                Add(entity, transaction, commandTimeout);
         }
 
         public virtual void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null)
@@ -52,48 +55,21 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             {
                 throw new ArgumentNullException("entity", "Remove in DB null entity");
             }
-            var deleted = Conn.Delete(entity, transaction: transaction, commandTimeout: commandTimeout);
-            if(deleted) { entity.DatabaseModelStatus = ModelStatus.Deleted; }
+            
+            var operation = new Operation(OperationType.Remove, entity);
+            UnitOfWork.AddOp(operation);
         }
 
-        public virtual T GetByKey(object id, IDbTransaction transaction = null, int? commandTimeout = null)
+        public virtual void Remove(IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            if (id == null)
+            if (entities == null)
             {
-                throw new ArgumentNullException("id");
+                throw new ArgumentNullException("entities", "Remove in DB null entity");
             }
-            var item = Conn.Get<T>(id, transaction: transaction, commandTimeout: commandTimeout);
-            item.DatabaseModelStatus = ModelStatus.Retrieved;
-            item.DatabaseUnitOfWork = UnitOfWork;
-            return item;
+
+            foreach(var entity in entities)
+                Remove(entity, transaction, commandTimeout);
         }
-
-        [Obsolete("GetAll is deprecated, please use Get instead.")]
-        public virtual IEnumerable<T> GetAll(IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            var items = Conn.GetAll<T>(transaction: transaction, commandTimeout: commandTimeout).ToList();
-
-            foreach (var item in items) 
-            {
-                item.DatabaseUnitOfWork = UnitOfWork;
-                item.DatabaseModelStatus = ModelStatus.Retrieved;
-            }
-            return items;
-        }
-
-        [Obsolete("GetBy is deprecated, please use Get instead.")]
-        public virtual IEnumerable<T> GetBy(object where = null, object order = null, int? pageSize = null, int? page = null, IDbTransaction transaction = null, int? commandTimeout = null)
-        {
-            var items = Conn.GetBy<T>(where: where, order: order, pageSize: pageSize, page: page , transaction: transaction, commandTimeout: commandTimeout).ToList();
-
-            foreach (var item in items)
-            {
-                item.DatabaseUnitOfWork = UnitOfWork;
-                item.DatabaseModelStatus = ModelStatus.Retrieved;
-            }
-            return items;
-        }
-
 
         public virtual IEnumerable<T> Get(IRepoQuery query)
         {
@@ -103,9 +79,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             {
                 item.DatabaseUnitOfWork = UnitOfWork;
                 item.DatabaseModelStatus = ModelStatus.Retrieved;
+                UnitOfWork.AddObj(item);
             }
             return items;
-        }		
+        }
 
         public virtual int Count(IRepoQuery query)
         {

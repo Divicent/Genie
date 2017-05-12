@@ -1,0 +1,33 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Extensions"#>
+<#@ import namespace="System.Linq"#>
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Context;
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Context
+{
+    internal class <#=_name#>FilterContext : BaseFilterContext, I<#=_name#>FilterContext 
+    {
+		private readonly I<#=_name#>QueryContext  _queryContext;
+		internal <#=_name#>FilterContext(<#=_name#>QueryContext context) { _queryContext = context; }
+
+<#foreach(var atd in _attributes){#>
+<#if(atd.DataType == "string"){#>
+		private IStringFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext> <#=atd.FieldName#>;
+		public IStringFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new StringFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+<#} else if(atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" || atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" || atd.DataType == "long" || atd.DataType == "long?" ){#>
+		private INumberFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext> <#=atd.FieldName#>;
+		public INumberFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new NumberFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+<#}else if(atd.DataType == "DateTime" || atd.DataType == "DateTime?"){#>
+    	private IDateFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext> <#=atd.FieldName#>;
+		public IDateFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new DateFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+<#}else if(atd.DataType == "bool" || atd.DataType == "bool?"){#>
+    	private IBoolFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext> <#=atd.FieldName#>;
+		public IBoolFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext> <#=atd.Name#> { get { return <#=atd.FieldName#> ?? ( <#=atd.FieldName#> = new BoolFilter<I<#=_name#>FilterContext, I<#=_name#>QueryContext>("<#=atd.Name#>", this, _queryContext)); } }
+<#}#>
+<#}#>
+	}
+}

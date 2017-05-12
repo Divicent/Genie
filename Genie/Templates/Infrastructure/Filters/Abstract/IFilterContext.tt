@@ -1,0 +1,16 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+using System.Collections.Generic;
+
+namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
+{
+	public interface IFilterContext
+	{
+		Queue<string> Expressions { get; set; }
+		void And();
+		void Or();
+		void Add(string expression);
+		Queue<string> GetFilterExpressions();
+	}
+}
+

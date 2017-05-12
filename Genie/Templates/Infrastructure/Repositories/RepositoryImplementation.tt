@@ -1,8 +1,9 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
-using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Context;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Context;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories.Abstract;
 
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories
