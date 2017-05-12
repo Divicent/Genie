@@ -211,7 +211,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <param name="transaction"></param>
 	    /// <param name="commandTimeout"></param>
 	    /// <returns>Identity of inserted entity</returns>
-	    public static long Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
+	    public static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
         {
 
             var type = entityToInsert.GetType();
@@ -220,26 +220,31 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 
             var sbColumnList = new StringBuilder(null);
 
-            var allProperties = TypePropertiesCache(type);
+            var allProperties = TypePropertiesCache(type).ToList();
             var keyProperties = KeyPropertiesCache(type).ToList();
             var allPropertiesExceptKey = allProperties.Except(keyProperties).ToList();
 
-            for (var i = 0; i < allPropertiesExceptKey.Count(); i++)
-            {
-                var property = allPropertiesExceptKey.ElementAt(i);
+	        var index = 0;
+	        var lst = allProperties.Count == keyProperties.Count ? keyProperties : allPropertiesExceptKey;
+            foreach (var property in lst)
+	        {
                 sbColumnList.AppendFormat("[{0}]", property.Name);
-                if (i < allPropertiesExceptKey.Count() - 1)
+                if (index < lst.Count() - 1)
                     sbColumnList.Append(", ");
-            }
+	            index ++;
+	        }
 
+	        index = 0;
             var sbParameterList = new StringBuilder(null);
-            for (var i = 0; i < allPropertiesExceptKey.Count(); i++)
+
+            foreach (var property in lst)
             {
-                var property = allPropertiesExceptKey.ElementAt(i);
                 sbParameterList.AppendFormat("@{0}", property.Name);
-                if (i < allPropertiesExceptKey.Count() - 1)
+                if (index < lst.Count() - 1)
                     sbParameterList.Append(", ");
+                index++;
             }
+            
             var adapter = GetFormatter(connection);
 
             var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);

@@ -266,30 +266,30 @@ foreach(var view in _schema.Views){
                     ");\r\n\r\n                    var connection = Context.Connection;\r\n\t\t\t\t\tif (toAdd.C" +
                     "ount > 0)\r\n\t\t\t\t\t{\r\n                        foreach (var operation in toAdd)\r\n   " +
                     "                     {\r\n                            var newId = connection.Inser" +
-                    "t(operation.Object);\r\n                            operation.Object.SetId((int)ne" +
-                    "wId);\r\n                            operation.Object.DatabaseModelStatus = ModelS" +
-                    "tatus.Retrieved;\r\n                            if (operation.Object.ActionsToRunW" +
-                    "henAdding != null && operation.Object.ActionsToRunWhenAdding.Count > 0)\r\n       " +
-                    "                     {\r\n                                foreach (var addAction i" +
-                    "n operation.Object.ActionsToRunWhenAdding)\r\n                                    " +
-                    "addAction.Run();\r\n                                operation.Object.ActionsToRunW" +
-                    "henAdding.Clear();\r\n                            }\r\n                        }\r\n  " +
-                    "                  }\r\n\r\n\t\t\t\t\tif (toUpdate.Count > 0)\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tforeach (var " +
-                    "operation in toUpdate)\r\n\t\t\t\t\t\t{\r\n                            connection.Update(o" +
-                    "peration.Object);\r\n                            operation.Object.UpdatedPropertie" +
-                    "s.Clear();\r\n                        }\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (toDelete.Count > 0)\r\n\t" +
-                    "\t\t\t\t{\r\n                    \tforeach (var operation in toDelete)\r\n\t\t\t\t\t\t{\r\n      " +
-                    "                      var deleted = connection.Delete(operation.Object);\r\n      " +
-                    "                      if (deleted) { operation.Object.DatabaseModelStatus = Mode" +
-                    "lStatus.Deleted; }\r\n                        }\r\n\t\t\t\t\t}\r\n                    _oper" +
-                    "ations.Clear();\r\n                }\r\n            }\r\n            catch (Exception " +
-                    "e)\r\n            {\r\n                throw new Exception(\"Unable to commit changes" +
-                    "\", e);\r\n            }\r\n        }\r\n\r\n\r\n        public void Dispose()\r\n        {\r\n" +
-                    "            if (Transaction != null)\r\n            {\r\n                Transaction" +
-                    ".Dispose();\r\n            }\r\n        }\r\n\r\n        public void AddOp(IOperation op" +
-                    "eration)\r\n        {\r\n            _operations.Add(operation);\r\n        }\r\n\r\n     " +
-                    "   public void AddObj(BaseModel obj)\r\n        {\r\n            _objects.Add(obj);\r" +
-                    "\n        }    \r\n    }\r\n}\r\n");
+                    "t(operation.Object);\r\n                             if(newId != null)\r\n          " +
+                    "                      operation.Object.SetId((int)newId);\r\n                     " +
+                    "       operation.Object.DatabaseModelStatus = ModelStatus.Retrieved;\r\n          " +
+                    "                  if (operation.Object.ActionsToRunWhenAdding != null && operati" +
+                    "on.Object.ActionsToRunWhenAdding.Count > 0)\r\n                            {\r\n    " +
+                    "                            foreach (var addAction in operation.Object.ActionsTo" +
+                    "RunWhenAdding)\r\n                                    addAction.Run();\r\n          " +
+                    "                      operation.Object.ActionsToRunWhenAdding.Clear();\r\n        " +
+                    "                    }\r\n                        }\r\n                    }\r\n\r\n\t\t\t\t\t" +
+                    "if (toUpdate.Count > 0)\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tforeach (var operation in toUpdate)\r\n\t\t\t\t" +
+                    "\t\t{\r\n                            connection.Update(operation.Object);\r\n         " +
+                    "                   operation.Object.UpdatedProperties.Clear();\r\n                " +
+                    "        }\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (toDelete.Count > 0)\r\n\t\t\t\t\t{\r\n                    \t" +
+                    "foreach (var operation in toDelete)\r\n\t\t\t\t\t\t{\r\n                            var de" +
+                    "leted = connection.Delete(operation.Object);\r\n                            if (de" +
+                    "leted) { operation.Object.DatabaseModelStatus = ModelStatus.Deleted; }\r\n        " +
+                    "                }\r\n\t\t\t\t\t}\r\n                    _operations.Clear();\r\n           " +
+                    "     }\r\n            }\r\n            catch (Exception e)\r\n            {\r\n         " +
+                    "       throw new Exception(\"Unable to commit changes\", e);\r\n            }\r\n     " +
+                    "   }\r\n\r\n\r\n        public void Dispose()\r\n        {\r\n            if (Transaction " +
+                    "!= null)\r\n            {\r\n                Transaction.Dispose();\r\n            }\r\n" +
+                    "        }\r\n\r\n        public void AddOp(IOperation operation)\r\n        {\r\n       " +
+                    "     _operations.Add(operation);\r\n        }\r\n\r\n        public void AddObj(BaseMo" +
+                    "del obj)\r\n        {\r\n            _objects.Add(obj);\r\n        }    \r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
