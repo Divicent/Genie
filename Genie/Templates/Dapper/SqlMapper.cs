@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapper.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class SqlMapper : SqlMapperBase
     {
@@ -28,1530 +28,2165 @@ namespace Genie.Templates.Dapper
         {
             this.Write(@"using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Xml;
+using System.Xml.Linq;
+using Label = System.Reflection.Emit.Label;
 
 namespace ");
             
-            #line 16 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapper.tt"
+            #line 20 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Dapper, a light weight object mapper for A" +
-                    "DO.NET\r\n    /// </summary>\r\n    static class SqlMapper\r\n    {\r\n        /// <summ" +
-                    "ary>\r\n        /// Implement this interface to pass an arbitrary db specific set " +
-                    "of parameters to Dapper\r\n        /// </summary>\r\n        public interface IDynam" +
-                    "icParameters\r\n        {\r\n            /// <summary>\r\n            /// Add all the " +
-                    "parameters needed to the command just before it executes\r\n            /// </summ" +
-                    "ary>\r\n            /// <param name=\"command\">The raw command prior to execution</" +
-                    "param>\r\n            /// <param name=\"identity\">Information about the query</para" +
-                    "m>\r\n            void AddParameters(IDbCommand command, Identity identity);\r\n    " +
-                    "    }\r\n\r\n        /// <summary>\r\n        /// Implement this interface to change d" +
-                    "efault mapping of reader columns to type memebers\r\n        /// </summary>\r\n     " +
-                    "   public interface ITypeMap\r\n        {\r\n            /// <summary>\r\n            " +
-                    "/// Finds best constructor\r\n            /// </summary>\r\n            /// <param n" +
-                    "ame=\"names\">DataReader column names</param>\r\n            /// <param name=\"types\"" +
-                    ">DataReader column types</param>\r\n            /// <returns>Matching constructor " +
-                    "or default one</returns>\r\n            ConstructorInfo FindConstructor(string[] n" +
-                    "ames, Type[] types);\r\n\r\n            /// <summary>\r\n            /// Gets mapping " +
-                    "for constructor parameter\r\n            /// </summary>\r\n            /// <param na" +
-                    "me=\"constructor\">Constructor to resolve</param>\r\n            /// <param name=\"co" +
-                    "lumnName\">DataReader column name</param>\r\n            /// <returns>Mapping imple" +
-                    "mentation</returns>\r\n            IMemberMap GetConstructorParameter(ConstructorI" +
-                    "nfo constructor, string columnName);\r\n\r\n            /// <summary>\r\n            /" +
-                    "// Gets member mapping for column\r\n            /// </summary>\r\n            /// <" +
-                    "param name=\"columnName\">DataReader column name</param>\r\n            /// <returns" +
-                    ">Mapping implementation</returns>\r\n            IMemberMap GetMember(string colum" +
-                    "nName);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Implements this interfa" +
-                    "ce to provide custom member mapping\r\n        /// </summary>\r\n        public inte" +
-                    "rface IMemberMap\r\n        {\r\n            /// <summary>\r\n            /// Source D" +
-                    "ataReader column name\r\n            /// </summary>\r\n            string ColumnName" +
-                    " { get; }\r\n\r\n            /// <summary>\r\n            ///  Target member type\r\n   " +
-                    "         /// </summary>\r\n            Type MemberType { get; }\r\n\r\n            ///" +
-                    " <summary>\r\n            /// Target property\r\n            /// </summary>\r\n       " +
-                    "     PropertyInfo Property { get; }\r\n\r\n            /// <summary>\r\n            //" +
-                    "/ Target field\r\n            /// </summary>\r\n            FieldInfo Field { get; }" +
-                    "\r\n\r\n            /// <summary>\r\n            /// Target constructor parameter\r\n   " +
-                    "         /// </summary>\r\n            ParameterInfo Parameter { get; }\r\n        }" +
-                    "\r\n\r\n        static Link<Type, Action<IDbCommand, bool>> _bindByNameCache;\r\n     " +
-                    "   static Action<IDbCommand, bool> GetBindByName(Type commandType)\r\n        {\r\n " +
-                    "           if (commandType == null) return null; // GIGO\r\n            Action<IDb" +
-                    "Command, bool> action;\r\n            if (Link<Type, Action<IDbCommand, bool>>.Try" +
-                    "Get(_bindByNameCache, commandType, out action))\r\n            {\r\n                " +
-                    "return action;\r\n            }\r\n            var prop = commandType.GetProperty(\"B" +
-                    "indByName\", BindingFlags.Public | BindingFlags.Instance);\r\n            action = " +
-                    "null;\r\n            ParameterInfo[] indexers;\r\n            MethodInfo setter;\r\n  " +
-                    "          if (prop != null && prop.CanWrite && prop.PropertyType == typeof(bool)" +
-                    "\r\n                && ((indexers = prop.GetIndexParameters()) == null || indexers" +
-                    ".Length == 0)\r\n                && (setter = prop.GetSetMethod()) != null\r\n      " +
-                    "          )\r\n            {\r\n                var method = new DynamicMethod(comma" +
-                    "ndType.Name + \"_BindByName\", null, new[] { typeof(IDbCommand), typeof(bool) });\r" +
-                    "\n                var il = method.GetILGenerator();\r\n                il.Emit(OpCo" +
-                    "des.Ldarg_0);\r\n                il.Emit(OpCodes.Castclass, commandType);\r\n       " +
-                    "         il.Emit(OpCodes.Ldarg_1);\r\n                il.EmitCall(OpCodes.Callvirt" +
-                    ", setter, null);\r\n                il.Emit(OpCodes.Ret);\r\n                action " +
-                    "= (Action<IDbCommand, bool>)method.CreateDelegate(typeof(Action<IDbCommand, bool" +
-                    ">));\r\n            }\r\n            // cache it            \r\n            Link<Type," +
-                    " Action<IDbCommand, bool>>.TryAdd(ref _bindByNameCache, commandType, ref action)" +
-                    ";\r\n            return action;\r\n        }\r\n        /// <summary>\r\n        /// Thi" +
-                    "s is a micro-cache; suitable when the number of terms is controllable (a few hun" +
-                    "dred, for example),\r\n        /// and strictly append-only; you cannot change exi" +
-                    "sting values. All key matches are on **REFERENCE**\r\n        /// equality. The ty" +
-                    "pe is fully thread-safe.\r\n        /// </summary>\r\n        class Link<TKey, TValu" +
-                    "e> where TKey : class\r\n        {\r\n            public static bool TryGet(Link<TKe" +
-                    "y, TValue> link, TKey key, out TValue value)\r\n            {\r\n                whi" +
-                    "le (link != null)\r\n                {\r\n                    if (key == link.Key)\r\n" +
-                    "                    {\r\n                        value = link.Value;\r\n            " +
-                    "            return true;\r\n                    }\r\n                    link = link" +
-                    ".Tail;\r\n                }\r\n                value = default(TValue);\r\n           " +
-                    "     return false;\r\n            }\r\n            public static bool TryAdd(ref Lin" +
-                    "k<TKey, TValue> head, TKey key, ref TValue value)\r\n            {\r\n              " +
-                    "  bool tryAgain;\r\n                do\r\n                {\r\n                    var" +
-                    " snapshot = Interlocked.CompareExchange(ref head, null, null);\r\n                " +
-                    "    TValue found;\r\n                    if (TryGet(snapshot, key, out found))\r\n  " +
-                    "                  { // existing match; report the existing value instead\r\n      " +
-                    "                  value = found;\r\n                        return false;\r\n       " +
-                    "             }\r\n                    var newNode = new Link<TKey, TValue>(key, va" +
-                    "lue, snapshot);\r\n                    // did somebody move our cheese?\r\n         " +
-                    "           tryAgain = Interlocked.CompareExchange(ref head, newNode, snapshot) !" +
-                    "= snapshot;\r\n                } while (tryAgain);\r\n                return true;\r\n" +
-                    "            }\r\n            private Link(TKey key, TValue value, Link<TKey, TValu" +
-                    "e> tail)\r\n            {\r\n                Key = key;\r\n                Value = val" +
-                    "ue;\r\n                Tail = tail;\r\n            }\r\n\r\n            private TKey Key" +
-                    " { get; }\r\n            private TValue Value { get; }\r\n            private Link<T" +
-                    "Key, TValue> Tail { get; }\r\n        }\r\n        class CacheInfo\r\n        {\r\n     " +
-                    "       public DeserializerState Deserializer { get; set; }\r\n            public F" +
-                    "unc<IDataReader, object>[] OtherDeserializers { get; set; }\r\n            public " +
-                    "Action<IDbCommand, object> ParamReader { get; set; }\r\n            private int _h" +
-                    "itCount;\r\n            public int GetHitCount() { return Interlocked.CompareExcha" +
-                    "nge(ref _hitCount, 0, 0); }\r\n            public void RecordHit() { Interlocked.I" +
-                    "ncrement(ref _hitCount); }\r\n        }\r\n        static int GetColumnHash(IDataRea" +
-                    "der reader)\r\n        {\r\n            unchecked\r\n            {\r\n                in" +
-                    "t colCount = reader.FieldCount, hash = colCount;\r\n                for (int i = 0" +
-                    "; i < colCount; i++)\r\n                {   // binding code is only interested in " +
-                    "names - not types\r\n                    object tmp = reader.GetName(i);\r\n        " +
-                    "            hash = (hash * 31) + (tmp == null ? 0 : tmp.GetHashCode());\r\n       " +
-                    "         }\r\n                return hash;\r\n            }\r\n        }\r\n        stru" +
-                    "ct DeserializerState\r\n        {\r\n            public readonly int Hash;\r\n        " +
-                    "    public readonly Func<IDataReader, object> Func;\r\n\r\n            public Deseri" +
-                    "alizerState(int hash, Func<IDataReader, object> func)\r\n            {\r\n          " +
-                    "      Hash = hash;\r\n                Func = func;\r\n            }\r\n        }\r\n\r\n  " +
-                    "      /// <summary>\r\n        /// Called if the query cache is purged via PurgeQu" +
-                    "eryCache\r\n        /// </summary>\r\n        public static event EventHandler Query" +
-                    "CachePurged;\r\n        private static void OnQueryCachePurged()\r\n        {\r\n     " +
-                    "       var handler = QueryCachePurged;\r\n            if (handler != null) handler" +
-                    "(null, EventArgs.Empty);\r\n        }\r\n#if CSHARP30\r\n    private static readonly D" +
-                    "ictionary<Identity, CacheInfo> _queryCache = new Dictionary<Identity, CacheInfo>" +
-                    "();\r\n    // note: conflicts between readers and writers are so short-lived that " +
-                    "it isn\'t worth the overhead of\r\n    // ReaderWriterLockSlim etc; a simple lock i" +
-                    "s faster\r\n    private static void SetQueryCache(Identity key, CacheInfo value)\r\n" +
-                    "    {\r\n        lock (_queryCache) { _queryCache[key] = value; }\r\n    }\r\n    priv" +
-                    "ate static bool TryGetQueryCache(Identity key, out CacheInfo value)\r\n    {\r\n    " +
-                    "    lock (_queryCache) { return _queryCache.TryGetValue(key, out value); }\r\n    " +
-                    "}\r\n    private static void PurgeQueryCacheByType(Type type)\r\n    {\r\n        lock" +
-                    " (_queryCache)\r\n        {\r\n            var toRemove = _queryCache.Keys.Where(id " +
-                    "=> id.type == type).ToArray();\r\n            foreach (var key in toRemove)\r\n     " +
-                    "           _queryCache.Remove(key);\r\n        }\r\n    }\r\n    /// <summary>\r\n    //" +
-                    "/ Purge the query cache \r\n    /// </summary>\r\n    public static void PurgeQueryC" +
-                    "ache()\r\n    {\r\n        lock (_queryCache)\r\n        {\r\n                _queryCach" +
-                    "e.Clear();\r\n        }\r\n        OnQueryCachePurged();\r\n    }\r\n#else\r\n        stat" +
-                    "ic readonly ConcurrentDictionary<Identity, CacheInfo> QueryCache = new Concurren" +
-                    "tDictionary<Identity, CacheInfo>();\r\n        private static void SetQueryCache(I" +
-                    "dentity key, CacheInfo value)\r\n        {\r\n            if (Interlocked.Increment(" +
-                    "ref _collect) == CollectPerItems)\r\n            {\r\n                CollectCacheGa" +
-                    "rbage();\r\n            }\r\n            QueryCache[key] = value;\r\n        }\r\n\r\n    " +
-                    "    private static void CollectCacheGarbage()\r\n        {\r\n            try\r\n     " +
-                    "       {\r\n                foreach (var pair in QueryCache)\r\n                {\r\n " +
-                    "                   if (pair.Value.GetHitCount() <= CollectHitCountMin)\r\n        " +
-                    "            {\r\n                        CacheInfo cache;\r\n                       " +
-                    " QueryCache.TryRemove(pair.Key, out cache);\r\n                    }\r\n            " +
-                    "    }\r\n            }\r\n\r\n            finally\r\n            {\r\n                Inte" +
-                    "rlocked.Exchange(ref _collect, 0);\r\n            }\r\n        }\r\n\r\n        private " +
-                    "const int CollectPerItems = 1000, CollectHitCountMin = 0;\r\n        private stati" +
-                    "c int _collect;\r\n        private static bool TryGetQueryCache(Identity key, out " +
-                    "CacheInfo value)\r\n        {\r\n            if (QueryCache.TryGetValue(key, out val" +
-                    "ue))\r\n            {\r\n                value.RecordHit();\r\n                return " +
-                    "true;\r\n            }\r\n            return false;\r\n        }\r\n\r\n        /// <summa" +
-                    "ry>\r\n        /// Purge the query cache \r\n        /// </summary>\r\n        public " +
-                    "static void PurgeQueryCache()\r\n        {\r\n            QueryCache.Clear();\r\n     " +
-                    "       OnQueryCachePurged();\r\n        }\r\n\r\n        private static void PurgeQuer" +
-                    "yCacheByType(Type type)\r\n        {\r\n            foreach (var entry in QueryCache" +
-                    ")\r\n            {\r\n                CacheInfo cache;\r\n                if (entry.Ke" +
-                    "y.type == type)\r\n                    QueryCache.TryRemove(entry.Key, out cache);" +
-                    "\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n        /// Return a count " +
-                    "of all the cached queries by dapper\r\n        /// </summary>\r\n        /// <return" +
-                    "s></returns>\r\n        public static int GetCachedSQLCount()\r\n        {\r\n        " +
-                    "    return QueryCache.Count;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Re" +
-                    "turn a list of all the queries cached by dapper\r\n        /// </summary>\r\n       " +
-                    " /// <param name=\"ignoreHitCountAbove\"></param>\r\n        /// <returns></returns>" +
-                    "\r\n        public static IEnumerable<Tuple<string, string, int>> GetCachedSQL(int" +
-                    " ignoreHitCountAbove = int.MaxValue)\r\n        {\r\n            var data = QueryCac" +
-                    "he.Select(pair => Tuple.Create(pair.Key.connectionString, pair.Key.sql, pair.Val" +
-                    "ue.GetHitCount()));\r\n            if (ignoreHitCountAbove < int.MaxValue) data = " +
-                    "data.Where(tuple => tuple.Item3 <= ignoreHitCountAbove);\r\n            return dat" +
-                    "a;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Deep diagnostics only: find " +
-                    "any hash collisions in the cache\r\n        /// </summary>\r\n        /// <returns><" +
-                    "/returns>\r\n        public static IEnumerable<Tuple<int, int>> GetHashCollissions" +
-                    "()\r\n        {\r\n            var counts = new Dictionary<int, int>();\r\n           " +
-                    " foreach (var key in QueryCache.Keys)\r\n            {\r\n                int count;" +
-                    "\r\n                if (!counts.TryGetValue(key.hashCode, out count))\r\n           " +
-                    "     {\r\n                    counts.Add(key.hashCode, 1);\r\n                }\r\n   " +
-                    "             else\r\n                {\r\n                    counts[key.hashCode] =" +
-                    " count + 1;\r\n                }\r\n            }\r\n            return from pair in c" +
-                    "ounts\r\n                    where pair.Value > 1\r\n                    select Tupl" +
-                    "e.Create(pair.Key, pair.Value);\r\n\r\n        }\r\n#endif\r\n\r\n\r\n        static readonl" +
-                    "y Dictionary<Type, DbType> typeMap;\r\n\r\n        static SqlMapper()\r\n        {\r\n  " +
-                    "          typeMap = new Dictionary<Type, DbType>();\r\n            typeMap[typeof(" +
-                    "byte)] = DbType.Byte;\r\n            typeMap[typeof(sbyte)] = DbType.SByte;\r\n     " +
-                    "       typeMap[typeof(short)] = DbType.Int16;\r\n            typeMap[typeof(ushort" +
-                    ")] = DbType.UInt16;\r\n            typeMap[typeof(int)] = DbType.Int32;\r\n         " +
-                    "   typeMap[typeof(uint)] = DbType.UInt32;\r\n            typeMap[typeof(long)] = D" +
-                    "bType.Int64;\r\n            typeMap[typeof(ulong)] = DbType.UInt64;\r\n            t" +
-                    "ypeMap[typeof(float)] = DbType.Single;\r\n            typeMap[typeof(double)] = Db" +
-                    "Type.Double;\r\n            typeMap[typeof(decimal)] = DbType.Decimal;\r\n          " +
-                    "  typeMap[typeof(bool)] = DbType.Boolean;\r\n            typeMap[typeof(string)] =" +
-                    " DbType.String;\r\n            typeMap[typeof(char)] = DbType.StringFixedLength;\r\n" +
-                    "            typeMap[typeof(Guid)] = DbType.Guid;\r\n            typeMap[typeof(Dat" +
-                    "eTime)] = DbType.DateTime;\r\n            typeMap[typeof(DateTimeOffset)] = DbType" +
-                    ".DateTimeOffset;\r\n            typeMap[typeof(TimeSpan)] = DbType.Time;\r\n        " +
-                    "    typeMap[typeof(byte[])] = DbType.Binary;\r\n            typeMap[typeof(byte?)]" +
-                    " = DbType.Byte;\r\n            typeMap[typeof(sbyte?)] = DbType.SByte;\r\n          " +
-                    "  typeMap[typeof(short?)] = DbType.Int16;\r\n            typeMap[typeof(ushort?)] " +
-                    "= DbType.UInt16;\r\n            typeMap[typeof(int?)] = DbType.Int32;\r\n           " +
-                    " typeMap[typeof(uint?)] = DbType.UInt32;\r\n            typeMap[typeof(long?)] = D" +
-                    "bType.Int64;\r\n            typeMap[typeof(ulong?)] = DbType.UInt64;\r\n            " +
-                    "typeMap[typeof(float?)] = DbType.Single;\r\n            typeMap[typeof(double?)] =" +
-                    " DbType.Double;\r\n            typeMap[typeof(decimal?)] = DbType.Decimal;\r\n      " +
-                    "      typeMap[typeof(bool?)] = DbType.Boolean;\r\n            typeMap[typeof(char?" +
-                    ")] = DbType.StringFixedLength;\r\n            typeMap[typeof(Guid?)] = DbType.Guid" +
-                    ";\r\n            typeMap[typeof(DateTime?)] = DbType.DateTime;\r\n            typeMa" +
-                    "p[typeof(DateTimeOffset?)] = DbType.DateTimeOffset;\r\n            typeMap[typeof(" +
-                    "TimeSpan?)] = DbType.Time;\r\n            typeMap[typeof(Object)] = DbType.Object;" +
-                    "\r\n        }\r\n        /// <summary>\r\n        /// Configire the specified type to " +
-                    "be mapped to a given db-type\r\n        /// </summary>\r\n        public static void" +
-                    " AddTypeMap(Type type, DbType dbType)\r\n        {\r\n            typeMap[type] = db" +
-                    "Type;\r\n        }\r\n\r\n        internal const string LinqBinary = \"System.Data.Linq" +
-                    ".Binary\";\r\n        internal static DbType LookupDbType(Type type, string name)\r\n" +
-                    "        {\r\n            DbType dbType;\r\n            var nullUnderlyingType = Null" +
-                    "able.GetUnderlyingType(type);\r\n            if (nullUnderlyingType != null) type " +
-                    "= nullUnderlyingType;\r\n            if (type.IsEnum && !typeMap.ContainsKey(type)" +
-                    ")\r\n            {\r\n                type = Enum.GetUnderlyingType(type);\r\n        " +
-                    "    }\r\n            if (typeMap.TryGetValue(type, out dbType))\r\n            {\r\n  " +
-                    "              return dbType;\r\n            }\r\n            if (type.FullName == Li" +
-                    "nqBinary)\r\n            {\r\n                return DbType.Binary;\r\n            }\r\n" +
-                    "            if (typeof(IEnumerable).IsAssignableFrom(type))\r\n            {\r\n    " +
-                    "            return DynamicParameters.EnumerableMultiParameter;\r\n            }\r\n\r" +
-                    "\n\r\n            throw new NotSupportedException(string.Format(\"The member {0} of " +
-                    "type {1} cannot be used as a parameter value\", name, type));\r\n        }\r\n\r\n\r\n   " +
-                    "     /// <summary>\r\n        /// Identity of a cached query in Dapper, used for e" +
-                    "xtensability\r\n        /// </summary>\r\n        public partial class Identity : IE" +
-                    "quatable<Identity>\r\n        {\r\n            internal Identity ForGrid(Type primar" +
-                    "yType, int gridIndex)\r\n            {\r\n                return new Identity(sql, c" +
-                    "ommandType, connectionString, primaryType, parametersType, null, gridIndex);\r\n  " +
-                    "          }\r\n\r\n            internal Identity ForGrid(Type primaryType, Type[] ot" +
-                    "herTypes, int gridIndex)\r\n            {\r\n                return new Identity(sql" +
-                    ", commandType, connectionString, primaryType, parametersType, otherTypes, gridIn" +
-                    "dex);\r\n            }\r\n            /// <summary>\r\n            /// Create an ident" +
-                    "ity for use with DynamicParameters, internal use only\r\n            /// </summary" +
-                    ">\r\n            /// <param name=\"type\"></param>\r\n            /// <returns></retur" +
-                    "ns>\r\n            public Identity ForDynamicParameters(Type type)\r\n            {\r" +
-                    "\n                return new Identity(sql, commandType, connectionString, this.ty" +
-                    "pe, type, null, -1);\r\n            }\r\n\r\n            internal Identity(string sql," +
-                    " CommandType? commandType, IDbConnection connection, Type type, Type parametersT" +
-                    "ype, Type[] otherTypes)\r\n                : this(sql, commandType, connection.Con" +
-                    "nectionString, type, parametersType, otherTypes, 0)\r\n            { }\r\n          " +
-                    "  private Identity(string sql, CommandType? commandType, string connectionString" +
-                    ", Type type, Type parametersType, Type[] otherTypes, int gridIndex)\r\n           " +
-                    " {\r\n                this.sql = sql;\r\n                this.commandType = commandT" +
-                    "ype;\r\n                this.connectionString = connectionString;\r\n               " +
-                    " this.type = type;\r\n                this.parametersType = parametersType;\r\n     " +
-                    "           this.gridIndex = gridIndex;\r\n                unchecked\r\n             " +
-                    "   {\r\n                    hashCode = 17; // we *know* we are using this in a dic" +
-                    "tionary, so pre-compute this\r\n                    hashCode = hashCode * 23 + com" +
-                    "mandType.GetHashCode();\r\n                    hashCode = hashCode * 23 + gridInde" +
-                    "x.GetHashCode();\r\n                    hashCode = hashCode * 23 + (sql == null ? " +
-                    "0 : sql.GetHashCode());\r\n                    hashCode = hashCode * 23 + (type ==" +
-                    " null ? 0 : type.GetHashCode());\r\n                    if (otherTypes != null)\r\n " +
-                    "                   {\r\n                        foreach (var t in otherTypes)\r\n   " +
-                    "                     {\r\n                            hashCode = hashCode * 23 + (" +
-                    "t == null ? 0 : t.GetHashCode());\r\n                        }\r\n                  " +
-                    "  }\r\n                    hashCode = hashCode * 23 + (connectionString == null ? " +
-                    "0 : connectionString.GetHashCode());\r\n                    hashCode = hashCode * " +
-                    "23 + (parametersType == null ? 0 : parametersType.GetHashCode());\r\n             " +
-                    "   }\r\n            }\r\n\r\n            /// <summary>\r\n            /// \r\n            " +
-                    "/// </summary>\r\n            /// <param name=\"obj\"></param>\r\n            /// <ret" +
-                    "urns></returns>\r\n            public override bool Equals(object obj)\r\n          " +
-                    "  {\r\n                return Equals(obj as Identity);\r\n            }\r\n           " +
-                    " /// <summary>\r\n            /// The sql\r\n            /// </summary>\r\n           " +
-                    " public readonly string sql;\r\n            /// <summary>\r\n            /// The com" +
-                    "mand type \r\n            /// </summary>\r\n            public readonly CommandType?" +
-                    " commandType;\r\n\r\n            /// <summary>\r\n            /// \r\n            /// </" +
-                    "summary>\r\n            public readonly int hashCode, gridIndex;\r\n            /// " +
-                    "<summary>\r\n            /// \r\n            /// </summary>\r\n            public read" +
-                    "only Type type;\r\n            /// <summary>\r\n            /// \r\n            /// </" +
-                    "summary>\r\n            public readonly string connectionString;\r\n            /// " +
-                    "<summary>\r\n            /// \r\n            /// </summary>\r\n            public read" +
-                    "only Type parametersType;\r\n            /// <summary>\r\n            /// \r\n        " +
-                    "    /// </summary>\r\n            /// <returns></returns>\r\n            public over" +
-                    "ride int GetHashCode()\r\n            {\r\n                return hashCode;\r\n       " +
-                    "     }\r\n            /// <summary>\r\n            /// Compare 2 Identity objects\r\n " +
-                    "           /// </summary>\r\n            /// <param name=\"other\"></param>\r\n       " +
-                    "     /// <returns></returns>\r\n            public bool Equals(Identity other)\r\n  " +
-                    "          {\r\n                return\r\n                    other != null &&\r\n     " +
-                    "               gridIndex == other.gridIndex &&\r\n                    type == othe" +
-                    "r.type &&\r\n                    sql == other.sql &&\r\n                    commandT" +
-                    "ype == other.commandType &&\r\n                    connectionString == other.conne" +
-                    "ctionString &&\r\n                    parametersType == other.parametersType;\r\n   " +
-                    "         }\r\n        }\r\n\r\n#if CSHARP30\r\n    /// <summary>\r\n    /// Execute parame" +
-                    "terized SQL  \r\n    /// </summary>\r\n    /// <returns>Number of rows affected</ret" +
-                    "urns>\r\n    public static int Execute(this IDbConnection cnn, string sql, object " +
-                    "param)\r\n    {\r\n        return Execute(cnn, sql, param, null, null, null);\r\n    }" +
-                    "\r\n\r\n    /// <summary>\r\n    /// Execute parameterized SQL\r\n    /// </summary>\r\n  " +
-                    "  /// <returns>Number of rows affected</returns>\r\n    public static int Execute(" +
-                    "this IDbConnection cnn, string sql, object param, IDbTransaction transaction)\r\n " +
-                    "   {\r\n        return Execute(cnn, sql, param, transaction, null, null);\r\n    }\r\n" +
-                    "\r\n    /// <summary>\r\n    /// Execute parameterized SQL\r\n    /// </summary>\r\n    " +
-                    "/// <returns>Number of rows affected</returns>\r\n    public static int Execute(th" +
-                    "is IDbConnection cnn, string sql, object param, CommandType commandType)\r\n    {\r" +
-                    "\n        return Execute(cnn, sql, param, null, null, commandType);\r\n    }\r\n\r\n   " +
-                    " /// <summary>\r\n    /// Execute parameterized SQL\r\n    /// </summary>\r\n    /// <" +
-                    "returns>Number of rows affected</returns>\r\n    public static int Execute(this ID" +
-                    "bConnection cnn, string sql, object param, IDbTransaction transaction, CommandTy" +
-                    "pe commandType)\r\n    {\r\n        return Execute(cnn, sql, param, transaction, nul" +
-                    "l, commandType);\r\n    }\r\n\r\n    /// <summary>\r\n    /// Executes a query, returnin" +
-                    "g the data typed as per T\r\n    /// </summary>\r\n    /// <returns>A sequence of da" +
-                    "ta of the supplied type; if a basic type (int, string, etc) is queried then the " +
-                    "data from the first column in assumed, otherwise an instance is\r\n    /// created" +
-                    " per row, and a direct column-name===member-name mapping is assumed (case insens" +
-                    "itive).\r\n    /// </returns>\r\n    public static IEnumerable<T> Query<T>(this IDbC" +
-                    "onnection cnn, string sql, object param)\r\n    {\r\n        return Query<T>(cnn, sq" +
-                    "l, param, null, true, null, null);\r\n    }\r\n\r\n    /// <summary>\r\n    /// Executes" +
-                    " a query, returning the data typed as per T\r\n    /// </summary>\r\n    /// <return" +
-                    "s>A sequence of data of the supplied type; if a basic type (int, string, etc) is" +
-                    " queried then the data from the first column in assumed, otherwise an instance i" +
-                    "s\r\n    /// created per row, and a direct column-name===member-name mapping is as" +
-                    "sumed (case insensitive).\r\n    /// </returns>\r\n    public static IEnumerable<T> " +
-                    "Query<T>(this IDbConnection cnn, string sql, object param, IDbTransaction transa" +
-                    "ction)\r\n    {\r\n        return Query<T>(cnn, sql, param, transaction, true, null," +
-                    " null);\r\n    }\r\n\r\n    /// <summary>\r\n    /// Executes a query, returning the dat" +
-                    "a typed as per T\r\n    /// </summary>\r\n    /// <returns>A sequence of data of the" +
-                    " supplied type; if a basic type (int, string, etc) is queried then the data from" +
-                    " the first column in assumed, otherwise an instance is\r\n    /// created per row," +
-                    " and a direct column-name===member-name mapping is assumed (case insensitive).\r\n" +
-                    "    /// </returns>\r\n    public static IEnumerable<T> Query<T>(this IDbConnection" +
-                    " cnn, string sql, object param, CommandType commandType)\r\n    {\r\n        return " +
-                    "Query<T>(cnn, sql, param, null, true, null, commandType);\r\n    }\r\n\r\n    /// <sum" +
-                    "mary>\r\n    /// Executes a query, returning the data typed as per T\r\n    /// </su" +
-                    "mmary>\r\n    /// <returns>A sequence of data of the supplied type; if a basic typ" +
-                    "e (int, string, etc) is queried then the data from the first column in assumed, " +
-                    "otherwise an instance is\r\n    /// created per row, and a direct column-name===me" +
-                    "mber-name mapping is assumed (case insensitive).\r\n    /// </returns>\r\n    public" +
-                    " static IEnumerable<T> Query<T>(this IDbConnection cnn, string sql, object param" +
-                    ", IDbTransaction transaction, CommandType commandType)\r\n    {\r\n        return Qu" +
-                    "ery<T>(cnn, sql, param, transaction, true, null, commandType);\r\n    }\r\n\r\n    ///" +
-                    " <summary>\r\n    /// Execute a command that returns multiple result sets, and acc" +
-                    "ess each in turn\r\n    /// </summary>\r\n    public static GridReader QueryMultiple" +
-                    "(this IDbConnection cnn, string sql, object param, IDbTransaction transaction) \r" +
-                    "\n    {\r\n        return QueryMultiple(cnn, sql, param, transaction, null, null);\r" +
-                    "\n    }\r\n\r\n    /// <summary>\r\n    /// Execute a command that returns multiple res" +
-                    "ult sets, and access each in turn\r\n    /// </summary>\r\n    public static GridRea" +
-                    "der QueryMultiple(this IDbConnection cnn, string sql, object param, CommandType " +
-                    "commandType) \r\n    {\r\n        return QueryMultiple(cnn, sql, param, null, null, " +
-                    "commandType);\r\n    }\r\n\r\n    /// <summary>\r\n    /// Execute a command that return" +
-                    "s multiple result sets, and access each in turn\r\n    /// </summary>\r\n    public " +
-                    "static GridReader QueryMultiple(this IDbConnection cnn, string sql, object param" +
-                    ", IDbTransaction transaction, CommandType commandType)\r\n    {\r\n        return Qu" +
-                    "eryMultiple(cnn, sql, param, transaction, null, commandType);\r\n    }\r\n#endif\r\n  " +
-                    "      /// <summary>\r\n        /// Execute parameterized SQL  \r\n        /// </summ" +
-                    "ary>\r\n        /// <returns>Number of rows affected</returns>\r\n        public sta" +
-                    "tic int Execute(\r\n#if CSHARP30\r\n        this IDbConnection cnn, string sql, obje" +
-                    "ct param, IDbTransaction transaction, int? commandTimeout, CommandType? commandT" +
-                    "ype\r\n#else\r\nthis IDbConnection cnn, string sql, dynamic param = null, IDbTransac" +
+                    "DO.NET\r\n    /// </summary>\r\n    public static partial class SqlMapper\r\n    {\r\n  " +
+                    "      static int GetColumnHash(IDataReader reader, int startBound = 0, int lengt" +
+                    "h = -1)\r\n        {\r\n            unchecked\r\n            {\r\n                int ma" +
+                    "x = length < 0 ? reader.FieldCount : startBound + length;\r\n                int h" +
+                    "ash = (-37 * startBound) + max;\r\n                for (int i = startBound; i < ma" +
+                    "x; i++)\r\n                {\r\n                    object tmp = reader.GetName(i);\r" +
+                    "\n                    hash = -79 * ((hash * 31) + (tmp?.GetHashCode() ?? 0)) + (r" +
+                    "eader.GetFieldType(i)?.GetHashCode() ?? 0);\r\n                }\r\n                " +
+                    "return hash;\r\n            }\r\n        }\r\n\r\n\r\n        /// <summary>\r\n        /// C" +
+                    "alled if the query cache is purged via PurgeQueryCache\r\n        /// </summary>\r\n" +
+                    "        public static event EventHandler QueryCachePurged;\r\n        private stat" +
+                    "ic void OnQueryCachePurged()\r\n        {\r\n            var handler = QueryCachePur" +
+                    "ged;\r\n            handler?.Invoke(null, EventArgs.Empty);\r\n        }\r\n\r\n        " +
+                    "static readonly System.Collections.Concurrent.ConcurrentDictionary<Identity, Cac" +
+                    "heInfo> _queryCache = new System.Collections.Concurrent.ConcurrentDictionary<Ide" +
+                    "ntity, CacheInfo>();\r\n        private static void SetQueryCache(Identity key, Ca" +
+                    "cheInfo value)\r\n        {\r\n            if (Interlocked.Increment(ref collect) ==" +
+                    " COLLECT_PER_ITEMS)\r\n            {\r\n                CollectCacheGarbage();\r\n    " +
+                    "        }\r\n            _queryCache[key] = value;\r\n        }\r\n\r\n        private s" +
+                    "tatic void CollectCacheGarbage()\r\n        {\r\n            try\r\n            {\r\n   " +
+                    "             foreach (var pair in _queryCache)\r\n                {\r\n             " +
+                    "       if (pair.Value.GetHitCount() <= COLLECT_HIT_COUNT_MIN)\r\n                 " +
+                    "   {\r\n                        CacheInfo cache;\r\n                        _queryCa" +
+                    "che.TryRemove(pair.Key, out cache);\r\n                    }\r\n                }\r\n " +
+                    "           }\r\n\r\n            finally\r\n            {\r\n                Interlocked." +
+                    "Exchange(ref collect, 0);\r\n            }\r\n        }\r\n\r\n        private const int" +
+                    " COLLECT_PER_ITEMS = 1000, COLLECT_HIT_COUNT_MIN = 0;\r\n        private static in" +
+                    "t collect;\r\n        private static bool TryGetQueryCache(Identity key, out Cache" +
+                    "Info value)\r\n        {\r\n            if (_queryCache.TryGetValue(key, out value))" +
+                    "\r\n            {\r\n                value.RecordHit();\r\n                return true" +
+                    ";\r\n            }\r\n            value = null;\r\n            return false;\r\n        " +
+                    "}\r\n\r\n        /// <summary>\r\n        /// Purge the query cache\r\n        /// </sum" +
+                    "mary>\r\n        public static void PurgeQueryCache()\r\n        {\r\n            _que" +
+                    "ryCache.Clear();\r\n            TypeDeserializerCache.Purge();\r\n            OnQuer" +
+                    "yCachePurged();\r\n        }\r\n\r\n        private static void PurgeQueryCacheByType(" +
+                    "Type type)\r\n        {\r\n            foreach (var entry in _queryCache)\r\n         " +
+                    "   {\r\n                CacheInfo cache;\r\n                if (entry.Key.type == ty" +
+                    "pe)\r\n                    _queryCache.TryRemove(entry.Key, out cache);\r\n         " +
+                    "   }\r\n            TypeDeserializerCache.Purge(type);\r\n        }\r\n\r\n        /// <" +
+                    "summary>\r\n        /// Return a count of all the cached queries by dapper\r\n      " +
+                    "  /// </summary>\r\n        /// <returns></returns>\r\n        public static int Get" +
+                    "CachedSQLCount()\r\n        {\r\n            return _queryCache.Count;\r\n        }\r\n\r" +
+                    "\n        /// <summary>\r\n        /// Return a list of all the queries cached by d" +
+                    "apper\r\n        /// </summary>\r\n        /// <param name=\"ignoreHitCountAbove\"></p" +
+                    "aram>\r\n        /// <returns></returns>\r\n        public static IEnumerable<Tuple<" +
+                    "string, string, int>> GetCachedSQL(int ignoreHitCountAbove = int.MaxValue)\r\n    " +
+                    "    {\r\n            var data = _queryCache.Select(pair => Tuple.Create(pair.Key.c" +
+                    "onnectionString, pair.Key.sql, pair.Value.GetHitCount()));\r\n            if (igno" +
+                    "reHitCountAbove < int.MaxValue) data = data.Where(tuple => tuple.Item3 <= ignore" +
+                    "HitCountAbove);\r\n            return data;\r\n        }\r\n\r\n        /// <summary>\r\n " +
+                    "       /// Deep diagnostics only: find any hash collisions in the cache\r\n       " +
+                    " /// </summary>\r\n        /// <returns></returns>\r\n        public static IEnumera" +
+                    "ble<Tuple<int, int>> GetHashCollissions()\r\n        {\r\n            var counts = n" +
+                    "ew Dictionary<int, int>();\r\n            foreach (var key in _queryCache.Keys)\r\n " +
+                    "           {\r\n                int count;\r\n                if (!counts.TryGetValu" +
+                    "e(key.hashCode, out count))\r\n                {\r\n                    counts.Add(k" +
+                    "ey.hashCode, 1);\r\n                }\r\n                else\r\n                {\r\n  " +
+                    "                  counts[key.hashCode] = count + 1;\r\n                }\r\n        " +
+                    "    }\r\n            return from pair in counts\r\n                   where pair.Val" +
+                    "ue > 1\r\n                   select Tuple.Create(pair.Key, pair.Value);\r\n\r\n       " +
+                    " }\r\n\r\n\r\n        static Dictionary<Type, DbType> typeMap;\r\n\r\n        static SqlMa" +
+                    "pper()\r\n        {\r\n            typeMap = new Dictionary<Type, DbType>\r\n         " +
+                    "   {\r\n                [typeof(byte)] = DbType.Byte,\r\n                [typeof(sby" +
+                    "te)] = DbType.SByte,\r\n                [typeof(short)] = DbType.Int16,\r\n         " +
+                    "       [typeof(ushort)] = DbType.UInt16,\r\n                [typeof(int)] = DbType" +
+                    ".Int32,\r\n                [typeof(uint)] = DbType.UInt32,\r\n                [typeo" +
+                    "f(long)] = DbType.Int64,\r\n                [typeof(ulong)] = DbType.UInt64,\r\n    " +
+                    "            [typeof(float)] = DbType.Single,\r\n                [typeof(double)] =" +
+                    " DbType.Double,\r\n                [typeof(decimal)] = DbType.Decimal,\r\n          " +
+                    "      [typeof(bool)] = DbType.Boolean,\r\n                [typeof(string)] = DbTyp" +
+                    "e.String,\r\n                [typeof(char)] = DbType.StringFixedLength,\r\n         " +
+                    "       [typeof(Guid)] = DbType.Guid,\r\n                [typeof(DateTime)] = DbTyp" +
+                    "e.DateTime,\r\n                [typeof(DateTimeOffset)] = DbType.DateTimeOffset,\r\n" +
+                    "                [typeof(TimeSpan)] = DbType.Time,\r\n                [typeof(byte[" +
+                    "])] = DbType.Binary,\r\n                [typeof(byte?)] = DbType.Byte,\r\n          " +
+                    "      [typeof(sbyte?)] = DbType.SByte,\r\n                [typeof(short?)] = DbTyp" +
+                    "e.Int16,\r\n                [typeof(ushort?)] = DbType.UInt16,\r\n                [t" +
+                    "ypeof(int?)] = DbType.Int32,\r\n                [typeof(uint?)] = DbType.UInt32,\r\n" +
+                    "                [typeof(long?)] = DbType.Int64,\r\n                [typeof(ulong?)" +
+                    "] = DbType.UInt64,\r\n                [typeof(float?)] = DbType.Single,\r\n         " +
+                    "       [typeof(double?)] = DbType.Double,\r\n                [typeof(decimal?)] = " +
+                    "DbType.Decimal,\r\n                [typeof(bool?)] = DbType.Boolean,\r\n            " +
+                    "    [typeof(char?)] = DbType.StringFixedLength,\r\n                [typeof(Guid?)]" +
+                    " = DbType.Guid,\r\n                [typeof(DateTime?)] = DbType.DateTime,\r\n       " +
+                    "         [typeof(DateTimeOffset?)] = DbType.DateTimeOffset,\r\n                [ty" +
+                    "peof(TimeSpan?)] = DbType.Time,\r\n                [typeof(object)] = DbType.Objec" +
+                    "t\r\n            };\r\n            ResetTypeHandlers(false);\r\n        }\r\n\r\n        /" +
+                    "// <summary>\r\n        /// Clear the registered type handlers\r\n        /// </summ" +
+                    "ary>\r\n        public static void ResetTypeHandlers()\r\n        {\r\n            Res" +
+                    "etTypeHandlers(true);\r\n        }\r\n        private static void ResetTypeHandlers(" +
+                    "bool clone)\r\n        {\r\n            typeHandlers = new Dictionary<Type, ITypeHan" +
+                    "dler>();\r\n#if !COREFX\r\n            AddTypeHandlerImpl(typeof(DataTable), new Dat" +
+                    "aTableHandler(), clone);\r\n            try // see https://github.com/StackExchang" +
+                    "e/dapper-dot-net/issues/424\r\n            {\r\n                AddSqlDataRecordsTyp" +
+                    "eHandler(clone);\r\n            }\r\n            catch { }\r\n#endif\r\n            AddT" +
+                    "ypeHandlerImpl(typeof(XmlDocument), new XmlDocumentHandler(), clone);\r\n         " +
+                    "   AddTypeHandlerImpl(typeof(XDocument), new XDocumentHandler(), clone);\r\n      " +
+                    "      AddTypeHandlerImpl(typeof(XElement), new XElementHandler(), clone);\r\n\r\n   " +
+                    "         allowedCommandBehaviors = DefaultAllowedCommandBehaviors;\r\n        }\r\n#" +
+                    "if !COREFX\r\n        [MethodImpl(MethodImplOptions.NoInlining)]\r\n        private " +
+                    "static void AddSqlDataRecordsTypeHandler(bool clone)\r\n        {\r\n            Add" +
+                    "TypeHandlerImpl(typeof(IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord>), n" +
+                    "ew SqlDataRecordHandler(), clone);\r\n        }\r\n#endif\r\n\r\n        /// <summary>\r\n" +
+                    "        /// Configure the specified type to be mapped to a given db-type\r\n      " +
+                    "  /// </summary>\r\n        public static void AddTypeMap(Type type, DbType dbType" +
+                    ")\r\n        {\r\n            // use clone, mutate, replace to avoid threading issue" +
+                    "s\r\n            var snapshot = typeMap;\r\n\r\n            DbType oldValue;\r\n        " +
+                    "    if (snapshot.TryGetValue(type, out oldValue) && oldValue == dbType) return; " +
+                    "// nothing to do\r\n\r\n            var newCopy = new Dictionary<Type, DbType>(snaps" +
+                    "hot) { [type] = dbType };\r\n            typeMap = newCopy;\r\n        }\r\n\r\n        " +
+                    "/// <summary>\r\n        /// Configure the specified type to be processed by a cus" +
+                    "tom handler\r\n        /// </summary>\r\n        public static void AddTypeHandler(T" +
+                    "ype type, ITypeHandler handler)\r\n        {\r\n            AddTypeHandlerImpl(type," +
+                    " handler, true);\r\n        }\r\n\r\n        internal static bool HasTypeHandler(Type " +
+                    "type)\r\n        {\r\n            return typeHandlers.ContainsKey(type);\r\n        }\r" +
+                    "\n\r\n        /// <summary>\r\n        /// Configure the specified type to be process" +
+                    "ed by a custom handler\r\n        /// </summary>\r\n        public static void AddTy" +
+                    "peHandlerImpl(Type type, ITypeHandler handler, bool clone)\r\n        {\r\n         " +
+                    "   if (type == null) throw new ArgumentNullException(\"type\");\r\n\r\n            Typ" +
+                    "e secondary = null;\r\n            if (type.IsValueType)\r\n            {\r\n         " +
+                    "       var underlying = Nullable.GetUnderlyingType(type);\r\n                if (u" +
+                    "nderlying == null)\r\n                {\r\n                    secondary = typeof(Nu" +
+                    "llable<>).MakeGenericType(type); // the Nullable<T>\r\n                    // type" +
+                    " is already the T\r\n                }\r\n                else\r\n                {\r\n " +
+                    "                   secondary = type; // the Nullable<T>\r\n                    typ" +
+                    "e = underlying; // the T\r\n                }\r\n            }\r\n\r\n            var sn" +
+                    "apshot = typeHandlers;\r\n            ITypeHandler oldValue;\r\n            if (snap" +
+                    "shot.TryGetValue(type, out oldValue) && handler == oldValue) return; // nothing " +
+                    "to do\r\n\r\n            var newCopy = clone ? new Dictionary<Type, ITypeHandler>(sn" +
+                    "apshot) : snapshot;\r\n\r\n#pragma warning disable 618\r\n            typeof(TypeHandl" +
+                    "erCache<>).MakeGenericType(type).GetMethod(nameof(TypeHandlerCache<int>.SetHandl" +
+                    "er), BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { h" +
+                    "andler });\r\n            if (secondary != null)\r\n            {\r\n                t" +
+                    "ypeof(TypeHandlerCache<>).MakeGenericType(secondary).GetMethod(nameof(TypeHandle" +
+                    "rCache<int>.SetHandler), BindingFlags.Static | BindingFlags.NonPublic).Invoke(nu" +
+                    "ll, new object[] { handler });\r\n            }\r\n#pragma warning restore 618\r\n    " +
+                    "        if (handler == null)\r\n            {\r\n                newCopy.Remove(type" +
+                    ");\r\n                if (secondary != null) newCopy.Remove(secondary);\r\n         " +
+                    "   }\r\n            else\r\n            {\r\n                newCopy[type] = handler;\r" +
+                    "\n                if (secondary != null) newCopy[secondary] = handler;\r\n         " +
+                    "   }\r\n            typeHandlers = newCopy;\r\n        }\r\n\r\n        /// <summary>\r\n " +
+                    "       /// Configure the specified type to be processed by a custom handler\r\n   " +
+                    "     /// </summary>\r\n        public static void AddTypeHandler<T>(TypeHandler<T>" +
+                    " handler)\r\n        {\r\n            AddTypeHandlerImpl(typeof(T), handler, true);\r" +
+                    "\n        }\r\n\r\n        private static Dictionary<Type, ITypeHandler> typeHandlers" +
+                    ";\r\n\r\n        internal const string LinqBinary = \"System.Data.Linq.Binary\";\r\n\r\n  " +
+                    "      private const string ObsoleteInternalUsageOnly = \"This method is for inter" +
+                    "nal use only\";\r\n\r\n        /// <summary>\r\n        /// Get the DbType that maps to" +
+                    " a given value\r\n        /// </summary>\r\n        [Obsolete(ObsoleteInternalUsageO" +
+                    "nly, false)]\r\n#if !COREFX\r\n        [Browsable(false)]\r\n#endif\r\n        [EditorBr" +
+                    "owsable(EditorBrowsableState.Never)]\r\n        public static DbType GetDbType(obj" +
+                    "ect value)\r\n        {\r\n            if (value == null || value is DBNull) return " +
+                    "DbType.Object;\r\n\r\n            ITypeHandler handler;\r\n            return LookupDb" +
+                    "Type(value.GetType(), \"n/a\", false, out handler);\r\n\r\n        }\r\n\r\n        /// <s" +
+                    "ummary>\r\n        /// OBSOLETE: For internal usage only. Lookup the DbType and ha" +
+                    "ndler for a given Type and member\r\n        /// </summary>\r\n        [Obsolete(Obs" +
+                    "oleteInternalUsageOnly, false)]\r\n#if !COREFX\r\n        [Browsable(false)]\r\n#endif" +
+                    "\r\n        [EditorBrowsable(EditorBrowsableState.Never)]\r\n        public static D" +
+                    "bType LookupDbType(Type type, string name, bool demand, out ITypeHandler handler" +
+                    ")\r\n        {\r\n            DbType dbType;\r\n            handler = null;\r\n         " +
+                    "   var nullUnderlyingType = Nullable.GetUnderlyingType(type);\r\n            if (n" +
+                    "ullUnderlyingType != null) type = nullUnderlyingType;\r\n            if (type.IsEn" +
+                    "um && !typeMap.ContainsKey(type))\r\n            {\r\n                type = Enum.Ge" +
+                    "tUnderlyingType(type);\r\n            }\r\n            if (typeMap.TryGetValue(type," +
+                    " out dbType))\r\n            {\r\n                return dbType;\r\n            }\r\n   " +
+                    "         if (type.FullName == LinqBinary)\r\n            {\r\n                return" +
+                    " DbType.Binary;\r\n            }\r\n            if (typeHandlers.TryGetValue(type, o" +
+                    "ut handler))\r\n            {\r\n                return DbType.Object;\r\n            " +
+                    "}\r\n            if (typeof(IEnumerable).IsAssignableFrom(type))\r\n            {\r\n " +
+                    "               return DynamicParameters.EnumerableMultiParameter;\r\n            }" +
+                    "\r\n\r\n#if !COREFX\r\n            switch (type.FullName)\r\n            {\r\n            " +
+                    "    case \"Microsoft.SqlServer.Types.SqlGeography\":\r\n                    AddTypeH" +
+                    "andler(type, handler = new UdtTypeHandler(\"geography\"));\r\n                    re" +
+                    "turn DbType.Object;\r\n                case \"Microsoft.SqlServer.Types.SqlGeometry" +
+                    "\":\r\n                    AddTypeHandler(type, handler = new UdtTypeHandler(\"geome" +
+                    "try\"));\r\n                    return DbType.Object;\r\n                case \"Micros" +
+                    "oft.SqlServer.Types.SqlHierarchyId\":\r\n                    AddTypeHandler(type, h" +
+                    "andler = new UdtTypeHandler(\"hierarchyid\"));\r\n                    return DbType." +
+                    "Object;\r\n            }\r\n#endif\r\n            if (demand)\r\n                throw n" +
+                    "ew NotSupportedException($\"The member {name} of type {type.FullName} cannot be u" +
+                    "sed as a parameter value\");\r\n            return DbType.Object;\r\n\r\n        }\r\n\r\n\r" +
+                    "\n\r\n        /// <summary>\r\n        /// Obtains the data as a list; if it is *alre" +
+                    "ady* a list, the original object is returned without\r\n        /// any duplicatio" +
+                    "n; otherwise, ToList() is invoked.\r\n        /// </summary>\r\n        public stati" +
+                    "c List<T> AsList<T>(this IEnumerable<T> source)\r\n        {\r\n            return (" +
+                    "source == null || source is List<T>) ? (List<T>)source : source.ToList();\r\n     " +
+                    "   }\r\n\r\n        /// <summary>\r\n        /// Execute parameterized SQL\r\n        //" +
+                    "/ </summary>\r\n        /// <returns>Number of rows affected</returns>\r\n        pu" +
+                    "blic static int Execute(\r\n            this IDbConnection cnn, string sql, object" +
+                    " param = null, IDbTransaction transaction = null, int? commandTimeout = null, Co" +
+                    "mmandType? commandType = null\r\n        )\r\n        {\r\n            var command = n" +
+                    "ew CommandDefinition(sql, param, transaction, commandTimeout, commandType, Comma" +
+                    "ndFlags.Buffered);\r\n            return ExecuteImpl(cnn, ref command);\r\n        }" +
+                    "\r\n        /// <summary>\r\n        /// Execute parameterized SQL\r\n        /// </su" +
+                    "mmary>\r\n        /// <returns>Number of rows affected</returns>\r\n        public s" +
+                    "tatic int Execute(this IDbConnection cnn, CommandDefinition command)\r\n        {\r" +
+                    "\n            return ExecuteImpl(cnn, ref command);\r\n        }\r\n\r\n\r\n        /// <" +
+                    "summary>\r\n        /// Execute parameterized SQL that selects a single value\r\n   " +
+                    "     /// </summary>\r\n        /// <returns>The first cell selected</returns>\r\n   " +
+                    "     public static object ExecuteScalar(\r\n            this IDbConnection cnn, st" +
+                    "ring sql, object param = null, IDbTransaction transaction = null, int? commandTi" +
+                    "meout = null, CommandType? commandType = null\r\n        )\r\n        {\r\n           " +
+                    " var command = new CommandDefinition(sql, param, transaction, commandTimeout, co" +
+                    "mmandType, CommandFlags.Buffered);\r\n            return ExecuteScalarImpl<object>" +
+                    "(cnn, ref command);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Execute par" +
+                    "ameterized SQL that selects a single value\r\n        /// </summary>\r\n        /// " +
+                    "<returns>The first cell selected</returns>\r\n        public static T ExecuteScala" +
+                    "r<T>(\r\n            this IDbConnection cnn, string sql, object param = null, IDbT" +
+                    "ransaction transaction = null, int? commandTimeout = null, CommandType? commandT" +
+                    "ype = null\r\n        )\r\n        {\r\n            var command = new CommandDefinitio" +
+                    "n(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered);\r" +
+                    "\n            return ExecuteScalarImpl<T>(cnn, ref command);\r\n        }\r\n\r\n      " +
+                    "  /// <summary>\r\n        /// Execute parameterized SQL that selects a single val" +
+                    "ue\r\n        /// </summary>\r\n        /// <returns>The first cell selected</return" +
+                    "s>\r\n        public static object ExecuteScalar(this IDbConnection cnn, CommandDe" +
+                    "finition command)\r\n        {\r\n            return ExecuteScalarImpl<object>(cnn, " +
+                    "ref command);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Execute parameter" +
+                    "ized SQL that selects a single value\r\n        /// </summary>\r\n        /// <retur" +
+                    "ns>The first cell selected</returns>\r\n        public static T ExecuteScalar<T>(t" +
+                    "his IDbConnection cnn, CommandDefinition command)\r\n        {\r\n            return" +
+                    " ExecuteScalarImpl<T>(cnn, ref command);\r\n        }\r\n\r\n        private static IE" +
+                    "numerable GetMultiExec(object param)\r\n        {\r\n            return (param is IE" +
+                    "numerable &&\r\n                    !(param is string ||\r\n                      pa" +
+                    "ram is IEnumerable<KeyValuePair<string, object>> ||\r\n                      param" +
+                    " is IDynamicParameters)\r\n                ) ? (IEnumerable)param : null;\r\n       " +
+                    " }\r\n\r\n        private static int ExecuteImpl(this IDbConnection cnn, ref Command" +
+                    "Definition command)\r\n        {\r\n            object param = command.Parameters;\r\n" +
+                    "            IEnumerable multiExec = GetMultiExec(param);\r\n            Identity i" +
+                    "dentity;\r\n            CacheInfo info = null;\r\n            if (multiExec != null)" +
+                    "\r\n            {\r\n#if ASYNC\r\n                if((command.Flags & CommandFlags.Pip" +
+                    "elined) != 0)\r\n                {\r\n                    // this includes all the c" +
+                    "ode for concurrent/overlapped query\r\n                    return ExecuteMultiImpl" +
+                    "Async(cnn, command, multiExec).Result;\r\n                }\r\n#endif\r\n             " +
+                    "   bool isFirst = true;\r\n                int total = 0;\r\n                bool wa" +
+                    "sClosed = cnn.State == ConnectionState.Closed;\r\n                try\r\n           " +
+                    "     {\r\n                    if (wasClosed) cnn.Open();\r\n                    usin" +
+                    "g (var cmd = command.SetupCommand(cnn, null))\r\n                    {\r\n          " +
+                    "              string masterSql = null;\r\n                        foreach (var obj" +
+                    " in multiExec)\r\n                        {\r\n                            if (isFir" +
+                    "st)\r\n                            {\r\n                                masterSql = " +
+                    "cmd.CommandText;\r\n                                isFirst = false;\r\n            " +
+                    "                    identity = new Identity(command.CommandText, cmd.CommandType" +
+                    ", cnn, null, obj.GetType(), null);\r\n                                info = GetCa" +
+                    "cheInfo(identity, obj, command.AddToCache);\r\n                            }\r\n    " +
+                    "                        else\r\n                            {\r\n                   " +
+                    "             cmd.CommandText = masterSql; // because we do magic replaces on \"in" +
+                    "\" etc\r\n                                cmd.Parameters.Clear(); // current code i" +
+                    "s Add-tastic\r\n                            }\r\n                            info.Pa" +
+                    "ramReader(cmd, obj);\r\n                            total += cmd.ExecuteNonQuery()" +
+                    ";\r\n                        }\r\n                    }\r\n                    command" +
+                    ".OnCompleted();\r\n                }\r\n                finally\r\n                {\r\n" +
+                    "                    if (wasClosed) cnn.Close();\r\n                }\r\n            " +
+                    "    return total;\r\n            }\r\n\r\n            // nice and simple\r\n            " +
+                    "if (param != null)\r\n            {\r\n                identity = new Identity(comma" +
+                    "nd.CommandText, command.CommandType, cnn, null, param.GetType(), null);\r\n       " +
+                    "         info = GetCacheInfo(identity, param, command.AddToCache);\r\n            " +
+                    "}\r\n            return ExecuteCommand(cnn, ref command, param == null ? null : in" +
+                    "fo.ParamReader);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Execute parame" +
+                    "terized SQL and return an <see cref=\"IDataReader\"/>\r\n        /// </summary>\r\n   " +
+                    "     /// <returns>An <see cref=\"IDataReader\"/> that can be used to iterate over " +
+                    "the results of the SQL query.</returns>\r\n        /// <remarks>\r\n        /// This" +
+                    " is typically used when the results of a query are not processed by Dapper, for " +
+                    "example, used to fill a <see cref=\"DataTable\"/>\r\n        /// or <see cref=\"T:Dat" +
+                    "aSet\"/>.\r\n        /// </remarks>\r\n        /// <example>\r\n        /// <code>\r\n   " +
+                    "     /// <![CDATA[\r\n        /// DataTable table = new DataTable(\"MyTable\");\r\n   " +
+                    "     /// using (var reader = ExecuteReader(cnn, sql, param))\r\n        /// {\r\n   " +
+                    "     ///     table.Load(reader);\r\n        /// }\r\n        /// ]]>\r\n        /// </" +
+                    "code>\r\n        /// </example>\r\n        public static IDataReader ExecuteReader(\r" +
+                    "\n            this IDbConnection cnn, string sql, object param = null, IDbTransac" +
                     "tion transaction = null, int? commandTimeout = null, CommandType? commandType = " +
-                    "null\r\n#endif\r\n)\r\n        {\r\n            IEnumerable multiExec = (object)param as" +
-                    " IEnumerable;\r\n            Identity identity;\r\n            CacheInfo info = null" +
-                    ";\r\n            if (multiExec != null && !(multiExec is string))\r\n            {\r\n" +
-                    "                bool isFirst = true;\r\n                int total = 0;\r\n          " +
-                    "      using (var cmd = SetupCommand(cnn, transaction, sql, null, null, commandTi" +
-                    "meout, commandType))\r\n                {\r\n\r\n                    string masterSql " +
-                    "= null;\r\n                    foreach (var obj in multiExec)\r\n                   " +
-                    " {\r\n                        if (isFirst)\r\n                        {\r\n           " +
-                    "                 masterSql = cmd.CommandText;\r\n                            isFir" +
-                    "st = false;\r\n                            identity = new Identity(sql, cmd.Comman" +
-                    "dType, cnn, null, obj.GetType(), null);\r\n                            info = GetC" +
-                    "acheInfo(identity);\r\n                        }\r\n                        else\r\n  " +
-                    "                      {\r\n                            cmd.CommandText = masterSql" +
-                    "; // because we do magic replaces on \"in\" etc\r\n                            cmd.P" +
-                    "arameters.Clear(); // current code is Add-tastic\r\n                        }\r\n   " +
-                    "                     info.ParamReader(cmd, obj);\r\n                        total " +
-                    "+= cmd.ExecuteNonQuery();\r\n                    }\r\n                }\r\n           " +
-                    "     return total;\r\n            }\r\n\r\n            // nice and simple\r\n           " +
-                    " if ((object)param != null)\r\n            {\r\n                identity = new Ident" +
-                    "ity(sql, commandType, cnn, null, (object)param == null ? null : ((object)param)." +
-                    "GetType(), null);\r\n                info = GetCacheInfo(identity);\r\n            }" +
-                    "\r\n            return ExecuteCommand(cnn, transaction, sql, (object)param == null" +
-                    " ? null : info.ParamReader, (object)param, commandTimeout, commandType);\r\n      " +
-                    "  }\r\n#if !CSHARP30\r\n        /// <summary>\r\n        /// Return a list of dynamic " +
-                    "objects, reader is closed after the call\r\n        /// </summary>\r\n        public" +
-                    " static IEnumerable<dynamic> Query(this IDbConnection cnn, string sql, dynamic p" +
-                    "aram = null, IDbTransaction transaction = null, bool buffered = true, int? comma" +
-                    "ndTimeout = null, CommandType? commandType = null)\r\n        {\r\n            retur" +
-                    "n Query<DapperRow>(cnn, sql, param as object, transaction, buffered, commandTime" +
-                    "out, commandType);\r\n        }\r\n#else\r\n    /// <summary>\r\n    /// Return a list o" +
-                    "f dynamic objects, reader is closed after the call\r\n    /// </summary>\r\n    publ" +
-                    "ic static IEnumerable<IDictionary<string, object>> Query(this IDbConnection cnn," +
-                    " string sql, object param) {\r\n        return Query(cnn, sql, param, null, true, " +
-                    "null, null);\r\n    }\r\n\r\n    /// <summary>\r\n    /// Return a list of dynamic objec" +
-                    "ts, reader is closed after the call\r\n    /// </summary>\r\n    public static IEnum" +
-                    "erable<IDictionary<string, object>> Query(this IDbConnection cnn, string sql, ob" +
-                    "ject param, IDbTransaction transaction) {\r\n        return Query(cnn, sql, param," +
-                    " transaction, true, null, null);\r\n    }\r\n\r\n    /// <summary>\r\n    /// Return a l" +
-                    "ist of dynamic objects, reader is closed after the call\r\n    /// </summary>\r\n   " +
-                    " public static IEnumerable<IDictionary<string, object>> Query(this IDbConnection" +
-                    " cnn, string sql, object param, CommandType? commandType) {\r\n        return Quer" +
-                    "y(cnn, sql, param, null, true, null, commandType);\r\n    }\r\n\r\n    /// <summary>\r\n" +
-                    "    /// Return a list of dynamic objects, reader is closed after the call\r\n    /" +
-                    "// </summary>\r\n    public static IEnumerable<IDictionary<string, object>> Query(" +
-                    "this IDbConnection cnn, string sql, object param, IDbTransaction transaction, Co" +
-                    "mmandType? commandType) {\r\n        return Query(cnn, sql, param, transaction, tr" +
-                    "ue, null, commandType);\r\n    }\r\n\r\n    /// <summary>\r\n    /// Return a list of dy" +
-                    "namic objects, reader is closed after the call\r\n    /// </summary>\r\n    public s" +
-                    "tatic IEnumerable<IDictionary<string,object>> Query(this IDbConnection cnn, stri" +
-                    "ng sql, object param, IDbTransaction transaction, bool buffered, int? commandTim" +
-                    "eout, CommandType? commandType) {\r\n        return Query<IDictionary<string, obje" +
-                    "ct>>(cnn, sql, param, transaction, buffered, commandTimeout, commandType);\r\n    " +
-                    "}\r\n#endif\r\n\r\n        /// <summary>\r\n        /// Executes a query, returning the " +
-                    "data typed as per T\r\n        /// </summary>\r\n        /// <remarks>the dynamic pa" +
-                    "ram may seem a bit odd, but this works around a major usability issue in vs, if " +
-                    "it is Object vs completion gets annoying. Eg type new [space] get new object</re" +
-                    "marks>\r\n        /// <returns>A sequence of data of the supplied type; if a basic" +
-                    " type (int, string, etc) is queried then the data from the first column in assum" +
-                    "ed, otherwise an instance is\r\n        /// created per row, and a direct column-n" +
-                    "ame===member-name mapping is assumed (case insensitive).\r\n        /// </returns>" +
-                    "\r\n        public static IEnumerable<T> Query<T>(\r\n#if CSHARP30\r\n        this IDb" +
-                    "Connection cnn, string sql, object param, IDbTransaction transaction, bool buffe" +
-                    "red, int? commandTimeout, CommandType? commandType\r\n#else\r\nthis IDbConnection cn" +
-                    "n, string sql, dynamic param = null, IDbTransaction transaction = null, bool buf" +
-                    "fered = true, int? commandTimeout = null, CommandType? commandType = null\r\n#endi" +
-                    "f\r\n)\r\n        {\r\n            var data = QueryInternal<T>(cnn, sql, param as obje" +
-                    "ct, transaction, commandTimeout, commandType);\r\n            return buffered ? da" +
-                    "ta.ToList() : data;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Execute a c" +
-                    "ommand that returns multiple result sets, and access each in turn\r\n        /// <" +
-                    "/summary>\r\n        public static GridReader QueryMultiple(\r\n#if CSHARP30\r\n      " +
-                    "  this IDbConnection cnn, string sql, object param, IDbTransaction transaction, " +
-                    "int? commandTimeout, CommandType? commandType\r\n#else\r\n        this IDbConnection" +
-                    " cnn, string sql, dynamic param = null, IDbTransaction transaction = null, int? " +
-                    "commandTimeout = null, CommandType? commandType = null\r\n#endif\r\n)\r\n        {\r\n  " +
-                    "          Identity identity = new Identity(sql, commandType, cnn, typeof(GridRea" +
-                    "der), (object)param == null ? null : ((object)param).GetType(), null);\r\n        " +
-                    "    CacheInfo info = GetCacheInfo(identity);\r\n\r\n            IDbCommand cmd = nul" +
-                    "l;\r\n            IDataReader reader = null;\r\n            bool wasClosed = cnn.Sta" +
-                    "te == ConnectionState.Closed;\r\n            try\r\n            {\r\n                i" +
-                    "f (wasClosed) cnn.Open();\r\n                cmd = SetupCommand(cnn, transaction, " +
-                    "sql, info.ParamReader, (object)param, commandTimeout, commandType);\r\n           " +
-                    "     reader = cmd.ExecuteReader(wasClosed ? CommandBehavior.CloseConnection : Co" +
-                    "mmandBehavior.Default);\r\n\r\n                var result = new GridReader(cmd, read" +
-                    "er, identity);\r\n                wasClosed = false; // *if* the connection was cl" +
-                    "osed and we got this far, then we now have a reader\r\n                           " +
-                    "         // with the CloseConnection flag, so the reader will deal with the conn" +
-                    "ection; we\r\n                                    // still need something in the \"" +
-                    "finally\" to ensure that broken SQL still results\r\n                              " +
-                    "      // in the connection closing itself\r\n                return result;\r\n     " +
-                    "       }\r\n            catch\r\n            {\r\n                if (reader != null)\r" +
-                    "\n                {\r\n                    if (!reader.IsClosed) try { cmd.Cancel()" +
-                    "; }\r\n                        catch { /* don\'t spoil the existing exception */ }\r" +
-                    "\n                    reader.Dispose();\r\n                }\r\n                if (c" +
-                    "md != null) cmd.Dispose();\r\n                if (wasClosed) cnn.Close();\r\n       " +
-                    "         throw;\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n        /// " +
-                    "Return a typed list of objects, reader is closed after the call\r\n        /// </s" +
-                    "ummary>\r\n        private static IEnumerable<T> QueryInternal<T>(this IDbConnecti" +
-                    "on cnn, string sql, object param, IDbTransaction transaction, int? commandTimeou" +
-                    "t, CommandType? commandType)\r\n        {\r\n            var identity = new Identity" +
-                    "(sql, commandType, cnn, typeof(T), param == null ? null : param.GetType(), null)" +
-                    ";\r\n            var info = GetCacheInfo(identity);\r\n\r\n            IDbCommand cmd " +
-                    "= null;\r\n            IDataReader reader = null;\r\n\r\n            bool wasClosed = " +
-                    "cnn.State == ConnectionState.Closed;\r\n            try\r\n            {\r\n          " +
-                    "      cmd = SetupCommand(cnn, transaction, sql, info.ParamReader, param, command" +
-                    "Timeout, commandType);\r\n\r\n                if (wasClosed) cnn.Open();\r\n          " +
-                    "      reader = cmd.ExecuteReader(wasClosed ? CommandBehavior.CloseConnection : C" +
-                    "ommandBehavior.Default);\r\n                wasClosed = false; // *if* the connect" +
-                    "ion was closed and we got this far, then we now have a reader\r\n                 " +
-                    "                   // with the CloseConnection flag, so the reader will deal wit" +
-                    "h the connection; we\r\n                                    // still need somethin" +
-                    "g in the \"finally\" to ensure that broken SQL still results\r\n                    " +
-                    "                // in the connection closing itself\r\n                var tuple =" +
-                    " info.Deserializer;\r\n                int hash = GetColumnHash(reader);\r\n        " +
-                    "        if (tuple.Func == null || tuple.Hash != hash)\r\n                {\r\n      " +
-                    "              tuple = info.Deserializer = new DeserializerState(hash, GetDeseria" +
-                    "lizer(typeof(T), reader, 0, -1, false));\r\n                    SetQueryCache(iden" +
-                    "tity, info);\r\n                }\r\n\r\n                var func = tuple.Func;\r\n\r\n   " +
-                    "             while (reader.Read())\r\n                {\r\n                    yield" +
-                    " return (T)func(reader);\r\n                }\r\n                // happy path; clos" +
-                    "e the reader cleanly - no\r\n                // need for \"Cancel\" etc\r\n           " +
-                    "     reader.Dispose();\r\n                reader = null;\r\n            }\r\n         " +
-                    "   finally\r\n            {\r\n                if (reader != null)\r\n                " +
-                    "{\r\n                    if (!reader.IsClosed) try { cmd.Cancel(); }\r\n            " +
-                    "            catch { /* don\'t spoil the existing exception */ }\r\n                " +
-                    "    reader.Dispose();\r\n                }\r\n                if (wasClosed) cnn.Clo" +
-                    "se();\r\n                if (cmd != null) cmd.Dispose();\r\n            }\r\n        }" +
-                    "\r\n\r\n        /// <summary>\r\n        /// Maps a query to objects\r\n        /// </su" +
-                    "mmary>\r\n        /// <typeparam name=\"TFirst\">The first type in the recordset</ty" +
-                    "peparam>\r\n        /// <typeparam name=\"TSecond\">The second type in the recordset" +
-                    "</typeparam>\r\n        /// <typeparam name=\"TReturn\">The return type</typeparam>\r" +
-                    "\n        /// <param name=\"cnn\"></param>\r\n        /// <param name=\"sql\"></param>\r" +
-                    "\n        /// <param name=\"map\"></param>\r\n        /// <param name=\"param\"></param" +
-                    ">\r\n        /// <param name=\"transaction\"></param>\r\n        /// <param name=\"buff" +
-                    "ered\"></param>\r\n        /// <param name=\"splitOn\">The Field we should split and " +
-                    "read the second object from (default: id)</param>\r\n        /// <param name=\"comm" +
-                    "andTimeout\">Number of seconds before command execution timeout</param>\r\n        " +
-                    "/// <param name=\"commandType\">Is it a stored proc or a batch?</param>\r\n        /" +
-                    "// <returns></returns>\r\n        public static IEnumerable<TReturn> Query<TFirst," +
-                    " TSecond, TReturn>(\r\n#if CSHARP30\r\n        this IDbConnection cnn, string sql, F" +
-                    "unc<TFirst, TSecond, TReturn> map, object param, IDbTransaction transaction, boo" +
-                    "l buffered, string splitOn, int? commandTimeout, CommandType? commandType\r\n#else" +
-                    "\r\nthis IDbConnection cnn, string sql, Func<TFirst, TSecond, TReturn> map, dynami" +
-                    "c param = null, IDbTransaction transaction = null, bool buffered = true, string " +
-                    "splitOn = \"Id\", int? commandTimeout = null, CommandType? commandType = null\r\n#en" +
-                    "dif\r\n)\r\n        {\r\n            return MultiMap<TFirst, TSecond, DontMap, DontMap" +
-                    ", DontMap, TReturn>(cnn, sql, map, param as object, transaction, buffered, split" +
-                    "On, commandTimeout, commandType);\r\n        }\r\n\r\n        /// <summary>\r\n        /" +
-                    "// Maps a query to objects\r\n        /// </summary>\r\n        /// <typeparam name=" +
-                    "\"TFirst\"></typeparam>\r\n        /// <typeparam name=\"TSecond\"></typeparam>\r\n     " +
-                    "   /// <typeparam name=\"TThird\"></typeparam>\r\n        /// <typeparam name=\"TRetu" +
-                    "rn\"></typeparam>\r\n        /// <param name=\"cnn\"></param>\r\n        /// <param nam" +
-                    "e=\"sql\"></param>\r\n        /// <param name=\"map\"></param>\r\n        /// <param nam" +
-                    "e=\"param\"></param>\r\n        /// <param name=\"transaction\"></param>\r\n        /// " +
-                    "<param name=\"buffered\"></param>\r\n        /// <param name=\"splitOn\">The Field we " +
-                    "should split and read the second object from (default: id)</param>\r\n        /// " +
-                    "<param name=\"commandTimeout\">Number of seconds before command execution timeout<" +
+                    "null\r\n)\r\n        {\r\n            var command = new CommandDefinition(sql, param, " +
+                    "transaction, commandTimeout, commandType, CommandFlags.Buffered);\r\n            I" +
+                    "DbCommand dbcmd;\r\n            var reader = ExecuteReaderImpl(cnn, ref command, C" +
+                    "ommandBehavior.Default, out dbcmd);\r\n            return new WrappedReader(dbcmd," +
+                    " reader);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Execute parameterized" +
+                    " SQL and return an <see cref=\"IDataReader\"/>\r\n        /// </summary>\r\n        //" +
+                    "/ <returns>An <see cref=\"IDataReader\"/> that can be used to iterate over the res" +
+                    "ults of the SQL query.</returns>\r\n        /// <remarks>\r\n        /// This is typ" +
+                    "ically used when the results of a query are not processed by Dapper, for example" +
+                    ", used to fill a <see cref=\"DataTable\"/>\r\n        /// or <see cref=\"T:DataSet\"/>" +
+                    ".\r\n        /// </remarks>\r\n        public static IDataReader ExecuteReader(this " +
+                    "IDbConnection cnn, CommandDefinition command)\r\n        {\r\n            IDbCommand" +
+                    " dbcmd;\r\n            var reader = ExecuteReaderImpl(cnn, ref command, CommandBeh" +
+                    "avior.Default, out dbcmd);\r\n            return new WrappedReader(dbcmd, reader);" +
+                    "\r\n        }\r\n        /// <summary>\r\n        /// Execute parameterized SQL and re" +
+                    "turn an <see cref=\"IDataReader\"/>\r\n        /// </summary>\r\n        /// <returns>" +
+                    "An <see cref=\"IDataReader\"/> that can be used to iterate over the results of the" +
+                    " SQL query.</returns>\r\n        /// <remarks>\r\n        /// This is typically used" +
+                    " when the results of a query are not processed by Dapper, for example, used to f" +
+                    "ill a <see cref=\"DataTable\"/>\r\n        /// or <see cref=\"T:DataSet\"/>.\r\n        " +
+                    "/// </remarks>\r\n        public static IDataReader ExecuteReader(this IDbConnecti" +
+                    "on cnn, CommandDefinition command, CommandBehavior commandBehavior)\r\n        {\r\n" +
+                    "            IDbCommand dbcmd;\r\n            var reader = ExecuteReaderImpl(cnn, r" +
+                    "ef command, commandBehavior, out dbcmd);\r\n            return new WrappedReader(d" +
+                    "bcmd, reader);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Return a sequenc" +
+                    "e of dynamic objects with properties matching the columns\r\n        /// </summary" +
+                    ">\r\n        /// <remarks>Note: each row can be accessed via \"dynamic\", or by cast" +
+                    "ing to an IDictionary&lt;string,object&gt;</remarks>\r\n        public static IEnu" +
+                    "merable<dynamic> Query(this IDbConnection cnn, string sql, object param = null, " +
+                    "IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = n" +
+                    "ull, CommandType? commandType = null)\r\n        {\r\n            return Query<Dappe" +
+                    "rRow>(cnn, sql, param as object, transaction, buffered, commandTimeout, commandT" +
+                    "ype);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Return a dynamic object w" +
+                    "ith properties matching the columns\r\n        /// </summary>\r\n        /// <remark" +
+                    "s>Note: the row can be accessed via \"dynamic\", or by casting to an IDictionary&l" +
+                    "t;string,object&gt;</remarks>\r\n        public static dynamic QueryFirst(this IDb" +
+                    "Connection cnn, string sql, object param = null, IDbTransaction transaction = nu" +
+                    "ll, int? commandTimeout = null, CommandType? commandType = null)\r\n        {\r\n   " +
+                    "         return QueryFirst<DapperRow>(cnn, sql, param as object, transaction, co" +
+                    "mmandTimeout, commandType);\r\n        }\r\n        /// <summary>\r\n        /// Retur" +
+                    "n a dynamic object with properties matching the columns\r\n        /// </summary>\r" +
+                    "\n        /// <remarks>Note: the row can be accessed via \"dynamic\", or by casting" +
+                    " to an IDictionary&lt;string,object&gt;</remarks>\r\n        public static dynamic" +
+                    " QueryFirstOrDefault(this IDbConnection cnn, string sql, object param = null, ID" +
+                    "bTransaction transaction = null, int? commandTimeout = null, CommandType? comman" +
+                    "dType = null)\r\n        {\r\n            return QueryFirstOrDefault<DapperRow>(cnn," +
+                    " sql, param as object, transaction, commandTimeout, commandType);\r\n        }\r\n  " +
+                    "      /// <summary>\r\n        /// Return a dynamic object with properties matchin" +
+                    "g the columns\r\n        /// </summary>\r\n        /// <remarks>Note: the row can be" +
+                    " accessed via \"dynamic\", or by casting to an IDictionary&lt;string,object&gt;</r" +
+                    "emarks>\r\n        public static dynamic QuerySingle(this IDbConnection cnn, strin" +
+                    "g sql, object param = null, IDbTransaction transaction = null, int? commandTimeo" +
+                    "ut = null, CommandType? commandType = null)\r\n        {\r\n            return Query" +
+                    "Single<DapperRow>(cnn, sql, param as object, transaction, commandTimeout, comman" +
+                    "dType);\r\n        }\r\n        /// <summary>\r\n        /// Return a dynamic object w" +
+                    "ith properties matching the columns\r\n        /// </summary>\r\n        /// <remark" +
+                    "s>Note: the row can be accessed via \"dynamic\", or by casting to an IDictionary&l" +
+                    "t;string,object&gt;</remarks>\r\n        public static dynamic QuerySingleOrDefaul" +
+                    "t(this IDbConnection cnn, string sql, object param = null, IDbTransaction transa" +
+                    "ction = null, int? commandTimeout = null, CommandType? commandType = null)\r\n    " +
+                    "    {\r\n            return QuerySingleOrDefault<DapperRow>(cnn, sql, param as obj" +
+                    "ect, transaction, commandTimeout, commandType);\r\n        }\r\n\r\n        /// <summa" +
+                    "ry>\r\n        /// Executes a query, returning the data typed as per T\r\n        //" +
+                    "/ </summary>\r\n        /// <returns>A sequence of data of the supplied type; if a" +
+                    " basic type (int, string, etc) is queried then the data from the first column in" +
+                    " assumed, otherwise an instance is\r\n        /// created per row, and a direct co" +
+                    "lumn-name===member-name mapping is assumed (case insensitive).\r\n        /// </re" +
+                    "turns>\r\n        public static IEnumerable<T> Query<T>(\r\n            this IDbConn" +
+                    "ection cnn, string sql, object param = null, IDbTransaction transaction = null, " +
+                    "bool buffered = true, int? commandTimeout = null, CommandType? commandType = nul" +
+                    "l\r\n        )\r\n        {\r\n            var command = new CommandDefinition(sql, pa" +
+                    "ram, transaction, commandTimeout, commandType, buffered ? CommandFlags.Buffered " +
+                    ": CommandFlags.None);\r\n            var data = QueryImpl<T>(cnn, command, typeof(" +
+                    "T));\r\n            return command.Buffered ? data.ToList() : data;\r\n        }\r\n\r\n" +
+                    "        /// <summary>\r\n        /// Executes a single-row query, returning the da" +
+                    "ta typed as per T\r\n        /// </summary>\r\n        /// <returns>A sequence of da" +
+                    "ta of the supplied type; if a basic type (int, string, etc) is queried then the " +
+                    "data from the first column in assumed, otherwise an instance is\r\n        /// cre" +
+                    "ated per row, and a direct column-name===member-name mapping is assumed (case in" +
+                    "sensitive).\r\n        /// </returns>\r\n        public static T QueryFirst<T>(\r\n   " +
+                    "         this IDbConnection cnn, string sql, object param = null, IDbTransaction" +
+                    " transaction = null, int? commandTimeout = null, CommandType? commandType = null" +
+                    "\r\n        )\r\n        {\r\n            var command = new CommandDefinition(sql, par" +
+                    "am, transaction, commandTimeout, commandType, CommandFlags.None);\r\n            r" +
+                    "eturn QueryRowImpl<T>(cnn, Row.First, ref command, typeof(T));\r\n        }\r\n     " +
+                    "   /// <summary>\r\n        /// Executes a single-row query, returning the data ty" +
+                    "ped as per T\r\n        /// </summary>\r\n        /// <returns>A sequence of data of" +
+                    " the supplied type; if a basic type (int, string, etc) is queried then the data " +
+                    "from the first column in assumed, otherwise an instance is\r\n        /// created " +
+                    "per row, and a direct column-name===member-name mapping is assumed (case insensi" +
+                    "tive).\r\n        /// </returns>\r\n        public static T QueryFirstOrDefault<T>(\r" +
+                    "\n            this IDbConnection cnn, string sql, object param = null, IDbTransac" +
+                    "tion transaction = null, int? commandTimeout = null, CommandType? commandType = " +
+                    "null\r\n        )\r\n        {\r\n            var command = new CommandDefinition(sql," +
+                    " param, transaction, commandTimeout, commandType, CommandFlags.None);\r\n         " +
+                    "   return QueryRowImpl<T>(cnn, Row.FirstOrDefault, ref command, typeof(T));\r\n   " +
+                    "     }\r\n        /// <summary>\r\n        /// Executes a single-row query, returnin" +
+                    "g the data typed as per T\r\n        /// </summary>\r\n        /// <returns>A sequen" +
+                    "ce of data of the supplied type; if a basic type (int, string, etc) is queried t" +
+                    "hen the data from the first column in assumed, otherwise an instance is\r\n       " +
+                    " /// created per row, and a direct column-name===member-name mapping is assumed " +
+                    "(case insensitive).\r\n        /// </returns>\r\n        public static T QuerySingle" +
+                    "<T>(\r\n            this IDbConnection cnn, string sql, object param = null, IDbTr" +
+                    "ansaction transaction = null, int? commandTimeout = null, CommandType? commandTy" +
+                    "pe = null\r\n        )\r\n        {\r\n            var command = new CommandDefinition" +
+                    "(sql, param, transaction, commandTimeout, commandType, CommandFlags.None);\r\n    " +
+                    "        return QueryRowImpl<T>(cnn, Row.Single, ref command, typeof(T));\r\n      " +
+                    "  }\r\n        /// <summary>\r\n        /// Executes a single-row query, returning t" +
+                    "he data typed as per T\r\n        /// </summary>\r\n        /// <returns>A sequence " +
+                    "of data of the supplied type; if a basic type (int, string, etc) is queried then" +
+                    " the data from the first column in assumed, otherwise an instance is\r\n        //" +
+                    "/ created per row, and a direct column-name===member-name mapping is assumed (ca" +
+                    "se insensitive).\r\n        /// </returns>\r\n        public static T QuerySingleOrD" +
+                    "efault<T>(\r\n            this IDbConnection cnn, string sql, object param = null," +
+                    " IDbTransaction transaction = null, int? commandTimeout = null, CommandType? com" +
+                    "mandType = null\r\n        )\r\n        {\r\n            var command = new CommandDefi" +
+                    "nition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None);" +
+                    "\r\n            return QueryRowImpl<T>(cnn, Row.SingleOrDefault, ref command, type" +
+                    "of(T));\r\n        }\r\n\r\n        /// <summary>\r\n        /// Executes a single-row q" +
+                    "uery, returning the data typed as per the Type suggested\r\n        /// </summary>" +
+                    "\r\n        /// <returns>A sequence of data of the supplied type; if a basic type " +
+                    "(int, string, etc) is queried then the data from the first column in assumed, ot" +
+                    "herwise an instance is\r\n        /// created per row, and a direct column-name===" +
+                    "member-name mapping is assumed (case insensitive).\r\n        /// </returns>\r\n    " +
+                    "    public static IEnumerable<object> Query(\r\n            this IDbConnection cnn" +
+                    ", Type type, string sql, object param = null, IDbTransaction transaction = null," +
+                    " bool buffered = true, int? commandTimeout = null, CommandType? commandType = nu" +
+                    "ll\r\n        )\r\n        {\r\n            if (type == null) throw new ArgumentNullEx" +
+                    "ception(nameof(type));\r\n            var command = new CommandDefinition(sql, par" +
+                    "am, transaction, commandTimeout, commandType, buffered ? CommandFlags.Buffered :" +
+                    " CommandFlags.None);\r\n            var data = QueryImpl<object>(cnn, command, typ" +
+                    "e);\r\n            return command.Buffered ? data.ToList() : data;\r\n        }\r\n   " +
+                    "     /// <summary>\r\n        /// Executes a single-row query, returning the data " +
+                    "typed as per the Type suggested\r\n        /// </summary>\r\n        /// <returns>A " +
+                    "sequence of data of the supplied type; if a basic type (int, string, etc) is que" +
+                    "ried then the data from the first column in assumed, otherwise an instance is\r\n " +
+                    "       /// created per row, and a direct column-name===member-name mapping is as" +
+                    "sumed (case insensitive).\r\n        /// </returns>\r\n        public static object " +
+                    "QueryFirst(\r\n            this IDbConnection cnn, Type type, string sql, object p" +
+                    "aram = null, IDbTransaction transaction = null, int? commandTimeout = null, Comm" +
+                    "andType? commandType = null\r\n        )\r\n        {\r\n            if (type == null)" +
+                    " throw new ArgumentNullException(nameof(type));\r\n            var command = new C" +
+                    "ommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFl" +
+                    "ags.None);\r\n            return QueryRowImpl<object>(cnn, Row.First, ref command," +
+                    " type);\r\n        }\r\n        /// <summary>\r\n        /// Executes a single-row que" +
+                    "ry, returning the data typed as per the Type suggested\r\n        /// </summary>\r\n" +
+                    "        /// <returns>A sequence of data of the supplied type; if a basic type (i" +
+                    "nt, string, etc) is queried then the data from the first column in assumed, othe" +
+                    "rwise an instance is\r\n        /// created per row, and a direct column-name===me" +
+                    "mber-name mapping is assumed (case insensitive).\r\n        /// </returns>\r\n      " +
+                    "  public static object QueryFirstOrDefault(\r\n            this IDbConnection cnn," +
+                    " Type type, string sql, object param = null, IDbTransaction transaction = null, " +
+                    "int? commandTimeout = null, CommandType? commandType = null\r\n        )\r\n        " +
+                    "{\r\n            if (type == null) throw new ArgumentNullException(nameof(type));\r" +
+                    "\n            var command = new CommandDefinition(sql, param, transaction, comman" +
+                    "dTimeout, commandType, CommandFlags.None);\r\n            return QueryRowImpl<obje" +
+                    "ct>(cnn, Row.FirstOrDefault, ref command, type);\r\n        }\r\n        /// <summar" +
+                    "y>\r\n        /// Executes a single-row query, returning the data typed as per the" +
+                    " Type suggested\r\n        /// </summary>\r\n        /// <returns>A sequence of data" +
+                    " of the supplied type; if a basic type (int, string, etc) is queried then the da" +
+                    "ta from the first column in assumed, otherwise an instance is\r\n        /// creat" +
+                    "ed per row, and a direct column-name===member-name mapping is assumed (case inse" +
+                    "nsitive).\r\n        /// </returns>\r\n        public static object QuerySingle(\r\n  " +
+                    "          this IDbConnection cnn, Type type, string sql, object param = null, ID" +
+                    "bTransaction transaction = null, int? commandTimeout = null, CommandType? comman" +
+                    "dType = null\r\n        )\r\n        {\r\n            if (type == null) throw new Argu" +
+                    "mentNullException(nameof(type));\r\n            var command = new CommandDefinitio" +
+                    "n(sql, param, transaction, commandTimeout, commandType, CommandFlags.None);\r\n   " +
+                    "         return QueryRowImpl<object>(cnn, Row.Single, ref command, type);\r\n     " +
+                    "   }\r\n        /// <summary>\r\n        /// Executes a single-row query, returning " +
+                    "the data typed as per the Type suggested\r\n        /// </summary>\r\n        /// <r" +
+                    "eturns>A sequence of data of the supplied type; if a basic type (int, string, et" +
+                    "c) is queried then the data from the first column in assumed, otherwise an insta" +
+                    "nce is\r\n        /// created per row, and a direct column-name===member-name mapp" +
+                    "ing is assumed (case insensitive).\r\n        /// </returns>\r\n        public stati" +
+                    "c object QuerySingleOrDefault(\r\n            this IDbConnection cnn, Type type, s" +
+                    "tring sql, object param = null, IDbTransaction transaction = null, int? commandT" +
+                    "imeout = null, CommandType? commandType = null\r\n        )\r\n        {\r\n          " +
+                    "  if (type == null) throw new ArgumentNullException(nameof(type));\r\n            " +
+                    "var command = new CommandDefinition(sql, param, transaction, commandTimeout, com" +
+                    "mandType, CommandFlags.None);\r\n            return QueryRowImpl<object>(cnn, Row." +
+                    "SingleOrDefault, ref command, type);\r\n        }\r\n        /// <summary>\r\n        " +
+                    "/// Executes a query, returning the data typed as per T\r\n        /// </summary>\r" +
+                    "\n        /// <remarks>the dynamic param may seem a bit odd, but this works aroun" +
+                    "d a major usability issue in vs, if it is Object vs completion gets annoying. Eg" +
+                    " type new [space] get new object</remarks>\r\n        /// <returns>A sequence of d" +
+                    "ata of the supplied type; if a basic type (int, string, etc) is queried then the" +
+                    " data from the first column in assumed, otherwise an instance is\r\n        /// cr" +
+                    "eated per row, and a direct column-name===member-name mapping is assumed (case i" +
+                    "nsensitive).\r\n        /// </returns>\r\n        public static IEnumerable<T> Query" +
+                    "<T>(this IDbConnection cnn, CommandDefinition command)\r\n        {\r\n            v" +
+                    "ar data = QueryImpl<T>(cnn, command, typeof(T));\r\n            return command.Buf" +
+                    "fered ? data.ToList() : data;\r\n        }\r\n\r\n        /// <summary>\r\n        /// E" +
+                    "xecutes a query, returning the data typed as per T\r\n        /// </summary>\r\n    " +
+                    "    /// <remarks>the dynamic param may seem a bit odd, but this works around a m" +
+                    "ajor usability issue in vs, if it is Object vs completion gets annoying. Eg type" +
+                    " new [space] get new object</remarks>\r\n        /// <returns>A single instance or" +
+                    " null of the supplied type; if a basic type (int, string, etc) is queried then t" +
+                    "he data from the first column in assumed, otherwise an instance is\r\n        /// " +
+                    "created per row, and a direct column-name===member-name mapping is assumed (case" +
+                    " insensitive).\r\n        /// </returns>\r\n        public static T QueryFirst<T>(th" +
+                    "is IDbConnection cnn, CommandDefinition command)\r\n        {\r\n            return " +
+                    "QueryRowImpl<T>(cnn, Row.First, ref command, typeof(T));\r\n        }\r\n        ///" +
+                    " <summary>\r\n        /// Executes a query, returning the data typed as per T\r\n   " +
+                    "     /// </summary>\r\n        /// <remarks>the dynamic param may seem a bit odd, " +
+                    "but this works around a major usability issue in vs, if it is Object vs completi" +
+                    "on gets annoying. Eg type new [space] get new object</remarks>\r\n        /// <ret" +
+                    "urns>A single or null instance of the supplied type; if a basic type (int, strin" +
+                    "g, etc) is queried then the data from the first column in assumed, otherwise an " +
+                    "instance is\r\n        /// created per row, and a direct column-name===member-name" +
+                    " mapping is assumed (case insensitive).\r\n        /// </returns>\r\n        public " +
+                    "static T QueryFirstOrDefault<T>(this IDbConnection cnn, CommandDefinition comman" +
+                    "d)\r\n        {\r\n            return QueryRowImpl<T>(cnn, Row.FirstOrDefault, ref c" +
+                    "ommand, typeof(T));\r\n        }\r\n        /// <summary>\r\n        /// Executes a qu" +
+                    "ery, returning the data typed as per T\r\n        /// </summary>\r\n        /// <rem" +
+                    "arks>the dynamic param may seem a bit odd, but this works around a major usabili" +
+                    "ty issue in vs, if it is Object vs completion gets annoying. Eg type new [space]" +
+                    " get new object</remarks>\r\n        /// <returns>A single instance of the supplie" +
+                    "d type; if a basic type (int, string, etc) is queried then the data from the fir" +
+                    "st column in assumed, otherwise an instance is\r\n        /// created per row, and" +
+                    " a direct column-name===member-name mapping is assumed (case insensitive).\r\n    " +
+                    "    /// </returns>\r\n        public static T QuerySingle<T>(this IDbConnection cn" +
+                    "n, CommandDefinition command)\r\n        {\r\n            return QueryRowImpl<T>(cnn" +
+                    ", Row.Single, ref command, typeof(T));\r\n        }\r\n        /// <summary>\r\n      " +
+                    "  /// Executes a query, returning the data typed as per T\r\n        /// </summary" +
+                    ">\r\n        /// <remarks>the dynamic param may seem a bit odd, but this works aro" +
+                    "und a major usability issue in vs, if it is Object vs completion gets annoying. " +
+                    "Eg type new [space] get new object</remarks>\r\n        /// <returns>A single inst" +
+                    "ance of the supplied type; if a basic type (int, string, etc) is queried then th" +
+                    "e data from the first column in assumed, otherwise an instance is\r\n        /// c" +
+                    "reated per row, and a direct column-name===member-name mapping is assumed (case " +
+                    "insensitive).\r\n        /// </returns>\r\n        public static T QuerySingleOrDefa" +
+                    "ult<T>(this IDbConnection cnn, CommandDefinition command)\r\n        {\r\n          " +
+                    "  return QueryRowImpl<T>(cnn, Row.SingleOrDefault, ref command, typeof(T));\r\n   " +
+                    "     }\r\n\r\n\r\n        /// <summary>\r\n        /// Execute a command that returns mu" +
+                    "ltiple result sets, and access each in turn\r\n        /// </summary>\r\n        pub" +
+                    "lic static GridReader QueryMultiple(\r\n            this IDbConnection cnn, string" +
+                    " sql, object param = null, IDbTransaction transaction = null, int? commandTimeou" +
+                    "t = null, CommandType? commandType = null\r\n        )\r\n        {\r\n            var" +
+                    " command = new CommandDefinition(sql, param, transaction, commandTimeout, comman" +
+                    "dType, CommandFlags.Buffered);\r\n            return QueryMultipleImpl(cnn, ref co" +
+                    "mmand);\r\n        }\r\n        /// <summary>\r\n        /// Execute a command that re" +
+                    "turns multiple result sets, and access each in turn\r\n        /// </summary>\r\n   " +
+                    "     public static GridReader QueryMultiple(this IDbConnection cnn, CommandDefin" +
+                    "ition command)\r\n        {\r\n            return QueryMultipleImpl(cnn, ref command" +
+                    ");\r\n        }\r\n\r\n        private static GridReader QueryMultipleImpl(this IDbCon" +
+                    "nection cnn, ref CommandDefinition command)\r\n        {\r\n            object param" +
+                    " = command.Parameters;\r\n            Identity identity = new Identity(command.Com" +
+                    "mandText, command.CommandType, cnn, typeof(GridReader), param?.GetType(), null);" +
+                    "\r\n            CacheInfo info = GetCacheInfo(identity, param, command.AddToCache)" +
+                    ";\r\n\r\n            IDbCommand cmd = null;\r\n            IDataReader reader = null;\r" +
+                    "\n            bool wasClosed = cnn.State == ConnectionState.Closed;\r\n            " +
+                    "try\r\n            {\r\n                if (wasClosed) cnn.Open();\r\n                " +
+                    "cmd = command.SetupCommand(cnn, info.ParamReader);\r\n                reader = Exe" +
+                    "cuteReaderWithFlagsFallback(cmd, wasClosed, CommandBehavior.SequentialAccess);\r\n" +
+                    "\r\n                var result = new GridReader(cmd, reader, identity, command.Par" +
+                    "ameters as DynamicParameters, command.AddToCache);\r\n                cmd = null; " +
+                    "// now owned by result\r\n                wasClosed = false; // *if* the connectio" +
+                    "n was closed and we got this far, then we now have a reader\r\n                // " +
+                    "with the CloseConnection flag, so the reader will deal with the connection; we\r\n" +
+                    "                // still need something in the \"finally\" to ensure that broken S" +
+                    "QL still results\r\n                // in the connection closing itself\r\n         " +
+                    "       return result;\r\n            }\r\n            catch\r\n            {\r\n        " +
+                    "        if (reader != null)\r\n                {\r\n                    if (!reader." +
+                    "IsClosed) try { cmd?.Cancel(); }\r\n                        catch { /* don\'t spoil" +
+                    " the existing exception */ }\r\n                    reader.Dispose();\r\n           " +
+                    "     }\r\n                cmd?.Dispose();\r\n                if (wasClosed) cnn.Clos" +
+                    "e();\r\n                throw;\r\n            }\r\n        }\r\n        private static I" +
+                    "DataReader ExecuteReaderWithFlagsFallback(IDbCommand cmd, bool wasClosed, Comman" +
+                    "dBehavior behavior)\r\n        {\r\n            try\r\n            {\r\n                " +
+                    "return cmd.ExecuteReader(GetBehavior(wasClosed, behavior));\r\n            }\r\n    " +
+                    "        catch (ArgumentException ex)\r\n            { // thanks, Sqlite!\r\n        " +
+                    "        if (DisableCommandBehaviorOptimizations(behavior, ex))\r\n                " +
+                    "{\r\n                    // we can retry; this time it will have different flags\r\n" +
+                    "                    return cmd.ExecuteReader(GetBehavior(wasClosed, behavior));\r" +
+                    "\n                }\r\n                throw;\r\n            }\r\n        }\r\n        pr" +
+                    "ivate static IEnumerable<T> QueryImpl<T>(this IDbConnection cnn, CommandDefiniti" +
+                    "on command, Type effectiveType)\r\n        {\r\n            object param = command.P" +
+                    "arameters;\r\n            var identity = new Identity(command.CommandText, command" +
+                    ".CommandType, cnn, effectiveType, param?.GetType(), null);\r\n            var info" +
+                    " = GetCacheInfo(identity, param, command.AddToCache);\r\n\r\n            IDbCommand " +
+                    "cmd = null;\r\n            IDataReader reader = null;\r\n\r\n            bool wasClose" +
+                    "d = cnn.State == ConnectionState.Closed;\r\n            try\r\n            {\r\n      " +
+                    "          cmd = command.SetupCommand(cnn, info.ParamReader);\r\n\r\n                " +
+                    "if (wasClosed) cnn.Open();\r\n                reader = ExecuteReaderWithFlagsFallb" +
+                    "ack(cmd, wasClosed, CommandBehavior.SequentialAccess | CommandBehavior.SingleRes" +
+                    "ult);\r\n                wasClosed = false; // *if* the connection was closed and " +
+                    "we got this far, then we now have a reader\r\n                // with the CloseCon" +
+                    "nection flag, so the reader will deal with the connection; we\r\n                /" +
+                    "/ still need something in the \"finally\" to ensure that broken SQL still results\r" +
+                    "\n                // in the connection closing itself\r\n                var tuple " +
+                    "= info.Deserializer;\r\n                int hash = GetColumnHash(reader);\r\n       " +
+                    "         if (tuple.Func == null || tuple.Hash != hash)\r\n                {\r\n     " +
+                    "               if (reader.FieldCount == 0) //https://code.google.com/p/dapper-do" +
+                    "t-net/issues/detail?id=57\r\n                        yield break;\r\n               " +
+                    "     tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(eff" +
+                    "ectiveType, reader, 0, -1, false));\r\n                    if (command.AddToCache)" +
+                    " SetQueryCache(identity, info);\r\n                }\r\n\r\n                var func =" +
+                    " tuple.Func;\r\n                var convertToType = Nullable.GetUnderlyingType(eff" +
+                    "ectiveType) ?? effectiveType;\r\n                while (reader.Read())\r\n          " +
+                    "      {\r\n                    object val = func(reader);\r\n                    if " +
+                    "(val == null || val is T)\r\n                    {\r\n                        yield " +
+                    "return (T)val;\r\n                    }\r\n                    else\r\n               " +
+                    "     {\r\n                        yield return (T)Convert.ChangeType(val, convertT" +
+                    "oType, CultureInfo.InvariantCulture);\r\n                    }\r\n                }\r" +
+                    "\n                while (reader.NextResult()) { }\r\n                // happy path;" +
+                    " close the reader cleanly - no\r\n                // need for \"Cancel\" etc\r\n      " +
+                    "          reader.Dispose();\r\n                reader = null;\r\n\r\n                c" +
+                    "ommand.OnCompleted();\r\n            }\r\n            finally\r\n            {\r\n      " +
+                    "          if (reader != null)\r\n                {\r\n                    if (!reade" +
+                    "r.IsClosed) try { cmd.Cancel(); }\r\n                        catch { /* don\'t spoi" +
+                    "l the existing exception */ }\r\n                    reader.Dispose();\r\n          " +
+                    "      }\r\n                if (wasClosed) cnn.Close();\r\n                cmd?.Dispo" +
+                    "se();\r\n            }\r\n        }\r\n\r\n        [Flags]\r\n        internal enum Row\r\n " +
+                    "       {\r\n            First = 0,\r\n            FirstOrDefault = 1, //  &FirstOrDe" +
+                    "fault != 0: allow zero rows\r\n            Single = 2, // & Single != 0: demand at" +
+                    " least one row\r\n            SingleOrDefault = 3\r\n        }\r\n        static reado" +
+                    "nly int[] ErrTwoRows = new int[2], ErrZeroRows = new int[0];\r\n        static voi" +
+                    "d ThrowMultipleRows(Row row)\r\n        {\r\n            switch (row)\r\n            {" +
+                    "  // get the standard exception from the runtime\r\n                case Row.Singl" +
+                    "e: ErrTwoRows.Single(); break;\r\n                case Row.SingleOrDefault: ErrTwo" +
+                    "Rows.SingleOrDefault(); break;\r\n                default: throw new InvalidOperat" +
+                    "ionException();\r\n            }\r\n        }\r\n        static void ThrowZeroRows(Row" +
+                    " row)\r\n        {\r\n            switch (row)\r\n            { // get the standard ex" +
+                    "ception from the runtime\r\n                case Row.First: ErrZeroRows.First(); b" +
+                    "reak;\r\n                case Row.Single: ErrZeroRows.Single(); break;\r\n          " +
+                    "      default: throw new InvalidOperationException();\r\n            }\r\n        }\r" +
+                    "\n        private static T QueryRowImpl<T>(IDbConnection cnn, Row row, ref Comman" +
+                    "dDefinition command, Type effectiveType)\r\n        {\r\n            object param = " +
+                    "command.Parameters;\r\n            var identity = new Identity(command.CommandText" +
+                    ", command.CommandType, cnn, effectiveType, param?.GetType(), null);\r\n           " +
+                    " var info = GetCacheInfo(identity, param, command.AddToCache);\r\n\r\n            ID" +
+                    "bCommand cmd = null;\r\n            IDataReader reader = null;\r\n\r\n            bool" +
+                    " wasClosed = cnn.State == ConnectionState.Closed;\r\n            try\r\n            " +
+                    "{\r\n                cmd = command.SetupCommand(cnn, info.ParamReader);\r\n\r\n       " +
+                    "         if (wasClosed) cnn.Open();\r\n                reader = ExecuteReaderWithF" +
+                    "lagsFallback(cmd, wasClosed, (row & Row.Single) != 0\r\n                    ? Comm" +
+                    "andBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow mul" +
+                    "tiple rows, to check fail condition\r\n                    : CommandBehavior.Seque" +
+                    "ntialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow);\r\n      " +
+                    "          wasClosed = false; // *if* the connection was closed and we got this f" +
+                    "ar, then we now have a reader\r\n\r\n                T result = default(T);\r\n       " +
+                    "         if (reader.Read() && reader.FieldCount != 0)\r\n                {\r\n      " +
+                    "              // with the CloseConnection flag, so the reader will deal with the" +
+                    " connection; we\r\n                    // still need something in the \"finally\" to" +
+                    " ensure that broken SQL still results\r\n                    // in the connection " +
+                    "closing itself\r\n                    var tuple = info.Deserializer;\r\n            " +
+                    "        int hash = GetColumnHash(reader);\r\n                    if (tuple.Func ==" +
+                    " null || tuple.Hash != hash)\r\n                    {\r\n                        tup" +
+                    "le = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveTy" +
+                    "pe, reader, 0, -1, false));\r\n                        if (command.AddToCache) Set" +
+                    "QueryCache(identity, info);\r\n                    }\r\n\r\n                    var fu" +
+                    "nc = tuple.Func;\r\n                    object val = func(reader);\r\n              " +
+                    "      if (val == null || val is T)\r\n                    {\r\n                     " +
+                    "   result = (T)val;\r\n                    }\r\n                    else\r\n          " +
+                    "          {\r\n                        var convertToType = Nullable.GetUnderlyingT" +
+                    "ype(effectiveType) ?? effectiveType;\r\n                        result = (T)Conver" +
+                    "t.ChangeType(val, convertToType, CultureInfo.InvariantCulture);\r\n               " +
+                    "     }\r\n                    if ((row & Row.Single) != 0 && reader.Read()) ThrowM" +
+                    "ultipleRows(row);\r\n                    while (reader.Read()) { }\r\n              " +
+                    "  }\r\n                else if ((row & Row.FirstOrDefault) == 0) // demanding a ro" +
+                    "w, and don\'t have one\r\n                {\r\n                    ThrowZeroRows(row)" +
+                    ";\r\n                }\r\n                while (reader.NextResult()) { }\r\n         " +
+                    "       // happy path; close the reader cleanly - no\r\n                // need for" +
+                    " \"Cancel\" etc\r\n                reader.Dispose();\r\n                reader = null;" +
+                    "\r\n\r\n                command.OnCompleted();\r\n                return result;\r\n    " +
+                    "        }\r\n            finally\r\n            {\r\n                if (reader != nul" +
+                    "l)\r\n                {\r\n                    if (!reader.IsClosed) try { cmd.Cance" +
+                    "l(); }\r\n                        catch { /* don\'t spoil the existing exception */" +
+                    " }\r\n                    reader.Dispose();\r\n                }\r\n                if" +
+                    " (wasClosed) cnn.Close();\r\n                cmd?.Dispose();\r\n            }\r\n     " +
+                    "   }\r\n\r\n        /// <summary>\r\n        /// Maps a query to objects\r\n        /// " +
+                    "</summary>\r\n        /// <typeparam name=\"TFirst\">The first type in the record se" +
+                    "t</typeparam>\r\n        /// <typeparam name=\"TSecond\">The second type in the reco" +
+                    "rd set</typeparam>\r\n        /// <typeparam name=\"TReturn\">The return type</typep" +
+                    "aram>\r\n        /// <param name=\"cnn\"></param>\r\n        /// <param name=\"sql\"></p" +
+                    "aram>\r\n        /// <param name=\"map\"></param>\r\n        /// <param name=\"param\"><" +
+                    "/param>\r\n        /// <param name=\"transaction\"></param>\r\n        /// <param name" +
+                    "=\"buffered\"></param>\r\n        /// <param name=\"splitOn\">The Field we should spli" +
+                    "t and read the second object from (default: id)</param>\r\n        /// <param name" +
+                    "=\"commandTimeout\">Number of seconds before command execution timeout</param>\r\n  " +
+                    "      /// <param name=\"commandType\">Is it a stored proc or a batch?</param>\r\n   " +
+                    "     /// <returns></returns>\r\n        public static IEnumerable<TReturn> Query<T" +
+                    "First, TSecond, TReturn>(\r\n            this IDbConnection cnn, string sql, Func<" +
+                    "TFirst, TSecond, TReturn> map, object param = null, IDbTransaction transaction =" +
+                    " null, bool buffered = true, string splitOn = \"Id\", int? commandTimeout = null, " +
+                    "CommandType? commandType = null\r\n        )\r\n        {\r\n            return MultiM" +
+                    "ap<TFirst, TSecond, DontMap, DontMap, DontMap, DontMap, DontMap, TReturn>(cnn, s" +
+                    "ql, map, param, transaction, buffered, splitOn, commandTimeout, commandType);\r\n " +
+                    "       }\r\n\r\n        /// <summary>\r\n        /// Maps a query to objects\r\n        " +
+                    "/// </summary>\r\n        /// <typeparam name=\"TFirst\"></typeparam>\r\n        /// <" +
+                    "typeparam name=\"TSecond\"></typeparam>\r\n        /// <typeparam name=\"TThird\"></ty" +
+                    "peparam>\r\n        /// <typeparam name=\"TReturn\"></typeparam>\r\n        /// <param" +
+                    " name=\"cnn\"></param>\r\n        /// <param name=\"sql\"></param>\r\n        /// <param" +
+                    " name=\"map\"></param>\r\n        /// <param name=\"param\"></param>\r\n        /// <par" +
+                    "am name=\"transaction\"></param>\r\n        /// <param name=\"buffered\"></param>\r\n   " +
+                    "     /// <param name=\"splitOn\">The Field we should split and read the second obj" +
+                    "ect from (default: id)</param>\r\n        /// <param name=\"commandTimeout\">Number " +
+                    "of seconds before command execution timeout</param>\r\n        /// <param name=\"co" +
+                    "mmandType\"></param>\r\n        /// <returns></returns>\r\n        public static IEnu" +
+                    "merable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(\r\n            this IDbC" +
+                    "onnection cnn, string sql, Func<TFirst, TSecond, TThird, TReturn> map, object pa" +
+                    "ram = null, IDbTransaction transaction = null, bool buffered = true, string spli" +
+                    "tOn = \"Id\", int? commandTimeout = null, CommandType? commandType = null\r\n       " +
+                    " )\r\n        {\r\n            return MultiMap<TFirst, TSecond, TThird, DontMap, Don" +
+                    "tMap, DontMap, DontMap, TReturn>(cnn, sql, map, param, transaction, buffered, sp" +
+                    "litOn, commandTimeout, commandType);\r\n        }\r\n\r\n        /// <summary>\r\n      " +
+                    "  /// Perform a multi mapping query with 4 input parameters\r\n        /// </summa" +
+                    "ry>\r\n        /// <typeparam name=\"TFirst\"></typeparam>\r\n        /// <typeparam n" +
+                    "ame=\"TSecond\"></typeparam>\r\n        /// <typeparam name=\"TThird\"></typeparam>\r\n " +
+                    "       /// <typeparam name=\"TFourth\"></typeparam>\r\n        /// <typeparam name=\"" +
+                    "TReturn\"></typeparam>\r\n        /// <param name=\"cnn\"></param>\r\n        /// <para" +
+                    "m name=\"sql\"></param>\r\n        /// <param name=\"map\"></param>\r\n        /// <para" +
+                    "m name=\"param\"></param>\r\n        /// <param name=\"transaction\"></param>\r\n       " +
+                    " /// <param name=\"buffered\"></param>\r\n        /// <param name=\"splitOn\"></param>" +
+                    "\r\n        /// <param name=\"commandTimeout\"></param>\r\n        /// <param name=\"co" +
+                    "mmandType\"></param>\r\n        /// <returns></returns>\r\n        public static IEnu" +
+                    "merable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TReturn>(\r\n            " +
+                    "this IDbConnection cnn, string sql, Func<TFirst, TSecond, TThird, TFourth, TRetu" +
+                    "rn> map, object param = null, IDbTransaction transaction = null, bool buffered =" +
+                    " true, string splitOn = \"Id\", int? commandTimeout = null, CommandType? commandTy" +
+                    "pe = null\r\n        )\r\n        {\r\n            return MultiMap<TFirst, TSecond, TT" +
+                    "hird, TFourth, DontMap, DontMap, DontMap, TReturn>(cnn, sql, map, param, transac" +
+                    "tion, buffered, splitOn, commandTimeout, commandType);\r\n        }\r\n\r\n        ///" +
+                    " <summary>\r\n        /// Perform a multi mapping query with 5 input parameters\r\n " +
+                    "       /// </summary>\r\n        /// <typeparam name=\"TFirst\"></typeparam>\r\n      " +
+                    "  /// <typeparam name=\"TSecond\"></typeparam>\r\n        /// <typeparam name=\"TThir" +
+                    "d\"></typeparam>\r\n        /// <typeparam name=\"TFourth\"></typeparam>\r\n        ///" +
+                    " <typeparam name=\"TFifth\"></typeparam>\r\n        /// <typeparam name=\"TReturn\"></" +
+                    "typeparam>\r\n        /// <param name=\"cnn\"></param>\r\n        /// <param name=\"sql" +
+                    "\"></param>\r\n        /// <param name=\"map\"></param>\r\n        /// <param name=\"par" +
+                    "am\"></param>\r\n        /// <param name=\"transaction\"></param>\r\n        /// <param" +
+                    " name=\"buffered\"></param>\r\n        /// <param name=\"splitOn\"></param>\r\n        /" +
+                    "// <param name=\"commandTimeout\"></param>\r\n        /// <param name=\"commandType\">" +
+                    "</param>\r\n        /// <returns></returns>\r\n        public static IEnumerable<TRe" +
+                    "turn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(\r\n            thi" +
+                    "s IDbConnection cnn, string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, " +
+                    "TReturn> map, object param = null, IDbTransaction transaction = null, bool buffe" +
+                    "red = true, string splitOn = \"Id\", int? commandTimeout = null, CommandType? comm" +
+                    "andType = null\r\n)\r\n        {\r\n            return MultiMap<TFirst, TSecond, TThir" +
+                    "d, TFourth, TFifth, DontMap, DontMap, TReturn>(cnn, sql, map, param, transaction" +
+                    ", buffered, splitOn, commandTimeout, commandType);\r\n        }\r\n\r\n        /// <su" +
+                    "mmary>\r\n        /// Perform a multi mapping query with 6 input parameters\r\n     " +
+                    "   /// </summary>\r\n        /// <typeparam name=\"TFirst\"></typeparam>\r\n        //" +
+                    "/ <typeparam name=\"TSecond\"></typeparam>\r\n        /// <typeparam name=\"TThird\"><" +
+                    "/typeparam>\r\n        /// <typeparam name=\"TFourth\"></typeparam>\r\n        /// <ty" +
+                    "peparam name=\"TFifth\"></typeparam>\r\n        /// <typeparam name=\"TSixth\"></typep" +
+                    "aram>\r\n        /// <typeparam name=\"TReturn\"></typeparam>\r\n        /// <param na" +
+                    "me=\"cnn\"></param>\r\n        /// <param name=\"sql\"></param>\r\n        /// <param na" +
+                    "me=\"map\"></param>\r\n        /// <param name=\"param\"></param>\r\n        /// <param " +
+                    "name=\"transaction\"></param>\r\n        /// <param name=\"buffered\"></param>\r\n      " +
+                    "  /// <param name=\"splitOn\"></param>\r\n        /// <param name=\"commandTimeout\"><" +
                     "/param>\r\n        /// <param name=\"commandType\"></param>\r\n        /// <returns></" +
                     "returns>\r\n        public static IEnumerable<TReturn> Query<TFirst, TSecond, TThi" +
-                    "rd, TReturn>(\r\n#if CSHARP30\r\n        this IDbConnection cnn, string sql, Func<TF" +
-                    "irst, TSecond, TThird, TReturn> map, object param, IDbTransaction transaction, b" +
-                    "ool buffered, string splitOn, int? commandTimeout, CommandType? commandType\r\n#el" +
-                    "se\r\nthis IDbConnection cnn, string sql, Func<TFirst, TSecond, TThird, TReturn> m" +
-                    "ap, dynamic param = null, IDbTransaction transaction = null, bool buffered = tru" +
-                    "e, string splitOn = \"Id\", int? commandTimeout = null, CommandType? commandType =" +
-                    " null\r\n#endif\r\n)\r\n        {\r\n            return MultiMap<TFirst, TSecond, TThird" +
-                    ", DontMap, DontMap, TReturn>(cnn, sql, map, param as object, transaction, buffer" +
-                    "ed, splitOn, commandTimeout, commandType);\r\n        }\r\n\r\n        /// <summary>\r\n" +
-                    "        /// Perform a multi mapping query with 4 input parameters\r\n        /// <" +
-                    "/summary>\r\n        /// <typeparam name=\"TFirst\"></typeparam>\r\n        /// <typep" +
-                    "aram name=\"TSecond\"></typeparam>\r\n        /// <typeparam name=\"TThird\"></typepar" +
-                    "am>\r\n        /// <typeparam name=\"TFourth\"></typeparam>\r\n        /// <typeparam " +
-                    "name=\"TReturn\"></typeparam>\r\n        /// <param name=\"cnn\"></param>\r\n        ///" +
-                    " <param name=\"sql\"></param>\r\n        /// <param name=\"map\"></param>\r\n        ///" +
-                    " <param name=\"param\"></param>\r\n        /// <param name=\"transaction\"></param>\r\n " +
-                    "       /// <param name=\"buffered\"></param>\r\n        /// <param name=\"splitOn\"></" +
-                    "param>\r\n        /// <param name=\"commandTimeout\"></param>\r\n        /// <param na" +
-                    "me=\"commandType\"></param>\r\n        /// <returns></returns>\r\n        public stati" +
-                    "c IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TReturn>(\r\n#if CS" +
-                    "HARP30\r\n        this IDbConnection cnn, string sql, Func<TFirst, TSecond, TThird" +
-                    ", TFourth, TReturn> map, object param, IDbTransaction transaction, bool buffered" +
-                    ", string splitOn, int? commandTimeout, CommandType? commandType\r\n#else\r\nthis IDb" +
-                    "Connection cnn, string sql, Func<TFirst, TSecond, TThird, TFourth, TReturn> map," +
-                    " dynamic param = null, IDbTransaction transaction = null, bool buffered = true, " +
-                    "string splitOn = \"Id\", int? commandTimeout = null, CommandType? commandType = nu" +
-                    "ll\r\n#endif\r\n)\r\n        {\r\n            return MultiMap<TFirst, TSecond, TThird, T" +
-                    "Fourth, DontMap, TReturn>(cnn, sql, map, param as object, transaction, buffered," +
-                    " splitOn, commandTimeout, commandType);\r\n        }\r\n#if !CSHARP30\r\n        /// <" +
-                    "summary>\r\n        /// Perform a multi mapping query with 5 input parameters\r\n   " +
-                    "     /// </summary>\r\n        /// <typeparam name=\"TFirst\"></typeparam>\r\n        " +
-                    "/// <typeparam name=\"TSecond\"></typeparam>\r\n        /// <typeparam name=\"TThird\"" +
-                    "></typeparam>\r\n        /// <typeparam name=\"TFourth\"></typeparam>\r\n        /// <" +
-                    "typeparam name=\"TFifth\"></typeparam>\r\n        /// <typeparam name=\"TReturn\"></ty" +
-                    "peparam>\r\n        /// <param name=\"cnn\"></param>\r\n        /// <param name=\"sql\">" +
-                    "</param>\r\n        /// <param name=\"map\"></param>\r\n        /// <param name=\"param" +
-                    "\"></param>\r\n        /// <param name=\"transaction\"></param>\r\n        /// <param n" +
-                    "ame=\"buffered\"></param>\r\n        /// <param name=\"splitOn\"></param>\r\n        ///" +
-                    " <param name=\"commandTimeout\"></param>\r\n        /// <param name=\"commandType\"></" +
-                    "param>\r\n        /// <returns></returns>\r\n        public static IEnumerable<TRetu" +
-                    "rn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(this IDbConnection " +
-                    "cnn, string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> map, dy" +
-                    "namic param = null, IDbTransaction transaction = null, bool buffered = true, str" +
-                    "ing splitOn = \"Id\", int? commandTimeout = null, CommandType? commandType = null)" +
+                    "rd, TFourth, TFifth, TSixth, TReturn>(\r\n            this IDbConnection cnn, stri" +
+                    "ng sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn> map, obj" +
+                    "ect param = null, IDbTransaction transaction = null, bool buffered = true, strin" +
+                    "g splitOn = \"Id\", int? commandTimeout = null, CommandType? commandType = null\r\n)" +
                     "\r\n        {\r\n            return MultiMap<TFirst, TSecond, TThird, TFourth, TFift" +
-                    "h, TReturn>(cnn, sql, map, param as object, transaction, buffered, splitOn, comm" +
-                    "andTimeout, commandType);\r\n        }\r\n#endif\r\n        partial class DontMap { }\r" +
-                    "\n        static IEnumerable<TReturn> MultiMap<TFirst, TSecond, TThird, TFourth, " +
-                    "TFifth, TReturn>(\r\n            this IDbConnection cnn, string sql, object map, o" +
-                    "bject param, IDbTransaction transaction, bool buffered, string splitOn, int? com" +
-                    "mandTimeout, CommandType? commandType)\r\n        {\r\n            var results = Mul" +
-                    "tiMapImpl<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(cnn, sql, map, para" +
-                    "m, transaction, splitOn, commandTimeout, commandType, null, null);\r\n            " +
-                    "return buffered ? results.ToList() : results;\r\n        }\r\n\r\n\r\n        static IEn" +
-                    "umerable<TReturn> MultiMapImpl<TFirst, TSecond, TThird, TFourth, TFifth, TReturn" +
-                    ">(this IDbConnection cnn, string sql, object map, object param, IDbTransaction t" +
-                    "ransaction, string splitOn, int? commandTimeout, CommandType? commandType, IData" +
-                    "Reader reader, Identity identity)\r\n        {\r\n            identity = identity ??" +
-                    " new Identity(sql, commandType, cnn, typeof(TFirst), (object)param == null ? nul" +
-                    "l : ((object)param).GetType(), new[] { typeof(TFirst), typeof(TSecond), typeof(T" +
-                    "Third), typeof(TFourth), typeof(TFifth) });\r\n            CacheInfo cinfo = GetCa" +
-                    "cheInfo(identity);\r\n\r\n            IDbCommand ownedCommand = null;\r\n            I" +
-                    "DataReader ownedReader = null;\r\n\r\n            try\r\n            {\r\n              " +
-                    "  if (reader == null)\r\n                {\r\n                    ownedCommand = Set" +
-                    "upCommand(cnn, transaction, sql, cinfo.ParamReader, (object)param, commandTimeou" +
-                    "t, commandType);\r\n                    ownedReader = ownedCommand.ExecuteReader()" +
-                    ";\r\n                    reader = ownedReader;\r\n                }\r\n               " +
-                    " DeserializerState deserializer = default(DeserializerState);\r\n                F" +
-                    "unc<IDataReader, object>[] otherDeserializers = null;\r\n\r\n                int has" +
-                    "h = GetColumnHash(reader);\r\n                if ((deserializer = cinfo.Deserializ" +
-                    "er).Func == null || (otherDeserializers = cinfo.OtherDeserializers) == null || h" +
-                    "ash != deserializer.Hash)\r\n                {\r\n                    var deserializ" +
-                    "ers = GenerateDeserializers(new Type[] { typeof(TFirst), typeof(TSecond), typeof" +
-                    "(TThird), typeof(TFourth), typeof(TFifth) }, splitOn, reader);\r\n                " +
-                    "    deserializer = cinfo.Deserializer = new DeserializerState(hash, deserializer" +
-                    "s[0]);\r\n                    otherDeserializers = cinfo.OtherDeserializers = dese" +
-                    "rializers.Skip(1).ToArray();\r\n                    SetQueryCache(identity, cinfo)" +
-                    ";\r\n                }\r\n\r\n                Func<IDataReader, TReturn> mapIt = Gener" +
-                    "ateMapper<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(deserializer.Func, " +
-                    "otherDeserializers, map);\r\n\r\n                if (mapIt != null)\r\n               " +
-                    " {\r\n                    while (reader.Read())\r\n                    {\r\n          " +
-                    "              yield return mapIt(reader);\r\n                    }\r\n              " +
-                    "  }\r\n            }\r\n            finally\r\n            {\r\n                try\r\n   " +
-                    "             {\r\n                    if (ownedReader != null)\r\n                  " +
-                    "  {\r\n                        ownedReader.Dispose();\r\n                    }\r\n    " +
-                    "            }\r\n                finally\r\n                {\r\n                    i" +
-                    "f (ownedCommand != null)\r\n                    {\r\n                        ownedCo" +
-                    "mmand.Dispose();\r\n                    }\r\n                }\r\n            }\r\n     " +
-                    "   }\r\n\r\n        private static Func<IDataReader, TReturn> GenerateMapper<TFirst," +
-                    " TSecond, TThird, TFourth, TFifth, TReturn>(Func<IDataReader, object> deserializ" +
-                    "er, Func<IDataReader, object>[] otherDeserializers, object map)\r\n        {\r\n    " +
-                    "        switch (otherDeserializers.Length)\r\n            {\r\n                case " +
-                    "1:\r\n                    return r => ((Func<TFirst, TSecond, TReturn>)map)((TFirs" +
-                    "t)deserializer(r), (TSecond)otherDeserializers[0](r));\r\n                case 2:\r" +
-                    "\n                    return r => ((Func<TFirst, TSecond, TThird, TReturn>)map)((" +
-                    "TFirst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThird)otherDeserial" +
-                    "izers[1](r));\r\n                case 3:\r\n                    return r => ((Func<T" +
-                    "First, TSecond, TThird, TFourth, TReturn>)map)((TFirst)deserializer(r), (TSecond" +
-                    ")otherDeserializers[0](r), (TThird)otherDeserializers[1](r), (TFourth)otherDeser" +
-                    "ializers[2](r));\r\n#if !CSHARP30\r\n                case 4:\r\n                    re" +
-                    "turn r => ((Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>)map)((TFirst" +
-                    ")deserializer(r), (TSecond)otherDeserializers[0](r), (TThird)otherDeserializers[" +
-                    "1](r), (TFourth)otherDeserializers[2](r), (TFifth)otherDeserializers[3](r));\r\n#e" +
-                    "ndif\r\n                default:\r\n                    throw new NotSupportedExcept" +
-                    "ion();\r\n            }\r\n        }\r\n\r\n        private static Func<IDataReader, obj" +
-                    "ect>[] GenerateDeserializers(Type[] types, string splitOn, IDataReader reader)\r\n" +
-                    "        {\r\n            int current = 0;\r\n            var splits = splitOn.Split(" +
-                    "\',\').ToArray();\r\n            var splitIndex = 0;\r\n\r\n            Func<Type, int> " +
-                    "nextSplit = type =>\r\n            {\r\n                var currentSplit = splits[sp" +
-                    "litIndex].Trim();\r\n                if (splits.Length > splitIndex + 1)\r\n        " +
-                    "        {\r\n                    splitIndex++;\r\n                }\r\n\r\n             " +
-                    "   bool skipFirst = false;\r\n                int startingPos = current + 1;\r\n    " +
-                    "            // if our current type has the split, skip the first time you see it" +
-                    ". \r\n                if (type != typeof(Object))\r\n                {\r\n            " +
-                    "        var props = DefaultTypeMap.GetSettableProps(type);\r\n                    " +
-                    "var fields = DefaultTypeMap.GetSettableFields(type);\r\n\r\n                    fore" +
-                    "ach (var name in props.Select(p => p.Name).Concat(fields.Select(f => f.Name)))\r\n" +
-                    "                    {\r\n                        if (string.Equals(name, currentSp" +
-                    "lit, StringComparison.OrdinalIgnoreCase))\r\n                        {\r\n          " +
-                    "                  skipFirst = true;\r\n                            startingPos = c" +
-                    "urrent;\r\n                            break;\r\n                        }\r\n        " +
-                    "            }\r\n\r\n                }\r\n\r\n                int pos;\r\n                " +
-                    "for (pos = startingPos; pos < reader.FieldCount; pos++)\r\n                {\r\n    " +
-                    "                // some people like ID some id ... assuming case insensitive spl" +
-                    "its for now\r\n                    if (splitOn == \"*\")\r\n                    {\r\n   " +
-                    "                     break;\r\n                    }\r\n                    if (stri" +
-                    "ng.Equals(reader.GetName(pos), currentSplit, StringComparison.OrdinalIgnoreCase)" +
-                    ")\r\n                    {\r\n                        if (skipFirst)\r\n              " +
-                    "          {\r\n                            skipFirst = false;\r\n                   " +
-                    "     }\r\n                        else\r\n                        {\r\n               " +
-                    "             break;\r\n                        }\r\n                    }\r\n         " +
-                    "       }\r\n                current = pos;\r\n                return pos;\r\n         " +
-                    "   };\r\n\r\n            var deserializers = new List<Func<IDataReader, object>>();\r" +
-                    "\n            int split = 0;\r\n            bool first = true;\r\n            foreach" +
-                    " (var type in types)\r\n            {\r\n                if (type != typeof(DontMap)" +
-                    ")\r\n                {\r\n                    int next = nextSplit(type);\r\n         " +
-                    "           deserializers.Add(GetDeserializer(type, reader, split, next - split, " +
-                    "/* returnNullIfFirstMissing: */ !first));\r\n                    first = false;\r\n " +
-                    "                   split = next;\r\n                }\r\n            }\r\n\r\n          " +
-                    "  return deserializers.ToArray();\r\n        }\r\n\r\n        private static CacheInfo" +
-                    " GetCacheInfo(Identity identity)\r\n        {\r\n            CacheInfo info;\r\n      " +
-                    "      if (!TryGetQueryCache(identity, out info))\r\n            {\r\n               " +
-                    " info = new CacheInfo();\r\n                if (identity.parametersType != null)\r\n" +
-                    "                {\r\n                    if (typeof(IDynamicParameters).IsAssignab" +
-                    "leFrom(identity.parametersType))\r\n                    {\r\n                       " +
-                    " info.ParamReader = (cmd, obj) => { (obj as IDynamicParameters).AddParameters(cm" +
-                    "d, identity); };\r\n                    }\r\n#if !CSHARP30\r\n                    else" +
-                    " if (typeof(IEnumerable<KeyValuePair<string, object>>).IsAssignableFrom(identity" +
-                    ".parametersType) && typeof(System.Dynamic.IDynamicMetaObjectProvider).IsAssignab" +
-                    "leFrom(identity.parametersType))\r\n                    {\r\n                       " +
-                    " info.ParamReader = (cmd, obj) =>\r\n                        {\r\n                  " +
-                    "          IDynamicParameters mapped = new DynamicParameters(obj);\r\n             " +
-                    "               mapped.AddParameters(cmd, identity);\r\n                        };\r" +
-                    "\n                    }\r\n#endif\r\n                    else\r\n                    {\r" +
-                    "\n                        info.ParamReader = CreateParamInfoGenerator(identity, f" +
-                    "alse);\r\n                    }\r\n                }\r\n                SetQueryCache(" +
-                    "identity, info);\r\n            }\r\n            return info;\r\n        }\r\n\r\n        " +
-                    "private static Func<IDataReader, object> GetDeserializer(Type type, IDataReader " +
-                    "reader, int startBound, int length, bool returnNullIfFirstMissing)\r\n        {\r\n#" +
-                    "if !CSHARP30\r\n            // dynamic is passed in as Object ... by c# design\r\n  " +
-                    "          if (type == typeof(object)\r\n                || type == typeof(DapperRo" +
-                    "w))\r\n            {\r\n                return GetDapperRowDeserializer(reader, star" +
-                    "tBound, length, returnNullIfFirstMissing);\r\n            }\r\n#else\r\n        if(typ" +
-                    "e.IsAssignableFrom(typeof(Dictionary<string,object>)))\r\n        {\r\n            r" +
-                    "eturn GetDictionaryDeserializer(reader, startBound, length, returnNullIfFirstMis" +
-                    "sing);\r\n        }\r\n#endif\r\n            Type underlyingType = null;\r\n            " +
-                    "if (!(typeMap.ContainsKey(type) || type.IsEnum || type.FullName == LinqBinary ||" +
-                    "\r\n                (type.IsValueType && (underlyingType = Nullable.GetUnderlyingT" +
-                    "ype(type)) != null && underlyingType.IsEnum)))\r\n            {\r\n                r" +
-                    "eturn GetTypeDeserializer(type, reader, startBound, length, returnNullIfFirstMis" +
-                    "sing);\r\n            }\r\n            return GetStructDeserializer(type, underlying" +
-                    "Type ?? type, startBound);\r\n\r\n        }\r\n\r\n#if !CSHARP30\r\n        sealed partial" +
-                    " class DapperTable\r\n        {\r\n            string[] fieldNames;\r\n            rea" +
-                    "donly Dictionary<string, int> fieldNameLookup;\r\n\r\n            internal string[] " +
-                    "FieldNames { get { return fieldNames; } }\r\n\r\n            public DapperTable(stri" +
-                    "ng[] fieldNames)\r\n            {\r\n                if (fieldNames == null) throw n" +
-                    "ew ArgumentNullException(\"fieldNames\");\r\n                this.fieldNames = field" +
-                    "Names;\r\n\r\n                fieldNameLookup = new Dictionary<string, int>(fieldNam" +
-                    "es.Length, StringComparer.Ordinal);\r\n                // if there are dups, we wa" +
-                    "nt the **first** key to be the \"winner\" - so iterate backwards\r\n                " +
-                    "for (int i = fieldNames.Length - 1; i >= 0; i--)\r\n                {\r\n           " +
-                    "         string key = fieldNames[i];\r\n                    if (key != null) field" +
-                    "NameLookup[key] = i;\r\n                }\r\n            }\r\n\r\n            internal i" +
-                    "nt IndexOfName(string name)\r\n            {\r\n                int result;\r\n       " +
-                    "         return (name != null && fieldNameLookup.TryGetValue(name, out result)) " +
-                    "? result : -1;\r\n            }\r\n            internal int AddField(string name)\r\n " +
-                    "           {\r\n                if (name == null) throw new ArgumentNullException(" +
-                    "\"name\");\r\n                if (fieldNameLookup.ContainsKey(name)) throw new Inval" +
-                    "idOperationException(\"Field already exists: \" + name);\r\n                int oldL" +
-                    "en = fieldNames.Length;\r\n                Array.Resize(ref fieldNames, oldLen + 1" +
-                    "); // yes, this is sub-optimal, but this is not the expected common case\r\n      " +
-                    "          fieldNameLookup[name] = oldLen;\r\n                return oldLen;\r\n     " +
-                    "       }\r\n\r\n\r\n            internal bool FieldExists(string key)\r\n            {\r\n" +
-                    "                return key != null && fieldNameLookup.ContainsKey(key);\r\n       " +
-                    "     }\r\n\r\n            public int FieldCount { get { return fieldNames.Length; } " +
-                    "}\r\n        }\r\n\r\n        sealed partial class DapperRowMetaObject : System.Dynami" +
-                    "c.DynamicMetaObject\r\n        {\r\n            static readonly MethodInfo getValueM" +
-                    "ethod = typeof(IDictionary<string, object>).GetProperty(\"Item\").GetGetMethod();\r" +
-                    "\n            static readonly MethodInfo setValueMethod = typeof(DapperRow).GetMe" +
-                    "thod(\"SetValue\");\r\n\r\n            public DapperRowMetaObject(\r\n                Sy" +
-                    "stem.Linq.Expressions.Expression expression,\r\n                System.Dynamic.Bin" +
-                    "dingRestrictions restrictions\r\n                )\r\n                : base(express" +
-                    "ion, restrictions)\r\n            {\r\n            }\r\n\r\n            public DapperRow" +
-                    "MetaObject(\r\n                System.Linq.Expressions.Expression expression,\r\n   " +
-                    "             System.Dynamic.BindingRestrictions restrictions,\r\n                o" +
-                    "bject value\r\n                )\r\n                : base(expression, restrictions," +
-                    " value)\r\n            {\r\n            }\r\n\r\n            System.Dynamic.DynamicMetaO" +
-                    "bject CallMethod(\r\n                MethodInfo method,\r\n                System.Li" +
-                    "nq.Expressions.Expression[] parameters\r\n                )\r\n            {\r\n      " +
-                    "          var callMethod = new System.Dynamic.DynamicMetaObject(\r\n              " +
-                    "      System.Linq.Expressions.Expression.Call(\r\n                        System.L" +
-                    "inq.Expressions.Expression.Convert(Expression, LimitType),\r\n                    " +
-                    "    method,\r\n                        parameters),\r\n                    System.Dy" +
-                    "namic.BindingRestrictions.GetTypeRestriction(Expression, LimitType)\r\n           " +
-                    "         );\r\n                return callMethod;\r\n            }\r\n\r\n            pu" +
-                    "blic override System.Dynamic.DynamicMetaObject BindGetMember(System.Dynamic.GetM" +
-                    "emberBinder binder)\r\n            {\r\n                var parameters = new System." +
-                    "Linq.Expressions.Expression[]\r\n                                        {\r\n      " +
-                    "                                  System.Linq.Expressions.Expression.Constant(bi" +
-                    "nder.Name)\r\n                                        };\r\n\r\n                var ca" +
-                    "llMethod = CallMethod(getValueMethod, parameters);\r\n\r\n                return cal" +
-                    "lMethod;\r\n            }\r\n\r\n            public override System.Dynamic.DynamicMet" +
-                    "aObject BindSetMember(System.Dynamic.SetMemberBinder binder, System.Dynamic.Dyna" +
-                    "micMetaObject value)\r\n            {\r\n                var parameters = new System" +
-                    ".Linq.Expressions.Expression[]\r\n                                        {\r\n     " +
-                    "                                   System.Linq.Expressions.Expression.Constant(b" +
-                    "inder.Name),\r\n                                        value.Expression,\r\n       " +
-                    "                                 };\r\n\r\n                var callMethod = CallMeth" +
-                    "od(setValueMethod, parameters);\r\n\r\n                return callMethod;\r\n         " +
-                    "   }\r\n        }\r\n\r\n        sealed partial class DapperRow\r\n            : System." +
-                    "Dynamic.IDynamicMetaObjectProvider\r\n            , IDictionary<string, object>\r\n " +
-                    "       {\r\n            readonly DapperTable table;\r\n            object[] values;\r" +
-                    "\n\r\n            public DapperRow(DapperTable table, object[] values)\r\n           " +
-                    " {\r\n                if (table == null) throw new ArgumentNullException(\"table\");" +
-                    "\r\n                if (values == null) throw new ArgumentNullException(\"values\");" +
-                    "\r\n                this.table = table;\r\n                this.values = values;\r\n  " +
-                    "          }\r\n            private sealed class DeadValue\r\n            {\r\n        " +
-                    "        public static readonly DeadValue Default = new DeadValue();\r\n           " +
-                    "     private DeadValue() { }\r\n            }\r\n            int ICollection<KeyValu" +
-                    "ePair<string, object>>.Count\r\n            {\r\n                get\r\n              " +
-                    "  {\r\n                    int count = 0;\r\n                    for (int i = 0; i <" +
-                    " values.Length; i++)\r\n                    {\r\n                        if (!(value" +
-                    "s[i] is DeadValue)) count++;\r\n                    }\r\n                    return " +
-                    "count;\r\n                }\r\n            }\r\n\r\n            public bool TryGetValue(" +
-                    "string name, out object value)\r\n            {\r\n                var index = table" +
-                    ".IndexOfName(name);\r\n                if (index < 0)\r\n                { // doesn\'" +
-                    "t exist\r\n                    value = null;\r\n                    return false;\r\n " +
-                    "               }\r\n                // exists, **even if** we don\'t have a value; " +
-                    "consider table rows heterogeneous\r\n                value = index < values.Length" +
-                    " ? values[index] : null;\r\n                if (value is DeadValue)\r\n             " +
-                    "   { // pretend it isn\'t here\r\n                    value = null;\r\n              " +
-                    "      return false;\r\n                }\r\n                return true;\r\n          " +
-                    "  }\r\n\r\n            public override string ToString()\r\n            {\r\n           " +
-                    "     var sb = new StringBuilder(\"{DapperRow\");\r\n                foreach (var kv " +
-                    "in this)\r\n                {\r\n                    var value = kv.Value;\r\n        " +
-                    "            sb.Append(\", \").Append(kv.Key);\r\n                    if (value != nu" +
-                    "ll)\r\n                    {\r\n                        sb.Append(\" = \'\").Append(kv." +
-                    "Value).Append(\'\\\'\');\r\n                    }\r\n                    else\r\n         " +
-                    "           {\r\n                        sb.Append(\" = NULL\");\r\n                   " +
-                    " }\r\n                }\r\n\r\n                return sb.Append(\'}\').ToString();\r\n    " +
-                    "        }\r\n\r\n            System.Dynamic.DynamicMetaObject System.Dynamic.IDynami" +
-                    "cMetaObjectProvider.GetMetaObject(\r\n                System.Linq.Expressions.Expr" +
-                    "ession parameter)\r\n            {\r\n                return new DapperRowMetaObject" +
-                    "(parameter, System.Dynamic.BindingRestrictions.Empty, this);\r\n            }\r\n\r\n " +
-                    "           public IEnumerator<KeyValuePair<string, object>> GetEnumerator()\r\n   " +
-                    "         {\r\n                var names = table.FieldNames;\r\n                for (" +
-                    "var i = 0; i < names.Length; i++)\r\n                {\r\n                    object" +
-                    " value = i < values.Length ? values[i] : null;\r\n                    if (!(value " +
-                    "is DeadValue))\r\n                    {\r\n                        yield return new " +
-                    "KeyValuePair<string, object>(names[i], value);\r\n                    }\r\n         " +
-                    "       }\r\n            }\r\n\r\n            IEnumerator IEnumerable.GetEnumerator()\r\n" +
-                    "            {\r\n                return GetEnumerator();\r\n            }\r\n\r\n       " +
-                    "     #region Implementation of ICollection<KeyValuePair<string,object>>\r\n\r\n     " +
-                    "       void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, o" +
-                    "bject> item)\r\n            {\r\n                IDictionary<string, object> dic = t" +
-                    "his;\r\n                dic.Add(item.Key, item.Value);\r\n            }\r\n\r\n         " +
-                    "   void ICollection<KeyValuePair<string, object>>.Clear()\r\n            { // remo" +
-                    "ves values for **this row**, but doesn\'t change the fundamental table\r\n         " +
-                    "       for (int i = 0; i < values.Length; i++)\r\n                    values[i] = " +
-                    "DeadValue.Default;\r\n            }\r\n\r\n            bool ICollection<KeyValuePair<s" +
-                    "tring, object>>.Contains(KeyValuePair<string, object> item)\r\n            {\r\n    " +
-                    "            object value;\r\n                return TryGetValue(item.Key, out valu" +
-                    "e) && Equals(value, item.Value);\r\n            }\r\n\r\n            void ICollection<" +
-                    "KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int a" +
-                    "rrayIndex)\r\n            {\r\n                foreach (var kv in this)\r\n           " +
-                    "     {\r\n                    array[arrayIndex++] = kv; // if they didn\'t leave en" +
-                    "ough space; not our fault\r\n                }\r\n            }\r\n\r\n            bool " +
-                    "ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> it" +
-                    "em)\r\n            {\r\n                IDictionary<string, object> dic = this;\r\n   " +
-                    "             return dic.Remove(item.Key);\r\n            }\r\n\r\n            bool ICo" +
-                    "llection<KeyValuePair<string, object>>.IsReadOnly\r\n            {\r\n              " +
-                    "  get { return false; }\r\n            }\r\n\r\n            #endregion\r\n\r\n            " +
-                    "#region Implementation of IDictionary<string,object>\r\n\r\n            bool IDictio" +
-                    "nary<string, object>.ContainsKey(string key)\r\n            {\r\n                int" +
-                    " index = table.IndexOfName(key);\r\n                if (index < 0 || index >= valu" +
-                    "es.Length || values[index] is DeadValue) return false;\r\n                return t" +
-                    "rue;\r\n            }\r\n\r\n            void IDictionary<string, object>.Add(string k" +
-                    "ey, object value)\r\n            {\r\n                IDictionary<string, object> di" +
-                    "c = this;\r\n                dic[key] = value;\r\n            }\r\n\r\n            bool " +
-                    "IDictionary<string, object>.Remove(string key)\r\n            {\r\n                i" +
-                    "nt index = table.IndexOfName(key);\r\n                if (index < 0 || index >= va" +
-                    "lues.Length || values[index] is DeadValue) return false;\r\n                values" +
-                    "[index] = DeadValue.Default;\r\n                return true;\r\n            }\r\n\r\n   " +
-                    "         object IDictionary<string, object>.this[string key]\r\n            {\r\n   " +
-                    "             get { object val; TryGetValue(key, out val); return val; }\r\n       " +
-                    "         set { SetValue(key, value); }\r\n            }\r\n            public object" +
-                    " SetValue(string key, object value)\r\n            {\r\n                if (key == n" +
-                    "ull) throw new ArgumentNullException(\"key\");\r\n                int index = table." +
-                    "IndexOfName(key);\r\n                if (index < 0)\r\n                {\r\n          " +
-                    "          index = table.AddField(key);\r\n                }\r\n                if (v" +
-                    "alues.Length <= index)\r\n                {   // we\'ll assume they\'re doing lots o" +
-                    "f things, and\r\n                    // grow it to the full width of the table\r\n  " +
-                    "                  Array.Resize(ref values, table.FieldCount);\r\n                }" +
-                    "\r\n                return values[index] = value;\r\n            }\r\n\r\n            IC" +
-                    "ollection<string> IDictionary<string, object>.Keys\r\n            {\r\n             " +
-                    "   get { return this.Select(kv => kv.Key).ToArray(); }\r\n            }\r\n\r\n       " +
-                    "     ICollection<object> IDictionary<string, object>.Values\r\n            {\r\n    " +
-                    "            get { return this.Select(kv => kv.Value).ToArray(); }\r\n            }" +
-                    "\r\n\r\n            #endregion\r\n        }\r\n#endif\r\n\r\n#if !CSHARP30\r\n        internal" +
-                    " static Func<IDataReader, object> GetDapperRowDeserializer(IDataRecord reader, i" +
-                    "nt startBound, int length, bool returnNullIfFirstMissing)\r\n        {\r\n          " +
-                    "  var fieldCount = reader.FieldCount;\r\n            if (length == -1)\r\n          " +
-                    "  {\r\n                length = fieldCount - startBound;\r\n            }\r\n\r\n       " +
-                    "     if (fieldCount <= startBound)\r\n            {\r\n                throw new Arg" +
-                    "umentException(\"When using the multi-mapping APIs ensure you set the splitOn par" +
-                    "am if you have keys other than Id\", \"splitOn\");\r\n            }\r\n\r\n            va" +
-                    "r effectiveFieldCount = fieldCount - startBound;\r\n\r\n            DapperTable tabl" +
-                    "e = null;\r\n\r\n            return\r\n                r =>\r\n                {\r\n      " +
-                    "              if (table == null)\r\n                    {\r\n                       " +
-                    " string[] names = new string[effectiveFieldCount];\r\n                        for " +
-                    "(int i = 0; i < effectiveFieldCount; i++)\r\n                        {\r\n          " +
-                    "                  names[i] = r.GetName(i + startBound);\r\n                       " +
-                    " }\r\n                        table = new DapperTable(names);\r\n                   " +
-                    " }\r\n\r\n                    var values = new object[effectiveFieldCount];\r\n\r\n     " +
-                    "               if (returnNullIfFirstMissing)\r\n                    {\r\n           " +
-                    "             values[0] = r.GetValue(startBound);\r\n                        if (va" +
-                    "lues[0] is DBNull)\r\n                        {\r\n                            retur" +
-                    "n null;\r\n                        }\r\n                    }\r\n\r\n                   " +
-                    " if (startBound == 0)\r\n                    {\r\n                        r.GetValue" +
-                    "s(values);\r\n                    }\r\n                    else\r\n                   " +
-                    " {\r\n                        var begin = returnNullIfFirstMissing ? 1 : 0;\r\n     " +
-                    "                   for (var iter = begin; iter < effectiveFieldCount; ++iter)\r\n " +
-                    "                       {\r\n                            values[iter] = r.GetValue(" +
-                    "iter + startBound);\r\n                        }\r\n                    }\r\n         " +
-                    "           return new DapperRow(table, values);\r\n                };\r\n        }\r\n" +
-                    "#else\r\n    internal static Func<IDataReader, object> GetDictionaryDeserializer(I" +
-                    "DataRecord reader, int startBound, int length, bool returnNullIfFirstMissing)\r\n " +
-                    "   {\r\n        var fieldCount = reader.FieldCount;\r\n        if (length == -1)\r\n  " +
-                    "      {\r\n            length = fieldCount - startBound;\r\n        }\r\n\r\n        if " +
-                    "(fieldCount <= startBound)\r\n        {\r\n            throw new ArgumentException(\"" +
-                    "When using the multi-mapping APIs ensure you set the splitOn param if you have k" +
-                    "eys other than Id\", \"splitOn\");\r\n        }\r\n\r\n        return\r\n                r " +
-                    "=>\r\n                {\r\n                    IDictionary<string, object> row = new" +
-                    " Dictionary<string, object>(length);\r\n                    for (var i = startBoun" +
-                    "d; i < startBound + length; i++)\r\n                    {\r\n                       " +
-                    " var tmp = r.GetValue(i);\r\n                        tmp = tmp == DBNull.Value ? n" +
-                    "ull : tmp;\r\n                        row[r.GetName(i)] = tmp;\r\n                  " +
-                    "      if (returnNullIfFirstMissing && i == startBound && tmp == null)\r\n         " +
-                    "               {\r\n                            return null;\r\n                    " +
-                    "    }\r\n                    }\r\n                    return row;\r\n                }" +
-                    ";\r\n    }\r\n#endif\r\n        /// <summary>\r\n        /// Internal use only\r\n        " +
-                    "/// </summary>\r\n        /// <param name=\"value\"></param>\r\n        /// <returns><" +
-                    "/returns>\r\n        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never" +
-                    ")]\r\n        [Obsolete(\"This method is for internal usage only\", false)]\r\n       " +
-                    " public static char ReadChar(object value)\r\n        {\r\n            if (value == " +
-                    "null || value is DBNull) throw new ArgumentNullException(\"value\");\r\n            " +
-                    "string s = value as string;\r\n            if (s == null || s.Length != 1) throw n" +
-                    "ew ArgumentException(\"A single-character was expected\", \"value\");\r\n            r" +
-                    "eturn s[0];\r\n        }\r\n\r\n        /// <summary>\r\n        /// Internal use only\r\n" +
-                    "        /// </summary>\r\n        [Browsable(false), EditorBrowsable(EditorBrowsab" +
-                    "leState.Never)]\r\n        [Obsolete(\"This method is for internal usage only\", fal" +
-                    "se)]\r\n        public static char? ReadNullableChar(object value)\r\n        {\r\n   " +
-                    "         if (value == null || value is DBNull) return null;\r\n            string " +
-                    "s = value as string;\r\n            if (s == null || s.Length != 1) throw new Argu" +
-                    "mentException(\"A single-character was expected\", \"value\");\r\n            return s" +
-                    "[0];\r\n        }\r\n\r\n\r\n        /// <summary>\r\n        /// Internal use only\r\n     " +
-                    "   /// </summary>\r\n        [Browsable(false), EditorBrowsable(EditorBrowsableSta" +
-                    "te.Never)]\r\n        [Obsolete(\"This method is for internal usage only\", true)]\r\n" +
-                    "        public static IDbDataParameter FindOrAddParameter(IDataParameterCollecti" +
-                    "on parameters, IDbCommand command, string name)\r\n        {\r\n            IDbDataP" +
-                    "arameter result;\r\n            if (parameters.Contains(name))\r\n            {\r\n   " +
-                    "             result = (IDbDataParameter)parameters[name];\r\n            }\r\n      " +
-                    "      else\r\n            {\r\n                result = command.CreateParameter();\r\n" +
-                    "                result.ParameterName = name;\r\n                parameters.Add(res" +
-                    "ult);\r\n            }\r\n            return result;\r\n        }\r\n\r\n        /// <summ" +
-                    "ary>\r\n        /// Internal use only\r\n        /// </summary>\r\n        [Browsable(" +
-                    "false), EditorBrowsable(EditorBrowsableState.Never)]\r\n        [Obsolete(\"This me" +
-                    "thod is for internal usage only\", false)]\r\n        public static void PackListPa" +
-                    "rameters(IDbCommand command, string namePrefix, object value)\r\n        {\r\n      " +
-                    "      // initially we tried TVP, however it performs quite poorly.\r\n            " +
-                    "// keep in mind SQL support up to 2000 params easily in sp_executesql, needing m" +
-                    "ore is rare\r\n\r\n            var list = value as IEnumerable;\r\n            var cou" +
-                    "nt = 0;\r\n\r\n            if (list != null)\r\n            {\r\n                if (Fea" +
-                    "tureSupport.Get(command.Connection).Arrays)\r\n                {\r\n                " +
-                    "    var arrayParm = command.CreateParameter();\r\n                    arrayParm.Va" +
-                    "lue = list;\r\n                    arrayParm.ParameterName = namePrefix;\r\n        " +
-                    "            command.Parameters.Add(arrayParm);\r\n                }\r\n             " +
-                    "   else\r\n                {\r\n                    bool isString = value is IEnumer" +
-                    "able<string>;\r\n                    bool isDbString = value is IEnumerable<DbStri" +
-                    "ng>;\r\n                    foreach (var item in list)\r\n                    {\r\n   " +
-                    "                     count++;\r\n                        var listParam = command.C" +
-                    "reateParameter();\r\n                        listParam.ParameterName = namePrefix " +
-                    "+ count;\r\n                        listParam.Value = item ?? DBNull.Value;\r\n     " +
-                    "                   if (isString)\r\n                        {\r\n                   " +
-                    "         listParam.Size = 4000;\r\n                            if (item != null &&" +
-                    " ((string)item).Length > 4000)\r\n                            {\r\n                 " +
-                    "               listParam.Size = -1;\r\n                            }\r\n            " +
-                    "            }\r\n                        if (isDbString && item as DbString != nul" +
-                    "l)\r\n                        {\r\n                            var str = item as DbS" +
-                    "tring;\r\n                            str.AddParameter(command, listParam.Paramete" +
-                    "rName);\r\n                        }\r\n                        else\r\n              " +
-                    "          {\r\n                            command.Parameters.Add(listParam);\r\n   " +
-                    "                     }\r\n                    }\r\n\r\n                    if (count =" +
-                    "= 0)\r\n                    {\r\n                        command.CommandText = Regex" +
-                    ".Replace(command.CommandText, @\"[?@:]\" + Regex.Escape(namePrefix), \"(SELECT NULL" +
-                    " WHERE 1 = 0)\");\r\n                    }\r\n                    else\r\n             " +
-                    "       {\r\n                        command.CommandText = Regex.Replace(command.Co" +
-                    "mmandText, @\"[?@:]\" + Regex.Escape(namePrefix), match =>\r\n                      " +
-                    "  {\r\n                            var grp = match.Value;\r\n                       " +
-                    "     var sb = new StringBuilder(\"(\").Append(grp).Append(1);\r\n                   " +
-                    "         for (int i = 2; i <= count; i++)\r\n                            {\r\n      " +
-                    "                          sb.Append(\',\').Append(grp).Append(i);\r\n               " +
-                    "             }\r\n                            return sb.Append(\')\').ToString();\r\n " +
-                    "                       });\r\n                    }\r\n                }\r\n          " +
-                    "  }\r\n\r\n        }\r\n\r\n        private static IEnumerable<PropertyInfo> FilterParam" +
-                    "eters(IEnumerable<PropertyInfo> parameters, string sql)\r\n        {\r\n            " +
-                    "return parameters.Where(p => Regex.IsMatch(sql, \"[@:]\" + p.Name + \"([^a-zA-Z0-9_" +
-                    "]+|$)\", RegexOptions.IgnoreCase | RegexOptions.Multiline));\r\n        }\r\n\r\n      " +
-                    "  /// <summary>\r\n        /// Internal use only\r\n        /// </summary>\r\n        " +
-                    "public static Action<IDbCommand, object> CreateParamInfoGenerator(Identity ident" +
-                    "ity, bool checkForDuplicates)\r\n        {\r\n            Type type = identity.param" +
-                    "etersType;\r\n            bool filterParams = identity.commandType.GetValueOrDefau" +
-                    "lt(CommandType.Text) == CommandType.Text;\r\n            var dm = new DynamicMetho" +
-                    "d(string.Format(\"ParamInfo{0}\", Guid.NewGuid()), null, new[] { typeof(IDbCommand" +
-                    "), typeof(object) }, type, true);\r\n\r\n            var il = dm.GetILGenerator();\r\n" +
-                    "\r\n            il.DeclareLocal(type); // 0\r\n            bool haveInt32Arg1 = fals" +
-                    "e;\r\n            il.Emit(OpCodes.Ldarg_1); // stack is now [untyped-param]\r\n     " +
-                    "       il.Emit(OpCodes.Unbox_Any, type); // stack is now [typed-param]\r\n        " +
-                    "    il.Emit(OpCodes.Stloc_0);// stack is now empty\r\n\r\n            il.Emit(OpCode" +
-                    "s.Ldarg_0); // stack is now [command]\r\n            il.EmitCall(OpCodes.Callvirt," +
-                    " typeof(IDbCommand).GetProperty(\"Parameters\").GetGetMethod(), null); // stack is" +
-                    " now [parameters]\r\n\r\n            IEnumerable<PropertyInfo> props = type.GetPrope" +
-                    "rties().Where(p => p.GetIndexParameters().Length == 0).OrderBy(p => p.Name);\r\n  " +
-                    "          if (filterParams)\r\n            {\r\n                props = FilterParame" +
-                    "ters(props, identity.sql);\r\n            }\r\n            foreach (var prop in prop" +
-                    "s)\r\n            {\r\n                if (filterParams)\r\n                {\r\n       " +
-                    "             if (identity.sql.IndexOf(\"@\" + prop.Name, StringComparison.Invarian" +
-                    "tCultureIgnoreCase) < 0\r\n                        && identity.sql.IndexOf(\":\" + p" +
-                    "rop.Name, StringComparison.InvariantCultureIgnoreCase) < 0)\r\n                   " +
-                    " { // can\'t see the parameter in the text (even in a comment, etc) - burn it wit" +
-                    "h fire\r\n                        continue;\r\n                    }\r\n              " +
-                    "  }\r\n                if (prop.PropertyType == typeof(DbString))\r\n               " +
-                    " {\r\n                    il.Emit(OpCodes.Ldloc_0); // stack is now [parameters] [" +
-                    "typed-param]\r\n                    il.Emit(OpCodes.Callvirt, prop.GetGetMethod())" +
-                    "; // stack is [parameters] [dbstring]\r\n                    il.Emit(OpCodes.Ldarg" +
-                    "_0); // stack is now [parameters] [dbstring] [command]\r\n                    il.E" +
-                    "mit(OpCodes.Ldstr, prop.Name); // stack is now [parameters] [dbstring] [command]" +
-                    " [name]\r\n                    il.EmitCall(OpCodes.Callvirt, typeof(DbString).GetM" +
-                    "ethod(\"AddParameter\"), null); // stack is now [parameters]\r\n                    " +
-                    "continue;\r\n                }\r\n                DbType dbType = LookupDbType(prop." +
-                    "PropertyType, prop.Name);\r\n                if (dbType == DynamicParameters.Enume" +
-                    "rableMultiParameter)\r\n                {\r\n                    // this actually re" +
-                    "presents special handling for list types;\r\n                    il.Emit(OpCodes.L" +
-                    "darg_0); // stack is now [parameters] [command]\r\n                    il.Emit(OpC" +
-                    "odes.Ldstr, prop.Name); // stack is now [parameters] [command] [name]\r\n         " +
-                    "           il.Emit(OpCodes.Ldloc_0); // stack is now [parameters] [command] [nam" +
-                    "e] [typed-param]\r\n                    il.Emit(OpCodes.Callvirt, prop.GetGetMetho" +
-                    "d()); // stack is [parameters] [command] [name] [typed-value]\r\n                 " +
-                    "   if (prop.PropertyType.IsValueType)\r\n                    {\r\n                  " +
-                    "      il.Emit(OpCodes.Box, prop.PropertyType); // stack is [parameters] [command" +
-                    "] [name] [boxed-value]\r\n                    }\r\n                    il.EmitCall(O" +
-                    "pCodes.Call, typeof(SqlMapper).GetMethod(\"PackListParameters\"), null); // stack " +
-                    "is [parameters]\r\n                    continue;\r\n                }\r\n             " +
-                    "   il.Emit(OpCodes.Dup); // stack is now [parameters] [parameters]\r\n\r\n          " +
-                    "      il.Emit(OpCodes.Ldarg_0); // stack is now [parameters] [parameters] [comma" +
-                    "nd]\r\n\r\n                if (checkForDuplicates)\r\n                {\r\n             " +
-                    "       // need to be a little careful about adding; use a utility method\r\n      " +
-                    "              il.Emit(OpCodes.Ldstr, prop.Name); // stack is now [parameters] [p" +
-                    "arameters] [command] [name]\r\n                    il.EmitCall(OpCodes.Call, typeo" +
-                    "f(SqlMapper).GetMethod(\"FindOrAddParameter\"), null); // stack is [parameters] [p" +
-                    "arameter]\r\n                }\r\n                else\r\n                {\r\n         " +
-                    "           // no risk of duplicates; just blindly add\r\n                    il.Em" +
-                    "itCall(OpCodes.Callvirt, typeof(IDbCommand).GetMethod(\"CreateParameter\"), null);" +
-                    "// stack is now [parameters] [parameters] [parameter]\r\n\r\n                    il." +
-                    "Emit(OpCodes.Dup);// stack is now [parameters] [parameters] [parameter] [paramet" +
-                    "er]\r\n                    il.Emit(OpCodes.Ldstr, prop.Name); // stack is now [par" +
-                    "ameters] [parameters] [parameter] [parameter] [name]\r\n                    il.Emi" +
-                    "tCall(OpCodes.Callvirt, typeof(IDataParameter).GetProperty(\"ParameterName\").GetS" +
-                    "etMethod(), null);// stack is now [parameters] [parameters] [parameter]\r\n       " +
-                    "         }\r\n                if (dbType != DbType.Time) // https://connect.micros" +
-                    "oft.com/VisualStudio/feedback/details/381934/sqlparameter-dbtype-dbtype-time-set" +
-                    "s-the-parameter-to-sqldbtype-datetime-instead-of-sqldbtype-time\r\n               " +
-                    " {\r\n                    il.Emit(OpCodes.Dup);// stack is now [parameters] [[para" +
-                    "meters]] [parameter] [parameter]\r\n                    EmitInt32(il, (int)dbType)" +
-                    ";// stack is now [parameters] [[parameters]] [parameter] [parameter] [db-type]\r\n" +
-                    "\r\n                    il.EmitCall(OpCodes.Callvirt, typeof(IDataParameter).GetPr" +
-                    "operty(\"DbType\").GetSetMethod(), null);// stack is now [parameters] [[parameters" +
-                    "]] [parameter]\r\n                }\r\n\r\n                il.Emit(OpCodes.Dup);// sta" +
-                    "ck is now [parameters] [[parameters]] [parameter] [parameter]\r\n                E" +
-                    "mitInt32(il, (int)ParameterDirection.Input);// stack is now [parameters] [[param" +
-                    "eters]] [parameter] [parameter] [dir]\r\n                il.EmitCall(OpCodes.Callv" +
-                    "irt, typeof(IDataParameter).GetProperty(\"Direction\").GetSetMethod(), null);// st" +
-                    "ack is now [parameters] [[parameters]] [parameter]\r\n\r\n                il.Emit(Op" +
-                    "Codes.Dup);// stack is now [parameters] [[parameters]] [parameter] [parameter]\r\n" +
-                    "                il.Emit(OpCodes.Ldloc_0); // stack is now [parameters] [[paramet" +
-                    "ers]] [parameter] [parameter] [typed-param]\r\n                il.Emit(OpCodes.Cal" +
-                    "lvirt, prop.GetGetMethod()); // stack is [parameters] [[parameters]] [parameter]" +
-                    " [parameter] [typed-value]\r\n                bool checkForNull = true;\r\n         " +
-                    "       if (prop.PropertyType.IsValueType)\r\n                {\r\n                  " +
-                    "  il.Emit(OpCodes.Box, prop.PropertyType); // stack is [parameters] [[parameters" +
-                    "]] [parameter] [parameter] [boxed-value]\r\n                    if (Nullable.GetUn" +
-                    "derlyingType(prop.PropertyType) == null)\r\n                    {   // struct but " +
-                    "not Nullable<T>; boxed value cannot be null\r\n                        checkForNul" +
-                    "l = false;\r\n                    }\r\n                }\r\n                if (checkF" +
-                    "orNull)\r\n                {\r\n                    if (dbType == DbType.String && !" +
-                    "haveInt32Arg1)\r\n                    {\r\n                        il.DeclareLocal(t" +
-                    "ypeof(int));\r\n                        haveInt32Arg1 = true;\r\n                   " +
-                    " }\r\n                    // relative stack: [boxed value]\r\n                    il" +
-                    ".Emit(OpCodes.Dup);// relative stack: [boxed value] [boxed value]\r\n             " +
-                    "       Label notNull = il.DefineLabel();\r\n                    Label? allDone = d" +
-                    "bType == DbType.String ? il.DefineLabel() : (Label?)null;\r\n                    i" +
-                    "l.Emit(OpCodes.Brtrue_S, notNull);\r\n                    // relative stack [boxed" +
-                    " value = null]\r\n                    il.Emit(OpCodes.Pop); // relative stack empt" +
-                    "y\r\n                    il.Emit(OpCodes.Ldsfld, typeof(DBNull).GetField(\"Value\"))" +
-                    "; // relative stack [DBNull]\r\n                    if (dbType == DbType.String)\r\n" +
-                    "                    {\r\n                        EmitInt32(il, 0);\r\n              " +
-                    "          il.Emit(OpCodes.Stloc_1);\r\n                    }\r\n                    " +
-                    "if (allDone != null) il.Emit(OpCodes.Br_S, allDone.Value);\r\n                    " +
-                    "il.MarkLabel(notNull);\r\n                    if (prop.PropertyType == typeof(stri" +
-                    "ng))\r\n                    {\r\n                        il.Emit(OpCodes.Dup); // [s" +
-                    "tring] [string]\r\n                        il.EmitCall(OpCodes.Callvirt, typeof(st" +
-                    "ring).GetProperty(\"Length\").GetGetMethod(), null); // [string] [length]\r\n       " +
-                    "                 EmitInt32(il, 4000); // [string] [length] [4000]\r\n             " +
-                    "           il.Emit(OpCodes.Cgt); // [string] [0 or 1]\r\n                        L" +
-                    "abel isLong = il.DefineLabel(), lenDone = il.DefineLabel();\r\n                   " +
-                    "     il.Emit(OpCodes.Brtrue_S, isLong);\r\n                        EmitInt32(il, 4" +
-                    "000); // [string] [4000]\r\n                        il.Emit(OpCodes.Br_S, lenDone)" +
-                    ";\r\n                        il.MarkLabel(isLong);\r\n                        EmitIn" +
-                    "t32(il, -1); // [string] [-1]\r\n                        il.MarkLabel(lenDone);\r\n " +
-                    "                       il.Emit(OpCodes.Stloc_1); // [string] \r\n                 " +
-                    "   }\r\n                    if (prop.PropertyType.FullName == LinqBinary)\r\n       " +
-                    "             {\r\n                        il.EmitCall(OpCodes.Callvirt, prop.Prope" +
-                    "rtyType.GetMethod(\"ToArray\", BindingFlags.Public | BindingFlags.Instance), null)" +
-                    ";\r\n                    }\r\n                    if (allDone != null) il.MarkLabel(" +
-                    "allDone.Value);\r\n                    // relative stack [boxed value or DBNull]\r\n" +
-                    "                }\r\n                il.EmitCall(OpCodes.Callvirt, typeof(IDataPar" +
-                    "ameter).GetProperty(\"Value\").GetSetMethod(), null);// stack is now [parameters] " +
-                    "[[parameters]] [parameter]\r\n\r\n                if (prop.PropertyType == typeof(st" +
-                    "ring))\r\n                {\r\n                    var endOfSize = il.DefineLabel();" +
-                    "\r\n                    // don\'t set if 0\r\n                    il.Emit(OpCodes.Ldl" +
-                    "oc_1); // [parameters] [[parameters]] [parameter] [size]\r\n                    il" +
-                    ".Emit(OpCodes.Brfalse_S, endOfSize); // [parameters] [[parameters]] [parameter]\r" +
-                    "\n\r\n                    il.Emit(OpCodes.Dup);// stack is now [parameters] [[param" +
-                    "eters]] [parameter] [parameter]\r\n                    il.Emit(OpCodes.Ldloc_1); /" +
-                    "/ stack is now [parameters] [[parameters]] [parameter] [parameter] [size]\r\n     " +
-                    "               il.EmitCall(OpCodes.Callvirt, typeof(IDbDataParameter).GetPropert" +
-                    "y(\"Size\").GetSetMethod(), null); // stack is now [parameters] [[parameters]] [pa" +
-                    "rameter]\r\n\r\n                    il.MarkLabel(endOfSize);\r\n                }\r\n   " +
-                    "             if (checkForDuplicates)\r\n                {\r\n                    // " +
-                    "stack is now [parameters] [parameter]\r\n                    il.Emit(OpCodes.Pop);" +
-                    " // don\'t need parameter any more\r\n                }\r\n                else\r\n    " +
-                    "            {\r\n                    // stack is now [parameters] [parameters] [pa" +
-                    "rameter]\r\n                    // blindly add\r\n                    il.EmitCall(Op" +
-                    "Codes.Callvirt, typeof(IList).GetMethod(\"Add\"), null); // stack is now [paramete" +
-                    "rs]\r\n                    il.Emit(OpCodes.Pop); // IList.Add returns the new inde" +
-                    "x (int); we don\'t care\r\n                }\r\n            }\r\n            // stack i" +
-                    "s currently [parameters]\r\n            il.Emit(OpCodes.Pop); // stack is now empt" +
-                    "y\r\n            il.Emit(OpCodes.Ret);\r\n            return (Action<IDbCommand, obj" +
-                    "ect>)dm.CreateDelegate(typeof(Action<IDbCommand, object>));\r\n        }\r\n\r\n      " +
-                    "  private static IDbCommand SetupCommand(IDbConnection cnn, IDbTransaction trans" +
-                    "action, string sql, Action<IDbCommand, object> paramReader, object obj, int? com" +
-                    "mandTimeout, CommandType? commandType)\r\n        {\r\n            var cmd = cnn.Cre" +
-                    "ateCommand();\r\n            var bindByName = GetBindByName(cmd.GetType());\r\n     " +
-                    "       if (bindByName != null) bindByName(cmd, true);\r\n            if (transacti" +
-                    "on != null)\r\n                cmd.Transaction = transaction;\r\n            cmd.Com" +
-                    "mandText = sql;\r\n            if (commandTimeout.HasValue)\r\n                cmd.C" +
-                    "ommandTimeout = commandTimeout.Value;\r\n            if (commandType.HasValue)\r\n  " +
-                    "              cmd.CommandType = commandType.Value;\r\n            if (paramReader " +
-                    "!= null)\r\n            {\r\n                paramReader(cmd, obj);\r\n            }\r\n" +
-                    "            return cmd;\r\n        }\r\n\r\n\r\n        private static int ExecuteComman" +
-                    "d(IDbConnection cnn, IDbTransaction transaction, string sql, Action<IDbCommand, " +
-                    "object> paramReader, object obj, int? commandTimeout, CommandType? commandType)\r" +
-                    "\n        {\r\n            IDbCommand cmd = null;\r\n            bool wasClosed = cnn" +
-                    ".State == ConnectionState.Closed;\r\n            try\r\n            {\r\n             " +
-                    "   cmd = SetupCommand(cnn, transaction, sql, paramReader, obj, commandTimeout, c" +
-                    "ommandType);\r\n                if (wasClosed) cnn.Open();\r\n                return" +
-                    " cmd.ExecuteNonQuery();\r\n            }\r\n            finally\r\n            {\r\n    " +
-                    "            if (wasClosed) cnn.Close();\r\n                if (cmd != null) cmd.Di" +
-                    "spose();\r\n            }\r\n        }\r\n\r\n        private static Func<IDataReader, o" +
-                    "bject> GetStructDeserializer(Type type, Type effectiveType, int index)\r\n        " +
-                    "{\r\n            // no point using special per-type handling here; it boils down t" +
-                    "o the same, plus not all are supported anyway (see: SqlDataReader.GetChar - not " +
-                    "supported!)\r\n#pragma warning disable 618\r\n            if (type == typeof(char))\r" +
-                    "\n            { // this *does* need special handling, though\r\n                ret" +
-                    "urn r => SqlMapper.ReadChar(r.GetValue(index));\r\n            }\r\n            if (" +
-                    "type == typeof(char?))\r\n            {\r\n                return r => SqlMapper.Rea" +
-                    "dNullableChar(r.GetValue(index));\r\n            }\r\n            if (type.FullName " +
-                    "== LinqBinary)\r\n            {\r\n                return r => Activator.CreateInsta" +
-                    "nce(type, r.GetValue(index));\r\n            }\r\n#pragma warning restore 618\r\n\r\n   " +
-                    "         if (effectiveType.IsEnum)\r\n            {   // assume the value is retur" +
-                    "ned as the correct type (int/byte/etc), but box back to the typed enum\r\n        " +
-                    "        return r =>\r\n                {\r\n                    var val = r.GetValue" +
-                    "(index);\r\n                    return val is DBNull ? null : Enum.ToObject(effect" +
-                    "iveType, val);\r\n                };\r\n            }\r\n            return r =>\r\n    " +
-                    "        {\r\n                var val = r.GetValue(index);\r\n                return " +
-                    "val is DBNull ? null : val;\r\n            };\r\n        }\r\n\r\n        static readonl" +
-                    "y MethodInfo\r\n                    enumParse = typeof(Enum).GetMethod(\"Parse\", ne" +
-                    "w Type[] { typeof(Type), typeof(string), typeof(bool) }),\r\n                    g" +
-                    "etItem = typeof(IDataRecord).GetProperties(BindingFlags.Instance | BindingFlags." +
-                    "Public)\r\n                        .Where(p => p.GetIndexParameters().Any() && p.G" +
-                    "etIndexParameters()[0].ParameterType == typeof(int))\r\n                        .S" +
-                    "elect(p => p.GetGetMethod()).First();\r\n\r\n        /// <summary>\r\n        /// Gets" +
-                    " type-map for the given type\r\n        /// </summary>\r\n        /// <returns>Type " +
-                    "map implementation, DefaultTypeMap instance if no override present</returns>\r\n  " +
-                    "      public static ITypeMap GetTypeMap(Type type)\r\n        {\r\n            if (t" +
-                    "ype == null) throw new ArgumentNullException(\"type\");\r\n            var map = (IT" +
-                    "ypeMap)_typeMaps[type];\r\n            if (map == null)\r\n            {\r\n          " +
-                    "      lock (_typeMaps)\r\n                {   // double-checked; store this to avo" +
-                    "id reflection next time we see this type\r\n                    // since multiple " +
-                    "queries commonly use the same domain-entity/DTO/view-model type\r\n               " +
-                    "     map = (ITypeMap)_typeMaps[type];\r\n                    if (map == null)\r\n   " +
-                    "                 {\r\n                        map = new DefaultTypeMap(type);\r\n   " +
-                    "                     _typeMaps[type] = map;\r\n                    }\r\n            " +
-                    "    }\r\n            }\r\n            return map;\r\n        }\r\n\r\n        // use Hasht" +
-                    "able to get free lockless reading\r\n        private static readonly Hashtable _ty" +
-                    "peMaps = new Hashtable();\r\n\r\n        /// <summary>\r\n        /// Set custom mappi" +
-                    "ng for type deserializers\r\n        /// </summary>\r\n        /// <param name=\"type" +
-                    "\">Entity type to override</param>\r\n        /// <param name=\"map\">Mapping rules i" +
-                    "mpementation, null to remove custom map</param>\r\n        public static void SetT" +
-                    "ypeMap(Type type, ITypeMap map)\r\n        {\r\n            if (type == null)\r\n     " +
-                    "           throw new ArgumentNullException(\"type\");\r\n\r\n            if (map == nu" +
-                    "ll || map is DefaultTypeMap)\r\n            {\r\n                lock (_typeMaps)\r\n " +
-                    "               {\r\n                    _typeMaps.Remove(type);\r\n                }" +
-                    "\r\n            }\r\n            else\r\n            {\r\n                lock (_typeMap" +
-                    "s)\r\n                {\r\n                    _typeMaps[type] = map;\r\n             " +
-                    "   }\r\n            }\r\n\r\n            PurgeQueryCacheByType(type);\r\n        }\r\n\r\n  " +
-                    "      /// <summary>\r\n        /// Internal use only\r\n        /// </summary>\r\n    " +
-                    "    /// <param name=\"type\"></param>\r\n        /// <param name=\"reader\"></param>\r\n" +
-                    "        /// <param name=\"startBound\"></param>\r\n        /// <param name=\"length\">" +
-                    "</param>\r\n        /// <param name=\"returnNullIfFirstMissing\"></param>\r\n        /" +
-                    "// <returns></returns>\r\n        public static Func<IDataReader, object> GetTypeD" +
-                    "eserializer(\r\n#if CSHARP30\r\n        Type type, IDataReader reader, int startBoun" +
-                    "d, int length, bool returnNullIfFirstMissing\r\n#else\r\nType type, IDataReader read" +
-                    "er, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false\r\n" +
-                    "#endif\r\n)\r\n        {\r\n\r\n            var dm = new DynamicMethod(string.Format(\"De" +
-                    "serialize{0}\", Guid.NewGuid()), typeof(object), new[] { typeof(IDataReader) }, t" +
-                    "rue);\r\n            var il = dm.GetILGenerator();\r\n            il.DeclareLocal(ty" +
-                    "peof(int));\r\n            il.DeclareLocal(type);\r\n            il.Emit(OpCodes.Ldc" +
-                    "_I4_0);\r\n            il.Emit(OpCodes.Stloc_0);\r\n\r\n            if (length == -1)\r" +
-                    "\n            {\r\n                length = reader.FieldCount - startBound;\r\n      " +
-                    "      }\r\n\r\n            if (reader.FieldCount <= startBound)\r\n            {\r\n    " +
-                    "            throw new ArgumentException(\"When using the multi-mapping APIs ensur" +
+                    "h, TSixth, DontMap, TReturn>(cnn, sql, map, param, transaction, buffered, splitO" +
+                    "n, commandTimeout, commandType);\r\n        }\r\n\r\n\r\n        /// <summary>\r\n        " +
+                    "/// Perform a multi mapping query with 7 input parameters\r\n        /// </summary" +
+                    ">\r\n        /// <typeparam name=\"TFirst\"></typeparam>\r\n        /// <typeparam nam" +
+                    "e=\"TSecond\"></typeparam>\r\n        /// <typeparam name=\"TThird\"></typeparam>\r\n   " +
+                    "     /// <typeparam name=\"TFourth\"></typeparam>\r\n        /// <typeparam name=\"TF" +
+                    "ifth\"></typeparam>\r\n        /// <typeparam name=\"TSixth\"></typeparam>\r\n        /" +
+                    "// <typeparam name=\"TSeventh\"></typeparam>\r\n        /// <typeparam name=\"TReturn" +
+                    "\"></typeparam>\r\n        /// <param name=\"cnn\"></param>\r\n        /// <param name=" +
+                    "\"sql\"></param>\r\n        /// <param name=\"map\"></param>\r\n        /// <param name=" +
+                    "\"param\"></param>\r\n        /// <param name=\"transaction\"></param>\r\n        /// <p" +
+                    "aram name=\"buffered\"></param>\r\n        /// <param name=\"splitOn\"></param>\r\n     " +
+                    "   /// <param name=\"commandTimeout\"></param>\r\n        /// <param name=\"commandTy" +
+                    "pe\"></param>\r\n        /// <returns></returns>\r\n        public static IEnumerable" +
+                    "<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TRet" +
+                    "urn>(this IDbConnection cnn, string sql, Func<TFirst, TSecond, TThird, TFourth, " +
+                    "TFifth, TSixth, TSeventh, TReturn> map, object param = null, IDbTransaction tran" +
+                    "saction = null, bool buffered = true, string splitOn = \"Id\", int? commandTimeout" +
+                    " = null, CommandType? commandType = null)\r\n        {\r\n            return MultiMa" +
+                    "p<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(cnn, sql," +
+                    " map, param, transaction, buffered, splitOn, commandTimeout, commandType);\r\n    " +
+                    "    }\r\n\r\n        /// <summary>\r\n        /// Perform a multi mapping query with a" +
+                    "rbitrary input parameters\r\n        /// </summary>\r\n        /// <typeparam name=\"" +
+                    "TReturn\">The return type</typeparam>\r\n        /// <param name=\"cnn\"></param>\r\n  " +
+                    "      /// <param name=\"sql\"></param>\r\n        /// <param name=\"types\">array of t" +
+                    "ypes in the record set</param>\r\n        /// <param name=\"map\"></param>\r\n        " +
+                    "/// <param name=\"param\"></param>\r\n        /// <param name=\"transaction\"></param>" +
+                    "\r\n        /// <param name=\"buffered\"></param>\r\n        /// <param name=\"splitOn\"" +
+                    ">The Field we should split and read the second object from (default: id)</param>" +
+                    "\r\n        /// <param name=\"commandTimeout\">Number of seconds before command exec" +
+                    "ution timeout</param>\r\n        /// <param name=\"commandType\">Is it a stored proc" +
+                    " or a batch?</param>\r\n        /// <returns></returns>\r\n        public static IEn" +
+                    "umerable<TReturn> Query<TReturn>(this IDbConnection cnn, string sql, Type[] type" +
+                    "s, Func<object[], TReturn> map, object param = null, IDbTransaction transaction " +
+                    "= null, bool buffered = true, string splitOn = \"Id\", int? commandTimeout = null," +
+                    " CommandType? commandType = null)\r\n        {\r\n            var command = new Comm" +
+                    "andDefinition(sql, param, transaction, commandTimeout, commandType, buffered ? C" +
+                    "ommandFlags.Buffered : CommandFlags.None);\r\n            var results = MultiMapIm" +
+                    "pl<TReturn>(cnn, command, types, map, splitOn, null, null, true);\r\n            r" +
+                    "eturn buffered ? results.ToList() : results;\r\n        }\r\n\r\n        static IEnume" +
+                    "rable<TReturn> MultiMap<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeven" +
+                    "th, TReturn>(\r\n            this IDbConnection cnn, string sql, Delegate map, obj" +
+                    "ect param, IDbTransaction transaction, bool buffered, string splitOn, int? comma" +
+                    "ndTimeout, CommandType? commandType)\r\n        {\r\n            var command = new C" +
+                    "ommandDefinition(sql, param, transaction, commandTimeout, commandType, buffered " +
+                    "? CommandFlags.Buffered : CommandFlags.None);\r\n            var results = MultiMa" +
+                    "pImpl<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(cnn, " +
+                    "command, map, splitOn, null, null, true);\r\n            return buffered ? results" +
+                    ".ToList() : results;\r\n        }\r\n\r\n        static IEnumerable<TReturn> MultiMapI" +
+                    "mpl<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(this ID" +
+                    "bConnection cnn, CommandDefinition command, Delegate map, string splitOn, IDataR" +
+                    "eader reader, Identity identity, bool finalize)\r\n        {\r\n            object p" +
+                    "aram = command.Parameters;\r\n            identity = identity ?? new Identity(comm" +
+                    "and.CommandText, command.CommandType, cnn, typeof(TFirst), param?.GetType(), new" +
+                    "[] { typeof(TFirst), typeof(TSecond), typeof(TThird), typeof(TFourth), typeof(TF" +
+                    "ifth), typeof(TSixth), typeof(TSeventh) });\r\n            CacheInfo cinfo = GetCa" +
+                    "cheInfo(identity, param, command.AddToCache);\r\n\r\n            IDbCommand ownedCom" +
+                    "mand = null;\r\n            IDataReader ownedReader = null;\r\n\r\n            bool wa" +
+                    "sClosed = cnn != null && cnn.State == ConnectionState.Closed;\r\n            try\r\n" +
+                    "            {\r\n                if (reader == null)\r\n                {\r\n         " +
+                    "           ownedCommand = command.SetupCommand(cnn, cinfo.ParamReader);\r\n       " +
+                    "             if (wasClosed) cnn.Open();\r\n                    ownedReader = Execu" +
+                    "teReaderWithFlagsFallback(ownedCommand, wasClosed, CommandBehavior.SequentialAcc" +
+                    "ess | CommandBehavior.SingleResult);\r\n                    reader = ownedReader;\r" +
+                    "\n                }\r\n                DeserializerState deserializer = default(Des" +
+                    "erializerState);\r\n                Func<IDataReader, object>[] otherDeserializers" +
+                    ";\r\n\r\n                int hash = GetColumnHash(reader);\r\n                if ((des" +
+                    "erializer = cinfo.Deserializer).Func == null || (otherDeserializers = cinfo.Othe" +
+                    "rDeserializers) == null || hash != deserializer.Hash)\r\n                {\r\n      " +
+                    "              var deserializers = GenerateDeserializers(new[] { typeof(TFirst), " +
+                    "typeof(TSecond), typeof(TThird), typeof(TFourth), typeof(TFifth), typeof(TSixth)" +
+                    ", typeof(TSeventh) }, splitOn, reader);\r\n                    deserializer = cinf" +
+                    "o.Deserializer = new DeserializerState(hash, deserializers[0]);\r\n               " +
+                    "     otherDeserializers = cinfo.OtherDeserializers = deserializers.Skip(1).ToArr" +
+                    "ay();\r\n                    if (command.AddToCache) SetQueryCache(identity, cinfo" +
+                    ");\r\n                }\r\n\r\n                Func<IDataReader, TReturn> mapIt = Gene" +
+                    "rateMapper<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(" +
+                    "deserializer.Func, otherDeserializers, map);\r\n\r\n                if (mapIt != nul" +
+                    "l)\r\n                {\r\n                    while (reader.Read())\r\n              " +
+                    "      {\r\n                        yield return mapIt(reader);\r\n                  " +
+                    "  }\r\n                    if (finalize)\r\n                    {\r\n                 " +
+                    "       while (reader.NextResult()) { }\r\n                        command.OnComple" +
+                    "ted();\r\n                    }\r\n                }\r\n            }\r\n            fin" +
+                    "ally\r\n            {\r\n                try\r\n                {\r\n                   " +
+                    " ownedReader?.Dispose();\r\n                }\r\n                finally\r\n          " +
+                    "      {\r\n                    ownedCommand?.Dispose();\r\n                    if (w" +
+                    "asClosed) cnn.Close();\r\n                }\r\n            }\r\n        }\r\n        con" +
+                    "st CommandBehavior DefaultAllowedCommandBehaviors = ~((CommandBehavior)0);\r\n    " +
+                    "    static CommandBehavior allowedCommandBehaviors = DefaultAllowedCommandBehavi" +
+                    "ors;\r\n        private static bool DisableCommandBehaviorOptimizations(CommandBeh" +
+                    "avior behavior, Exception ex)\r\n        {\r\n            if (allowedCommandBehavior" +
+                    "s == DefaultAllowedCommandBehaviors\r\n                && (behavior & (CommandBeha" +
+                    "vior.SingleResult | CommandBehavior.SingleRow)) != 0)\r\n            {\r\n          " +
+                    "      if (ex.Message.Contains(nameof(CommandBehavior.SingleResult))\r\n           " +
+                    "         || ex.Message.Contains(nameof(CommandBehavior.SingleRow)))\r\n           " +
+                    "     { // some providers just just allow these, so: try again without them and s" +
+                    "top issuing them\r\n                    allowedCommandBehaviors = ~(CommandBehavio" +
+                    "r.SingleResult | CommandBehavior.SingleRow);\r\n                    return true;\r\n" +
+                    "                }\r\n            }\r\n            return false;\r\n        }\r\n        " +
+                    "private static CommandBehavior GetBehavior(bool close, CommandBehavior @default)" +
+                    "\r\n        {\r\n            return (close ? (@default | CommandBehavior.CloseConnec" +
+                    "tion) : @default) & allowedCommandBehaviors;\r\n        }\r\n        static IEnumera" +
+                    "ble<TReturn> MultiMapImpl<TReturn>(this IDbConnection cnn, CommandDefinition com" +
+                    "mand, Type[] types, Func<object[], TReturn> map, string splitOn, IDataReader rea" +
+                    "der, Identity identity, bool finalize)\r\n        {\r\n            if (types.Length " +
+                    "< 1)\r\n            {\r\n                throw new ArgumentException(\"you must provi" +
+                    "de at least one type to deserialize\");\r\n            }\r\n\r\n            object para" +
+                    "m = command.Parameters;\r\n            identity = identity ?? new Identity(command" +
+                    ".CommandText, command.CommandType, cnn, types[0], param?.GetType(), types);\r\n   " +
+                    "         CacheInfo cinfo = GetCacheInfo(identity, param, command.AddToCache);\r\n\r" +
+                    "\n            IDbCommand ownedCommand = null;\r\n            IDataReader ownedReade" +
+                    "r = null;\r\n\r\n            bool wasClosed = cnn != null && cnn.State == Connection" +
+                    "State.Closed;\r\n            try\r\n            {\r\n                if (reader == nul" +
+                    "l)\r\n                {\r\n                    ownedCommand = command.SetupCommand(c" +
+                    "nn, cinfo.ParamReader);\r\n                    if (wasClosed) cnn.Open();\r\n       " +
+                    "             ownedReader = ExecuteReaderWithFlagsFallback(ownedCommand, wasClose" +
+                    "d, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult);\r\n          " +
+                    "          reader = ownedReader;\r\n                }\r\n                Deserializer" +
+                    "State deserializer;\r\n                Func<IDataReader, object>[] otherDeserializ" +
+                    "ers;\r\n\r\n                int hash = GetColumnHash(reader);\r\n                if ((" +
+                    "deserializer = cinfo.Deserializer).Func == null || (otherDeserializers = cinfo.O" +
+                    "therDeserializers) == null || hash != deserializer.Hash)\r\n                {\r\n   " +
+                    "                 var deserializers = GenerateDeserializers(types, splitOn, reade" +
+                    "r);\r\n                    deserializer = cinfo.Deserializer = new DeserializerSta" +
+                    "te(hash, deserializers[0]);\r\n                    otherDeserializers = cinfo.Othe" +
+                    "rDeserializers = deserializers.Skip(1).ToArray();\r\n                    SetQueryC" +
+                    "ache(identity, cinfo);\r\n                }\r\n\r\n                Func<IDataReader, T" +
+                    "Return> mapIt = GenerateMapper(types.Length, deserializer.Func, otherDeserialize" +
+                    "rs, map);\r\n\r\n                if (mapIt != null)\r\n                {\r\n            " +
+                    "        while (reader.Read())\r\n                    {\r\n                        yi" +
+                    "eld return mapIt(reader);\r\n                    }\r\n                    if (finali" +
+                    "ze)\r\n                    {\r\n                        while (reader.NextResult()) " +
+                    "{ }\r\n                        command.OnCompleted();\r\n                    }\r\n    " +
+                    "            }\r\n            }\r\n            finally\r\n            {\r\n              " +
+                    "  try\r\n                {\r\n                    ownedReader?.Dispose();\r\n         " +
+                    "       }\r\n                finally\r\n                {\r\n                    ownedC" +
+                    "ommand?.Dispose();\r\n                    if (wasClosed) cnn.Close();\r\n           " +
+                    "     }\r\n            }\r\n        }\r\n\r\n        private static Func<IDataReader, TRe" +
+                    "turn> GenerateMapper<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh," +
+                    " TReturn>(Func<IDataReader, object> deserializer, Func<IDataReader, object>[] ot" +
+                    "herDeserializers, object map)\r\n        {\r\n            switch (otherDeserializers" +
+                    ".Length)\r\n            {\r\n                case 1:\r\n                    return r =" +
+                    "> ((Func<TFirst, TSecond, TReturn>)map)((TFirst)deserializer(r), (TSecond)otherD" +
+                    "eserializers[0](r));\r\n                case 2:\r\n                    return r => (" +
+                    "(Func<TFirst, TSecond, TThird, TReturn>)map)((TFirst)deserializer(r), (TSecond)o" +
+                    "therDeserializers[0](r), (TThird)otherDeserializers[1](r));\r\n                cas" +
+                    "e 3:\r\n                    return r => ((Func<TFirst, TSecond, TThird, TFourth, T" +
+                    "Return>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThird" +
+                    ")otherDeserializers[1](r), (TFourth)otherDeserializers[2](r));\r\n                " +
+                    "case 4:\r\n                    return r => ((Func<TFirst, TSecond, TThird, TFourth" +
+                    ", TFifth, TReturn>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](" +
+                    "r), (TThird)otherDeserializers[1](r), (TFourth)otherDeserializers[2](r), (TFifth" +
+                    ")otherDeserializers[3](r));\r\n                case 5:\r\n                    return" +
+                    " r => ((Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>)map)((TF" +
+                    "irst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThird)otherDeserializ" +
+                    "ers[1](r), (TFourth)otherDeserializers[2](r), (TFifth)otherDeserializers[3](r), " +
+                    "(TSixth)otherDeserializers[4](r));\r\n                case 6:\r\n                   " +
+                    " return r => ((Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, " +
+                    "TReturn>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThir" +
+                    "d)otherDeserializers[1](r), (TFourth)otherDeserializers[2](r), (TFifth)otherDese" +
+                    "rializers[3](r), (TSixth)otherDeserializers[4](r), (TSeventh)otherDeserializers[" +
+                    "5](r));\r\n                default:\r\n                    throw new NotSupportedExc" +
+                    "eption();\r\n            }\r\n        }\r\n\r\n        private static Func<IDataReader, " +
+                    "TReturn> GenerateMapper<TReturn>(int length, Func<IDataReader, object> deseriali" +
+                    "zer, Func<IDataReader, object>[] otherDeserializers, Func<object[], TReturn> map" +
+                    ")\r\n        {\r\n            return r =>\r\n            {\r\n                var object" +
+                    "s = new object[length];\r\n                objects[0] = deserializer(r);\r\n\r\n      " +
+                    "          for (var i = 1; i < length; ++i)\r\n                {\r\n                 " +
+                    "   objects[i] = otherDeserializers[i - 1](r);\r\n                }\r\n\r\n            " +
+                    "    return map(objects);\r\n            };\r\n        }\r\n\r\n        private static Fu" +
+                    "nc<IDataReader, object>[] GenerateDeserializers(Type[] types, string splitOn, ID" +
+                    "ataReader reader)\r\n        {\r\n            var deserializers = new List<Func<IDat" +
+                    "aReader, object>>();\r\n            var splits = splitOn.Split(\',\').Select(s => s." +
+                    "Trim()).ToArray();\r\n            bool isMultiSplit = splits.Length > 1;\r\n        " +
+                    "    if (types.First() == typeof(object))\r\n            {\r\n                // we g" +
+                    "o left to right for dynamic multi-mapping so that the madness of TestMultiMappin" +
+                    "gVariations\r\n                // is supported\r\n                bool first = true;" +
+                    "\r\n                int currentPos = 0;\r\n                int splitIdx = 0;\r\n      " +
+                    "          string currentSplit = splits[splitIdx];\r\n                foreach (var " +
+                    "type in types)\r\n                {\r\n                    if (type == typeof(DontMa" +
+                    "p))\r\n                    {\r\n                        break;\r\n                    " +
+                    "}\r\n\r\n                    int splitPoint = GetNextSplitDynamic(currentPos, curren" +
+                    "tSplit, reader);\r\n                    if (isMultiSplit && splitIdx < splits.Leng" +
+                    "th - 1)\r\n                    {\r\n                        currentSplit = splits[++" +
+                    "splitIdx];\r\n                    }\r\n                    deserializers.Add((GetDes" +
+                    "erializer(type, reader, currentPos, splitPoint - currentPos, !first)));\r\n       " +
+                    "             currentPos = splitPoint;\r\n                    first = false;\r\n     " +
+                    "           }\r\n            }\r\n            else\r\n            {\r\n                //" +
+                    " in this we go right to left through the data reader in order to cope with prope" +
+                    "rties that are\r\n                // named the same as a subsequent primary key th" +
+                    "at we split on\r\n                int currentPos = reader.FieldCount;\r\n           " +
+                    "     int splitIdx = splits.Length - 1;\r\n                var currentSplit = split" +
+                    "s[splitIdx];\r\n                for (var typeIdx = types.Length - 1; typeIdx >= 0;" +
+                    " --typeIdx)\r\n                {\r\n                    var type = types[typeIdx];\r\n" +
+                    "                    if (type == typeof(DontMap))\r\n                    {\r\n       " +
+                    "                 continue;\r\n                    }\r\n\r\n                    int spl" +
+                    "itPoint = 0;\r\n                    if (typeIdx > 0)\r\n                    {\r\n     " +
+                    "                   splitPoint = GetNextSplit(currentPos, currentSplit, reader);\r" +
+                    "\n                        if (isMultiSplit && splitIdx > 0)\r\n                    " +
+                    "    {\r\n                            currentSplit = splits[--splitIdx];\r\n         " +
+                    "               }\r\n                    }\r\n\r\n                    deserializers.Add" +
+                    "((GetDeserializer(type, reader, splitPoint, currentPos - splitPoint, typeIdx > 0" +
+                    ")));\r\n                    currentPos = splitPoint;\r\n                }\r\n\r\n       " +
+                    "         deserializers.Reverse();\r\n\r\n            }\r\n            return deseriali" +
+                    "zers.ToArray();\r\n        }\r\n\r\n        private static int GetNextSplitDynamic(int" +
+                    " startIdx, string splitOn, IDataReader reader)\r\n        {\r\n            if (start" +
+                    "Idx == reader.FieldCount)\r\n            {\r\n                throw MultiMapExceptio" +
+                    "n(reader);\r\n            }\r\n\r\n            if (splitOn == \"*\")\r\n            {\r\n   " +
+                    "             return ++startIdx;\r\n            }\r\n\r\n            for (var i = start" +
+                    "Idx + 1; i < reader.FieldCount; ++i)\r\n            {\r\n                if (string." +
+                    "Equals(splitOn, reader.GetName(i), StringComparison.OrdinalIgnoreCase))\r\n       " +
+                    "         {\r\n                    return i;\r\n                }\r\n            }\r\n\r\n " +
+                    "           return reader.FieldCount;\r\n        }\r\n\r\n        private static int Ge" +
+                    "tNextSplit(int startIdx, string splitOn, IDataReader reader)\r\n        {\r\n       " +
+                    "     if (splitOn == \"*\")\r\n            {\r\n                return --startIdx;\r\n   " +
+                    "         }\r\n\r\n            for (var i = startIdx - 1; i > 0; --i)\r\n            {\r" +
+                    "\n                if (string.Equals(splitOn, reader.GetName(i), StringComparison." +
+                    "OrdinalIgnoreCase))\r\n                {\r\n                    return i;\r\n         " +
+                    "       }\r\n            }\r\n\r\n            throw MultiMapException(reader);\r\n       " +
+                    " }\r\n\r\n        private static CacheInfo GetCacheInfo(Identity identity, object ex" +
+                    "ampleParameters, bool addToCache)\r\n        {\r\n            CacheInfo info;\r\n     " +
+                    "       if (!TryGetQueryCache(identity, out info))\r\n            {\r\n              " +
+                    "  if (GetMultiExec(exampleParameters) != null)\r\n                {\r\n             " +
+                    "       throw new InvalidOperationException(\"An enumerable sequence of parameters" +
+                    " (arrays, lists, etc) is not allowed in this context\");\r\n                }\r\n    " +
+                    "            info = new CacheInfo();\r\n                if (identity.parametersType" +
+                    " != null)\r\n                {\r\n                    Action<IDbCommand, object> rea" +
+                    "der;\r\n                    if (exampleParameters is IDynamicParameters)\r\n        " +
+                    "            {\r\n                        reader = (cmd, obj) => { ((IDynamicParame" +
+                    "ters)obj).AddParameters(cmd, identity); };\r\n                    }\r\n             " +
+                    "       else if (exampleParameters is IEnumerable<KeyValuePair<string, object>>)\r" +
+                    "\n                    {\r\n                        reader = (cmd, obj) =>\r\n        " +
+                    "                {\r\n                            IDynamicParameters mapped = new D" +
+                    "ynamicParameters(obj);\r\n                            mapped.AddParameters(cmd, id" +
+                    "entity);\r\n                        };\r\n                    }\r\n                   " +
+                    " else\r\n                    {\r\n                        var literals = GetLiteralT" +
+                    "okens(identity.sql);\r\n                        reader = CreateParamInfoGenerator(" +
+                    "identity, false, true, literals);\r\n                    }\r\n                    if" +
+                    " ((identity.commandType == null || identity.commandType == CommandType.Text) && " +
+                    "ShouldPassByPosition(identity.sql))\r\n                    {\r\n                    " +
+                    "    var tail = reader;\r\n                        reader = (cmd, obj) =>\r\n        " +
+                    "                {\r\n                            tail(cmd, obj);\r\n                " +
+                    "            PassByPosition(cmd);\r\n                        };\r\n                  " +
+                    "  }\r\n                    info.ParamReader = reader;\r\n                }\r\n        " +
+                    "        if (addToCache) SetQueryCache(identity, info);\r\n            }\r\n         " +
+                    "   return info;\r\n        }\r\n\r\n        private static bool ShouldPassByPosition(s" +
+                    "tring sql)\r\n        {\r\n            return sql != null && sql.IndexOf(\'?\') >= 0 &" +
+                    "& pseudoPositional.IsMatch(sql);\r\n        }\r\n\r\n        private static void PassB" +
+                    "yPosition(IDbCommand cmd)\r\n        {\r\n            if (cmd.Parameters.Count == 0)" +
+                    " return;\r\n\r\n            Dictionary<string, IDbDataParameter> parameters = new Di" +
+                    "ctionary<string, IDbDataParameter>(StringComparer.Ordinal);\r\n\r\n            forea" +
+                    "ch (IDbDataParameter param in cmd.Parameters)\r\n            {\r\n                if" +
+                    " (!string.IsNullOrEmpty(param.ParameterName)) parameters[param.ParameterName] = " +
+                    "param;\r\n            }\r\n            HashSet<string> consumed = new HashSet<string" +
+                    ">(StringComparer.Ordinal);\r\n            bool firstMatch = true;\r\n            cmd" +
+                    ".CommandText = pseudoPositional.Replace(cmd.CommandText, match =>\r\n            {" +
+                    "\r\n                string key = match.Groups[1].Value;\r\n                IDbDataPa" +
+                    "rameter param;\r\n                if (!consumed.Add(key))\r\n                {\r\n    " +
+                    "                throw new InvalidOperationException(\"When passing parameters by " +
+                    "position, each parameter can only be referenced once\");\r\n                }\r\n    " +
+                    "            else if (parameters.TryGetValue(key, out param))\r\n                {\r" +
+                    "\n                    if (firstMatch)\r\n                    {\r\n                   " +
+                    "     firstMatch = false;\r\n                        cmd.Parameters.Clear(); // onl" +
+                    "y clear if we are pretty positive that we\'ve found this pattern successfully\r\n  " +
+                    "                  }\r\n                    // if found, return the anonymous token" +
+                    " \"?\"\r\n                    cmd.Parameters.Add(param);\r\n                    parame" +
+                    "ters.Remove(key);\r\n                    consumed.Add(key);\r\n                    r" +
+                    "eturn \"?\";\r\n                }\r\n                else\r\n                {\r\n        " +
+                    "            // otherwise, leave alone for simple debugging\r\n                    " +
+                    "return match.Value;\r\n                }\r\n            });\r\n        }\r\n\r\n        pr" +
+                    "ivate static Func<IDataReader, object> GetDeserializer(Type type, IDataReader re" +
+                    "ader, int startBound, int length, bool returnNullIfFirstMissing)\r\n        {\r\n\r\n " +
+                    "           // dynamic is passed in as Object ... by c# design\r\n            if (t" +
+                    "ype == typeof(object)\r\n                || type == typeof(DapperRow))\r\n          " +
+                    "  {\r\n                return GetDapperRowDeserializer(reader, startBound, length," +
+                    " returnNullIfFirstMissing);\r\n            }\r\n            Type underlyingType = nu" +
+                    "ll;\r\n            if (!(typeMap.ContainsKey(type) || type.IsEnum || type.FullName" +
+                    " == LinqBinary ||\r\n                (type.IsValueType && (underlyingType = Nullab" +
+                    "le.GetUnderlyingType(type)) != null && underlyingType.IsEnum)))\r\n            {\r\n" +
+                    "                ITypeHandler handler;\r\n                if (typeHandlers.TryGetVa" +
+                    "lue(type, out handler))\r\n                {\r\n                    return GetHandle" +
+                    "rDeserializer(handler, type, startBound);\r\n                }\r\n                re" +
+                    "turn GetTypeDeserializer(type, reader, startBound, length, returnNullIfFirstMiss" +
+                    "ing);\r\n            }\r\n            return GetStructDeserializer(type, underlyingT" +
+                    "ype ?? type, startBound);\r\n        }\r\n        private static Func<IDataReader, o" +
+                    "bject> GetHandlerDeserializer(ITypeHandler handler, Type type, int startBound)\r\n" +
+                    "        {\r\n            return reader => handler.Parse(type, reader.GetValue(star" +
+                    "tBound));\r\n        }\r\n\r\n\r\n        private static Exception MultiMapException(IDa" +
+                    "taRecord reader)\r\n        {\r\n            bool hasFields = false;\r\n            tr" +
+                    "y\r\n            {\r\n                hasFields = reader != null && reader.FieldCoun" +
+                    "t != 0;\r\n            }\r\n            catch { }\r\n            if (hasFields)\r\n     " +
+                    "           return new ArgumentException(\"When using the multi-mapping APIs ensur" +
                     "e you set the splitOn param if you have keys other than Id\", \"splitOn\");\r\n      " +
-                    "      }\r\n\r\n            var names = Enumerable.Range(startBound, length).Select(i" +
-                    " => reader.GetName(i)).ToArray();\r\n\r\n            ITypeMap typeMap = GetTypeMap(t" +
-                    "ype);\r\n\r\n            int index = startBound;\r\n\r\n            ConstructorInfo spec" +
-                    "ializedConstructor = null;\r\n\r\n            if (type.IsValueType)\r\n            {\r\n" +
-                    "                il.Emit(OpCodes.Ldloca_S, (byte)1);\r\n                il.Emit(OpC" +
-                    "odes.Initobj, type);\r\n            }\r\n            else\r\n            {\r\n          " +
-                    "      var types = new Type[length];\r\n                for (int i = startBound; i " +
-                    "< startBound + length; i++)\r\n                {\r\n                    types[i - st" +
-                    "artBound] = reader.GetFieldType(i);\r\n                }\r\n\r\n                if (ty" +
-                    "pe.IsValueType)\r\n                {\r\n                    il.Emit(OpCodes.Ldloca_S" +
-                    ", (byte)1);\r\n                    il.Emit(OpCodes.Initobj, type);\r\n              " +
-                    "  }\r\n                else\r\n                {\r\n                    var ctor = typ" +
-                    "eMap.FindConstructor(names, types);\r\n                    if (ctor == null)\r\n    " +
-                    "                {\r\n                        string proposedTypes = \"(\" + String.J" +
-                    "oin(\", \", types.Select((t, i) => t.FullName + \" \" + names[i]).ToArray()) + \")\";\r" +
-                    "\n                        throw new InvalidOperationException(String.Format(\"A pa" +
-                    "rameterless default constructor or one matching signature {0} is required for {1" +
-                    "} materialization\", proposedTypes, type.FullName));\r\n                    }\r\n\r\n  " +
-                    "                  if (ctor.GetParameters().Length == 0)\r\n                    {\r\n" +
-                    "                        il.Emit(OpCodes.Newobj, ctor);\r\n                        " +
-                    "il.Emit(OpCodes.Stloc_1);\r\n                    }\r\n                    else\r\n    " +
-                    "                    specializedConstructor = ctor;\r\n                }\r\n         " +
-                    "   }\r\n\r\n            il.BeginExceptionBlock();\r\n            if (type.IsValueType)" +
-                    "\r\n            {\r\n                il.Emit(OpCodes.Ldloca_S, (byte)1);// [target]\r" +
-                    "\n            }\r\n            else if (specializedConstructor == null)\r\n          " +
-                    "  {\r\n                il.Emit(OpCodes.Ldloc_1);// [target]\r\n            }\r\n\r\n    " +
-                    "        var members = (specializedConstructor != null\r\n                ? names.S" +
-                    "elect(n => typeMap.GetConstructorParameter(specializedConstructor, n))\r\n        " +
-                    "        : names.Select(n => typeMap.GetMember(n))).ToList();\r\n\r\n            // s" +
-                    "tack is now [target]\r\n\r\n            bool first = true;\r\n            var allDone " +
-                    "= il.DefineLabel();\r\n            int enumDeclareLocal = -1;\r\n            foreach" +
-                    " (var item in members)\r\n            {\r\n                if (item != null)\r\n      " +
-                    "          {\r\n                    if (specializedConstructor == null)\r\n          " +
-                    "              il.Emit(OpCodes.Dup); // stack is now [target][target]\r\n          " +
-                    "          Label isDbNullLabel = il.DefineLabel();\r\n                    Label fin" +
-                    "ishLabel = il.DefineLabel();\r\n\r\n                    il.Emit(OpCodes.Ldarg_0); //" +
-                    " stack is now [target][target][reader]\r\n                    EmitInt32(il, index)" +
-                    "; // stack is now [target][target][reader][index]\r\n                    il.Emit(O" +
-                    "pCodes.Dup);// stack is now [target][target][reader][index][index]\r\n            " +
-                    "        il.Emit(OpCodes.Stloc_0);// stack is now [target][target][reader][index]" +
-                    "\r\n                    il.Emit(OpCodes.Callvirt, getItem); // stack is now [targe" +
-                    "t][target][value-as-object]\r\n\r\n                    Type memberType = item.Member" +
-                    "Type;\r\n\r\n                    if (memberType == typeof(char) || memberType == typ" +
-                    "eof(char?))\r\n                    {\r\n                        il.EmitCall(OpCodes." +
-                    "Call, typeof(SqlMapper).GetMethod(\r\n                            memberType == ty" +
-                    "peof(char) ? \"ReadChar\" : \"ReadNullableChar\", BindingFlags.Static | BindingFlags" +
-                    ".Public), null); // stack is now [target][target][typed-value]\r\n                " +
-                    "    }\r\n                    else\r\n                    {\r\n                        " +
-                    "il.Emit(OpCodes.Dup); // stack is now [target][target][value][value]\r\n          " +
-                    "              il.Emit(OpCodes.Isinst, typeof(DBNull)); // stack is now [target][" +
-                    "target][value-as-object][DBNull or null]\r\n                        il.Emit(OpCode" +
-                    "s.Brtrue_S, isDbNullLabel); // stack is now [target][target][value-as-object]\r\n\r" +
-                    "\n                        // unbox nullable enums as the primitive, i.e. byte etc" +
-                    "\r\n\r\n                        var nullUnderlyingType = Nullable.GetUnderlyingType(" +
-                    "memberType);\r\n                        var unboxType = nullUnderlyingType != null" +
-                    " && nullUnderlyingType.IsEnum ? nullUnderlyingType : memberType;\r\n\r\n            " +
-                    "            if (unboxType.IsEnum)\r\n                        {\r\n                  " +
-                    "          if (enumDeclareLocal == -1)\r\n                            {\r\n          " +
-                    "                      enumDeclareLocal = il.DeclareLocal(typeof(string)).LocalIn" +
-                    "dex;\r\n                            }\r\n\r\n                            Label isNotSt" +
-                    "ring = il.DefineLabel();\r\n                            il.Emit(OpCodes.Dup); // s" +
-                    "tack is now [target][target][value][value]\r\n                            il.Emit(" +
-                    "OpCodes.Isinst, typeof(string)); // stack is now [target][target][value-as-objec" +
-                    "t][string or null]\r\n                            il.Emit(OpCodes.Dup);// stack is" +
-                    " now [target][target][value-as-object][string or null][string or null]\r\n        " +
-                    "                    StoreLocal(il, enumDeclareLocal); // stack is now [target][t" +
-                    "arget][value-as-object][string or null]\r\n                            il.Emit(OpC" +
-                    "odes.Brfalse_S, isNotString); // stack is now [target][target][value-as-object]\r" +
-                    "\n\r\n                            il.Emit(OpCodes.Pop); // stack is now [target][ta" +
-                    "rget]\r\n\r\n                            il.Emit(OpCodes.Ldtoken, unboxType); // sta" +
-                    "ck is now [target][target][enum-type-token]\r\n                            il.Emit" +
-                    "Call(OpCodes.Call, typeof(Type).GetMethod(\"GetTypeFromHandle\"), null);// stack i" +
-                    "s now [target][target][enum-type]\r\n                            il.Emit(OpCodes.L" +
-                    "dloc_2); // stack is now [target][target][enum-type][string]\r\n                  " +
-                    "          il.Emit(OpCodes.Ldc_I4_1); // stack is now [target][target][enum-type]" +
-                    "[string][true]\r\n                            il.EmitCall(OpCodes.Call, enumParse," +
-                    " null); // stack is now [target][target][enum-as-object]\r\n\r\n                    " +
-                    "        il.MarkLabel(isNotString);\r\n\r\n                            il.Emit(OpCode" +
-                    "s.Unbox_Any, unboxType); // stack is now [target][target][typed-value]\r\n\r\n      " +
-                    "                      if (nullUnderlyingType != null)\r\n                         " +
-                    "   {\r\n                                il.Emit(OpCodes.Newobj, memberType.GetCons" +
-                    "tructor(new[] { nullUnderlyingType })); // stack is now [target][target][enum-va" +
-                    "lue]\r\n                            }\r\n                        }\r\n                " +
-                    "        else if (memberType.FullName == LinqBinary)\r\n                        {\r\n" +
-                    "                            il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack" +
-                    " is now [target][target][byte-array]\r\n                            il.Emit(OpCode" +
-                    "s.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is " +
-                    "now [target][target][binary]\r\n                        }\r\n                       " +
-                    " else\r\n                        {\r\n                            Type dataType = re" +
-                    "ader.GetFieldType(index);\r\n                            TypeCode dataTypeCode = T" +
-                    "ype.GetTypeCode(dataType), unboxTypeCode = Type.GetTypeCode(unboxType);\r\n       " +
-                    "                     if (dataType == unboxType || dataTypeCode == unboxTypeCode " +
-                    "|| dataTypeCode == Type.GetTypeCode(nullUnderlyingType))\r\n                      " +
-                    "      {\r\n                                il.Emit(OpCodes.Unbox_Any, unboxType); " +
-                    "// stack is now [target][target][typed-value]\r\n                            }\r\n  " +
-                    "                          else\r\n                            {\r\n                 " +
-                    "               // not a direct match; need to tweak the unbox\r\n                 " +
-                    "               bool handled = true;\r\n                                OpCode opCo" +
-                    "de = default(OpCode);\r\n                                if (dataTypeCode == TypeC" +
-                    "ode.Decimal || unboxTypeCode == TypeCode.Decimal)\r\n                             " +
-                    "   {   // no IL level conversions to/from decimal; I guess we could use the stat" +
-                    "ic operators, but\r\n                                    // this feels an edge-cas" +
-                    "e\r\n                                    handled = false;\r\n                       " +
-                    "         }\r\n                                else\r\n                              " +
-                    "  {\r\n                                    switch (unboxTypeCode)\r\n               " +
-                    "                     {\r\n                                        case TypeCode.By" +
-                    "te:\r\n                                            opCode = OpCodes.Conv_Ovf_I1_Un" +
-                    "; break;\r\n                                        case TypeCode.SByte:\r\n        " +
-                    "                                    opCode = OpCodes.Conv_Ovf_I1; break;\r\n      " +
-                    "                                  case TypeCode.UInt16:\r\n                       " +
-                    "                     opCode = OpCodes.Conv_Ovf_I2_Un; break;\r\n                  " +
-                    "                      case TypeCode.Int16:\r\n                                    " +
-                    "        opCode = OpCodes.Conv_Ovf_I2; break;\r\n                                  " +
-                    "      case TypeCode.UInt32:\r\n                                            opCode " +
-                    "= OpCodes.Conv_Ovf_I4_Un; break;\r\n                                        case T" +
-                    "ypeCode.Boolean: // boolean is basically an int, at least at this level\r\n       " +
-                    "                                 case TypeCode.Int32:\r\n                         " +
-                    "                   opCode = OpCodes.Conv_Ovf_I4; break;\r\n                       " +
-                    "                 case TypeCode.UInt64:\r\n                                        " +
-                    "    opCode = OpCodes.Conv_Ovf_I8_Un; break;\r\n                                   " +
-                    "     case TypeCode.Int64:\r\n                                            opCode = " +
-                    "OpCodes.Conv_Ovf_I8; break;\r\n                                        case TypeCo" +
-                    "de.Single:\r\n                                            opCode = OpCodes.Conv_R4" +
-                    "; break;\r\n                                        case TypeCode.Double:\r\n       " +
-                    "                                     opCode = OpCodes.Conv_R8; break;\r\n         " +
-                    "                               default:\r\n                                       " +
-                    "     handled = false;\r\n                                            break;\r\n     " +
-                    "                               }\r\n                                }\r\n           " +
-                    "                     if (handled)\r\n                                { // unbox as" +
-                    " the data-type, then use IL-level convert\r\n                                    i" +
-                    "l.Emit(OpCodes.Unbox_Any, dataType); // stack is now [target][target][data-typed" +
-                    "-value]\r\n                                    il.Emit(opCode); // stack is now [t" +
-                    "arget][target][typed-value]\r\n                                    if (unboxTypeCo" +
-                    "de == TypeCode.Boolean)\r\n                                    { // compare to zer" +
-                    "o; I checked \"csc\" - this is the trick it uses; nice\r\n                          " +
-                    "              il.Emit(OpCodes.Ldc_I4_0);\r\n                                      " +
-                    "  il.Emit(OpCodes.Ceq);\r\n                                        il.Emit(OpCodes" +
-                    ".Ldc_I4_0);\r\n                                        il.Emit(OpCodes.Ceq);\r\n    " +
-                    "                                }\r\n                                }\r\n          " +
-                    "                      else\r\n                                { // use flexible co" +
-                    "nversion\r\n                                    il.Emit(OpCodes.Ldtoken, unboxType" +
-                    "); // stack is now [target][target][value][member-type-token]\r\n                 " +
-                    "                   il.EmitCall(OpCodes.Call, typeof(Type).GetMethod(\"GetTypeFrom" +
-                    "Handle\"), null); // stack is now [target][target][value][member-type]\r\n         " +
-                    "                           il.EmitCall(OpCodes.Call, typeof(Convert).GetMethod(\"" +
-                    "ChangeType\", new Type[] { typeof(object), typeof(Type) }), null); // stack is no" +
-                    "w [target][target][boxed-member-type-value]\r\n                                   " +
-                    " il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-v" +
-                    "alue]\r\n                                }\r\n\r\n                            }\r\n\r\n   " +
-                    "                     }\r\n                    }\r\n                    if (specializ" +
-                    "edConstructor == null)\r\n                    {\r\n                        // Store " +
-                    "the value in the property/field\r\n                        if (item.Property != nu" +
-                    "ll)\r\n                        {\r\n                            if (type.IsValueType" +
+                    "      else\r\n                return new InvalidOperationException(\"No columns wer" +
+                    "e selected\");\r\n        }\r\n\r\n        internal static Func<IDataReader, object> Ge" +
+                    "tDapperRowDeserializer(IDataRecord reader, int startBound, int length, bool retu" +
+                    "rnNullIfFirstMissing)\r\n        {\r\n            var fieldCount = reader.FieldCount" +
+                    ";\r\n            if (length == -1)\r\n            {\r\n                length = fieldC" +
+                    "ount - startBound;\r\n            }\r\n\r\n            if (fieldCount <= startBound)\r\n" +
+                    "            {\r\n                throw MultiMapException(reader);\r\n            }\r\n" +
+                    "\r\n            var effectiveFieldCount = Math.Min(fieldCount - startBound, length" +
+                    ");\r\n\r\n            DapperTable table = null;\r\n\r\n            return\r\n             " +
+                    "   r =>\r\n                {\r\n                    if (table == null)\r\n            " +
+                    "        {\r\n                        string[] names = new string[effectiveFieldCou" +
+                    "nt];\r\n                        for (int i = 0; i < effectiveFieldCount; i++)\r\n   " +
+                    "                     {\r\n                            names[i] = r.GetName(i + sta" +
+                    "rtBound);\r\n                        }\r\n                        table = new Dapper" +
+                    "Table(names);\r\n                    }\r\n\r\n                    var values = new obj" +
+                    "ect[effectiveFieldCount];\r\n\r\n                    if (returnNullIfFirstMissing)\r\n" +
+                    "                    {\r\n                        values[0] = r.GetValue(startBound" +
+                    ");\r\n                        if (values[0] is DBNull)\r\n                        {\r" +
+                    "\n                            return null;\r\n                        }\r\n          " +
+                    "          }\r\n\r\n                    if (startBound == 0)\r\n                    {\r\n" +
+                    "                        for (int i = 0; i < values.Length; i++)\r\n               " +
+                    "         {\r\n                            object val = r.GetValue(i);\r\n           " +
+                    "                 values[i] = val is DBNull ? null : val;\r\n                      " +
+                    "  }\r\n                    }\r\n                    else\r\n                    {\r\n   " +
+                    "                     var begin = returnNullIfFirstMissing ? 1 : 0;\r\n            " +
+                    "            for (var iter = begin; iter < effectiveFieldCount; ++iter)\r\n        " +
+                    "                {\r\n                            object obj = r.GetValue(iter + st" +
+                    "artBound);\r\n                            values[iter] = obj is DBNull ? null : ob" +
+                    "j;\r\n                        }\r\n                    }\r\n                    return" +
+                    " new DapperRow(table, values);\r\n                };\r\n        }\r\n        /// <summ" +
+                    "ary>\r\n        /// Internal use only\r\n        /// </summary>\r\n        /// <param " +
+                    "name=\"value\"></param>\r\n        /// <returns></returns>\r\n#if !COREFX\r\n        [Br" +
+                    "owsable(false)]\r\n#endif\r\n        [EditorBrowsable(EditorBrowsableState.Never)]\r\n" +
+                    "        [Obsolete(ObsoleteInternalUsageOnly, false)]\r\n        public static char" +
+                    " ReadChar(object value)\r\n        {\r\n            if (value == null || value is DB" +
+                    "Null) throw new ArgumentNullException(nameof(value));\r\n            string s = va" +
+                    "lue as string;\r\n            if (s == null || s.Length != 1) throw new ArgumentEx" +
+                    "ception(\"A single-character was expected\", nameof(value));\r\n            return s" +
+                    "[0];\r\n        }\r\n\r\n        /// <summary>\r\n        /// Internal use only\r\n       " +
+                    " /// </summary>\r\n#if !COREFX\r\n        [Browsable(false)]\r\n#endif\r\n        [Edito" +
+                    "rBrowsable(EditorBrowsableState.Never)]\r\n        [Obsolete(ObsoleteInternalUsage" +
+                    "Only, false)]\r\n        public static char? ReadNullableChar(object value)\r\n     " +
+                    "   {\r\n            if (value == null || value is DBNull) return null;\r\n          " +
+                    "  string s = value as string;\r\n            if (s == null || s.Length != 1) throw" +
+                    " new ArgumentException(\"A single-character was expected\", nameof(value));\r\n     " +
+                    "       return s[0];\r\n        }\r\n\r\n\r\n        /// <summary>\r\n        /// Internal " +
+                    "use only\r\n        /// </summary>\r\n#if !COREFX\r\n        [Browsable(false)]\r\n#endi" +
+                    "f\r\n        [EditorBrowsable(EditorBrowsableState.Never)]\r\n        [Obsolete(Obso" +
+                    "leteInternalUsageOnly, true)]\r\n        public static IDbDataParameter FindOrAddP" +
+                    "arameter(IDataParameterCollection parameters, IDbCommand command, string name)\r\n" +
+                    "        {\r\n            IDbDataParameter result;\r\n            if (parameters.Cont" +
+                    "ains(name))\r\n            {\r\n                result = (IDbDataParameter)parameter" +
+                    "s[name];\r\n            }\r\n            else\r\n            {\r\n                result" +
+                    " = command.CreateParameter();\r\n                result.ParameterName = name;\r\n   " +
+                    "             parameters.Add(result);\r\n            }\r\n            return result;\r" +
+                    "\n        }\r\n\r\n        internal static int GetListPaddingExtraCount(int count)\r\n " +
+                    "       {\r\n            switch (count)\r\n            {\r\n                case 0:\r\n  " +
+                    "              case 1:\r\n                case 2:\r\n                case 3:\r\n       " +
+                    "         case 4:\r\n                case 5:\r\n                    return 0; // no p" +
+                    "adding\r\n            }\r\n            if (count < 0) return 0;\r\n\r\n            int p" +
+                    "adFactor;\r\n            if (count <= 150) padFactor = 10;\r\n            else if (c" +
+                    "ount <= 750) padFactor = 50;\r\n            else if (count <= 2000) padFactor = 10" +
+                    "0; // note: max param count for SQL Server\r\n            else if (count <= 2070) " +
+                    "padFactor = 10; // try not to over-pad as we approach that limit\r\n            el" +
+                    "se if (count <= 2100) return 0; // just don\'t pad between 2070 and 2100, to mini" +
+                    "mize the crazy\r\n            else padFactor = 200; // above that, all bets are of" +
+                    "f!\r\n\r\n            // if we have 17, factor = 10; 17 % 10 = 7, we need 3 more\r\n  " +
+                    "          int intoBlock = count % padFactor;\r\n            return intoBlock == 0 " +
+                    "? 0 : (padFactor - intoBlock);\r\n        }\r\n\r\n        private static string GetIn" +
+                    "ListRegex(string name, bool byPosition) => byPosition\r\n            ? (@\"(\\?)\" + " +
+                    "Regex.Escape(name) + @\"\\?(?!\\w)(\\s+(?i)unknown(?-i))?\")\r\n            : (@\"([?@:]" +
+                    "\" + Regex.Escape(name) + @\")(?!\\w)(\\s+(?i)unknown(?-i))?\");\r\n        /// <summar" +
+                    "y>\r\n        /// Internal use only\r\n        /// </summary>\r\n#if !COREFX\r\n        " +
+                    "[Browsable(false)]\r\n#endif\r\n        [EditorBrowsable(EditorBrowsableState.Never)" +
+                    "]\r\n        [Obsolete(ObsoleteInternalUsageOnly, false)]\r\n        public static v" +
+                    "oid PackListParameters(IDbCommand command, string namePrefix, object value)\r\n   " +
+                    "     {\r\n            // initially we tried TVP, however it performs quite poorly." +
+                    "\r\n            // keep in mind SQL support up to 2000 params easily in sp_execute" +
+                    "sql, needing more is rare\r\n\r\n            if (FeatureSupport.Get(command.Connecti" +
+                    "on).Arrays)\r\n            {\r\n                var arrayParm = command.CreateParame" +
+                    "ter();\r\n                arrayParm.Value = SanitizeParameterValue(value);\r\n      " +
+                    "          arrayParm.ParameterName = namePrefix;\r\n                command.Paramet" +
+                    "ers.Add(arrayParm);\r\n            }\r\n            else\r\n            {\r\n           " +
+                    "     bool byPosition = ShouldPassByPosition(command.CommandText);\r\n             " +
+                    "   var list = value as IEnumerable;\r\n                var count = 0;\r\n           " +
+                    "     bool isString = value is IEnumerable<string>;\r\n                bool isDbStr" +
+                    "ing = value is IEnumerable<DbString>;\r\n                DbType dbType = 0;\r\n\r\n   " +
+                    "             int splitAt = SqlMapper.Settings.InListStringSplitCount;\r\n         " +
+                    "       bool viaSplit = splitAt >= 0\r\n                    && TryStringSplit(ref l" +
+                    "ist, splitAt, namePrefix, command, byPosition);\r\n\r\n                if (list != n" +
+                    "ull && !viaSplit)\r\n                {\r\n                    object lastValue = nul" +
+                    "l;\r\n                    foreach (var item in list)\r\n                    {\r\n     " +
+                    "                   if (++count == 1) // first item: fetch some type info\r\n      " +
+                    "                  {\r\n                            if (item == null)\r\n            " +
+                    "                {\r\n                                throw new NotSupportedExcepti" +
+                    "on(\"The first item in a list-expansion cannot be null\");\r\n                      " +
+                    "      }\r\n                            if (!isDbString)\r\n                         " +
+                    "   {\r\n                                ITypeHandler handler;\r\n                   " +
+                    "             dbType = LookupDbType(item.GetType(), \"\", true, out handler);\r\n    " +
+                    "                        }\r\n                        }\r\n                        va" +
+                    "r nextName = namePrefix + count.ToString();\r\n                        if (isDbStr" +
+                    "ing && item as DbString != null)\r\n                        {\r\n                   " +
+                    "         var str = item as DbString;\r\n                            str.AddParamet" +
+                    "er(command, nextName);\r\n                        }\r\n                        else\r" +
+                    "\n                        {\r\n                            var listParam = command." +
+                    "CreateParameter();\r\n                            listParam.ParameterName = nextNa" +
+                    "me;\r\n                            if (isString)\r\n                            {\r\n " +
+                    "                               listParam.Size = DbString.DefaultLength;\r\n       " +
+                    "                         if (item != null && ((string)item).Length > DbString.De" +
+                    "faultLength)\r\n                                {\r\n                               " +
+                    "     listParam.Size = -1;\r\n                                }\r\n                  " +
+                    "          }\r\n\r\n                            var tmp = listParam.Value = SanitizeP" +
+                    "arameterValue(item);\r\n                            if (tmp != null && !(tmp is DB" +
+                    "Null))\r\n                                lastValue = tmp; // only interested in n" +
+                    "on-trivial values for padding\r\n\r\n                            if (listParam.DbTyp" +
+                    "e != dbType)\r\n                            {\r\n                                lis" +
+                    "tParam.DbType = dbType;\r\n                            }\r\n                        " +
+                    "    command.Parameters.Add(listParam);\r\n                        }\r\n             " +
+                    "       }\r\n                    if (Settings.PadListExpansions && !isDbString && l" +
+                    "astValue != null)\r\n                    {\r\n                        int padCount =" +
+                    " GetListPaddingExtraCount(count);\r\n                        for (int i = 0; i < p" +
+                    "adCount; i++)\r\n                        {\r\n                            count++;\r\n" +
+                    "                            var padParam = command.CreateParameter();\r\n         " +
+                    "                   padParam.ParameterName = namePrefix + count.ToString();\r\n    " +
+                    "                        if (isString) padParam.Size = DbString.DefaultLength;\r\n " +
+                    "                           padParam.DbType = dbType;\r\n                          " +
+                    "  padParam.Value = lastValue;\r\n                            command.Parameters.Ad" +
+                    "d(padParam);\r\n                        }\r\n                    }\r\n                " +
+                    "}\r\n\r\n\r\n                if (viaSplit)\r\n                {\r\n                    // " +
+                    "already done\r\n                }\r\n                else\r\n                {\r\n      " +
+                    "              var regexIncludingUnknown = GetInListRegex(namePrefix, byPosition)" +
+                    ";\r\n                    if (count == 0)\r\n                    {\r\n                 " +
+                    "       command.CommandText = Regex.Replace(command.CommandText, regexIncludingUn" +
+                    "known, match =>\r\n                        {\r\n                            var vari" +
+                    "ableName = match.Groups[1].Value;\r\n                            if (match.Groups[" +
+                    "2].Success)\r\n                            {\r\n                                // l" +
+                    "ooks like an optimize hint; leave it alone!\r\n                                ret" +
+                    "urn match.Value;\r\n                            }\r\n                            els" +
+                    "e\r\n                            {\r\n                                return \"(SELEC" +
+                    "T \" + variableName + \" WHERE 1 = 0)\";\r\n                            }\r\n          " +
+                    "              }, RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions" +
+                    ".CultureInvariant);\r\n                        var dummyParam = command.CreatePara" +
+                    "meter();\r\n                        dummyParam.ParameterName = namePrefix;\r\n      " +
+                    "                  dummyParam.Value = DBNull.Value;\r\n                        comm" +
+                    "and.Parameters.Add(dummyParam);\r\n                    }\r\n                    else" +
+                    "\r\n                    {\r\n                        command.CommandText = Regex.Rep" +
+                    "lace(command.CommandText, regexIncludingUnknown, match =>\r\n                     " +
+                    "   {\r\n                            var variableName = match.Groups[1].Value;\r\n   " +
+                    "                         if (match.Groups[2].Success)\r\n                         " +
+                    "   {\r\n                                // looks like an optimize hint; expand it\r" +
+                    "\n                                var suffix = match.Groups[2].Value;\r\n\r\n        " +
+                    "                        var sb = GetStringBuilder().Append(variableName).Append(" +
+                    "1).Append(suffix);\r\n                                for (int i = 2; i <= count; " +
+                    "i++)\r\n                                {\r\n                                    sb." +
+                    "Append(\',\').Append(variableName).Append(i).Append(suffix);\r\n                    " +
+                    "            }\r\n                                return sb.__ToStringRecycle();\r\n " +
+                    "                           }\r\n                            else\r\n                " +
+                    "            {\r\n\r\n                                var sb = GetStringBuilder().App" +
+                    "end(\'(\').Append(variableName);\r\n                                if (!byPosition)" +
+                    " sb.Append(1);\r\n                                for (int i = 2; i <= count; i++)" +
+                    "\r\n                                {\r\n                                    sb.Appe" +
+                    "nd(\',\').Append(variableName);\r\n                                    if (!byPositi" +
+                    "on) sb.Append(i);\r\n                                }\r\n                          " +
+                    "      return sb.Append(\')\').__ToStringRecycle();\r\n                            }\r" +
+                    "\n                        }, RegexOptions.IgnoreCase | RegexOptions.Multiline | R" +
+                    "egexOptions.CultureInvariant);\r\n                    }\r\n                }\r\n      " +
+                    "      }\r\n        }\r\n\r\n        private static bool TryStringSplit(ref IEnumerable" +
+                    " list, int splitAt, string namePrefix, IDbCommand command, bool byPosition)\r\n   " +
+                    "     {\r\n            if (list == null || splitAt < 0) return false;\r\n            " +
+                    "if (list is IEnumerable<int>) return TryStringSplit<int>(ref list, splitAt, name" +
+                    "Prefix, command, \"int\", byPosition,\r\n                (sb, i) => sb.Append(i.ToSt" +
+                    "ring(CultureInfo.InvariantCulture)));\r\n            if (list is IEnumerable<long>" +
+                    ") return TryStringSplit<long>(ref list, splitAt, namePrefix, command, \"bigint\", " +
+                    "byPosition,\r\n                (sb, i) => sb.Append(i.ToString(CultureInfo.Invaria" +
+                    "ntCulture)));\r\n            if (list is IEnumerable<short>) return TryStringSplit" +
+                    "<short>(ref list, splitAt, namePrefix, command, \"smallint\", byPosition,\r\n       " +
+                    "         (sb, i) => sb.Append(i.ToString(CultureInfo.InvariantCulture)));\r\n     " +
+                    "       if (list is IEnumerable<byte>) return TryStringSplit<byte>(ref list, spli" +
+                    "tAt, namePrefix, command, \"tinyint\", byPosition,\r\n                (sb, i) => sb." +
+                    "Append(i.ToString(CultureInfo.InvariantCulture)));\r\n            return false;\r\n " +
+                    "       }\r\n        private static bool TryStringSplit<T>(ref IEnumerable list, in" +
+                    "t splitAt, string namePrefix, IDbCommand command, string colType, bool byPositio" +
+                    "n,\r\n            Action<StringBuilder, T> append)\r\n        {\r\n            ICollec" +
+                    "tion<T> typed = list as ICollection<T>;\r\n            if (typed == null)\r\n       " +
+                    "     {\r\n                typed = ((IEnumerable<T>)list).ToList();\r\n              " +
+                    "  list = typed; // because we still need to be able to iterate it, even if we fa" +
+                    "il here\r\n            }\r\n            if (typed.Count < splitAt) return false;\r\n\r\n" +
+                    "            string varName = null;\r\n            var regexIncludingUnknown = GetI" +
+                    "nListRegex(namePrefix, byPosition);\r\n            var sql = Regex.Replace(command" +
+                    ".CommandText, regexIncludingUnknown, match =>\r\n            {\r\n                va" +
+                    "r variableName = match.Groups[1].Value;\r\n                if (match.Groups[2].Suc" +
+                    "cess)\r\n                {\r\n                    // looks like an optimize hint; le" +
+                    "ave it alone!\r\n                    return match.Value;\r\n                }\r\n     " +
+                    "           else\r\n                {\r\n                    varName = variableName;\r" +
+                    "\n                    return \"(select cast([value] as \" + colType + \") from strin" +
+                    "g_split(\" + variableName + \",\',\'))\";\r\n                }\r\n            }, RegexOpt" +
+                    "ions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);\r\n    " +
+                    "        if (varName == null) return false; // couldn\'t resolve the var!\r\n\r\n     " +
+                    "       command.CommandText = sql;\r\n            var concatenatedParam = command.C" +
+                    "reateParameter();\r\n            concatenatedParam.ParameterName = namePrefix;\r\n  " +
+                    "          concatenatedParam.DbType = DbType.AnsiString;\r\n            concatenate" +
+                    "dParam.Size = -1;\r\n            string val;\r\n            using (var iter = typed." +
+                    "GetEnumerator())\r\n            {\r\n                if (iter.MoveNext())\r\n         " +
+                    "       {\r\n                    var sb = GetStringBuilder();\r\n                    " +
+                    "append(sb, iter.Current);\r\n                    while (iter.MoveNext())\r\n        " +
+                    "            {\r\n                        append(sb.Append(\',\'), iter.Current);\r\n  " +
+                    "                  }\r\n                    val = sb.ToString();\r\n                }" +
+                    "\r\n                else\r\n                {\r\n                    val = \"\";\r\n      " +
+                    "          }\r\n            }\r\n            concatenatedParam.Value = val;\r\n        " +
+                    "    command.Parameters.Add(concatenatedParam);\r\n            return true;\r\n      " +
+                    "  }\r\n\r\n        /// <summary>\r\n        /// OBSOLETE: For internal usage only. San" +
+                    "itizes the paramter value with proper type casting.\r\n        /// </summary>\r\n   " +
+                    "     [Obsolete(ObsoleteInternalUsageOnly, false)]\r\n        public static object " +
+                    "SanitizeParameterValue(object value)\r\n        {\r\n            if (value == null) " +
+                    "return DBNull.Value;\r\n            if (value is Enum)\r\n            {\r\n           " +
+                    "     TypeCode typeCode;\r\n                if (value is IConvertible)\r\n           " +
+                    "     {\r\n                    typeCode = ((IConvertible)value).GetTypeCode();\r\n   " +
+                    "             }\r\n                else\r\n                {\r\n                    typ" +
+                    "eCode = TypeExtensions.GetTypeCode(Enum.GetUnderlyingType(value.GetType()));\r\n  " +
+                    "              }\r\n                switch (typeCode)\r\n                {\r\n         " +
+                    "           case TypeCode.Byte: return (byte)value;\r\n                    case Typ" +
+                    "eCode.SByte: return (sbyte)value;\r\n                    case TypeCode.Int16: retu" +
+                    "rn (short)value;\r\n                    case TypeCode.Int32: return (int)value;\r\n " +
+                    "                   case TypeCode.Int64: return (long)value;\r\n                   " +
+                    " case TypeCode.UInt16: return (ushort)value;\r\n                    case TypeCode." +
+                    "UInt32: return (uint)value;\r\n                    case TypeCode.UInt64: return (u" +
+                    "long)value;\r\n                }\r\n            }\r\n            return value;\r\n      " +
+                    "  }\r\n        private static IEnumerable<PropertyInfo> FilterParameters(IEnumerab" +
+                    "le<PropertyInfo> parameters, string sql)\r\n        {\r\n            return paramete" +
+                    "rs.Where(p => Regex.IsMatch(sql, @\"[?@:]\" + p.Name + \"([^a-z0-9_]+|$)\", RegexOpt" +
+                    "ions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant));\r\n   " +
+                    "     }\r\n\r\n        // look for ? / @ / : *by itself*\r\n        static readonly Reg" +
+                    "ex smellsLikeOleDb = new Regex(@\"(?<![a-z0-9@_])[?@:](?![a-z0-9@_])\", RegexOptio" +
+                    "ns.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOp" +
+                    "tions.Compiled),\r\n            literalTokens = new Regex(@\"(?<![a-z0-9_])\\{=([a-z" +
+                    "0-9_]+)\\}\", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Cult" +
+                    "ureInvariant | RegexOptions.Compiled),\r\n            pseudoPositional = new Regex" +
+                    "(@\"\\?([a-z_][a-z0-9_]*)\\?\", RegexOptions.IgnoreCase | RegexOptions.CultureInvari" +
+                    "ant | RegexOptions.Compiled);\r\n\r\n\r\n\r\n        /// <summary>\r\n        /// Replace " +
+                    "all literal tokens with their text form\r\n        /// </summary>\r\n        public " +
+                    "static void ReplaceLiterals(this IParameterLookup parameters, IDbCommand command" +
+                    ")\r\n        {\r\n            var tokens = GetLiteralTokens(command.CommandText);\r\n " +
+                    "           if (tokens.Count != 0) ReplaceLiterals(parameters, command, tokens);\r" +
+                    "\n        }\r\n\r\n        internal static readonly MethodInfo format = typeof(SqlMap" +
+                    "per).GetMethod(\"Format\", BindingFlags.Public | BindingFlags.Static);\r\n        //" +
+                    "/ <summary>\r\n        /// Convert numeric values to their string form for SQL lit" +
+                    "eral purposes\r\n        /// </summary>\r\n        [Obsolete(ObsoleteInternalUsageOn" +
+                    "ly)]\r\n        public static string Format(object value)\r\n        {\r\n            " +
+                    "if (value == null)\r\n            {\r\n                return \"null\";\r\n            }" +
+                    "\r\n            else\r\n            {\r\n                switch (TypeExtensions.GetTyp" +
+                    "eCode(value.GetType()))\r\n                {\r\n#if !COREFX\r\n                    cas" +
+                    "e TypeCode.DBNull:\r\n                        return \"null\";\r\n#endif\r\n            " +
+                    "        case TypeCode.Boolean:\r\n                        return ((bool)value) ? \"" +
+                    "1\" : \"0\";\r\n                    case TypeCode.Byte:\r\n                        retu" +
+                    "rn ((byte)value).ToString(CultureInfo.InvariantCulture);\r\n                    ca" +
+                    "se TypeCode.SByte:\r\n                        return ((sbyte)value).ToString(Cultu" +
+                    "reInfo.InvariantCulture);\r\n                    case TypeCode.UInt16:\r\n          " +
+                    "              return ((ushort)value).ToString(CultureInfo.InvariantCulture);\r\n  " +
+                    "                  case TypeCode.Int16:\r\n                        return ((short)v" +
+                    "alue).ToString(CultureInfo.InvariantCulture);\r\n                    case TypeCode" +
+                    ".UInt32:\r\n                        return ((uint)value).ToString(CultureInfo.Inva" +
+                    "riantCulture);\r\n                    case TypeCode.Int32:\r\n                      " +
+                    "  return ((int)value).ToString(CultureInfo.InvariantCulture);\r\n                 " +
+                    "   case TypeCode.UInt64:\r\n                        return ((ulong)value).ToString" +
+                    "(CultureInfo.InvariantCulture);\r\n                    case TypeCode.Int64:\r\n     " +
+                    "                   return ((long)value).ToString(CultureInfo.InvariantCulture);\r" +
+                    "\n                    case TypeCode.Single:\r\n                        return ((flo" +
+                    "at)value).ToString(CultureInfo.InvariantCulture);\r\n                    case Type" +
+                    "Code.Double:\r\n                        return ((double)value).ToString(CultureInf" +
+                    "o.InvariantCulture);\r\n                    case TypeCode.Decimal:\r\n              " +
+                    "          return ((decimal)value).ToString(CultureInfo.InvariantCulture);\r\n     " +
+                    "               default:\r\n                        var multiExec = GetMultiExec(va" +
+                    "lue);\r\n                        if (multiExec != null)\r\n                        {" +
+                    "\r\n                            StringBuilder sb = null;\r\n                        " +
+                    "    bool first = true;\r\n                            foreach (object subval in mu" +
+                    "ltiExec)\r\n                            {\r\n                                if (fir" +
+                    "st)\r\n                                {\r\n                                    sb =" +
+                    " GetStringBuilder().Append(\'(\');\r\n                                    first = fa" +
+                    "lse;\r\n                                }\r\n                                else\r\n " +
+                    "                               {\r\n                                    sb.Append(" +
+                    "\',\');\r\n                                }\r\n                                sb.App" +
+                    "end(Format(subval));\r\n                            }\r\n                           " +
+                    " if (first)\r\n                            {\r\n                                retu" +
+                    "rn \"(select null where 1=0)\";\r\n                            }\r\n                  " +
+                    "          else\r\n                            {\r\n                                r" +
+                    "eturn sb.Append(\')\').__ToStringRecycle();\r\n                            }\r\n      " +
+                    "                  }\r\n                        throw new NotSupportedException(val" +
+                    "ue.GetType().Name);\r\n                }\r\n            }\r\n        }\r\n\r\n\r\n        in" +
+                    "ternal static void ReplaceLiterals(IParameterLookup parameters, IDbCommand comma" +
+                    "nd, IList<LiteralToken> tokens)\r\n        {\r\n            var sql = command.Comman" +
+                    "dText;\r\n            foreach (var token in tokens)\r\n            {\r\n              " +
+                    "  object value = parameters[token.Member];\r\n#pragma warning disable 0618\r\n      " +
+                    "          string text = Format(value);\r\n#pragma warning restore 0618\r\n          " +
+                    "      sql = sql.Replace(token.Token, text);\r\n            }\r\n            command." +
+                    "CommandText = sql;\r\n        }\r\n\r\n        internal static IList<LiteralToken> Get" +
+                    "LiteralTokens(string sql)\r\n        {\r\n            if (string.IsNullOrEmpty(sql))" +
+                    " return LiteralToken.None;\r\n            if (!literalTokens.IsMatch(sql)) return " +
+                    "LiteralToken.None;\r\n\r\n            var matches = literalTokens.Matches(sql);\r\n   " +
+                    "         var found = new HashSet<string>(StringComparer.Ordinal);\r\n            L" +
+                    "ist<LiteralToken> list = new List<LiteralToken>(matches.Count);\r\n            for" +
+                    "each (Match match in matches)\r\n            {\r\n                string token = mat" +
+                    "ch.Value;\r\n                if (found.Add(match.Value))\r\n                {\r\n     " +
+                    "               list.Add(new LiteralToken(token, match.Groups[1].Value));\r\n      " +
+                    "          }\r\n            }\r\n            return list.Count == 0 ? LiteralToken.No" +
+                    "ne : list;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Internal use only\r\n " +
+                    "       /// </summary>\r\n        public static Action<IDbCommand, object> CreatePa" +
+                    "ramInfoGenerator(Identity identity, bool checkForDuplicates, bool removeUnused)\r" +
+                    "\n        {\r\n            return CreateParamInfoGenerator(identity, checkForDuplic" +
+                    "ates, removeUnused, GetLiteralTokens(identity.sql));\r\n        }\r\n\r\n        inter" +
+                    "nal static Action<IDbCommand, object> CreateParamInfoGenerator(Identity identity" +
+                    ", bool checkForDuplicates, bool removeUnused, IList<LiteralToken> literals)\r\n   " +
+                    "     {\r\n            Type type = identity.parametersType;\r\n\r\n            bool fil" +
+                    "terParams = false;\r\n            if (removeUnused && identity.commandType.GetValu" +
+                    "eOrDefault(CommandType.Text) == CommandType.Text)\r\n            {\r\n              " +
+                    "  filterParams = !smellsLikeOleDb.IsMatch(identity.sql);\r\n            }\r\n       " +
+                    "     var dm = new DynamicMethod(\"ParamInfo\" + Guid.NewGuid().ToString(), null, n" +
+                    "ew[] { typeof(IDbCommand), typeof(object) }, type, true);\r\n\r\n            var il " +
+                    "= dm.GetILGenerator();\r\n\r\n            bool isStruct = type.IsValueType();\r\n     " +
+                    "       bool haveInt32Arg1 = false;\r\n            il.Emit(OpCodes.Ldarg_1); // sta" +
+                    "ck is now [untyped-param]\r\n            if (isStruct)\r\n            {\r\n           " +
+                    "     il.DeclareLocal(type.MakePointerType());\r\n                il.Emit(OpCodes.U" +
+                    "nbox, type); // stack is now [typed-param]\r\n            }\r\n            else\r\n   " +
+                    "         {\r\n                il.DeclareLocal(type); // 0\r\n                il.Emit" +
+                    "(OpCodes.Castclass, type); // stack is now [typed-param]\r\n            }\r\n       " +
+                    "     il.Emit(OpCodes.Stloc_0);// stack is now empty\r\n\r\n            il.Emit(OpCod" +
+                    "es.Ldarg_0); // stack is now [command]\r\n            il.EmitCall(OpCodes.Callvirt" +
+                    ", typeof(IDbCommand).GetProperty(nameof(IDbCommand.Parameters)).GetGetMethod(), " +
+                    "null); // stack is now [parameters]\r\n\r\n            var propsArr = type.GetProper" +
+                    "ties().Where(p => p.GetIndexParameters().Length == 0).ToArray();\r\n            va" +
+                    "r ctors = type.GetConstructors();\r\n            ParameterInfo[] ctorParams;\r\n    " +
+                    "        IEnumerable<PropertyInfo> props = null;\r\n            // try to detect tu" +
+                    "ple patterns, e.g. anon-types, and use that to choose the order\r\n            // " +
+                    "otherwise: alphabetical\r\n            if (ctors.Length == 1 && propsArr.Length ==" +
+                    " (ctorParams = ctors[0].GetParameters()).Length)\r\n            {\r\n               " +
+                    " // check if reflection was kind enough to put everything in the right order for" +
+                    " us\r\n                bool ok = true;\r\n                for (int i = 0; i < propsA" +
+                    "rr.Length; i++)\r\n                {\r\n                    if (!string.Equals(props" +
+                    "Arr[i].Name, ctorParams[i].Name, StringComparison.OrdinalIgnoreCase))\r\n         " +
+                    "           {\r\n                        ok = false;\r\n                        break" +
+                    ";\r\n                    }\r\n                }\r\n                if (ok)\r\n          " +
+                    "      {\r\n                    // pre-sorted; the reflection gods have smiled upon" +
+                    " us\r\n                    props = propsArr;\r\n                }\r\n                e" +
+                    "lse\r\n                { // might still all be accounted for; check the hard way\r\n" +
+                    "                    var positionByName = new Dictionary<string, int>(StringCompa" +
+                    "rer.OrdinalIgnoreCase);\r\n                    foreach (var param in ctorParams)\r\n" +
+                    "                    {\r\n                        positionByName[param.Name] = para" +
+                    "m.Position;\r\n                    }\r\n                    if (positionByName.Count" +
+                    " == propsArr.Length)\r\n                    {\r\n                        int[] posit" +
+                    "ions = new int[propsArr.Length];\r\n                        ok = true;\r\n          " +
+                    "              for (int i = 0; i < propsArr.Length; i++)\r\n                       " +
+                    " {\r\n                            int pos;\r\n                            if (!posit" +
+                    "ionByName.TryGetValue(propsArr[i].Name, out pos))\r\n                            {" +
+                    "\r\n                                ok = false;\r\n                                b" +
+                    "reak;\r\n                            }\r\n                            positions[i] =" +
+                    " pos;\r\n                        }\r\n                        if (ok)\r\n             " +
+                    "           {\r\n                            Array.Sort(positions, propsArr);\r\n    " +
+                    "                        props = propsArr;\r\n                        }\r\n          " +
+                    "          }\r\n                }\r\n            }\r\n            if (props == null) pr" +
+                    "ops = propsArr.OrderBy(x => x.Name);\r\n            if (filterParams)\r\n           " +
+                    " {\r\n                props = FilterParameters(props, identity.sql);\r\n            " +
+                    "}\r\n\r\n            var callOpCode = isStruct ? OpCodes.Call : OpCodes.Callvirt;\r\n " +
+                    "           foreach (var prop in props)\r\n            {\r\n                if (typeo" +
+                    "f(ICustomQueryParameter).IsAssignableFrom(prop.PropertyType))\r\n                {" +
+                    "\r\n                    il.Emit(OpCodes.Ldloc_0); // stack is now [parameters] [ty" +
+                    "ped-param]\r\n                    il.Emit(callOpCode, prop.GetGetMethod()); // sta" +
+                    "ck is [parameters] [custom]\r\n                    il.Emit(OpCodes.Ldarg_0); // st" +
+                    "ack is now [parameters] [custom] [command]\r\n                    il.Emit(OpCodes." +
+                    "Ldstr, prop.Name); // stack is now [parameters] [custom] [command] [name]\r\n     " +
+                    "               il.EmitCall(OpCodes.Callvirt, prop.PropertyType.GetMethod(nameof(" +
+                    "ICustomQueryParameter.AddParameter)), null); // stack is now [parameters]\r\n     " +
+                    "               continue;\r\n                }\r\n                ITypeHandler handle" +
+                    "r;\r\n#pragma warning disable 618\r\n                DbType dbType = LookupDbType(pr" +
+                    "op.PropertyType, prop.Name, true, out handler);\r\n#pragma warning restore 618\r\n  " +
+                    "              if (dbType == DynamicParameters.EnumerableMultiParameter)\r\n       " +
+                    "         {\r\n                    // this actually represents special handling for" +
+                    " list types;\r\n                    il.Emit(OpCodes.Ldarg_0); // stack is now [par" +
+                    "ameters] [command]\r\n                    il.Emit(OpCodes.Ldstr, prop.Name); // st" +
+                    "ack is now [parameters] [command] [name]\r\n                    il.Emit(OpCodes.Ld" +
+                    "loc_0); // stack is now [parameters] [command] [name] [typed-param]\r\n           " +
+                    "         il.Emit(callOpCode, prop.GetGetMethod()); // stack is [parameters] [com" +
+                    "mand] [name] [typed-value]\r\n                    if (prop.PropertyType.IsValueTyp" +
+                    "e())\r\n                    {\r\n                        il.Emit(OpCodes.Box, prop.P" +
+                    "ropertyType); // stack is [parameters] [command] [name] [boxed-value]\r\n         " +
+                    "           }\r\n                    il.EmitCall(OpCodes.Call, typeof(SqlMapper).Ge" +
+                    "tMethod(nameof(SqlMapper.PackListParameters)), null); // stack is [parameters]\r\n" +
+                    "                    continue;\r\n                }\r\n                il.Emit(OpCode" +
+                    "s.Dup); // stack is now [parameters] [parameters]\r\n\r\n                il.Emit(OpC" +
+                    "odes.Ldarg_0); // stack is now [parameters] [parameters] [command]\r\n\r\n          " +
+                    "      if (checkForDuplicates)\r\n                {\r\n                    // need to" +
+                    " be a little careful about adding; use a utility method\r\n                    il." +
+                    "Emit(OpCodes.Ldstr, prop.Name); // stack is now [parameters] [parameters] [comma" +
+                    "nd] [name]\r\n                    il.EmitCall(OpCodes.Call, typeof(SqlMapper).GetM" +
+                    "ethod(nameof(SqlMapper.FindOrAddParameter)), null); // stack is [parameters] [pa" +
+                    "rameter]\r\n                }\r\n                else\r\n                {\r\n          " +
+                    "          // no risk of duplicates; just blindly add\r\n                    il.Emi" +
+                    "tCall(OpCodes.Callvirt, typeof(IDbCommand).GetMethod(nameof(IDbCommand.CreatePar" +
+                    "ameter)), null);// stack is now [parameters] [parameters] [parameter]\r\n\r\n       " +
+                    "             il.Emit(OpCodes.Dup);// stack is now [parameters] [parameters] [par" +
+                    "ameter] [parameter]\r\n                    il.Emit(OpCodes.Ldstr, prop.Name); // s" +
+                    "tack is now [parameters] [parameters] [parameter] [parameter] [name]\r\n          " +
+                    "          il.EmitCall(OpCodes.Callvirt, typeof(IDataParameter).GetProperty(nameo" +
+                    "f(IDataParameter.ParameterName)).GetSetMethod(), null);// stack is now [paramete" +
+                    "rs] [parameters] [parameter]\r\n                }\r\n                if (dbType != D" +
+                    "bType.Time && handler == null) // https://connect.microsoft.com/VisualStudio/fee" +
+                    "dback/details/381934/sqlparameter-dbtype-dbtype-time-sets-the-parameter-to-sqldb" +
+                    "type-datetime-instead-of-sqldbtype-time\r\n                {\r\n                    " +
+                    "il.Emit(OpCodes.Dup);// stack is now [parameters] [[parameters]] [parameter] [pa" +
+                    "rameter]\r\n                    if (dbType == DbType.Object && prop.PropertyType =" +
+                    "= typeof(object)) // includes dynamic\r\n                    {\r\n                  " +
+                    "      // look it up from the param value\r\n                        il.Emit(OpCode" +
+                    "s.Ldloc_0); // stack is now [parameters] [[parameters]] [parameter] [parameter] " +
+                    "[typed-param]\r\n                        il.Emit(callOpCode, prop.GetGetMethod());" +
+                    " // stack is [parameters] [[parameters]] [parameter] [parameter] [object-value]\r" +
+                    "\n                        il.Emit(OpCodes.Call, typeof(SqlMapper).GetMethod(nameo" +
+                    "f(SqlMapper.GetDbType), BindingFlags.Static | BindingFlags.Public)); // stack is" +
+                    " now [parameters] [[parameters]] [parameter] [parameter] [db-type]\r\n            " +
+                    "        }\r\n                    else\r\n                    {\r\n                    " +
+                    "    // constant value; nice and simple\r\n                        EmitInt32(il, (i" +
+                    "nt)dbType);// stack is now [parameters] [[parameters]] [parameter] [parameter] [" +
+                    "db-type]\r\n                    }\r\n                    il.EmitCall(OpCodes.Callvir" +
+                    "t, typeof(IDataParameter).GetProperty(nameof(IDataParameter.DbType)).GetSetMetho" +
+                    "d(), null);// stack is now [parameters] [[parameters]] [parameter]\r\n            " +
+                    "    }\r\n\r\n                il.Emit(OpCodes.Dup);// stack is now [parameters] [[par" +
+                    "ameters]] [parameter] [parameter]\r\n                EmitInt32(il, (int)ParameterD" +
+                    "irection.Input);// stack is now [parameters] [[parameters]] [parameter] [paramet" +
+                    "er] [dir]\r\n                il.EmitCall(OpCodes.Callvirt, typeof(IDataParameter)." +
+                    "GetProperty(nameof(IDataParameter.Direction)).GetSetMethod(), null);// stack is " +
+                    "now [parameters] [[parameters]] [parameter]\r\n\r\n                il.Emit(OpCodes.D" +
+                    "up);// stack is now [parameters] [[parameters]] [parameter] [parameter]\r\n       " +
+                    "         il.Emit(OpCodes.Ldloc_0); // stack is now [parameters] [[parameters]] [" +
+                    "parameter] [parameter] [typed-param]\r\n                il.Emit(callOpCode, prop.G" +
+                    "etGetMethod()); // stack is [parameters] [[parameters]] [parameter] [parameter] " +
+                    "[typed-value]\r\n                bool checkForNull;\r\n                if (prop.Prop" +
+                    "ertyType.IsValueType())\r\n                {\r\n                    var propType = p" +
+                    "rop.PropertyType;\r\n                    var nullType = Nullable.GetUnderlyingType" +
+                    "(propType);\r\n                    bool callSanitize = false;\r\n\r\n                 " +
+                    "   if ((nullType ?? propType).IsEnum())\r\n                    {\r\n                " +
+                    "        if (nullType != null)\r\n                        {\r\n                      " +
+                    "      // Nullable<SomeEnum>; we want to box as the underlying type; that\'s just " +
+                    "*hard*; for\r\n                            // simplicity, box as Nullable<SomeEnum" +
+                    "> and call SanitizeParameterValue\r\n                            callSanitize = ch" +
+                    "eckForNull = true;\r\n                        }\r\n                        else\r\n   " +
+                    "                     {\r\n                            checkForNull = false;\r\n     " +
+                    "                       // non-nullable enum; we can do that! just box to the wro" +
+                    "ng type! (no, really)\r\n                            switch (TypeExtensions.GetTyp" +
+                    "eCode(Enum.GetUnderlyingType(propType)))\r\n                            {\r\n       " +
+                    "                         case TypeCode.Byte: propType = typeof(byte); break;\r\n  " +
+                    "                              case TypeCode.SByte: propType = typeof(sbyte); bre" +
+                    "ak;\r\n                                case TypeCode.Int16: propType = typeof(shor" +
+                    "t); break;\r\n                                case TypeCode.Int32: propType = type" +
+                    "of(int); break;\r\n                                case TypeCode.Int64: propType =" +
+                    " typeof(long); break;\r\n                                case TypeCode.UInt16: pro" +
+                    "pType = typeof(ushort); break;\r\n                                case TypeCode.UI" +
+                    "nt32: propType = typeof(uint); break;\r\n                                case Type" +
+                    "Code.UInt64: propType = typeof(ulong); break;\r\n                            }\r\n  " +
+                    "                      }\r\n                    }\r\n                    else\r\n      " +
+                    "              {\r\n                        checkForNull = nullType != null;\r\n     " +
+                    "               }\r\n                    il.Emit(OpCodes.Box, propType); // stack i" +
+                    "s [parameters] [[parameters]] [parameter] [parameter] [boxed-value]\r\n           " +
+                    "         if (callSanitize)\r\n                    {\r\n                        check" +
+                    "ForNull = false; // handled by sanitize\r\n                        il.EmitCall(OpC" +
+                    "odes.Call, typeof(SqlMapper).GetMethod(nameof(SanitizeParameterValue)), null);\r\n" +
+                    "                        // stack is [parameters] [[parameters]] [parameter] [par" +
+                    "ameter] [boxed-value]\r\n                    }\r\n                }\r\n               " +
+                    " else\r\n                {\r\n                    checkForNull = true; // if not a v" +
+                    "alue-type, need to check\r\n                }\r\n                if (checkForNull)\r\n" +
+                    "                {\r\n                    if ((dbType == DbType.String || dbType ==" +
+                    " DbType.AnsiString) && !haveInt32Arg1)\r\n                    {\r\n                 " +
+                    "       il.DeclareLocal(typeof(int));\r\n                        haveInt32Arg1 = tr" +
+                    "ue;\r\n                    }\r\n                    // relative stack: [boxed value]" +
+                    "\r\n                    il.Emit(OpCodes.Dup);// relative stack: [boxed value] [box" +
+                    "ed value]\r\n                    Label notNull = il.DefineLabel();\r\n              " +
+                    "      Label? allDone = (dbType == DbType.String || dbType == DbType.AnsiString) " +
+                    "? il.DefineLabel() : (Label?)null;\r\n                    il.Emit(OpCodes.Brtrue_S" +
+                    ", notNull);\r\n                    // relative stack [boxed value = null]\r\n       " +
+                    "             il.Emit(OpCodes.Pop); // relative stack empty\r\n                    " +
+                    "il.Emit(OpCodes.Ldsfld, typeof(DBNull).GetField(nameof(DBNull.Value))); // relat" +
+                    "ive stack [DBNull]\r\n                    if (dbType == DbType.String || dbType ==" +
+                    " DbType.AnsiString)\r\n                    {\r\n                        EmitInt32(il" +
+                    ", 0);\r\n                        il.Emit(OpCodes.Stloc_1);\r\n                    }\r" +
+                    "\n                    if (allDone != null) il.Emit(OpCodes.Br_S, allDone.Value);\r" +
+                    "\n                    il.MarkLabel(notNull);\r\n                    if (prop.Proper" +
+                    "tyType == typeof(string))\r\n                    {\r\n                        il.Emi" +
+                    "t(OpCodes.Dup); // [string] [string]\r\n                        il.EmitCall(OpCode" +
+                    "s.Callvirt, typeof(string).GetProperty(nameof(string.Length)).GetGetMethod(), nu" +
+                    "ll); // [string] [length]\r\n                        EmitInt32(il, DbString.Defaul" +
+                    "tLength); // [string] [length] [4000]\r\n                        il.Emit(OpCodes.C" +
+                    "gt); // [string] [0 or 1]\r\n                        Label isLong = il.DefineLabel" +
+                    "(), lenDone = il.DefineLabel();\r\n                        il.Emit(OpCodes.Brtrue_" +
+                    "S, isLong);\r\n                        EmitInt32(il, DbString.DefaultLength); // [" +
+                    "string] [4000]\r\n                        il.Emit(OpCodes.Br_S, lenDone);\r\n       " +
+                    "                 il.MarkLabel(isLong);\r\n                        EmitInt32(il, -1" +
+                    "); // [string] [-1]\r\n                        il.MarkLabel(lenDone);\r\n           " +
+                    "             il.Emit(OpCodes.Stloc_1); // [string]\r\n                    }\r\n     " +
+                    "               if (prop.PropertyType.FullName == LinqBinary)\r\n                  " +
+                    "  {\r\n                        il.EmitCall(OpCodes.Callvirt, prop.PropertyType.Get" +
+                    "Method(\"ToArray\", BindingFlags.Public | BindingFlags.Instance), null);\r\n        " +
+                    "            }\r\n                    if (allDone != null) il.MarkLabel(allDone.Val" +
+                    "ue);\r\n                    // relative stack [boxed value or DBNull]\r\n           " +
+                    "     }\r\n\r\n                if (handler != null)\r\n                {\r\n#pragma warni" +
+                    "ng disable 618\r\n                    il.Emit(OpCodes.Call, typeof(TypeHandlerCach" +
+                    "e<>).MakeGenericType(prop.PropertyType).GetMethod(nameof(TypeHandlerCache<int>.S" +
+                    "etValue))); // stack is now [parameters] [[parameters]] [parameter]\r\n#pragma war" +
+                    "ning restore 618\r\n                }\r\n                else\r\n                {\r\n  " +
+                    "                  il.EmitCall(OpCodes.Callvirt, typeof(IDataParameter).GetProper" +
+                    "ty(nameof(IDataParameter.Value)).GetSetMethod(), null);// stack is now [paramete" +
+                    "rs] [[parameters]] [parameter]\r\n                }\r\n\r\n                if (prop.Pr" +
+                    "opertyType == typeof(string))\r\n                {\r\n                    var endOfS" +
+                    "ize = il.DefineLabel();\r\n                    // don\'t set if 0\r\n                " +
+                    "    il.Emit(OpCodes.Ldloc_1); // [parameters] [[parameters]] [parameter] [size]\r" +
+                    "\n                    il.Emit(OpCodes.Brfalse_S, endOfSize); // [parameters] [[pa" +
+                    "rameters]] [parameter]\r\n\r\n                    il.Emit(OpCodes.Dup);// stack is n" +
+                    "ow [parameters] [[parameters]] [parameter] [parameter]\r\n                    il.E" +
+                    "mit(OpCodes.Ldloc_1); // stack is now [parameters] [[parameters]] [parameter] [p" +
+                    "arameter] [size]\r\n                    il.EmitCall(OpCodes.Callvirt, typeof(IDbDa" +
+                    "taParameter).GetProperty(nameof(IDbDataParameter.Size)).GetSetMethod(), null); /" +
+                    "/ stack is now [parameters] [[parameters]] [parameter]\r\n\r\n                    il" +
+                    ".MarkLabel(endOfSize);\r\n                }\r\n                if (checkForDuplicate" +
+                    "s)\r\n                {\r\n                    // stack is now [parameters] [paramet" +
+                    "er]\r\n                    il.Emit(OpCodes.Pop); // don\'t need parameter any more\r" +
+                    "\n                }\r\n                else\r\n                {\r\n                   " +
+                    " // stack is now [parameters] [parameters] [parameter]\r\n                    // b" +
+                    "lindly add\r\n                    il.EmitCall(OpCodes.Callvirt, typeof(IList).GetM" +
+                    "ethod(nameof(IList.Add)), null); // stack is now [parameters]\r\n                 " +
+                    "   il.Emit(OpCodes.Pop); // IList.Add returns the new index (int); we don\'t care" +
+                    "\r\n                }\r\n            }\r\n\r\n            // stack is currently [paramet" +
+                    "ers]\r\n            il.Emit(OpCodes.Pop); // stack is now empty\r\n\r\n            if " +
+                    "(literals.Count != 0 && propsArr != null)\r\n            {\r\n                il.Emi" +
+                    "t(OpCodes.Ldarg_0); // command\r\n                il.Emit(OpCodes.Ldarg_0); // com" +
+                    "mand, command\r\n                var cmdText = typeof(IDbCommand).GetProperty(name" +
+                    "of(IDbCommand.CommandText));\r\n                il.EmitCall(OpCodes.Callvirt, cmdT" +
+                    "ext.GetGetMethod(), null); // command, sql\r\n                Dictionary<Type, Loc" +
+                    "alBuilder> locals = null;\r\n                LocalBuilder local = null;\r\n         " +
+                    "       foreach (var literal in literals)\r\n                {\r\n                   " +
+                    " // find the best member, preferring case-sensitive\r\n                    Propert" +
+                    "yInfo exact = null, fallback = null;\r\n                    string huntName = lite" +
+                    "ral.Member;\r\n                    for (int i = 0; i < propsArr.Length; i++)\r\n    " +
+                    "                {\r\n                        string thisName = propsArr[i].Name;\r\n" +
+                    "                        if (string.Equals(thisName, huntName, StringComparison.O" +
+                    "rdinalIgnoreCase))\r\n                        {\r\n                            fallb" +
+                    "ack = propsArr[i];\r\n                            if (string.Equals(thisName, hunt" +
+                    "Name, StringComparison.Ordinal))\r\n                            {\r\n               " +
+                    "                 exact = fallback;\r\n                                break;\r\n    " +
+                    "                        }\r\n                        }\r\n                    }\r\n   " +
+                    "                 var prop = exact ?? fallback;\r\n\r\n                    if (prop !" +
+                    "= null)\r\n                    {\r\n                        il.Emit(OpCodes.Ldstr, l" +
+                    "iteral.Token);\r\n                        il.Emit(OpCodes.Ldloc_0); // command, sq" +
+                    "l, typed parameter\r\n                        il.EmitCall(callOpCode, prop.GetGetM" +
+                    "ethod(), null); // command, sql, typed value\r\n                        Type propT" +
+                    "ype = prop.PropertyType;\r\n                        var typeCode = TypeExtensions." +
+                    "GetTypeCode(propType);\r\n                        switch (typeCode)\r\n             " +
+                    "           {\r\n                            case TypeCode.Boolean:\r\n              " +
+                    "                  Label ifTrue = il.DefineLabel(), allDone = il.DefineLabel();\r\n" +
+                    "                                il.Emit(OpCodes.Brtrue_S, ifTrue);\r\n            " +
+                    "                    il.Emit(OpCodes.Ldstr, \"0\");\r\n                              " +
+                    "  il.Emit(OpCodes.Br_S, allDone);\r\n                                il.MarkLabel(" +
+                    "ifTrue);\r\n                                il.Emit(OpCodes.Ldstr, \"1\");\r\n        " +
+                    "                        il.MarkLabel(allDone);\r\n                                " +
+                    "break;\r\n                            case TypeCode.Byte:\r\n                       " +
+                    "     case TypeCode.SByte:\r\n                            case TypeCode.UInt16:\r\n  " +
+                    "                          case TypeCode.Int16:\r\n                            case" +
+                    " TypeCode.UInt32:\r\n                            case TypeCode.Int32:\r\n           " +
+                    "                 case TypeCode.UInt64:\r\n                            case TypeCod" +
+                    "e.Int64:\r\n                            case TypeCode.Single:\r\n                   " +
+                    "         case TypeCode.Double:\r\n                            case TypeCode.Decima" +
+                    "l:\r\n                                // need to stloc, ldloca, call\r\n            " +
+                    "                    // re-use existing locals (both the last known, and via a di" +
+                    "ctionary)\r\n                                var convert = GetToString(typeCode);\r" +
+                    "\n                                if (local == null || local.LocalType != propTyp" +
+                    "e)\r\n                                {\r\n                                    if (l" +
+                    "ocals == null)\r\n                                    {\r\n                         " +
+                    "               locals = new Dictionary<Type, LocalBuilder>();\r\n                 " +
+                    "                       local = null;\r\n                                    }\r\n   " +
+                    "                                 else\r\n                                    {\r\n  " +
+                    "                                      if (!locals.TryGetValue(propType, out loca" +
+                    "l)) local = null;\r\n                                    }\r\n                      " +
+                    "              if (local == null)\r\n                                    {\r\n       " +
+                    "                                 local = il.DeclareLocal(propType);\r\n           " +
+                    "                             locals.Add(propType, local);\r\n                     " +
+                    "               }\r\n                                }\r\n                           " +
+                    "     il.Emit(OpCodes.Stloc, local); // command, sql\r\n                           " +
+                    "     il.Emit(OpCodes.Ldloca, local); // command, sql, ref-to-value\r\n            " +
+                    "                    il.EmitCall(OpCodes.Call, InvariantCulture, null); // comman" +
+                    "d, sql, ref-to-value, culture\r\n                                il.EmitCall(OpCod" +
+                    "es.Call, convert, null); // command, sql, string value\r\n                        " +
+                    "        break;\r\n                            default:\r\n                          " +
+                    "      if (propType.IsValueType()) il.Emit(OpCodes.Box, propType); // command, sq" +
+                    "l, object value\r\n                                il.EmitCall(OpCodes.Call, forma" +
+                    "t, null); // command, sql, string value\r\n                                break;\r" +
+                    "\n\r\n                        }\r\n                        il.EmitCall(OpCodes.Callvi" +
+                    "rt, StringReplace, null);\r\n                    }\r\n                }\r\n           " +
+                    "     il.EmitCall(OpCodes.Callvirt, cmdText.GetSetMethod(), null); // empty\r\n    " +
+                    "        }\r\n\r\n            il.Emit(OpCodes.Ret);\r\n            return (Action<IDbCo" +
+                    "mmand, object>)dm.CreateDelegate(typeof(Action<IDbCommand, object>));\r\n        }" +
+                    "\r\n        static readonly Dictionary<TypeCode, MethodInfo> toStrings = new[]\r\n  " +
+                    "      {\r\n            typeof(bool), typeof(sbyte), typeof(byte), typeof(ushort), " +
+                    "typeof(short),\r\n            typeof(uint), typeof(int), typeof(ulong), typeof(lon" +
+                    "g), typeof(float), typeof(double), typeof(decimal)\r\n        }.ToDictionary(x => " +
+                    "TypeExtensions.GetTypeCode(x), x => x.GetPublicInstanceMethod(nameof(object.ToSt" +
+                    "ring), new[] { typeof(IFormatProvider) }));\r\n        static MethodInfo GetToStri" +
+                    "ng(TypeCode typeCode)\r\n        {\r\n            MethodInfo method;\r\n            re" +
+                    "turn toStrings.TryGetValue(typeCode, out method) ? method : null;\r\n        }\r\n  " +
+                    "      static readonly MethodInfo StringReplace = typeof(string).GetPublicInstanc" +
+                    "eMethod(nameof(string.Replace), new Type[] { typeof(string), typeof(string) }),\r" +
+                    "\n            InvariantCulture = typeof(CultureInfo).GetProperty(nameof(CultureIn" +
+                    "fo.InvariantCulture), BindingFlags.Public | BindingFlags.Static).GetGetMethod();" +
+                    "\r\n\r\n        private static int ExecuteCommand(IDbConnection cnn, ref CommandDefi" +
+                    "nition command, Action<IDbCommand, object> paramReader)\r\n        {\r\n            " +
+                    "IDbCommand cmd = null;\r\n            bool wasClosed = cnn.State == ConnectionStat" +
+                    "e.Closed;\r\n            try\r\n            {\r\n                cmd = command.SetupCo" +
+                    "mmand(cnn, paramReader);\r\n                if (wasClosed) cnn.Open();\r\n          " +
+                    "      int result = cmd.ExecuteNonQuery();\r\n                command.OnCompleted()" +
+                    ";\r\n                return result;\r\n            }\r\n            finally\r\n         " +
+                    "   {\r\n                if (wasClosed) cnn.Close();\r\n                cmd?.Dispose(" +
+                    ");\r\n            }\r\n        }\r\n\r\n        private static T ExecuteScalarImpl<T>(ID" +
+                    "bConnection cnn, ref CommandDefinition command)\r\n        {\r\n            Action<I" +
+                    "DbCommand, object> paramReader = null;\r\n            object param = command.Param" +
+                    "eters;\r\n            if (param != null)\r\n            {\r\n                var ident" +
+                    "ity = new Identity(command.CommandText, command.CommandType, cnn, null, param.Ge" +
+                    "tType(), null);\r\n                paramReader = GetCacheInfo(identity, command.Pa" +
+                    "rameters, command.AddToCache).ParamReader;\r\n            }\r\n\r\n            IDbComm" +
+                    "and cmd = null;\r\n            bool wasClosed = cnn.State == ConnectionState.Close" +
+                    "d;\r\n            object result;\r\n            try\r\n            {\r\n                " +
+                    "cmd = command.SetupCommand(cnn, paramReader);\r\n                if (wasClosed) cn" +
+                    "n.Open();\r\n                result = cmd.ExecuteScalar();\r\n                comman" +
+                    "d.OnCompleted();\r\n            }\r\n            finally\r\n            {\r\n           " +
+                    "     if (wasClosed) cnn.Close();\r\n                cmd?.Dispose();\r\n            }" +
+                    "\r\n            return Parse<T>(result);\r\n        }\r\n\r\n        private static IDat" +
+                    "aReader ExecuteReaderImpl(IDbConnection cnn, ref CommandDefinition command, Comm" +
+                    "andBehavior commandBehavior, out IDbCommand cmd)\r\n        {\r\n            Action<" +
+                    "IDbCommand, object> paramReader = GetParameterReader(cnn, ref command);\r\n       " +
+                    "     cmd = null;\r\n            bool wasClosed = cnn.State == ConnectionState.Clos" +
+                    "ed, disposeCommand = true;\r\n            try\r\n            {\r\n                cmd " +
+                    "= command.SetupCommand(cnn, paramReader);\r\n                if (wasClosed) cnn.Op" +
+                    "en();\r\n                var reader = ExecuteReaderWithFlagsFallback(cmd, wasClose" +
+                    "d, commandBehavior);\r\n                wasClosed = false; // don\'t dispose before" +
+                    " giving it to them!\r\n                disposeCommand = false;\r\n                //" +
+                    " note: command.FireOutputCallbacks(); would be useless here; parameters come at " +
+                    "the **end** of the TDS stream\r\n                return reader;\r\n            }\r\n  " +
+                    "          finally\r\n            {\r\n                if (wasClosed) cnn.Close();\r\n " +
+                    "               if (cmd != null && disposeCommand) cmd.Dispose();\r\n            }\r" +
+                    "\n        }\r\n\r\n        private static Action<IDbCommand, object> GetParameterRead" +
+                    "er(IDbConnection cnn, ref CommandDefinition command)\r\n        {\r\n            obj" +
+                    "ect param = command.Parameters;\r\n            IEnumerable multiExec = GetMultiExe" +
+                    "c(param);\r\n            CacheInfo info = null;\r\n            if (multiExec != null" +
+                    ")\r\n            {\r\n                throw new NotSupportedException(\"MultiExec is " +
+                    "not supported by ExecuteReader\");\r\n            }\r\n\r\n            // nice and simp" +
+                    "le\r\n            if (param != null)\r\n            {\r\n                var identity " +
+                    "= new Identity(command.CommandText, command.CommandType, cnn, null, param.GetTyp" +
+                    "e(), null);\r\n                info = GetCacheInfo(identity, param, command.AddToC" +
+                    "ache);\r\n            }\r\n            var paramReader = info?.ParamReader;\r\n       " +
+                    "     return paramReader;\r\n        }\r\n\r\n        private static Func<IDataReader, " +
+                    "object> GetStructDeserializer(Type type, Type effectiveType, int index)\r\n       " +
+                    " {\r\n            // no point using special per-type handling here; it boils down " +
+                    "to the same, plus not all are supported anyway (see: SqlDataReader.GetChar - not" +
+                    " supported!)\r\n#pragma warning disable 618\r\n            if (type == typeof(char))" +
+                    "\r\n            { // this *does* need special handling, though\r\n                re" +
+                    "turn r => ReadChar(r.GetValue(index));\r\n            }\r\n            if (type == t" +
+                    "ypeof(char?))\r\n            {\r\n                return r => ReadNullableChar(r.Get" +
+                    "Value(index));\r\n            }\r\n            if (type.FullName == LinqBinary)\r\n   " +
+                    "         {\r\n                return r => Activator.CreateInstance(type, r.GetValu" +
+                    "e(index));\r\n            }\r\n#pragma warning restore 618\r\n\r\n            if (effect" +
+                    "iveType.IsEnum())\r\n            {   // assume the value is returned as the correc" +
+                    "t type (int/byte/etc), but box back to the typed enum\r\n                return r " +
+                    "=>\r\n                {\r\n                    var val = r.GetValue(index);\r\n       " +
+                    "             if (val is float || val is double || val is decimal)\r\n             " +
+                    "       {\r\n                        val = Convert.ChangeType(val, Enum.GetUnderlyi" +
+                    "ngType(effectiveType), CultureInfo.InvariantCulture);\r\n                    }\r\n  " +
+                    "                  return val is DBNull ? null : Enum.ToObject(effectiveType, val" +
+                    ");\r\n                };\r\n            }\r\n            ITypeHandler handler;\r\n      " +
+                    "      if (typeHandlers.TryGetValue(type, out handler))\r\n            {\r\n         " +
+                    "       return r =>\r\n                {\r\n                    var val = r.GetValue(" +
+                    "index);\r\n                    return val is DBNull ? null : handler.Parse(type, v" +
+                    "al);\r\n                };\r\n            }\r\n            return r =>\r\n            {\r" +
+                    "\n                var val = r.GetValue(index);\r\n                return val is DBN" +
+                    "ull ? null : val;\r\n            };\r\n        }\r\n\r\n        private static T Parse<T" +
+                    ">(object value)\r\n        {\r\n            if (value == null || value is DBNull) re" +
+                    "turn default(T);\r\n            if (value is T) return (T)value;\r\n            var " +
+                    "type = typeof(T);\r\n            type = Nullable.GetUnderlyingType(type) ?? type;\r" +
+                    "\n            if (type.IsEnum())\r\n            {\r\n                if (value is flo" +
+                    "at || value is double || value is decimal)\r\n                {\r\n                 " +
+                    "   value = Convert.ChangeType(value, Enum.GetUnderlyingType(type), CultureInfo.I" +
+                    "nvariantCulture);\r\n                }\r\n                return (T)Enum.ToObject(ty" +
+                    "pe, value);\r\n            }\r\n            ITypeHandler handler;\r\n            if (t" +
+                    "ypeHandlers.TryGetValue(type, out handler))\r\n            {\r\n                retu" +
+                    "rn (T)handler.Parse(type, value);\r\n            }\r\n            return (T)Convert." +
+                    "ChangeType(value, type, CultureInfo.InvariantCulture);\r\n        }\r\n\r\n        sta" +
+                    "tic readonly MethodInfo\r\n                    enumParse = typeof(Enum).GetMethod(" +
+                    "nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) }),\r" +
+                    "\n                    getItem = typeof(IDataRecord).GetProperties(BindingFlags.In" +
+                    "stance | BindingFlags.Public)\r\n                        .Where(p => p.GetIndexPar" +
+                    "ameters().Any() && p.GetIndexParameters()[0].ParameterType == typeof(int))\r\n    " +
+                    "                    .Select(p => p.GetGetMethod()).First();\r\n\r\n        /// <summ" +
+                    "ary>\r\n        /// Gets type-map for the given type\r\n        /// </summary>\r\n    " +
+                    "    /// <returns>Type map instance, default is to create new instance of Default" +
+                    "TypeMap</returns>\r\n        public static Func<Type, ITypeMap> TypeMapProvider = " +
+                    "(Type type) => new DefaultTypeMap(type);\r\n\r\n        /// <summary>\r\n        /// G" +
+                    "ets type-map for the given type\r\n        /// </summary>\r\n        /// <returns>Ty" +
+                    "pe map implementation, DefaultTypeMap instance if no override present</returns>\r" +
+                    "\n        public static ITypeMap GetTypeMap(Type type)\r\n        {\r\n            if" +
+                    " (type == null) throw new ArgumentNullException(nameof(type));\r\n            var " +
+                    "map = (ITypeMap)_typeMaps[type];\r\n            if (map == null)\r\n            {\r\n " +
+                    "               lock (_typeMaps)\r\n                {   // double-checked; store th" +
+                    "is to avoid reflection next time we see this type\r\n                    // since " +
+                    "multiple queries commonly use the same domain-entity/DTO/view-model type\r\n      " +
+                    "              map = (ITypeMap)_typeMaps[type];\r\n\r\n                    if (map ==" +
+                    " null)\r\n                    {\r\n                        map = TypeMapProvider(typ" +
+                    "e);\r\n                        _typeMaps[type] = map;\r\n                    }\r\n    " +
+                    "            }\r\n            }\r\n            return map;\r\n        }\r\n\r\n        // u" +
+                    "se Hashtable to get free lockless reading\r\n        private static readonly Hasht" +
+                    "able _typeMaps = new Hashtable();\r\n\r\n        /// <summary>\r\n        /// Set cust" +
+                    "om mapping for type deserializers\r\n        /// </summary>\r\n        /// <param na" +
+                    "me=\"type\">Entity type to override</param>\r\n        /// <param name=\"map\">Mapping" +
+                    " rules impementation, null to remove custom map</param>\r\n        public static v" +
+                    "oid SetTypeMap(Type type, ITypeMap map)\r\n        {\r\n            if (type == null" +
+                    ")\r\n                throw new ArgumentNullException(nameof(type));\r\n\r\n           " +
+                    " if (map == null || map is DefaultTypeMap)\r\n            {\r\n                lock " +
+                    "(_typeMaps)\r\n                {\r\n                    _typeMaps.Remove(type);\r\n   " +
+                    "             }\r\n            }\r\n            else\r\n            {\r\n                " +
+                    "lock (_typeMaps)\r\n                {\r\n                    _typeMaps[type] = map;\r" +
+                    "\n                }\r\n            }\r\n\r\n            PurgeQueryCacheByType(type);\r\n " +
+                    "       }\r\n\r\n        /// <summary>\r\n        /// Internal use only\r\n        /// </" +
+                    "summary>\r\n        /// <param name=\"type\"></param>\r\n        /// <param name=\"read" +
+                    "er\"></param>\r\n        /// <param name=\"startBound\"></param>\r\n        /// <param " +
+                    "name=\"length\"></param>\r\n        /// <param name=\"returnNullIfFirstMissing\"></par" +
+                    "am>\r\n        /// <returns></returns>\r\n        public static Func<IDataReader, ob" +
+                    "ject> GetTypeDeserializer(\r\n            Type type, IDataReader reader, int start" +
+                    "Bound = 0, int length = -1, bool returnNullIfFirstMissing = false\r\n        )\r\n  " +
+                    "      {\r\n            return TypeDeserializerCache.GetReader(type, reader, startB" +
+                    "ound, length, returnNullIfFirstMissing);\r\n        }\r\n        static LocalBuilder" +
+                    " GetTempLocal(ILGenerator il, ref Dictionary<Type, LocalBuilder> locals, Type ty" +
+                    "pe, bool initAndLoad)\r\n        {\r\n            if (type == null) throw new Argume" +
+                    "ntNullException(nameof(type));\r\n            if (locals == null) locals = new Dic" +
+                    "tionary<Type, LocalBuilder>();\r\n            LocalBuilder found;\r\n            if " +
+                    "(!locals.TryGetValue(type, out found))\r\n            {\r\n                found = i" +
+                    "l.DeclareLocal(type);\r\n                locals.Add(type, found);\r\n            }\r\n" +
+                    "            if (initAndLoad)\r\n            {\r\n                il.Emit(OpCodes.Ldl" +
+                    "oca, (short)found.LocalIndex);\r\n                il.Emit(OpCodes.Initobj, type);\r" +
+                    "\n                il.Emit(OpCodes.Ldloca, (short)found.LocalIndex);\r\n            " +
+                    "    il.Emit(OpCodes.Ldobj, type);\r\n            }\r\n            return found;\r\n   " +
+                    "     }\r\n        private static Func<IDataReader, object> GetTypeDeserializerImpl" +
+                    "(\r\n            Type type, IDataReader reader, int startBound = 0, int length = -" +
+                    "1, bool returnNullIfFirstMissing = false\r\n        )\r\n        {\r\n            var " +
+                    "returnType = type.IsValueType() ? typeof(object) : type;\r\n            var dm = n" +
+                    "ew DynamicMethod(\"Deserialize\" + Guid.NewGuid().ToString(), returnType, new[] { " +
+                    "typeof(IDataReader) }, type, true);\r\n            var il = dm.GetILGenerator();\r\n" +
+                    "            il.DeclareLocal(typeof(int));\r\n            il.DeclareLocal(type);\r\n " +
+                    "           il.Emit(OpCodes.Ldc_I4_0);\r\n            il.Emit(OpCodes.Stloc_0);\r\n\r\n" +
+                    "            if (length == -1)\r\n            {\r\n                length = reader.Fi" +
+                    "eldCount - startBound;\r\n            }\r\n\r\n            if (reader.FieldCount <= st" +
+                    "artBound)\r\n            {\r\n                throw MultiMapException(reader);\r\n    " +
+                    "        }\r\n\r\n            var names = Enumerable.Range(startBound, length).Select" +
+                    "(i => reader.GetName(i)).ToArray();\r\n\r\n            ITypeMap typeMap = GetTypeMap" +
+                    "(type);\r\n\r\n            int index = startBound;\r\n\r\n            ConstructorInfo sp" +
+                    "ecializedConstructor = null;\r\n\r\n#if !COREFX\r\n            bool supportInitialize " +
+                    "= false;\r\n#endif\r\n            Dictionary<Type, LocalBuilder> structLocals = null" +
+                    ";\r\n            if (type.IsValueType())\r\n            {\r\n                il.Emit(O" +
+                    "pCodes.Ldloca_S, (byte)1);\r\n                il.Emit(OpCodes.Initobj, type);\r\n   " +
+                    "         }\r\n            else\r\n            {\r\n                var types = new Typ" +
+                    "e[length];\r\n                for (int i = startBound; i < startBound + length; i+" +
+                    "+)\r\n                {\r\n                    types[i - startBound] = reader.GetFie" +
+                    "ldType(i);\r\n                }\r\n\r\n                var explicitConstr = typeMap.Fi" +
+                    "ndExplicitConstructor();\r\n                if (explicitConstr != null)\r\n         " +
+                    "       {\r\n                    var consPs = explicitConstr.GetParameters();\r\n    " +
+                    "                foreach (var p in consPs)\r\n                    {\r\n              " +
+                    "          if (!p.ParameterType.IsValueType())\r\n                        {\r\n      " +
+                    "                      il.Emit(OpCodes.Ldnull);\r\n                        }\r\n     " +
+                    "                   else\r\n                        {\r\n                            " +
+                    "GetTempLocal(il, ref structLocals, p.ParameterType, true);\r\n                    " +
+                    "    }\r\n                    }\r\n\r\n                    il.Emit(OpCodes.Newobj, expl" +
+                    "icitConstr);\r\n                    il.Emit(OpCodes.Stloc_1);\r\n#if !COREFX\r\n      " +
+                    "              supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(ty" +
+                    "pe);\r\n                    if (supportInitialize)\r\n                    {\r\n       " +
+                    "                 il.Emit(OpCodes.Ldloc_1);\r\n                        il.EmitCall(" +
+                    "OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize" +
+                    ".BeginInit)), null);\r\n                    }\r\n#endif\r\n                }\r\n        " +
+                    "        else\r\n                {\r\n                    var ctor = typeMap.FindCons" +
+                    "tructor(names, types);\r\n                    if (ctor == null)\r\n                 " +
+                    "   {\r\n                        string proposedTypes = \"(\" + string.Join(\", \", typ" +
+                    "es.Select((t, i) => t.FullName + \" \" + names[i]).ToArray()) + \")\";\r\n            " +
+                    "            throw new InvalidOperationException($\"A parameterless default constr" +
+                    "uctor or one matching signature {proposedTypes} is required for {type.FullName} " +
+                    "materialization\");\r\n                    }\r\n\r\n                    if (ctor.GetPar" +
+                    "ameters().Length == 0)\r\n                    {\r\n                        il.Emit(O" +
+                    "pCodes.Newobj, ctor);\r\n                        il.Emit(OpCodes.Stloc_1);\r\n#if !C" +
+                    "OREFX\r\n                        supportInitialize = typeof(ISupportInitialize).Is" +
+                    "AssignableFrom(type);\r\n                        if (supportInitialize)\r\n         " +
+                    "               {\r\n                            il.Emit(OpCodes.Ldloc_1);\r\n       " +
+                    "                     il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).Ge" +
+                    "tMethod(nameof(ISupportInitialize.BeginInit)), null);\r\n                        }" +
+                    "\r\n#endif\r\n                    }\r\n                    else\r\n                    {" +
+                    "\r\n                        specializedConstructor = ctor;\r\n                    }\r" +
+                    "\n                }\r\n            }\r\n\r\n            il.BeginExceptionBlock();\r\n    " +
+                    "        if (type.IsValueType())\r\n            {\r\n                il.Emit(OpCodes." +
+                    "Ldloca_S, (byte)1);// [target]\r\n            }\r\n            else if (specializedC" +
+                    "onstructor == null)\r\n            {\r\n                il.Emit(OpCodes.Ldloc_1);// " +
+                    "[target]\r\n            }\r\n\r\n            var members = (specializedConstructor != " +
+                    "null\r\n                ? names.Select(n => typeMap.GetConstructorParameter(specia" +
+                    "lizedConstructor, n))\r\n                : names.Select(n => typeMap.GetMember(n))" +
+                    ").ToList();\r\n\r\n            // stack is now [target]\r\n\r\n            bool first = " +
+                    "true;\r\n            var allDone = il.DefineLabel();\r\n            int enumDeclareL" +
+                    "ocal = -1, valueCopyLocal = il.DeclareLocal(typeof(object)).LocalIndex;\r\n       " +
+                    "     bool applyNullSetting = Settings.ApplyNullValues;\r\n            foreach (var" +
+                    " item in members)\r\n            {\r\n                if (item != null)\r\n           " +
+                    "     {\r\n                    if (specializedConstructor == null)\r\n               " +
+                    "         il.Emit(OpCodes.Dup); // stack is now [target][target]\r\n               " +
+                    "     Label isDbNullLabel = il.DefineLabel();\r\n                    Label finishLa" +
+                    "bel = il.DefineLabel();\r\n\r\n                    il.Emit(OpCodes.Ldarg_0); // stac" +
+                    "k is now [target][target][reader]\r\n                    EmitInt32(il, index); // " +
+                    "stack is now [target][target][reader][index]\r\n                    il.Emit(OpCode" +
+                    "s.Dup);// stack is now [target][target][reader][index][index]\r\n                 " +
+                    "   il.Emit(OpCodes.Stloc_0);// stack is now [target][target][reader][index]\r\n   " +
+                    "                 il.Emit(OpCodes.Callvirt, getItem); // stack is now [target][ta" +
+                    "rget][value-as-object]\r\n                    il.Emit(OpCodes.Dup); // stack is no" +
+                    "w [target][target][value-as-object][value-as-object]\r\n                    StoreL" +
+                    "ocal(il, valueCopyLocal);\r\n                    Type colType = reader.GetFieldTyp" +
+                    "e(index);\r\n                    Type memberType = item.MemberType;\r\n\r\n           " +
+                    "         if (memberType == typeof(char) || memberType == typeof(char?))\r\n       " +
+                    "             {\r\n                        il.EmitCall(OpCodes.Call, typeof(SqlMapp" +
+                    "er).GetMethod(\r\n                            memberType == typeof(char) ? nameof(" +
+                    "SqlMapper.ReadChar) : nameof(SqlMapper.ReadNullableChar), BindingFlags.Static | " +
+                    "BindingFlags.Public), null); // stack is now [target][target][typed-value]\r\n    " +
+                    "                }\r\n                    else\r\n                    {\r\n            " +
+                    "            il.Emit(OpCodes.Dup); // stack is now [target][target][value][value]" +
+                    "\r\n                        il.Emit(OpCodes.Isinst, typeof(DBNull)); // stack is n" +
+                    "ow [target][target][value-as-object][DBNull or null]\r\n                        il" +
+                    ".Emit(OpCodes.Brtrue_S, isDbNullLabel); // stack is now [target][target][value-a" +
+                    "s-object]\r\n\r\n                        // unbox nullable enums as the primitive, i" +
+                    ".e. byte etc\r\n\r\n                        var nullUnderlyingType = Nullable.GetUnd" +
+                    "erlyingType(memberType);\r\n                        var unboxType = nullUnderlying" +
+                    "Type != null && nullUnderlyingType.IsEnum() ? nullUnderlyingType : memberType;\r\n" +
+                    "\r\n                        if (unboxType.IsEnum())\r\n                        {\r\n  " +
+                    "                          Type numericType = Enum.GetUnderlyingType(unboxType);\r" +
+                    "\n                            if (colType == typeof(string))\r\n                   " +
+                    "         {\r\n                                if (enumDeclareLocal == -1)\r\n       " +
+                    "                         {\r\n                                    enumDeclareLocal" +
+                    " = il.DeclareLocal(typeof(string)).LocalIndex;\r\n                                " +
+                    "}\r\n                                il.Emit(OpCodes.Castclass, typeof(string)); /" +
+                    "/ stack is now [target][target][string]\r\n                                StoreLo" +
+                    "cal(il, enumDeclareLocal); // stack is now [target][target]\r\n                   " +
+                    "             il.Emit(OpCodes.Ldtoken, unboxType); // stack is now [target][targe" +
+                    "t][enum-type-token]\r\n                                il.EmitCall(OpCodes.Call, t" +
+                    "ypeof(Type).GetMethod(nameof(Type.GetTypeFromHandle)), null);// stack is now [ta" +
+                    "rget][target][enum-type]\r\n                                LoadLocal(il, enumDecl" +
+                    "areLocal); // stack is now [target][target][enum-type][string]\r\n                " +
+                    "                il.Emit(OpCodes.Ldc_I4_1); // stack is now [target][target][enum" +
+                    "-type][string][true]\r\n                                il.EmitCall(OpCodes.Call, " +
+                    "enumParse, null); // stack is now [target][target][enum-as-object]\r\n            " +
+                    "                    il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [targ" +
+                    "et][target][typed-value]\r\n                            }\r\n                       " +
+                    "     else\r\n                            {\r\n                                Flexib" +
+                    "leConvertBoxedFromHeadOfStack(il, colType, unboxType, numericType);\r\n           " +
+                    "                 }\r\n\r\n                            if (nullUnderlyingType != null" +
                     ")\r\n                            {\r\n                                il.Emit(OpCode" +
-                    "s.Call, DefaultTypeMap.GetPropertySetter(item.Property, type)); // stack is now " +
-                    "[target]\r\n                            }\r\n                            else\r\n     " +
-                    "                       {\r\n                                il.Emit(OpCodes.Callvi" +
-                    "rt, DefaultTypeMap.GetPropertySetter(item.Property, type)); // stack is now [tar" +
-                    "get]\r\n                            }\r\n                        }\r\n                " +
-                    "        else\r\n                        {\r\n                            il.Emit(OpC" +
-                    "odes.Stfld, item.Field); // stack is now [target]\r\n                        }\r\n  " +
-                    "                  }\r\n\r\n                    il.Emit(OpCodes.Br_S, finishLabel); /" +
-                    "/ stack is now [target]\r\n\r\n                    il.MarkLabel(isDbNullLabel); // i" +
-                    "ncoming stack: [target][target][value]\r\n                    if (specializedConst" +
-                    "ructor != null)\r\n                    {\r\n                        il.Emit(OpCodes." +
-                    "Pop);\r\n                        if (item.MemberType.IsValueType)\r\n               " +
-                    "         {\r\n                            int localIndex = il.DeclareLocal(item.Me" +
-                    "mberType).LocalIndex;\r\n                            LoadLocalAddress(il, localInd" +
-                    "ex);\r\n                            il.Emit(OpCodes.Initobj, item.MemberType);\r\n  " +
-                    "                          LoadLocal(il, localIndex);\r\n                        }\r" +
-                    "\n                        else\r\n                        {\r\n                      " +
-                    "      il.Emit(OpCodes.Ldnull);\r\n                        }\r\n                    }" +
-                    "\r\n                    else\r\n                    {\r\n                        il.Em" +
-                    "it(OpCodes.Pop); // stack is now [target][target]\r\n                        il.Em" +
-                    "it(OpCodes.Pop); // stack is now [target]\r\n                    }\r\n\r\n            " +
-                    "        if (first && returnNullIfFirstMissing)\r\n                    {\r\n         " +
-                    "               il.Emit(OpCodes.Pop);\r\n                        il.Emit(OpCodes.Ld" +
-                    "null); // stack is now [null]\r\n                        il.Emit(OpCodes.Stloc_1);" +
-                    "\r\n                        il.Emit(OpCodes.Br, allDone);\r\n                    }\r\n" +
-                    "\r\n                    il.MarkLabel(finishLabel);\r\n                }\r\n           " +
-                    "     first = false;\r\n                index += 1;\r\n            }\r\n            if " +
-                    "(type.IsValueType)\r\n            {\r\n                il.Emit(OpCodes.Pop);\r\n      " +
-                    "      }\r\n            else\r\n            {\r\n                if (specializedConstru" +
-                    "ctor != null)\r\n                {\r\n                    il.Emit(OpCodes.Newobj, sp" +
-                    "ecializedConstructor);\r\n                }\r\n                il.Emit(OpCodes.Stloc" +
-                    "_1); // stack is empty\r\n            }\r\n            il.MarkLabel(allDone);\r\n     " +
-                    "       il.BeginCatchBlock(typeof(Exception)); // stack is Exception\r\n           " +
-                    " il.Emit(OpCodes.Ldloc_0); // stack is Exception, index\r\n            il.Emit(OpC" +
-                    "odes.Ldarg_0); // stack is Exception, index, reader\r\n            il.EmitCall(OpC" +
-                    "odes.Call, typeof(SqlMapper).GetMethod(\"ThrowDataException\"), null);\r\n          " +
-                    "  il.EndExceptionBlock();\r\n\r\n            il.Emit(OpCodes.Ldloc_1); // stack is [" +
-                    "rval]\r\n            if (type.IsValueType)\r\n            {\r\n                il.Emit" +
-                    "(OpCodes.Box, type);\r\n            }\r\n            il.Emit(OpCodes.Ret);\r\n\r\n      " +
-                    "      return (Func<IDataReader, object>)dm.CreateDelegate(typeof(Func<IDataReade" +
-                    "r, object>));\r\n        }\r\n\r\n        private static void LoadLocal(ILGenerator il" +
-                    ", int index)\r\n        {\r\n            if (index < 0 || index >= short.MaxValue) t" +
-                    "hrow new ArgumentNullException(\"index\");\r\n            switch (index)\r\n          " +
-                    "  {\r\n                case 0: il.Emit(OpCodes.Ldloc_0); break;\r\n                c" +
-                    "ase 1: il.Emit(OpCodes.Ldloc_1); break;\r\n                case 2: il.Emit(OpCodes" +
-                    ".Ldloc_2); break;\r\n                case 3: il.Emit(OpCodes.Ldloc_3); break;\r\n   " +
-                    "             default:\r\n                    if (index <= 255)\r\n                  " +
-                    "  {\r\n                        il.Emit(OpCodes.Ldloc_S, (byte)index);\r\n           " +
-                    "         }\r\n                    else\r\n                    {\r\n                   " +
-                    "     il.Emit(OpCodes.Ldloc, (short)index);\r\n                    }\r\n             " +
-                    "       break;\r\n            }\r\n        }\r\n        private static void StoreLocal(" +
-                    "ILGenerator il, int index)\r\n        {\r\n            if (index < 0 || index >= sho" +
-                    "rt.MaxValue) throw new ArgumentNullException(\"index\");\r\n            switch (inde" +
-                    "x)\r\n            {\r\n                case 0: il.Emit(OpCodes.Stloc_0); break;\r\n   " +
-                    "             case 1: il.Emit(OpCodes.Stloc_1); break;\r\n                case 2: i" +
-                    "l.Emit(OpCodes.Stloc_2); break;\r\n                case 3: il.Emit(OpCodes.Stloc_3" +
-                    "); break;\r\n                default:\r\n                    if (index <= 255)\r\n    " +
-                    "                {\r\n                        il.Emit(OpCodes.Stloc_S, (byte)index)" +
-                    ";\r\n                    }\r\n                    else\r\n                    {\r\n     " +
-                    "                   il.Emit(OpCodes.Stloc, (short)index);\r\n                    }\r" +
-                    "\n                    break;\r\n            }\r\n        }\r\n        private static vo" +
-                    "id LoadLocalAddress(ILGenerator il, int index)\r\n        {\r\n            if (index" +
-                    " < 0 || index >= short.MaxValue) throw new ArgumentNullException(\"index\");\r\n\r\n  " +
-                    "          if (index <= 255)\r\n            {\r\n                il.Emit(OpCodes.Ldlo" +
-                    "ca_S, (byte)index);\r\n            }\r\n            else\r\n            {\r\n           " +
-                    "     il.Emit(OpCodes.Ldloca, (short)index);\r\n            }\r\n        }\r\n        /" +
-                    "// <summary>\r\n        /// Throws a data exception, only used internally\r\n       " +
-                    " /// </summary>\r\n        /// <param name=\"ex\"></param>\r\n        /// <param name=" +
-                    "\"index\"></param>\r\n        /// <param name=\"reader\"></param>\r\n        public stat" +
-                    "ic void ThrowDataException(Exception ex, int index, IDataReader reader)\r\n       " +
-                    " {\r\n            Exception toThrow;\r\n            try\r\n            {\r\n            " +
-                    "    string name = \"(n/a)\", value = \"(n/a)\";\r\n                if (reader != null " +
-                    "&& index >= 0 && index < reader.FieldCount)\r\n                {\r\n                " +
-                    "    name = reader.GetName(index);\r\n                    object val = reader.GetVa" +
-                    "lue(index);\r\n                    if (val == null || val is DBNull)\r\n            " +
-                    "        {\r\n                        value = \"<null>\";\r\n                    }\r\n   " +
-                    "                 else\r\n                    {\r\n                        value = Co" +
-                    "nvert.ToString(val) + \" - \" + Type.GetTypeCode(val.GetType());\r\n                " +
-                    "    }\r\n                }\r\n                toThrow = new DataException(string.For" +
-                    "mat(\"Error parsing column {0} ({1}={2})\", index, name, value), ex);\r\n           " +
-                    " }\r\n            catch\r\n            { // throw the **original** exception, wrappe" +
-                    "d as DataException\r\n                toThrow = new DataException(ex.Message, ex);" +
-                    "\r\n            }\r\n            throw toThrow;\r\n        }\r\n        private static v" +
-                    "oid EmitInt32(ILGenerator il, int value)\r\n        {\r\n            switch (value)\r" +
-                    "\n            {\r\n                case -1: il.Emit(OpCodes.Ldc_I4_M1); break;\r\n   " +
-                    "             case 0: il.Emit(OpCodes.Ldc_I4_0); break;\r\n                case 1: " +
-                    "il.Emit(OpCodes.Ldc_I4_1); break;\r\n                case 2: il.Emit(OpCodes.Ldc_I" +
-                    "4_2); break;\r\n                case 3: il.Emit(OpCodes.Ldc_I4_3); break;\r\n       " +
-                    "         case 4: il.Emit(OpCodes.Ldc_I4_4); break;\r\n                case 5: il.E" +
-                    "mit(OpCodes.Ldc_I4_5); break;\r\n                case 6: il.Emit(OpCodes.Ldc_I4_6)" +
-                    "; break;\r\n                case 7: il.Emit(OpCodes.Ldc_I4_7); break;\r\n           " +
-                    "     case 8: il.Emit(OpCodes.Ldc_I4_8); break;\r\n                default:\r\n      " +
-                    "              if (value >= -128 && value <= 127)\r\n                    {\r\n       " +
-                    "                 il.Emit(OpCodes.Ldc_I4_S, (sbyte)value);\r\n                    }" +
-                    "\r\n                    else\r\n                    {\r\n                        il.Em" +
-                    "it(OpCodes.Ldc_I4, value);\r\n                    }\r\n                    break;\r\n " +
-                    "           }\r\n        }\r\n\r\n        /// <summary>\r\n        /// The grid reader pr" +
-                    "ovides interfaces for reading multiple result sets from a Dapper query \r\n       " +
-                    " /// </summary>\r\n        public partial class GridReader : IDisposable\r\n        " +
-                    "{\r\n            private IDataReader reader;\r\n            private IDbCommand comma" +
-                    "nd;\r\n            private Identity identity;\r\n\r\n            internal GridReader(I" +
-                    "DbCommand command, IDataReader reader, Identity identity)\r\n            {\r\n      " +
-                    "          this.command = command;\r\n                this.reader = reader;\r\n      " +
-                    "          this.identity = identity;\r\n            }\r\n\r\n#if !CSHARP30\r\n\r\n         " +
-                    "   /// <summary>\r\n            /// Read the next grid of results, returned as a d" +
-                    "ynamic object\r\n            /// </summary>\r\n            public IEnumerable<dynami" +
-                    "c> Read(bool buffered = true)\r\n            {\r\n                return Read<Dapper" +
-                    "Row>(buffered);\r\n            }\r\n#endif\r\n\r\n#if CSHARP30\r\n        /// <summary>\r\n " +
-                    "       /// Read the next grid of results\r\n        /// </summary>\r\n        public" +
-                    " IEnumerable<T> Read<T>()\r\n        {\r\n            return Read<T>(true);\r\n       " +
-                    " }\r\n#endif\r\n            /// <summary>\r\n            /// Read the next grid of res" +
-                    "ults\r\n            /// </summary>\r\n#if CSHARP30\r\n        public IEnumerable<T> Re" +
-                    "ad<T>(bool buffered)\r\n#else\r\n            public IEnumerable<T> Read<T>(bool buff" +
-                    "ered = true)\r\n#endif\r\n            {\r\n                if (reader == null) throw n" +
-                    "ew ObjectDisposedException(GetType().FullName, \"The reader has been disposed; th" +
-                    "is can happen after all data has been consumed\");\r\n                if (consumed)" +
-                    " throw new InvalidOperationException(\"Query results must be consumed in the corr" +
-                    "ect order, and each result can only be consumed once\");\r\n                var typ" +
-                    "edIdentity = identity.ForGrid(typeof(T), gridIndex);\r\n                CacheInfo " +
-                    "cache = GetCacheInfo(typedIdentity);\r\n                var deserializer = cache.D" +
-                    "eserializer;\r\n\r\n                int hash = GetColumnHash(reader);\r\n             " +
-                    "   if (deserializer.Func == null || deserializer.Hash != hash)\r\n                " +
-                    "{\r\n                    deserializer = new DeserializerState(hash, GetDeserialize" +
-                    "r(typeof(T), reader, 0, -1, false));\r\n                    cache.Deserializer = d" +
-                    "eserializer;\r\n                }\r\n                consumed = true;\r\n             " +
-                    "   var result = ReadDeferred<T>(gridIndex, deserializer.Func, typedIdentity);\r\n " +
-                    "               return buffered ? result.ToList() : result;\r\n            }\r\n\r\n   " +
-                    "         private IEnumerable<TReturn> MultiReadInternal<TFirst, TSecond, TThird," +
-                    " TFourth, TFifth, TReturn>(object func, string splitOn)\r\n            {\r\n        " +
-                    "        var identity = this.identity.ForGrid(typeof(TReturn), new Type[] {\r\n    " +
-                    "            typeof(TFirst),\r\n                typeof(TSecond),\r\n                t" +
-                    "ypeof(TThird),\r\n                typeof(TFourth),\r\n                typeof(TFifth)" +
-                    "\r\n            }, gridIndex);\r\n                try\r\n                {\r\n          " +
-                    "          foreach (var r in SqlMapper.MultiMapImpl<TFirst, TSecond, TThird, TFou" +
-                    "rth, TFifth, TReturn>(null, null, func, null, null, splitOn, null, null, reader," +
-                    " identity))\r\n                    {\r\n                        yield return r;\r\n   " +
-                    "                 }\r\n                }\r\n                finally\r\n                " +
-                    "{\r\n                    NextResult();\r\n                }\r\n            }\r\n\r\n#if CS" +
-                    "HARP30\r\n        /// <summary>\r\n        /// Read multiple objects from a single r" +
-                    "ecordset on the grid\r\n        /// </summary>\r\n        public IEnumerable<TReturn" +
-                    "> Read<TFirst, TSecond, TReturn>(Func<TFirst, TSecond, TReturn> func, string spl" +
-                    "itOn)\r\n        {\r\n            return Read<TFirst, TSecond, TReturn>(func, splitO" +
-                    "n, true);\r\n        }\r\n#endif\r\n            /// <summary>\r\n            /// Read mu" +
-                    "ltiple objects from a single recordset on the grid\r\n            /// </summary>\r\n" +
-                    "#if CSHARP30\r\n        public IEnumerable<TReturn> Read<TFirst, TSecond, TReturn>" +
-                    "(Func<TFirst, TSecond, TReturn> func, string splitOn, bool buffered)\r\n#else\r\n   " +
-                    "         public IEnumerable<TReturn> Read<TFirst, TSecond, TReturn>(Func<TFirst," +
-                    " TSecond, TReturn> func, string splitOn = \"id\", bool buffered = true)\r\n#endif\r\n " +
-                    "           {\r\n                var result = MultiReadInternal<TFirst, TSecond, Do" +
-                    "ntMap, DontMap, DontMap, TReturn>(func, splitOn);\r\n                return buffer" +
-                    "ed ? result.ToList() : result;\r\n            }\r\n\r\n#if CSHARP30\r\n        /// <summ" +
-                    "ary>\r\n        /// Read multiple objects from a single recordset on the grid\r\n   " +
-                    "     /// </summary>\r\n        public IEnumerable<TReturn> Read<TFirst, TSecond, T" +
-                    "Third, TReturn>(Func<TFirst, TSecond, TThird, TReturn> func, string splitOn)\r\n  " +
-                    "      {\r\n            return Read<TFirst, TSecond, TThird, TReturn>(func, splitOn" +
-                    ", true);\r\n        }\r\n#endif\r\n            /// <summary>\r\n            /// Read mul" +
-                    "tiple objects from a single recordset on the grid\r\n            /// </summary>\r\n#" +
-                    "if CSHARP30\r\n        public IEnumerable<TReturn> Read<TFirst, TSecond, TThird, T" +
-                    "Return>(Func<TFirst, TSecond, TThird, TReturn> func, string splitOn, bool buffer" +
-                    "ed)\r\n#else\r\n            public IEnumerable<TReturn> Read<TFirst, TSecond, TThird" +
-                    ", TReturn>(Func<TFirst, TSecond, TThird, TReturn> func, string splitOn = \"id\", b" +
-                    "ool buffered = true)\r\n#endif\r\n            {\r\n                var result = MultiR" +
-                    "eadInternal<TFirst, TSecond, TThird, DontMap, DontMap, TReturn>(func, splitOn);\r" +
-                    "\n                return buffered ? result.ToList() : result;\r\n            }\r\n\r\n#" +
-                    "if CSHARP30\r\n        /// <summary>\r\n        /// Read multiple objects from a sin" +
-                    "gle record set on the grid\r\n        /// </summary>\r\n        public IEnumerable<T" +
-                    "Return> Read<TFirst, TSecond, TThird, TFourth, TReturn>(Func<TFirst, TSecond, TT" +
-                    "hird, TFourth, TReturn> func, string splitOn)\r\n        {\r\n            return Rea" +
-                    "d<TFirst, TSecond, TThird, TFourth, TReturn>(func, splitOn, true);\r\n        }\r\n#" +
-                    "endif\r\n\r\n            /// <summary>\r\n            /// Read multiple objects from a" +
-                    " single record set on the grid\r\n            /// </summary>\r\n#if CSHARP30\r\n      " +
-                    "  public IEnumerable<TReturn> Read<TFirst, TSecond, TThird, TFourth, TReturn>(Fu" +
-                    "nc<TFirst, TSecond, TThird, TFourth, TReturn> func, string splitOn, bool buffere" +
-                    "d)\r\n#else\r\n            public IEnumerable<TReturn> Read<TFirst, TSecond, TThird," +
-                    " TFourth, TReturn>(Func<TFirst, TSecond, TThird, TFourth, TReturn> func, string " +
-                    "splitOn = \"id\", bool buffered = true)\r\n#endif\r\n            {\r\n                va" +
-                    "r result = MultiReadInternal<TFirst, TSecond, TThird, TFourth, DontMap, TReturn>" +
-                    "(func, splitOn);\r\n                return buffered ? result.ToList() : result;\r\n " +
-                    "           }\r\n\r\n\r\n\r\n#if !CSHARP30\r\n            /// <summary>\r\n            /// Re" +
-                    "ad multiple objects from a single record set on the grid\r\n            /// </summ" +
-                    "ary>\r\n            public IEnumerable<TReturn> Read<TFirst, TSecond, TThird, TFou" +
-                    "rth, TFifth, TReturn>(Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> fu" +
-                    "nc, string splitOn = \"id\", bool buffered = true)\r\n            {\r\n               " +
-                    " var result = MultiReadInternal<TFirst, TSecond, TThird, TFourth, TFifth, TRetur" +
-                    "n>(func, splitOn);\r\n                return buffered ? result.ToList() : result;\r" +
-                    "\n            }\r\n#endif\r\n\r\n            private IEnumerable<T> ReadDeferred<T>(int" +
-                    " index, Func<IDataReader, object> deserializer, Identity typedIdentity)\r\n       " +
-                    "     {\r\n                try\r\n                {\r\n                    while (index" +
-                    " == gridIndex && reader.Read())\r\n                    {\r\n                        " +
-                    "yield return (T)deserializer(reader);\r\n                    }\r\n                }\r" +
-                    "\n                finally // finally so that First etc progresses things even whe" +
-                    "n multiple rows\r\n                {\r\n                    if (index == gridIndex)\r" +
-                    "\n                    {\r\n                        NextResult();\r\n                 " +
-                    "   }\r\n                }\r\n            }\r\n            private int gridIndex, readC" +
-                    "ount;\r\n            private bool consumed;\r\n            private void NextResult()" +
-                    "\r\n            {\r\n                if (reader.NextResult())\r\n                {\r\n  " +
-                    "                  readCount++;\r\n                    gridIndex++;\r\n              " +
-                    "      consumed = false;\r\n                }\r\n                else\r\n              " +
-                    "  {\r\n                    // happy path; close the reader cleanly - no\r\n         " +
-                    "           // need for \"Cancel\" etc\r\n                    reader.Dispose();\r\n    " +
-                    "                reader = null;\r\n\r\n                    Dispose();\r\n              " +
-                    "  }\r\n\r\n            }\r\n            /// <summary>\r\n            /// Dispose the gri" +
-                    "d, closing and disposing both the underlying reader and command.\r\n            //" +
-                    "/ </summary>\r\n            public void Dispose()\r\n            {\r\n                " +
-                    "if (reader != null)\r\n                {\r\n                    if (!reader.IsClosed" +
-                    " && command != null) command.Cancel();\r\n                    reader.Dispose();\r\n " +
-                    "                   reader = null;\r\n                }\r\n                if (comman" +
-                    "d != null)\r\n                {\r\n                    command.Dispose();\r\n         " +
-                    "           command = null;\r\n                }\r\n            }\r\n        }\r\n    }\r\n" +
-                    "\r\n}");
+                    "s.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is " +
+                    "now [target][target][typed-value]\r\n                            }\r\n              " +
+                    "          }\r\n                        else if (memberType.FullName == LinqBinary)" +
+                    "\r\n                        {\r\n                            il.Emit(OpCodes.Unbox_A" +
+                    "ny, typeof(byte[])); // stack is now [target][target][byte-array]\r\n             " +
+                    "               il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { ty" +
+                    "peof(byte[]) }));// stack is now [target][target][binary]\r\n                     " +
+                    "   }\r\n                        else\r\n                        {\r\n                 " +
+                    "           TypeCode dataTypeCode = TypeExtensions.GetTypeCode(colType), unboxTyp" +
+                    "eCode = TypeExtensions.GetTypeCode(unboxType);\r\n                            bool" +
+                    " hasTypeHandler;\r\n                            if ((hasTypeHandler = typeHandlers" +
+                    ".ContainsKey(unboxType)) || colType == unboxType || dataTypeCode == unboxTypeCod" +
+                    "e || dataTypeCode == TypeExtensions.GetTypeCode(nullUnderlyingType))\r\n          " +
+                    "                  {\r\n                                if (hasTypeHandler)\r\n      " +
+                    "                          {\r\n#pragma warning disable 618\r\n                      " +
+                    "              il.EmitCall(OpCodes.Call, typeof(TypeHandlerCache<>).MakeGenericTy" +
+                    "pe(unboxType).GetMethod(nameof(TypeHandlerCache<int>.Parse)), null); // stack is" +
+                    " now [target][target][typed-value]\r\n#pragma warning restore 618\r\n               " +
+                    "                 }\r\n                                else\r\n                      " +
+                    "          {\r\n                                    il.Emit(OpCodes.Unbox_Any, unbo" +
+                    "xType); // stack is now [target][target][typed-value]\r\n                         " +
+                    "       }\r\n                            }\r\n                            else\r\n     " +
+                    "                       {\r\n                                // not a direct match;" +
+                    " need to tweak the unbox\r\n                                FlexibleConvertBoxedFr" +
+                    "omHeadOfStack(il, colType, nullUnderlyingType ?? unboxType, null);\r\n            " +
+                    "                    if (nullUnderlyingType != null)\r\n                           " +
+                    "     {\r\n                                    il.Emit(OpCodes.Newobj, unboxType.Ge" +
+                    "tConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][ty" +
+                    "ped-value]\r\n                                }\r\n                            }\r\n  " +
+                    "                      }\r\n                    }\r\n                    if (speciali" +
+                    "zedConstructor == null)\r\n                    {\r\n                        // Store" +
+                    " the value in the property/field\r\n                        if (item.Property != n" +
+                    "ull)\r\n                        {\r\n                            il.Emit(type.IsValu" +
+                    "eType() ? OpCodes.Call : OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item" +
+                    ".Property, type));\r\n                        }\r\n                        else\r\n   " +
+                    "                     {\r\n                            il.Emit(OpCodes.Stfld, item." +
+                    "Field); // stack is now [target]\r\n                        }\r\n                   " +
+                    " }\r\n\r\n                    il.Emit(OpCodes.Br_S, finishLabel); // stack is now [t" +
+                    "arget]\r\n\r\n                    il.MarkLabel(isDbNullLabel); // incoming stack: [t" +
+                    "arget][target][value]\r\n                    if (specializedConstructor != null)\r\n" +
+                    "                    {\r\n                        il.Emit(OpCodes.Pop);\r\n          " +
+                    "              if (item.MemberType.IsValueType())\r\n                        {\r\n   " +
+                    "                         int localIndex = il.DeclareLocal(item.MemberType).Local" +
+                    "Index;\r\n                            LoadLocalAddress(il, localIndex);\r\n         " +
+                    "                   il.Emit(OpCodes.Initobj, item.MemberType);\r\n                 " +
+                    "           LoadLocal(il, localIndex);\r\n                        }\r\n              " +
+                    "          else\r\n                        {\r\n                            il.Emit(O" +
+                    "pCodes.Ldnull);\r\n                        }\r\n                    }\r\n             " +
+                    "       else if (applyNullSetting && (!memberType.IsValueType() || Nullable.GetUn" +
+                    "derlyingType(memberType) != null))\r\n                    {\r\n                     " +
+                    "   il.Emit(OpCodes.Pop); // stack is now [target][target]\r\n                     " +
+                    "   // can load a null with this value\r\n                        if (memberType.Is" +
+                    "ValueType())\r\n                        { // must be Nullable<T> for some T\r\n     " +
+                    "                       GetTempLocal(il, ref structLocals, memberType, true); // " +
+                    "stack is now [target][target][null]\r\n                        }\r\n                " +
+                    "        else\r\n                        { // regular reference-type\r\n             " +
+                    "               il.Emit(OpCodes.Ldnull); // stack is now [target][target][null]\r\n" +
+                    "                        }\r\n\r\n                        // Store the value in the p" +
+                    "roperty/field\r\n                        if (item.Property != null)\r\n             " +
+                    "           {\r\n                            il.Emit(type.IsValueType() ? OpCodes.C" +
+                    "all : OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, type));\r" +
+                    "\n                            // stack is now [target]\r\n                        }" +
+                    "\r\n                        else\r\n                        {\r\n                     " +
+                    "       il.Emit(OpCodes.Stfld, item.Field); // stack is now [target]\r\n           " +
+                    "             }\r\n                    }\r\n                    else\r\n               " +
+                    "     {\r\n                        il.Emit(OpCodes.Pop); // stack is now [target][t" +
+                    "arget]\r\n                        il.Emit(OpCodes.Pop); // stack is now [target]\r\n" +
+                    "                    }\r\n\r\n                    if (first && returnNullIfFirstMissi" +
+                    "ng)\r\n                    {\r\n                        il.Emit(OpCodes.Pop);\r\n     " +
+                    "                   il.Emit(OpCodes.Ldnull); // stack is now [null]\r\n            " +
+                    "            il.Emit(OpCodes.Stloc_1);\r\n                        il.Emit(OpCodes.B" +
+                    "r, allDone);\r\n                    }\r\n\r\n                    il.MarkLabel(finishLa" +
+                    "bel);\r\n                }\r\n                first = false;\r\n                index " +
+                    "+= 1;\r\n            }\r\n            if (type.IsValueType())\r\n            {\r\n      " +
+                    "          il.Emit(OpCodes.Pop);\r\n            }\r\n            else\r\n            {\r" +
+                    "\n                if (specializedConstructor != null)\r\n                {\r\n       " +
+                    "             il.Emit(OpCodes.Newobj, specializedConstructor);\r\n                }" +
+                    "\r\n                il.Emit(OpCodes.Stloc_1); // stack is empty\r\n#if !COREFX\r\n    " +
+                    "            if (supportInitialize)\r\n                {\r\n                    il.Em" +
+                    "it(OpCodes.Ldloc_1);\r\n                    il.EmitCall(OpCodes.Callvirt, typeof(I" +
+                    "SupportInitialize).GetMethod(nameof(ISupportInitialize.EndInit)), null);\r\n      " +
+                    "          }\r\n#endif\r\n            }\r\n            il.MarkLabel(allDone);\r\n        " +
+                    "    il.BeginCatchBlock(typeof(Exception)); // stack is Exception\r\n            il" +
+                    ".Emit(OpCodes.Ldloc_0); // stack is Exception, index\r\n            il.Emit(OpCode" +
+                    "s.Ldarg_0); // stack is Exception, index, reader\r\n            LoadLocal(il, valu" +
+                    "eCopyLocal); // stack is Exception, index, reader, value\r\n            il.EmitCal" +
+                    "l(OpCodes.Call, typeof(SqlMapper).GetMethod(nameof(SqlMapper.ThrowDataException)" +
+                    "), null);\r\n            il.EndExceptionBlock();\r\n\r\n            il.Emit(OpCodes.Ld" +
+                    "loc_1); // stack is [rval]\r\n            if (type.IsValueType())\r\n            {\r\n" +
+                    "                il.Emit(OpCodes.Box, type);\r\n            }\r\n            il.Emit(" +
+                    "OpCodes.Ret);\r\n\r\n            var funcType = System.Linq.Expressions.Expression.G" +
+                    "etFuncType(typeof(IDataReader), returnType);\r\n            return (Func<IDataRead" +
+                    "er, object>)dm.CreateDelegate(funcType);\r\n        }\r\n\r\n        private static vo" +
+                    "id FlexibleConvertBoxedFromHeadOfStack(ILGenerator il, Type from, Type to, Type " +
+                    "via)\r\n        {\r\n            MethodInfo op;\r\n            if (from == (via ?? to)" +
+                    ")\r\n            {\r\n                il.Emit(OpCodes.Unbox_Any, to); // stack is no" +
+                    "w [target][target][typed-value]\r\n            }\r\n            else if ((op = GetOp" +
+                    "erator(from, to)) != null)\r\n            {\r\n                // this is handy for " +
+                    "things like decimal <===> double\r\n                il.Emit(OpCodes.Unbox_Any, fro" +
+                    "m); // stack is now [target][target][data-typed-value]\r\n                il.Emit(" +
+                    "OpCodes.Call, op); // stack is now [target][target][typed-value]\r\n            }\r" +
+                    "\n            else\r\n            {\r\n                bool handled = false;\r\n       " +
+                    "         OpCode opCode = default(OpCode);\r\n                switch (TypeExtension" +
+                    "s.GetTypeCode(from))\r\n                {\r\n                    case TypeCode.Boole" +
+                    "an:\r\n                    case TypeCode.Byte:\r\n                    case TypeCode." +
+                    "SByte:\r\n                    case TypeCode.Int16:\r\n                    case TypeC" +
+                    "ode.UInt16:\r\n                    case TypeCode.Int32:\r\n                    case " +
+                    "TypeCode.UInt32:\r\n                    case TypeCode.Int64:\r\n                    " +
+                    "case TypeCode.UInt64:\r\n                    case TypeCode.Single:\r\n              " +
+                    "      case TypeCode.Double:\r\n                        handled = true;\r\n          " +
+                    "              switch (TypeExtensions.GetTypeCode(via ?? to))\r\n                  " +
+                    "      {\r\n                            case TypeCode.Byte:\r\n                      " +
+                    "          opCode = OpCodes.Conv_Ovf_I1_Un; break;\r\n                            c" +
+                    "ase TypeCode.SByte:\r\n                                opCode = OpCodes.Conv_Ovf_I" +
+                    "1; break;\r\n                            case TypeCode.UInt16:\r\n                  " +
+                    "              opCode = OpCodes.Conv_Ovf_I2_Un; break;\r\n                         " +
+                    "   case TypeCode.Int16:\r\n                                opCode = OpCodes.Conv_O" +
+                    "vf_I2; break;\r\n                            case TypeCode.UInt32:\r\n              " +
+                    "                  opCode = OpCodes.Conv_Ovf_I4_Un; break;\r\n                     " +
+                    "       case TypeCode.Boolean: // boolean is basically an int, at least at this l" +
+                    "evel\r\n                            case TypeCode.Int32:\r\n                        " +
+                    "        opCode = OpCodes.Conv_Ovf_I4; break;\r\n                            case T" +
+                    "ypeCode.UInt64:\r\n                                opCode = OpCodes.Conv_Ovf_I8_Un" +
+                    "; break;\r\n                            case TypeCode.Int64:\r\n                    " +
+                    "            opCode = OpCodes.Conv_Ovf_I8; break;\r\n                            ca" +
+                    "se TypeCode.Single:\r\n                                opCode = OpCodes.Conv_R4; b" +
+                    "reak;\r\n                            case TypeCode.Double:\r\n                      " +
+                    "          opCode = OpCodes.Conv_R8; break;\r\n                            default:" +
+                    "\r\n                                handled = false;\r\n                            " +
+                    "    break;\r\n                        }\r\n                        break;\r\n         " +
+                    "       }\r\n                if (handled)\r\n                {\r\n                    i" +
+                    "l.Emit(OpCodes.Unbox_Any, from); // stack is now [target][target][col-typed-valu" +
+                    "e]\r\n                    il.Emit(opCode); // stack is now [target][target][typed-" +
+                    "value]\r\n                    if (to == typeof(bool))\r\n                    { // co" +
+                    "mpare to zero; I checked \"csc\" - this is the trick it uses; nice\r\n              " +
+                    "          il.Emit(OpCodes.Ldc_I4_0);\r\n                        il.Emit(OpCodes.Ce" +
+                    "q);\r\n                        il.Emit(OpCodes.Ldc_I4_0);\r\n                       " +
+                    " il.Emit(OpCodes.Ceq);\r\n                    }\r\n                }\r\n              " +
+                    "  else\r\n                {\r\n                    il.Emit(OpCodes.Ldtoken, via ?? t" +
+                    "o); // stack is now [target][target][value][member-type-token]\r\n                " +
+                    "    il.EmitCall(OpCodes.Call, typeof(Type).GetMethod(nameof(Type.GetTypeFromHand" +
+                    "le)), null); // stack is now [target][target][value][member-type]\r\n             " +
+                    "       il.EmitCall(OpCodes.Call, typeof(Convert).GetMethod(nameof(Convert.Change" +
+                    "Type), new Type[] { typeof(object), typeof(Type) }), null); // stack is now [tar" +
+                    "get][target][boxed-member-type-value]\r\n                    il.Emit(OpCodes.Unbox" +
+                    "_Any, to); // stack is now [target][target][typed-value]\r\n                }\r\n   " +
+                    "         }\r\n        }\r\n\r\n        static MethodInfo GetOperator(Type from, Type t" +
+                    "o)\r\n        {\r\n            if (to == null) return null;\r\n            MethodInfo[" +
+                    "] fromMethods, toMethods;\r\n            return ResolveOperator(fromMethods = from" +
+                    ".GetMethods(BindingFlags.Static | BindingFlags.Public), from, to, \"op_Implicit\")" +
+                    "\r\n                ?? ResolveOperator(toMethods = to.GetMethods(BindingFlags.Stat" +
+                    "ic | BindingFlags.Public), from, to, \"op_Implicit\")\r\n                ?? ResolveO" +
+                    "perator(fromMethods, from, to, \"op_Explicit\")\r\n                ?? ResolveOperato" +
+                    "r(toMethods, from, to, \"op_Explicit\");\r\n        }\r\n\r\n        static MethodInfo R" +
+                    "esolveOperator(MethodInfo[] methods, Type from, Type to, string name)\r\n        {" +
+                    "\r\n            for (int i = 0; i < methods.Length; i++)\r\n            {\r\n         " +
+                    "       if (methods[i].Name != name || methods[i].ReturnType != to) continue;\r\n  " +
+                    "              var args = methods[i].GetParameters();\r\n                if (args.L" +
+                    "ength != 1 || args[0].ParameterType != from) continue;\r\n                return m" +
+                    "ethods[i];\r\n            }\r\n            return null;\r\n        }\r\n\r\n        privat" +
+                    "e static void LoadLocal(ILGenerator il, int index)\r\n        {\r\n            if (i" +
+                    "ndex < 0 || index >= short.MaxValue) throw new ArgumentNullException(nameof(inde" +
+                    "x));\r\n            switch (index)\r\n            {\r\n                case 0: il.Emit" +
+                    "(OpCodes.Ldloc_0); break;\r\n                case 1: il.Emit(OpCodes.Ldloc_1); bre" +
+                    "ak;\r\n                case 2: il.Emit(OpCodes.Ldloc_2); break;\r\n                c" +
+                    "ase 3: il.Emit(OpCodes.Ldloc_3); break;\r\n                default:\r\n             " +
+                    "       if (index <= 255)\r\n                    {\r\n                        il.Emit" +
+                    "(OpCodes.Ldloc_S, (byte)index);\r\n                    }\r\n                    else" +
+                    "\r\n                    {\r\n                        il.Emit(OpCodes.Ldloc, (short)i" +
+                    "ndex);\r\n                    }\r\n                    break;\r\n            }\r\n      " +
+                    "  }\r\n        private static void StoreLocal(ILGenerator il, int index)\r\n        " +
+                    "{\r\n            if (index < 0 || index >= short.MaxValue) throw new ArgumentNullE" +
+                    "xception(nameof(index));\r\n            switch (index)\r\n            {\r\n           " +
+                    "     case 0: il.Emit(OpCodes.Stloc_0); break;\r\n                case 1: il.Emit(O" +
+                    "pCodes.Stloc_1); break;\r\n                case 2: il.Emit(OpCodes.Stloc_2); break" +
+                    ";\r\n                case 3: il.Emit(OpCodes.Stloc_3); break;\r\n                def" +
+                    "ault:\r\n                    if (index <= 255)\r\n                    {\r\n           " +
+                    "             il.Emit(OpCodes.Stloc_S, (byte)index);\r\n                    }\r\n    " +
+                    "                else\r\n                    {\r\n                        il.Emit(OpC" +
+                    "odes.Stloc, (short)index);\r\n                    }\r\n                    break;\r\n " +
+                    "           }\r\n        }\r\n\r\n        private static void LoadLocalAddress(ILGenera" +
+                    "tor il, int index)\r\n        {\r\n            if (index < 0 || index >= short.MaxVa" +
+                    "lue) throw new ArgumentNullException(nameof(index));\r\n\r\n            if (index <=" +
+                    " 255)\r\n            {\r\n                il.Emit(OpCodes.Ldloca_S, (byte)index);\r\n " +
+                    "           }\r\n            else\r\n            {\r\n                il.Emit(OpCodes.L" +
+                    "dloca, (short)index);\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n      " +
+                    "  /// Throws a data exception, only used internally\r\n        /// </summary>\r\n   " +
+                    "     [Obsolete(ObsoleteInternalUsageOnly, false)]\r\n        public static void Th" +
+                    "rowDataException(Exception ex, int index, IDataReader reader, object value)\r\n   " +
+                    "     {\r\n            Exception toThrow;\r\n            try\r\n            {\r\n        " +
+                    "        string name = \"(n/a)\", formattedValue = \"(n/a)\";\r\n                if (re" +
+                    "ader != null && index >= 0 && index < reader.FieldCount)\r\n                {\r\n   " +
+                    "                 name = reader.GetName(index);\r\n                    try\r\n       " +
+                    "             {\r\n                        if (value == null || value is DBNull)\r\n " +
+                    "                       {\r\n                            formattedValue = \"<null>\";" +
+                    "\r\n                        }\r\n                        else\r\n                     " +
+                    "   {\r\n                            formattedValue = Convert.ToString(value) + \" -" +
+                    " \" + TypeExtensions.GetTypeCode(value.GetType());\r\n                        }\r\n  " +
+                    "                  }\r\n                    catch (Exception valEx)\r\n              " +
+                    "      {\r\n                        formattedValue = valEx.Message;\r\n              " +
+                    "      }\r\n                }\r\n                toThrow = new DataException($\"Error " +
+                    "parsing column {index} ({name}={formattedValue})\", ex);\r\n            }\r\n        " +
+                    "    catch\r\n            { // throw the **original** exception, wrapped as DataExc" +
+                    "eption\r\n                toThrow = new DataException(ex.Message, ex);\r\n          " +
+                    "  }\r\n            throw toThrow;\r\n        }\r\n\r\n        private static void EmitIn" +
+                    "t32(ILGenerator il, int value)\r\n        {\r\n            switch (value)\r\n         " +
+                    "   {\r\n                case -1: il.Emit(OpCodes.Ldc_I4_M1); break;\r\n             " +
+                    "   case 0: il.Emit(OpCodes.Ldc_I4_0); break;\r\n                case 1: il.Emit(Op" +
+                    "Codes.Ldc_I4_1); break;\r\n                case 2: il.Emit(OpCodes.Ldc_I4_2); brea" +
+                    "k;\r\n                case 3: il.Emit(OpCodes.Ldc_I4_3); break;\r\n                c" +
+                    "ase 4: il.Emit(OpCodes.Ldc_I4_4); break;\r\n                case 5: il.Emit(OpCode" +
+                    "s.Ldc_I4_5); break;\r\n                case 6: il.Emit(OpCodes.Ldc_I4_6); break;\r\n" +
+                    "                case 7: il.Emit(OpCodes.Ldc_I4_7); break;\r\n                case " +
+                    "8: il.Emit(OpCodes.Ldc_I4_8); break;\r\n                default:\r\n                " +
+                    "    if (value >= -128 && value <= 127)\r\n                    {\r\n                 " +
+                    "       il.Emit(OpCodes.Ldc_I4_S, (sbyte)value);\r\n                    }\r\n        " +
+                    "            else\r\n                    {\r\n                        il.Emit(OpCodes" +
+                    ".Ldc_I4, value);\r\n                    }\r\n                    break;\r\n           " +
+                    " }\r\n        }\r\n\r\n        /// <summary>\r\n        /// How should connection string" +
+                    "s be compared for equivalence? Defaults to StringComparer.Ordinal.\r\n        /// " +
+                    "Providing a custom implementation can be useful for allowing multi-tenancy datab" +
+                    "ases with identical\r\n        /// schema to share strategies. Note that usual equ" +
+                    "ivalence rules apply: any equivalent connection strings\r\n        /// <b>MUST</b>" +
+                    " yield the same hash-code.\r\n        /// </summary>\r\n        public static IEqual" +
+                    "ityComparer<string> ConnectionStringComparer\r\n        {\r\n            get { retur" +
+                    "n connectionStringComparer; }\r\n            set { connectionStringComparer = valu" +
+                    "e ?? StringComparer.Ordinal; }\r\n        }\r\n        private static IEqualityCompa" +
+                    "rer<string> connectionStringComparer = StringComparer.Ordinal;\r\n\r\n#if !COREFX\r\n " +
+                    "       /// <summary>\r\n        /// Key used to indicate the type name associated " +
+                    "with a DataTable\r\n        /// </summary>\r\n        private const string DataTable" +
+                    "TypeNameKey = \"dapper:TypeName\";\r\n\r\n        /// <summary>\r\n        /// Used to p" +
+                    "ass a DataTable as a TableValuedParameter\r\n        /// </summary>\r\n        publi" +
+                    "c static ICustomQueryParameter AsTableValuedParameter(this DataTable table, stri" +
+                    "ng typeName = null)\r\n        {\r\n            return new TableValuedParameter(tabl" +
+                    "e, typeName);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Associate a DataT" +
+                    "able with a type name\r\n        /// </summary>\r\n        public static void SetTyp" +
+                    "eName(this DataTable table, string typeName)\r\n        {\r\n            if (table !" +
+                    "= null)\r\n            {\r\n                if (string.IsNullOrEmpty(typeName))\r\n   " +
+                    "                 table.ExtendedProperties.Remove(DataTableTypeNameKey);\r\n       " +
+                    "         else\r\n                    table.ExtendedProperties[DataTableTypeNameKey" +
+                    "] = typeName;\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n        /// Fe" +
+                    "tch the type name associated with a DataTable\r\n        /// </summary>\r\n        p" +
+                    "ublic static string GetTypeName(this DataTable table)\r\n        {\r\n            re" +
+                    "turn table?.ExtendedProperties[DataTableTypeNameKey] as string;\r\n        }\r\n\r\n  " +
+                    "      /// <summary>\r\n        /// Used to pass a IEnumerable&lt;SqlDataRecord&gt;" +
+                    " as a TableValuedParameter\r\n        /// </summary>\r\n        public static ICusto" +
+                    "mQueryParameter AsTableValuedParameter(this IEnumerable<Microsoft.SqlServer.Serv" +
+                    "er.SqlDataRecord> list, string typeName = null)\r\n        {\r\n            return n" +
+                    "ew SqlDataRecordListTVPParameter(list, typeName);\r\n        }\r\n\r\n#endif\r\n\r\n      " +
+                    "  // one per thread\r\n        [ThreadStatic]\r\n        private static StringBuilde" +
+                    "r perThreadStringBuilderCache;\r\n        private static StringBuilder GetStringBu" +
+                    "ilder()\r\n        {\r\n            var tmp = perThreadStringBuilderCache;\r\n        " +
+                    "    if (tmp != null)\r\n            {\r\n                perThreadStringBuilderCache" +
+                    " = null;\r\n                tmp.Length = 0;\r\n                return tmp;\r\n        " +
+                    "    }\r\n            return new StringBuilder();\r\n        }\r\n\r\n        private sta" +
+                    "tic string __ToStringRecycle(this StringBuilder obj)\r\n        {\r\n            if " +
+                    "(obj == null) return \"\";\r\n            var s = obj.ToString();\r\n            if (p" +
+                    "erThreadStringBuilderCache == null)\r\n            {\r\n                perThreadStr" +
+                    "ingBuilderCache = obj;\r\n            }\r\n            return s;\r\n        }\r\n    }\r\n" +
+                    "}");
             return this.GenerationEnvironment.ToString();
         }
     }

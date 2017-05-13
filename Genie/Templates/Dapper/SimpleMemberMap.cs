@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\SimpleMemberMap.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\SimpleMemberMap.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class SimpleMemberMap : SimpleMemberMapBase
     {
@@ -28,55 +28,46 @@ namespace Genie.Templates.Dapper
         {
             this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Dapper\SimpleMemberMap.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\SimpleMemberMap.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Dapper\r\n{\r\n\t/// <summary>\r\n    /// Represents simple memeber map for one of targ" +
-                    "et parameter or property or field to source DataReader column\r\n    /// </summary" +
-                    ">\r\n    sealed partial class SimpleMemberMap : SqlMapper.IMemberMap\r\n    {\r\n     " +
-                    "   private readonly string _columnName;\r\n        private readonly PropertyInfo _" +
-                    "property;\r\n        private readonly FieldInfo _field;\r\n        private readonly " +
-                    "ParameterInfo _parameter;\r\n\r\n        /// <summary>\r\n        /// Creates instance" +
-                    " for simple property mapping\r\n        /// </summary>\r\n        /// <param name=\"c" +
-                    "olumnName\">DataReader column name</param>\r\n        /// <param name=\"property\">Ta" +
-                    "rget property</param>\r\n        public SimpleMemberMap(string columnName, Propert" +
-                    "yInfo property)\r\n        {\r\n            if (columnName == null)\r\n               " +
-                    " throw new ArgumentNullException(\"columnName\");\r\n\r\n            if (property == n" +
-                    "ull)\r\n                throw new ArgumentNullException(\"property\");\r\n\r\n          " +
-                    "  _columnName = columnName;\r\n            _property = property;\r\n        }\r\n\r\n   " +
-                    "     /// <summary>\r\n        /// Creates instance for simple field mapping\r\n     " +
-                    "   /// </summary>\r\n        /// <param name=\"columnName\">DataReader column name</" +
-                    "param>\r\n        /// <param name=\"field\">Target property</param>\r\n        public " +
-                    "SimpleMemberMap(string columnName, FieldInfo field)\r\n        {\r\n            if (" +
-                    "columnName == null)\r\n                throw new ArgumentNullException(\"columnName" +
-                    "\");\r\n\r\n            if (field == null)\r\n                throw new ArgumentNullExc" +
-                    "eption(\"field\");\r\n\r\n            _columnName = columnName;\r\n            _field = " +
-                    "field;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Creates instance for sim" +
-                    "ple constructor parameter mapping\r\n        /// </summary>\r\n        /// <param na" +
-                    "me=\"columnName\">DataReader column name</param>\r\n        /// <param name=\"paramet" +
-                    "er\">Target constructor parameter</param>\r\n        public SimpleMemberMap(string " +
-                    "columnName, ParameterInfo parameter)\r\n        {\r\n            if (columnName == n" +
-                    "ull)\r\n                throw new ArgumentNullException(\"columnName\");\r\n\r\n        " +
-                    "    if (parameter == null)\r\n                throw new ArgumentNullException(\"par" +
-                    "ameter\");\r\n\r\n            _columnName = columnName;\r\n            _parameter = par" +
-                    "ameter;\r\n        }\r\n\r\n        /// <summary>\r\n        /// DataReader column name\r" +
-                    "\n        /// </summary>\r\n        public string ColumnName\r\n        {\r\n          " +
-                    "  get { return _columnName; }\r\n        }\r\n\r\n        /// <summary>\r\n        /// T" +
-                    "arget member type\r\n        /// </summary>\r\n        public Type MemberType\r\n     " +
-                    "   {\r\n            get\r\n            {\r\n                if (_field != null)\r\n     " +
-                    "               return _field.FieldType;\r\n\r\n                if (_property != null" +
-                    ")\r\n                    return _property.PropertyType;\r\n\r\n                if (_pa" +
-                    "rameter != null)\r\n                    return _parameter.ParameterType;\r\n\r\n      " +
-                    "          return null;\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n     " +
-                    "   /// Target property\r\n        /// </summary>\r\n        public PropertyInfo Prop" +
-                    "erty\r\n        {\r\n            get { return _property; }\r\n        }\r\n\r\n        ///" +
-                    " <summary>\r\n        /// Target field\r\n        /// </summary>\r\n        public Fie" +
-                    "ldInfo Field\r\n        {\r\n            get { return _field; }\r\n        }\r\n\r\n      " +
-                    "  /// <summary>\r\n        /// Target constructor parameter\r\n        /// </summary" +
-                    ">\r\n        public ParameterInfo Parameter\r\n        {\r\n            get { return _" +
-                    "parameter; }\r\n        }\r\n    }\r\n}");
+            this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Represents simple member map for one of ta" +
+                    "rget parameter or property or field to source DataReader column\r\n    /// </summa" +
+                    "ry>\r\n    sealed class SimpleMemberMap : SqlMapper.IMemberMap\r\n    {\r\n        ///" +
+                    " <summary>\r\n        /// Creates instance for simple property mapping\r\n        //" +
+                    "/ </summary>\r\n        /// <param name=\"columnName\">DataReader column name</param" +
+                    ">\r\n        /// <param name=\"property\">Target property</param>\r\n        public Si" +
+                    "mpleMemberMap(string columnName, PropertyInfo property)\r\n        {\r\n            " +
+                    "if (columnName == null)\r\n                throw new ArgumentNullException(nameof(" +
+                    "columnName));\r\n\r\n            if (property == null)\r\n                throw new Ar" +
+                    "gumentNullException(nameof(property));\r\n\r\n            ColumnName = columnName;\r\n" +
+                    "            Property = property;\r\n        }\r\n\r\n        /// <summary>\r\n        //" +
+                    "/ Creates instance for simple field mapping\r\n        /// </summary>\r\n        ///" +
+                    " <param name=\"columnName\">DataReader column name</param>\r\n        /// <param nam" +
+                    "e=\"field\">Target property</param>\r\n        public SimpleMemberMap(string columnN" +
+                    "ame, FieldInfo field)\r\n        {\r\n            if (columnName == null)\r\n         " +
+                    "       throw new ArgumentNullException(nameof(columnName));\r\n\r\n            if (f" +
+                    "ield == null)\r\n                throw new ArgumentNullException(nameof(field));\r\n" +
+                    "\r\n            ColumnName = columnName;\r\n            Field = field;\r\n        }\r\n\r" +
+                    "\n        /// <summary>\r\n        /// Creates instance for simple constructor para" +
+                    "meter mapping\r\n        /// </summary>\r\n        /// <param name=\"columnName\">Data" +
+                    "Reader column name</param>\r\n        /// <param name=\"parameter\">Target construct" +
+                    "or parameter</param>\r\n        public SimpleMemberMap(string columnName, Paramete" +
+                    "rInfo parameter)\r\n        {\r\n            if (columnName == null)\r\n              " +
+                    "  throw new ArgumentNullException(nameof(columnName));\r\n\r\n            if (parame" +
+                    "ter == null)\r\n                throw new ArgumentNullException(nameof(parameter))" +
+                    ";\r\n\r\n            ColumnName = columnName;\r\n            Parameter = parameter;\r\n " +
+                    "       }\r\n\r\n        /// <summary>\r\n        /// DataReader column name\r\n        /" +
+                    "// </summary>\r\n        public string ColumnName { get; }\r\n\r\n        /// <summary" +
+                    ">\r\n        /// Target member type\r\n        /// </summary>\r\n        public Type M" +
+                    "emberType => Field?.FieldType ?? Property?.PropertyType ?? Parameter?.ParameterT" +
+                    "ype;\r\n\r\n        /// <summary>\r\n        /// Target property\r\n        /// </summar" +
+                    "y>\r\n        public PropertyInfo Property { get; }\r\n\r\n        /// <summary>\r\n    " +
+                    "    /// Target field\r\n        /// </summary>\r\n        public FieldInfo Field { g" +
+                    "et; }\r\n\r\n        /// <summary>\r\n        /// Target constructor parameter\r\n      " +
+                    "  /// </summary>\r\n        public ParameterInfo Parameter { get; }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

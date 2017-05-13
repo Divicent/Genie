@@ -1,10 +1,9 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
-using System;
-
-namespace <#=GenerationContext.BaseNamespace#>.Dapper
+namespace Indico.DataAccess.Dapper
 {
-     /// <summary>
+
+    /// <summary>
     /// Additional state flags that control command behaviour
     /// </summary>
     [Flags]

@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\FeatureSupport.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\FeatureSupport.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class FeatureSupport : FeatureSupportBase
     {
@@ -26,43 +26,41 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
-                    "m.Linq;\r\n\r\nnamespace ");
+            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Dapper\FeatureSupport.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\FeatureSupport.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(@".Dapper
 {
-	/// <summary>
+    /// <summary>
     /// Handles variances in features per DBMS
     /// </summary>
     class FeatureSupport
     {
-        /// <summary>
-        /// Dictionary of supported features index by connection type name
-        /// </summary>
-        private static readonly Dictionary<string, FeatureSupport> FeatureList = new Dictionary<string, FeatureSupport>(StringComparer.InvariantCultureIgnoreCase) {
-            {""sqlserverconnection"", new FeatureSupport { Arrays = false}},
-            {""npgsqlconnection"", new FeatureSupport {Arrays = true}}
-	    };
+        private static readonly FeatureSupport
+            Default = new FeatureSupport(false),
+            Postgres = new FeatureSupport(true);
 
         /// <summary>
-        /// Gets the featureset based on the passed connection
+        /// Gets the feature set based on the passed connection
         /// </summary>
         public static FeatureSupport Get(IDbConnection connection)
         {
-            string name = connection.GetType().Name;
-            FeatureSupport features;
-            return FeatureList.TryGetValue(name, out features) ? features : FeatureList.Values.First();
+            string name = connection?.GetType().Name;
+            if (string.Equals(name, ""npgsqlconnection"", StringComparison.OrdinalIgnoreCase)) return Postgres;
+            return Default;
         }
-
+        private FeatureSupport(bool arrays)
+        {
+            Arrays = arrays;
+        }
         /// <summary>
         /// True if the db supports array columns e.g. Postgresql
         /// </summary>
-        public bool Arrays { get; set; }
+        public bool Arrays { get; }
     }
 }");
             return this.GenerationEnvironment.ToString();

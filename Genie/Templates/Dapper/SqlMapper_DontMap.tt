@@ -1,0 +1,12 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+namespace Indico.DataAccess.Dapper
+{
+    partial class SqlMapper
+    {
+        /// <summary>
+        /// Dummy type for excluding from multi-map
+        /// </summary>
+        class DontMap { }
+    }
+}

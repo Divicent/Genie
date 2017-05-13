@@ -26,16 +26,10 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\n\r\nnamespace ");
-            
-            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\CommandFlags.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
-            
-            #line default
-            #line hidden
-            this.Write(@".Dapper
+            this.Write(@"namespace Indico.DataAccess.Dapper
 {
-     /// <summary>
+
+    /// <summary>
     /// Additional state flags that control command behaviour
     /// </summary>
     [Flags]
@@ -58,7 +52,8 @@ namespace Genie.Templates.Dapper
         /// </summary>
         NoCache = 4,
     }
-}");
+}
+");
             return this.GenerationEnvironment.ToString();
         }
     }

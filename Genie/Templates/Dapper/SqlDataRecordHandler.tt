@@ -1,0 +1,21 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="Genie.Base" #>
+using System;
+
+#if !COREFX
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
+{
+    sealed class SqlDataRecordHandler : SqlMapper.ITypeHandler
+    {
+        public object Parse(Type destinationType, object value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void SetValue(IDbDataParameter parameter, object value)
+        {
+            SqlDataRecordListTVPParameter.Set(parameter, value as IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord>, null);
+        }
+    }
+}
+#endif
