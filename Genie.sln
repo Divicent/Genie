@@ -5,10 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genie", "Genie\Genie.csproj", "{69642B73-D165-4244-88C2-8DAEDC41F8F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "..\Generator\Generator\Generator.csproj", "{1F1098FA-31D9-48BC-B895-42374DA62B20}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indico.DataAccess", "C:\Projects\IndicoAngular\Indico\Indico.DataAccess\Indico.DataAccess.csproj", "{68A0D877-38A7-4CF4-9671-D75B1F97B44A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{69642B73-D165-4244-88C2-8DAEDC41F8F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69642B73-D165-4244-88C2-8DAEDC41F8F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69642B73-D165-4244-88C2-8DAEDC41F8F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F1098FA-31D9-48BC-B895-42374DA62B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F1098FA-31D9-48BC-B895-42374DA62B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F1098FA-31D9-48BC-B895-42374DA62B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F1098FA-31D9-48BC-B895-42374DA62B20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68A0D877-38A7-4CF4-9671-D75B1F97B44A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68A0D877-38A7-4CF4-9671-D75B1F97B44A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68A0D877-38A7-4CF4-9671-D75B1F97B44A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68A0D877-38A7-4CF4-9671-D75B1F97B44A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
