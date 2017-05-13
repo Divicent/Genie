@@ -97,7 +97,7 @@ namespace Example.Business.Base.Concrete.Modules
     {
         public override void Load()
         {
-            Bind<IUnitOfWork>().To<UnitOfWork>().InSingletonScope();
+            Bind<IUnitOfWork>().To<UnitOfWork>();
             Bind<IDapperContext>().To<DapperContext>().InSingletonScope();
         }
     }
