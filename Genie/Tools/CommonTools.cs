@@ -42,6 +42,8 @@ namespace Genie.Tools
                     return "DateTime";
                 case "varchar":
                 case "nvarchar":
+                case "nchar":
+                case "char":
                     return "string";
                 case "bit":
                     return "bool";
