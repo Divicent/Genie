@@ -17,7 +17,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Label = System.Reflection.Emit.Label;
 
-namespace <#=GenerationContext.BaseNamespace#>.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper 
 {
     /// <summary>
     /// Dapper, a light weight object mapper for ADO.NET

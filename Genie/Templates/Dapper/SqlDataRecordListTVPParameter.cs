@@ -33,33 +33,33 @@ namespace Genie.Templates.Dapper
             
             #line default
             #line hidden
-            this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Used to pass a IEnumerable&lt;SqlDataRecor" +
-                    "d&gt; as a SqlDataRecordListTVPParameter\r\n    /// </summary>\r\n    sealed class S" +
-                    "qlDataRecordListTVPParameter : SqlMapper.ICustomQueryParameter\r\n    {\r\n        p" +
-                    "rivate readonly IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord> data;\r\n   " +
-                    "     private readonly string typeName;\r\n        /// <summary>\r\n        /// Creat" +
-                    "e a new instance of SqlDataRecordListTVPParameter\r\n        /// </summary>\r\n     " +
-                    "   public SqlDataRecordListTVPParameter(IEnumerable<Microsoft.SqlServer.Server.S" +
-                    "qlDataRecord> data, string typeName)\r\n        {\r\n            this.data = data;\r\n" +
-                    "            this.typeName = typeName;\r\n        }\r\n        static readonly Action" +
-                    "<System.Data.SqlClient.SqlParameter, string> setTypeName;\r\n        static SqlDat" +
-                    "aRecordListTVPParameter()\r\n        {\r\n            var prop = typeof(System.Data." +
-                    "SqlClient.SqlParameter).GetProperty(nameof(System.Data.SqlClient.SqlParameter.Ty" +
-                    "peName), BindingFlags.Instance | BindingFlags.Public);\r\n            if (prop != " +
-                    "null && prop.PropertyType == typeof(string) && prop.CanWrite)\r\n            {\r\n  " +
-                    "              setTypeName = (Action<System.Data.SqlClient.SqlParameter, string>)" +
-                    "\r\n                    Delegate.CreateDelegate(typeof(Action<System.Data.SqlClien" +
-                    "t.SqlParameter, string>), prop.GetSetMethod());\r\n            }\r\n        }\r\n     " +
-                    "   void SqlMapper.ICustomQueryParameter.AddParameter(IDbCommand command, string " +
-                    "name)\r\n        {\r\n            var param = command.CreateParameter();\r\n          " +
-                    "  param.ParameterName = name;\r\n            Set(param, data, typeName);\r\n        " +
-                    "    command.Parameters.Add(param);\r\n        }\r\n        internal static void Set(" +
-                    "IDbDataParameter parameter, IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord" +
-                    "> data, string typeName)\r\n        {\r\n            parameter.Value = (object)data " +
-                    "?? DBNull.Value;\r\n            var sqlParam = parameter as System.Data.SqlClient." +
-                    "SqlParameter;\r\n            if (sqlParam != null)\r\n            {\r\n               " +
-                    " sqlParam.SqlDbType = SqlDbType.Structured;\r\n                sqlParam.TypeName =" +
-                    " typeName;\r\n            }\r\n        }\r\n    }\r\n}\r\n#endif");
+            this.Write(".Dapper \r\n{\r\n    /// <summary>\r\n    /// Used to pass a IEnumerable&lt;SqlDataReco" +
+                    "rd&gt; as a SqlDataRecordListTVPParameter\r\n    /// </summary>\r\n    sealed class " +
+                    "SqlDataRecordListTVPParameter : SqlMapper.ICustomQueryParameter\r\n    {\r\n        " +
+                    "private readonly IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord> data;\r\n  " +
+                    "      private readonly string typeName;\r\n        /// <summary>\r\n        /// Crea" +
+                    "te a new instance of SqlDataRecordListTVPParameter\r\n        /// </summary>\r\n    " +
+                    "    public SqlDataRecordListTVPParameter(IEnumerable<Microsoft.SqlServer.Server." +
+                    "SqlDataRecord> data, string typeName)\r\n        {\r\n            this.data = data;\r" +
+                    "\n            this.typeName = typeName;\r\n        }\r\n        static readonly Actio" +
+                    "n<System.Data.SqlClient.SqlParameter, string> setTypeName;\r\n        static SqlDa" +
+                    "taRecordListTVPParameter()\r\n        {\r\n            var prop = typeof(System.Data" +
+                    ".SqlClient.SqlParameter).GetProperty(nameof(System.Data.SqlClient.SqlParameter.T" +
+                    "ypeName), BindingFlags.Instance | BindingFlags.Public);\r\n            if (prop !=" +
+                    " null && prop.PropertyType == typeof(string) && prop.CanWrite)\r\n            {\r\n " +
+                    "               setTypeName = (Action<System.Data.SqlClient.SqlParameter, string>" +
+                    ")\r\n                    Delegate.CreateDelegate(typeof(Action<System.Data.SqlClie" +
+                    "nt.SqlParameter, string>), prop.GetSetMethod());\r\n            }\r\n        }\r\n    " +
+                    "    void SqlMapper.ICustomQueryParameter.AddParameter(IDbCommand command, string" +
+                    " name)\r\n        {\r\n            var param = command.CreateParameter();\r\n         " +
+                    "   param.ParameterName = name;\r\n            Set(param, data, typeName);\r\n       " +
+                    "     command.Parameters.Add(param);\r\n        }\r\n        internal static void Set" +
+                    "(IDbDataParameter parameter, IEnumerable<Microsoft.SqlServer.Server.SqlDataRecor" +
+                    "d> data, string typeName)\r\n        {\r\n            parameter.Value = (object)data" +
+                    " ?? DBNull.Value;\r\n            var sqlParam = parameter as System.Data.SqlClient" +
+                    ".SqlParameter;\r\n            if (sqlParam != null)\r\n            {\r\n              " +
+                    "  sqlParam.SqlDbType = SqlDbType.Structured;\r\n                sqlParam.TypeName " +
+                    "= typeName;\r\n            }\r\n        }\r\n    }\r\n}\r\n#endif");
             return this.GenerationEnvironment.ToString();
         }
     }

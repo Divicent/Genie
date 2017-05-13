@@ -31,4 +31,4 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             return null;
         }
     }
-}
+} 

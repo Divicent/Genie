@@ -26,10 +26,14 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"using System;
-using System.Data;
-
-namespace Indico.DataAccess.Dapper
+            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_DeserializerState.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(@".Dapper 
 {
     partial class SqlMapper
     {

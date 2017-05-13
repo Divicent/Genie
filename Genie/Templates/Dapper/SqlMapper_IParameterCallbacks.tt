@@ -1,7 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
-namespace Indico.DataAccess.Dapper
-{
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
+{ 
     partial class SqlMapper
     {
         /// <summary>

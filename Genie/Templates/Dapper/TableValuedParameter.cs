@@ -27,37 +27,44 @@ namespace Genie.Templates.Dapper
         public virtual string TransformText()
         {
             this.Write("using System;\r\nusing System.Data;\r\nusing System.Reflection;\r\n\r\n\r\n#if !COREFX\r\nnam" +
-                    "espace Indico.DataAccess.Dapper\r\n{\r\n    /// <summary>\r\n    /// Used to pass a Da" +
-                    "taTable as a TableValuedParameter\r\n    /// </summary>\r\n    sealed class TableVal" +
-                    "uedParameter : SqlMapper.ICustomQueryParameter\r\n    {\r\n        private readonly " +
-                    "DataTable table;\r\n        private readonly string typeName;\r\n\r\n        /// <summ" +
-                    "ary>\r\n        /// Create a new instance of TableValuedParameter\r\n        /// </s" +
-                    "ummary>\r\n        public TableValuedParameter(DataTable table) : this(table, null" +
-                    ") { }\r\n        /// <summary>\r\n        /// Create a new instance of TableValuedPa" +
-                    "rameter\r\n        /// </summary>\r\n        public TableValuedParameter(DataTable t" +
-                    "able, string typeName)\r\n        {\r\n            this.table = table;\r\n            " +
-                    "this.typeName = typeName;\r\n        }\r\n        static readonly Action<System.Data" +
-                    ".SqlClient.SqlParameter, string> setTypeName;\r\n        static TableValuedParamet" +
-                    "er()\r\n        {\r\n            var prop = typeof(System.Data.SqlClient.SqlParamete" +
-                    "r).GetProperty(\"TypeName\", BindingFlags.Instance | BindingFlags.Public);\r\n      " +
-                    "      if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)\r" +
-                    "\n            {\r\n                setTypeName = (Action<System.Data.SqlClient.SqlP" +
-                    "arameter, string>)\r\n                    Delegate.CreateDelegate(typeof(Action<Sy" +
-                    "stem.Data.SqlClient.SqlParameter, string>), prop.GetSetMethod());\r\n            }" +
-                    "\r\n        }\r\n        void SqlMapper.ICustomQueryParameter.AddParameter(IDbComman" +
-                    "d command, string name)\r\n        {\r\n            var param = command.CreateParame" +
-                    "ter();\r\n            param.ParameterName = name;\r\n            Set(param, table, t" +
-                    "ypeName);\r\n            command.Parameters.Add(param);\r\n        }\r\n        intern" +
-                    "al static void Set(IDbDataParameter parameter, DataTable table, string typeName)" +
-                    "\r\n        {\r\n#pragma warning disable 0618\r\n            parameter.Value = SqlMapp" +
-                    "er.SanitizeParameterValue(table);\r\n#pragma warning restore 0618\r\n            if " +
-                    "(string.IsNullOrEmpty(typeName) && table != null)\r\n            {\r\n              " +
-                    "  typeName = table.GetTypeName();\r\n            }\r\n            if (!string.IsNull" +
-                    "OrEmpty(typeName))\r\n            {\r\n                var sqlParam = parameter as S" +
-                    "ystem.Data.SqlClient.SqlParameter;\r\n                if (sqlParam != null)\r\n     " +
-                    "           {\r\n                    setTypeName?.Invoke(sqlParam, typeName);\r\n    " +
-                    "                sqlParam.SqlDbType = SqlDbType.Structured;\r\n                }\r\n " +
-                    "           }\r\n        }\r\n    }\r\n}\r\n#endif\r\n\r\n");
+                    "espace ");
+            
+            #line 9 "D:\Projects\Genie\Genie\Templates\Dapper\TableValuedParameter.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Used to pass a DataTable as a TableValuedP" +
+                    "arameter\r\n    /// </summary>\r\n    sealed class TableValuedParameter : SqlMapper." +
+                    "ICustomQueryParameter\r\n    {\r\n        private readonly DataTable table;\r\n       " +
+                    " private readonly string typeName;\r\n\r\n        /// <summary>\r\n        /// Create " +
+                    "a new instance of TableValuedParameter\r\n        /// </summary>\r\n        public T" +
+                    "ableValuedParameter(DataTable table) : this(table, null) { }\r\n        /// <summa" +
+                    "ry>\r\n        /// Create a new instance of TableValuedParameter\r\n        /// </su" +
+                    "mmary>\r\n        public TableValuedParameter(DataTable table, string typeName)\r\n " +
+                    "       { \r\n            this.table = table;\r\n            this.typeName = typeName" +
+                    ";\r\n        }\r\n        static readonly Action<System.Data.SqlClient.SqlParameter," +
+                    " string> setTypeName;\r\n        static TableValuedParameter()\r\n        {\r\n       " +
+                    "     var prop = typeof(System.Data.SqlClient.SqlParameter).GetProperty(\"TypeName" +
+                    "\", BindingFlags.Instance | BindingFlags.Public);\r\n            if (prop != null &" +
+                    "& prop.PropertyType == typeof(string) && prop.CanWrite)\r\n            {\r\n        " +
+                    "        setTypeName = (Action<System.Data.SqlClient.SqlParameter, string>)\r\n    " +
+                    "                Delegate.CreateDelegate(typeof(Action<System.Data.SqlClient.SqlP" +
+                    "arameter, string>), prop.GetSetMethod());\r\n            }\r\n        }\r\n        voi" +
+                    "d SqlMapper.ICustomQueryParameter.AddParameter(IDbCommand command, string name)\r" +
+                    "\n        {\r\n            var param = command.CreateParameter();\r\n            para" +
+                    "m.ParameterName = name;\r\n            Set(param, table, typeName);\r\n            c" +
+                    "ommand.Parameters.Add(param);\r\n        }\r\n        internal static void Set(IDbDa" +
+                    "taParameter parameter, DataTable table, string typeName)\r\n        {\r\n#pragma war" +
+                    "ning disable 0618\r\n            parameter.Value = SqlMapper.SanitizeParameterValu" +
+                    "e(table);\r\n#pragma warning restore 0618\r\n            if (string.IsNullOrEmpty(ty" +
+                    "peName) && table != null)\r\n            {\r\n                typeName = table.GetTy" +
+                    "peName();\r\n            }\r\n            if (!string.IsNullOrEmpty(typeName))\r\n    " +
+                    "        {\r\n                var sqlParam = parameter as System.Data.SqlClient.Sql" +
+                    "Parameter;\r\n                if (sqlParam != null)\r\n                {\r\n          " +
+                    "          setTypeName?.Invoke(sqlParam, typeName);\r\n                    sqlParam" +
+                    ".SqlDbType = SqlDbType.Structured;\r\n                }\r\n            }\r\n        }\r" +
+                    "\n    }\r\n}\r\n#endif\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

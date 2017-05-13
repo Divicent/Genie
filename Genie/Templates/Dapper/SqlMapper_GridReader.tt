@@ -6,7 +6,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {

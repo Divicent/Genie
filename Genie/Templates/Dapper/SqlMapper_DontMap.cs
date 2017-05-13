@@ -26,9 +26,16 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace Indico.DataAccess.Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n      " +
-                    "  /// <summary>\r\n        /// Dummy type for excluding from multi-map\r\n        //" +
-                    "/ </summary>\r\n        class DontMap { }\r\n    }\r\n}");
+            this.Write("namespace ");
+            
+            #line 3 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_DontMap.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper \r\n{\r\n    partial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        /" +
+                    "// Dummy type for excluding from multi-map\r\n        /// </summary>\r\n        clas" +
+                    "s DontMap { }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

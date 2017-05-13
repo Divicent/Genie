@@ -59,7 +59,7 @@ namespace Genie.Templates.Dapper
             return null;
         }
     }
-}");
+} ");
             return this.GenerationEnvironment.ToString();
         }
     }

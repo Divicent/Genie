@@ -34,7 +34,7 @@ namespace Genie.Templates.Dapper
             
             #line default
             #line hidden
-            this.Write(@".Dapper
+            this.Write(@".Dapper 
 {
 	public interface ISqlAdapter
 	{

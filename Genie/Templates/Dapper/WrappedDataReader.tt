@@ -2,7 +2,7 @@
 <#@ import namespace="Genie.Base" #>
 using System.Data;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     /// <summary>
     /// Describes a reader that controls the lifetime of both a command and a reader,
@@ -20,3 +20,4 @@ namespace Indico.DataAccess.Dapper
         IDbCommand Command { get; }
     }
 }
+ 

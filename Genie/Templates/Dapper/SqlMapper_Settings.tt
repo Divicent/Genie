@@ -1,6 +1,6 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {
@@ -51,6 +51,6 @@ namespace Indico.DataAccess.Dapper
             /// operation if there are more than this many elements. Note that this feautre requires SQL Server 2016 / compatibility level 130 (or above).
             /// </summary>
             public static int InListStringSplitCount { get; set; } = -1;
-        }
+        } 
     }
 }

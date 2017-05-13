@@ -26,63 +26,69 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace Indico.DataAccess.Dapper\r\n{\r\n    i" +
-                    "nternal class WrappedReader : IDataReader, IWrappedDataReader\r\n    {\r\n        pr" +
-                    "ivate IDataReader reader;\r\n        private IDbCommand cmd;\r\n\r\n        public IDa" +
-                    "taReader Reader\r\n        {\r\n            get\r\n            {\r\n                var " +
-                    "tmp = reader;\r\n                if (tmp == null) throw new ObjectDisposedExceptio" +
-                    "n(GetType().Name);\r\n                return tmp;\r\n            }\r\n        }\r\n     " +
-                    "   IDbCommand IWrappedDataReader.Command\r\n        {\r\n            get\r\n          " +
-                    "  {\r\n                var tmp = cmd;\r\n                if (tmp == null) throw new " +
-                    "ObjectDisposedException(GetType().Name);\r\n                return tmp;\r\n         " +
-                    "   }\r\n        }\r\n        public WrappedReader(IDbCommand cmd, IDataReader reader" +
-                    ")\r\n        {\r\n            this.cmd = cmd;\r\n            this.reader = reader;\r\n  " +
-                    "      }\r\n\r\n        void IDataReader.Close()\r\n        {\r\n            reader?.Clos" +
-                    "e();\r\n        }\r\n\r\n        int IDataReader.Depth => Reader.Depth;\r\n\r\n        Dat" +
-                    "aTable IDataReader.GetSchemaTable()\r\n        {\r\n            return Reader.GetSch" +
-                    "emaTable();\r\n        }\r\n\r\n        bool IDataReader.IsClosed => reader?.IsClosed " +
-                    "?? true;\r\n\r\n        bool IDataReader.NextResult()\r\n        {\r\n            return" +
-                    " Reader.NextResult();\r\n        }\r\n\r\n        bool IDataReader.Read()\r\n        {\r\n" +
-                    "            return Reader.Read();\r\n        }\r\n\r\n        int IDataReader.RecordsA" +
-                    "ffected => Reader.RecordsAffected;\r\n\r\n        void IDisposable.Dispose()\r\n      " +
-                    "  {\r\n            reader?.Close();\r\n            reader?.Dispose();\r\n            r" +
-                    "eader = null;\r\n            cmd?.Dispose();\r\n            cmd = null;\r\n        }\r\n" +
-                    "\r\n        int IDataRecord.FieldCount => Reader.FieldCount;\r\n\r\n        bool IData" +
-                    "Record.GetBoolean(int i)\r\n        {\r\n            return Reader.GetBoolean(i);\r\n " +
-                    "       }\r\n\r\n        byte IDataRecord.GetByte(int i)\r\n        {\r\n            retu" +
-                    "rn Reader.GetByte(i);\r\n        }\r\n\r\n        long IDataRecord.GetBytes(int i, lon" +
-                    "g fieldOffset, byte[] buffer, int bufferoffset, int length)\r\n        {\r\n        " +
-                    "    return Reader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);\r\n     " +
-                    "   }\r\n\r\n        char IDataRecord.GetChar(int i)\r\n        {\r\n            return R" +
-                    "eader.GetChar(i);\r\n        }\r\n\r\n        long IDataRecord.GetChars(int i, long fi" +
-                    "eldoffset, char[] buffer, int bufferoffset, int length)\r\n        {\r\n            " +
-                    "return Reader.GetChars(i, fieldoffset, buffer, bufferoffset, length);\r\n        }" +
-                    "\r\n\r\n        IDataReader IDataRecord.GetData(int i)\r\n        {\r\n            retur" +
-                    "n Reader.GetData(i);\r\n        }\r\n\r\n        string IDataRecord.GetDataTypeName(in" +
-                    "t i)\r\n        {\r\n            return Reader.GetDataTypeName(i);\r\n        }\r\n\r\n   " +
-                    "     DateTime IDataRecord.GetDateTime(int i)\r\n        {\r\n            return Read" +
-                    "er.GetDateTime(i);\r\n        }\r\n\r\n        decimal IDataRecord.GetDecimal(int i)\r\n" +
-                    "        {\r\n            return Reader.GetDecimal(i);\r\n        }\r\n\r\n        double" +
-                    " IDataRecord.GetDouble(int i)\r\n        {\r\n            return Reader.GetDouble(i)" +
-                    ";\r\n        }\r\n\r\n        Type IDataRecord.GetFieldType(int i)\r\n        {\r\n       " +
-                    "     return Reader.GetFieldType(i);\r\n        }\r\n\r\n        float IDataRecord.GetF" +
-                    "loat(int i)\r\n        {\r\n            return Reader.GetFloat(i);\r\n        }\r\n\r\n   " +
-                    "     Guid IDataRecord.GetGuid(int i)\r\n        {\r\n            return Reader.GetGu" +
-                    "id(i);\r\n        }\r\n\r\n        short IDataRecord.GetInt16(int i)\r\n        {\r\n     " +
-                    "       return Reader.GetInt16(i);\r\n        }\r\n\r\n        int IDataRecord.GetInt32" +
-                    "(int i)\r\n        {\r\n            return Reader.GetInt32(i);\r\n        }\r\n\r\n       " +
-                    " long IDataRecord.GetInt64(int i)\r\n        {\r\n            return Reader.GetInt64" +
-                    "(i);\r\n        }\r\n\r\n        string IDataRecord.GetName(int i)\r\n        {\r\n       " +
-                    "     return Reader.GetName(i);\r\n        }\r\n\r\n        int IDataRecord.GetOrdinal(" +
-                    "string name)\r\n        {\r\n            return Reader.GetOrdinal(name);\r\n        }\r" +
-                    "\n\r\n        string IDataRecord.GetString(int i)\r\n        {\r\n            return Re" +
-                    "ader.GetString(i);\r\n        }\r\n\r\n        object IDataRecord.GetValue(int i)\r\n   " +
-                    "     {\r\n            return Reader.GetValue(i);\r\n        }\r\n\r\n        int IDataRe" +
-                    "cord.GetValues(object[] values)\r\n        {\r\n            return Reader.GetValues(" +
-                    "values);\r\n        }\r\n\r\n        bool IDataRecord.IsDBNull(int i)\r\n        {\r\n    " +
-                    "        return Reader.IsDBNull(i);\r\n        }\r\n\r\n        object IDataRecord.this" +
-                    "[string name] => Reader[name];\r\n\r\n        object IDataRecord.this[int i] => Read" +
-                    "er[i];\r\n    }\r\n}\r\n");
+            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\WrappedReader.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    internal class WrappedReader : IDataReader, IWrappedDataReader\r\n " +
+                    "   {\r\n        private IDataReader reader;\r\n        private IDbCommand cmd;\r\n\r\n  " +
+                    "      public IDataReader Reader\r\n        {\r\n            get\r\n            {\r\n    " +
+                    "            var tmp = reader;\r\n                if (tmp == null) throw new Object" +
+                    "DisposedException(GetType().Name);\r\n                return tmp;\r\n            }\r\n" +
+                    "        }\r\n        IDbCommand IWrappedDataReader.Command\r\n        {\r\n           " +
+                    " get\r\n            {\r\n                var tmp = cmd;\r\n                if (tmp == " +
+                    "null) throw new ObjectDisposedException(GetType().Name);\r\n                return" +
+                    " tmp;\r\n            }\r\n        }\r\n        public WrappedReader(IDbCommand cmd, ID" +
+                    "ataReader reader)\r\n        { \r\n            this.cmd = cmd;\r\n            this.rea" +
+                    "der = reader;\r\n        }\r\n\r\n        void IDataReader.Close()\r\n        {\r\n       " +
+                    "     reader?.Close();\r\n        }\r\n\r\n        int IDataReader.Depth => Reader.Dept" +
+                    "h;\r\n\r\n        DataTable IDataReader.GetSchemaTable()\r\n        {\r\n            ret" +
+                    "urn Reader.GetSchemaTable();\r\n        }\r\n\r\n        bool IDataReader.IsClosed => " +
+                    "reader?.IsClosed ?? true;\r\n\r\n        bool IDataReader.NextResult()\r\n        {\r\n " +
+                    "           return Reader.NextResult();\r\n        }\r\n\r\n        bool IDataReader.Re" +
+                    "ad()\r\n        {\r\n            return Reader.Read();\r\n        }\r\n\r\n        int IDa" +
+                    "taReader.RecordsAffected => Reader.RecordsAffected;\r\n\r\n        void IDisposable." +
+                    "Dispose()\r\n        {\r\n            reader?.Close();\r\n            reader?.Dispose(" +
+                    ");\r\n            reader = null;\r\n            cmd?.Dispose();\r\n            cmd = n" +
+                    "ull;\r\n        }\r\n\r\n        int IDataRecord.FieldCount => Reader.FieldCount;\r\n\r\n " +
+                    "       bool IDataRecord.GetBoolean(int i)\r\n        {\r\n            return Reader." +
+                    "GetBoolean(i);\r\n        }\r\n\r\n        byte IDataRecord.GetByte(int i)\r\n        {\r" +
+                    "\n            return Reader.GetByte(i);\r\n        }\r\n\r\n        long IDataRecord.Ge" +
+                    "tBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)\r\n  " +
+                    "      {\r\n            return Reader.GetBytes(i, fieldOffset, buffer, bufferoffset" +
+                    ", length);\r\n        }\r\n\r\n        char IDataRecord.GetChar(int i)\r\n        {\r\n   " +
+                    "         return Reader.GetChar(i);\r\n        }\r\n\r\n        long IDataRecord.GetCha" +
+                    "rs(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)\r\n      " +
+                    "  {\r\n            return Reader.GetChars(i, fieldoffset, buffer, bufferoffset, le" +
+                    "ngth);\r\n        }\r\n\r\n        IDataReader IDataRecord.GetData(int i)\r\n        {\r\n" +
+                    "            return Reader.GetData(i);\r\n        }\r\n\r\n        string IDataRecord.G" +
+                    "etDataTypeName(int i)\r\n        {\r\n            return Reader.GetDataTypeName(i);\r" +
+                    "\n        }\r\n\r\n        DateTime IDataRecord.GetDateTime(int i)\r\n        {\r\n      " +
+                    "      return Reader.GetDateTime(i);\r\n        }\r\n\r\n        decimal IDataRecord.Ge" +
+                    "tDecimal(int i)\r\n        {\r\n            return Reader.GetDecimal(i);\r\n        }\r" +
+                    "\n\r\n        double IDataRecord.GetDouble(int i)\r\n        {\r\n            return Re" +
+                    "ader.GetDouble(i);\r\n        }\r\n\r\n        Type IDataRecord.GetFieldType(int i)\r\n " +
+                    "       {\r\n            return Reader.GetFieldType(i);\r\n        }\r\n\r\n        float" +
+                    " IDataRecord.GetFloat(int i)\r\n        {\r\n            return Reader.GetFloat(i);\r" +
+                    "\n        }\r\n\r\n        Guid IDataRecord.GetGuid(int i)\r\n        {\r\n            re" +
+                    "turn Reader.GetGuid(i);\r\n        }\r\n\r\n        short IDataRecord.GetInt16(int i)\r" +
+                    "\n        {\r\n            return Reader.GetInt16(i);\r\n        }\r\n\r\n        int IDa" +
+                    "taRecord.GetInt32(int i)\r\n        {\r\n            return Reader.GetInt32(i);\r\n   " +
+                    "     }\r\n\r\n        long IDataRecord.GetInt64(int i)\r\n        {\r\n            retur" +
+                    "n Reader.GetInt64(i);\r\n        }\r\n\r\n        string IDataRecord.GetName(int i)\r\n " +
+                    "       {\r\n            return Reader.GetName(i);\r\n        }\r\n\r\n        int IDataR" +
+                    "ecord.GetOrdinal(string name)\r\n        {\r\n            return Reader.GetOrdinal(n" +
+                    "ame);\r\n        }\r\n\r\n        string IDataRecord.GetString(int i)\r\n        {\r\n    " +
+                    "        return Reader.GetString(i);\r\n        }\r\n\r\n        object IDataRecord.Get" +
+                    "Value(int i)\r\n        {\r\n            return Reader.GetValue(i);\r\n        }\r\n\r\n  " +
+                    "      int IDataRecord.GetValues(object[] values)\r\n        {\r\n            return " +
+                    "Reader.GetValues(values);\r\n        }\r\n\r\n        bool IDataRecord.IsDBNull(int i)" +
+                    "\r\n        {\r\n            return Reader.IsDBNull(i);\r\n        }\r\n\r\n        object" +
+                    " IDataRecord.this[string name] => Reader[name];\r\n\r\n        object IDataRecord.th" +
+                    "is[int i] => Reader[i];\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -3,7 +3,7 @@
 using System;
 
 #if !COREFX
-namespace <#=GenerationContext.BaseNamespace#>.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper 
 {
     sealed class SqlDataRecordHandler : SqlMapper.ITypeHandler
     {

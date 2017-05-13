@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {
@@ -26,7 +26,7 @@ namespace Indico.DataAccess.Dapper
             {
                 return (T)handler.Parse(typeof(T), value);
             }
-
+ 
             /// <summary>
             /// Not intended for direct usage
             /// </summary>

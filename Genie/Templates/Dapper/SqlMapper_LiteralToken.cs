@@ -26,9 +26,14 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"using System.Collections.Generic;
-
-namespace Indico.DataAccess.Dapper
+            this.Write("using System.Collections.Generic;\r\n\r\nnamespace ");
+            
+            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_LiteralToken.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(@".Dapper
 {
     partial class SqlMapper
     {
@@ -50,7 +55,7 @@ namespace Indico.DataAccess.Dapper
             internal LiteralToken(string token, string member)
             {
                 Token = token;
-                Member = member;
+                Member = member; 
             }
 
             internal static readonly IList<LiteralToken> None = new LiteralToken[0];

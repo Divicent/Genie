@@ -3,7 +3,7 @@
 using System;
 using System.Data;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     internal class WrappedReader : IDataReader, IWrappedDataReader
     {
@@ -29,7 +29,7 @@ namespace Indico.DataAccess.Dapper
             }
         }
         public WrappedReader(IDbCommand cmd, IDataReader reader)
-        {
+        { 
             this.cmd = cmd;
             this.reader = reader;
         }

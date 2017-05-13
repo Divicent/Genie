@@ -27,82 +27,88 @@ namespace Genie.Templates.Dapper
         public virtual string TransformText()
         {
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\n\r\nnamespace" +
-                    " Indico.DataAccess.Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        /// <s" +
-                    "ummary>\r\n        /// Parses a data reader to a sequence of data of the supplied " +
-                    "type. Used for deserializing a reader without a connection, etc.\r\n        /// </" +
-                    "summary>\r\n        public static IEnumerable<T> Parse<T>(this IDataReader reader)" +
-                    "\r\n        {\r\n            if (reader.Read())\r\n            {\r\n                var " +
-                    "deser = GetDeserializer(typeof(T), reader, 0, -1, false);\r\n                do\r\n " +
-                    "               {\r\n                    yield return (T)deser(reader);\r\n          " +
-                    "      } while (reader.Read());\r\n            }\r\n        }\r\n\r\n        /// <summary" +
-                    ">\r\n        /// Parses a data reader to a sequence of data of the supplied type (" +
-                    "as object). Used for deserializing a reader without a connection, etc.\r\n        " +
-                    "/// </summary>\r\n        public static IEnumerable<object> Parse(this IDataReader" +
-                    " reader, Type type)\r\n        {\r\n            if (reader.Read())\r\n            {\r\n " +
-                    "               var deser = GetDeserializer(type, reader, 0, -1, false);\r\n       " +
-                    "         do\r\n                {\r\n                    yield return deser(reader);\r" +
-                    "\n                } while (reader.Read());\r\n            }\r\n        }\r\n\r\n        /" +
-                    "// <summary>\r\n        /// Parses a data reader to a sequence of dynamic. Used fo" +
-                    "r deserializing a reader without a connection, etc.\r\n        /// </summary>\r\n   " +
-                    "     public static IEnumerable<dynamic> Parse(this IDataReader reader)\r\n        " +
-                    "{\r\n            if (reader.Read())\r\n            {\r\n                var deser = Ge" +
-                    "tDapperRowDeserializer(reader, 0, -1, false);\r\n                do\r\n             " +
-                    "   {\r\n                    yield return deser(reader);\r\n                } while (" +
-                    "reader.Read());\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n        /// " +
-                    "Gets the row parser for a specific row on a data reader. This allows for type sw" +
-                    "itching every row based on, for example, a TypeId column.\r\n        /// You could" +
-                    " return a collection of the base type but have each more specific.\r\n        /// " +
-                    "</summary>\r\n        /// <param name=\"reader\">The data reader to get the parser f" +
-                    "or the current row from</param>\r\n        /// <param name=\"type\">The type to get " +
-                    "the parser for</param>\r\n        /// <param name=\"startIndex\">The start column in" +
-                    "dex of the object (default 0)</param>\r\n        /// <param name=\"length\">The leng" +
-                    "th of columns to read (default -1 = all fields following startIndex)</param>\r\n  " +
-                    "      /// <param name=\"returnNullIfFirstMissing\">Return null if we can\'t find th" +
-                    "e first column? (default false)</param>\r\n        /// <returns>A parser for this " +
-                    "specific object from this row.</returns>\r\n        public static Func<IDataReader" +
-                    ", object> GetRowParser(this IDataReader reader, Type type,\r\n            int star" +
-                    "tIndex = 0, int length = -1, bool returnNullIfFirstMissing = false)\r\n        {\r\n" +
-                    "            return GetDeserializer(type, reader, startIndex, length, returnNullI" +
-                    "fFirstMissing);\r\n        }\r\n\r\n        /// <summary>\r\n        /// Gets the row pa" +
-                    "rser for a specific row on a data reader. This allows for type switching every r" +
-                    "ow based on, for example, a TypeId column.\r\n        /// You could return a colle" +
-                    "ction of the base type but have each more specific.\r\n        /// </summary>\r\n   " +
-                    "     /// <param name=\"reader\">The data reader to get the parser for the current " +
-                    "row from</param>\r\n        /// <param name=\"concreteType\">The type to get the par" +
-                    "ser for</param>\r\n        /// <param name=\"startIndex\">The start column index of " +
-                    "the object (default 0)</param>\r\n        /// <param name=\"length\">The length of c" +
-                    "olumns to read (default -1 = all fields following startIndex)</param>\r\n        /" +
-                    "// <param name=\"returnNullIfFirstMissing\">Return null if we can\'t find the first" +
-                    " column? (default false)</param>\r\n        /// <returns>A parser for this specifi" +
-                    "c object from this row.</returns>\r\n        /// <example>\r\n        /// var result" +
-                    " = new List&lt;BaseType&gt;();\r\n        /// using (var reader = connection.Execu" +
-                    "teReader(@\"\r\n        ///   select \'abc\' as Name, 1 as Type, 3.0 as Value\r\n      " +
-                    "  ///   union all\r\n        ///   select \'def\' as Name, 2 as Type, 4.0 as Value\")" +
-                    ")\r\n        /// {\r\n        ///     if (reader.Read())\r\n        ///     {\r\n       " +
-                    " ///         var toFoo = reader.GetRowParser&lt;BaseType&gt;(typeof(Foo));\r\n    " +
-                    "    ///         var toBar = reader.GetRowParser&lt;BaseType&gt;(typeof(Bar));\r\n " +
-                    "       ///         var col = reader.GetOrdinal(\"Type\");\r\n        ///         do\r" +
-                    "\n        ///         {\r\n        ///             switch (reader.GetInt32(col))\r\n " +
-                    "       ///             {\r\n        ///                 case 1:\r\n        ///      " +
-                    "               result.Add(toFoo(reader));\r\n        ///                     break" +
-                    ";\r\n        ///                 case 2:\r\n        ///                     result.A" +
-                    "dd(toBar(reader));\r\n        ///                     break;\r\n        ///         " +
-                    "    }\r\n        ///         } while (reader.Read());\r\n        ///     }\r\n        " +
-                    "/// }\r\n        ///  \r\n        /// abstract class BaseType\r\n        /// {\r\n      " +
-                    "  ///     public abstract int Type { get; }\r\n        /// }\r\n        /// class Fo" +
-                    "o : BaseType\r\n        /// {\r\n        ///     public string Name { get; set; }\r\n " +
-                    "       ///     public override int Type =&gt; 1;\r\n        /// }\r\n        /// cla" +
-                    "ss Bar : BaseType\r\n        /// {\r\n        ///     public float Value { get; set;" +
-                    " }\r\n        ///     public override int Type =&gt; 2;\r\n        /// }\r\n        //" +
-                    "/ </example>\r\n        public static Func<IDataReader, T> GetRowParser<T>(this ID" +
-                    "ataReader reader, Type concreteType = null,\r\n            int startIndex = 0, int" +
-                    " length = -1, bool returnNullIfFirstMissing = false)\r\n        {\r\n            if " +
-                    "(concreteType == null) concreteType = typeof(T);\r\n            var func = GetDese" +
-                    "rializer(concreteType, reader, startIndex, length, returnNullIfFirstMissing);\r\n " +
-                    "           if (concreteType.IsValueType)\r\n            {\r\n                return " +
-                    "_ => (T)func(_);\r\n            }\r\n            else\r\n            {\r\n              " +
-                    "  return (Func<IDataReader, T>)(Delegate)func;\r\n            }\r\n        }\r\n    }\r" +
-                    "\n}\r\n");
+                    " ");
+            
+            #line 7 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_IDataReader.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper \r\n{\r\n    partial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        /" +
+                    "// Parses a data reader to a sequence of data of the supplied type. Used for des" +
+                    "erializing a reader without a connection, etc.\r\n        /// </summary>\r\n        " +
+                    "public static IEnumerable<T> Parse<T>(this IDataReader reader)\r\n        {\r\n     " +
+                    "       if (reader.Read())\r\n            {\r\n                var deser = GetDeseria" +
+                    "lizer(typeof(T), reader, 0, -1, false);\r\n                do\r\n                {\r\n" +
+                    "                    yield return (T)deser(reader);\r\n                } while (rea" +
+                    "der.Read());\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n        /// Par" +
+                    "ses a data reader to a sequence of data of the supplied type (as object). Used f" +
+                    "or deserializing a reader without a connection, etc.\r\n        /// </summary>\r\n  " +
+                    "      public static IEnumerable<object> Parse(this IDataReader reader, Type type" +
+                    ")\r\n        {\r\n            if (reader.Read())\r\n            {\r\n                var" +
+                    " deser = GetDeserializer(type, reader, 0, -1, false);\r\n                do\r\n     " +
+                    "           {\r\n                    yield return deser(reader);\r\n                }" +
+                    " while (reader.Read());\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n    " +
+                    "    /// Parses a data reader to a sequence of dynamic. Used for deserializing a " +
+                    "reader without a connection, etc.\r\n        /// </summary>\r\n        public static" +
+                    " IEnumerable<dynamic> Parse(this IDataReader reader)\r\n        {\r\n            if " +
+                    "(reader.Read())\r\n            {\r\n                var deser = GetDapperRowDeserial" +
+                    "izer(reader, 0, -1, false);\r\n                do\r\n                {\r\n            " +
+                    "        yield return deser(reader);\r\n                } while (reader.Read());\r\n " +
+                    "           }\r\n        }\r\n\r\n        /// <summary>\r\n        /// Gets the row parse" +
+                    "r for a specific row on a data reader. This allows for type switching every row " +
+                    "based on, for example, a TypeId column.\r\n        /// You could return a collecti" +
+                    "on of the base type but have each more specific.\r\n        /// </summary>\r\n      " +
+                    "  /// <param name=\"reader\">The data reader to get the parser for the current row" +
+                    " from</param>\r\n        /// <param name=\"type\">The type to get the parser for</pa" +
+                    "ram>\r\n        /// <param name=\"startIndex\">The start column index of the object " +
+                    "(default 0)</param>\r\n        /// <param name=\"length\">The length of columns to r" +
+                    "ead (default -1 = all fields following startIndex)</param>\r\n        /// <param n" +
+                    "ame=\"returnNullIfFirstMissing\">Return null if we can\'t find the first column? (d" +
+                    "efault false)</param>\r\n        /// <returns>A parser for this specific object fr" +
+                    "om this row.</returns>\r\n        public static Func<IDataReader, object> GetRowPa" +
+                    "rser(this IDataReader reader, Type type,\r\n            int startIndex = 0, int le" +
+                    "ngth = -1, bool returnNullIfFirstMissing = false)\r\n        {\r\n            return" +
+                    " GetDeserializer(type, reader, startIndex, length, returnNullIfFirstMissing);\r\n " +
+                    "       }\r\n\r\n        /// <summary>\r\n        /// Gets the row parser for a specifi" +
+                    "c row on a data reader. This allows for type switching every row based on, for e" +
+                    "xample, a TypeId column.\r\n        /// You could return a collection of the base " +
+                    "type but have each more specific.\r\n        /// </summary>\r\n        /// <param na" +
+                    "me=\"reader\">The data reader to get the parser for the current row from</param>\r\n" +
+                    "        /// <param name=\"concreteType\">The type to get the parser for</param>\r\n " +
+                    "       /// <param name=\"startIndex\">The start column index of the object (defaul" +
+                    "t 0)</param>\r\n        /// <param name=\"length\">The length of columns to read (de" +
+                    "fault -1 = all fields following startIndex)</param>\r\n        /// <param name=\"re" +
+                    "turnNullIfFirstMissing\">Return null if we can\'t find the first column? (default " +
+                    "false)</param>\r\n        /// <returns>A parser for this specific object from this" +
+                    " row.</returns>\r\n        /// <example>\r\n        /// var result = new List&lt;Bas" +
+                    "eType&gt;();\r\n        /// using (var reader = connection.ExecuteReader(@\"\r\n     " +
+                    "   ///   select \'abc\' as Name, 1 as Type, 3.0 as Value\r\n        ///   union all\r" +
+                    "\n        ///   select \'def\' as Name, 2 as Type, 4.0 as Value\"))\r\n        /// {\r\n" +
+                    "        ///     if (reader.Read())\r\n        ///     {\r\n        ///         var t" +
+                    "oFoo = reader.GetRowParser&lt;BaseType&gt;(typeof(Foo));\r\n        ///         va" +
+                    "r toBar = reader.GetRowParser&lt;BaseType&gt;(typeof(Bar));\r\n        ///        " +
+                    " var col = reader.GetOrdinal(\"Type\");\r\n        ///         do\r\n        ///      " +
+                    "   {\r\n        ///             switch (reader.GetInt32(col))\r\n        ///        " +
+                    "     {\r\n        ///                 case 1:\r\n        ///                     res" +
+                    "ult.Add(toFoo(reader));\r\n        ///                     break;\r\n        ///    " +
+                    "             case 2:\r\n        ///                     result.Add(toBar(reader));" +
+                    "\r\n        ///                     break;\r\n        ///             }\r\n        ///" +
+                    "         } while (reader.Read());\r\n        ///     }\r\n        /// }\r\n        ///" +
+                    "  \r\n        /// abstract class BaseType\r\n        /// {\r\n        ///     public a" +
+                    "bstract int Type { get; }\r\n        /// }\r\n        /// class Foo : BaseType\r\n    " +
+                    "    /// {\r\n        ///     public string Name { get; set; }\r\n        ///     pub" +
+                    "lic override int Type =&gt; 1;\r\n        /// }\r\n        /// class Bar : BaseType\r" +
+                    "\n        /// {\r\n        ///     public float Value { get; set; }\r\n        ///   " +
+                    "  public override int Type =&gt; 2;\r\n        /// }\r\n        /// </example>\r\n    " +
+                    "    public static Func<IDataReader, T> GetRowParser<T>(this IDataReader reader, " +
+                    "Type concreteType = null,\r\n            int startIndex = 0, int length = -1, bool" +
+                    " returnNullIfFirstMissing = false)\r\n        {\r\n            if (concreteType == n" +
+                    "ull) concreteType = typeof(T);\r\n            var func = GetDeserializer(concreteT" +
+                    "ype, reader, startIndex, length, returnNullIfFirstMissing);\r\n            if (con" +
+                    "creteType.IsValueType)\r\n            {\r\n                return _ => (T)func(_);\r\n" +
+                    "            }\r\n            else\r\n            {\r\n                return (Func<IDa" +
+                    "taReader, T>)(Delegate)func;\r\n            }\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

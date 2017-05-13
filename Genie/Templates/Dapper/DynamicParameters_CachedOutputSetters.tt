@@ -2,7 +2,7 @@
 <#@ import namespace="Genie.Base" #>
 using System.Collections;
 
-namespace <#=GenerationContext.BaseNamespace#>.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper 
 {
     partial class DynamicParameters
     {

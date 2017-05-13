@@ -13,4 +13,4 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         }
         public bool Write { get; private set; }
     }
-}
+} 

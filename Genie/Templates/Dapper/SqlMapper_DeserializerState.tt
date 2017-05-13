@@ -3,7 +3,7 @@
 using System;
 using System.Data;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper 
 {
     partial class SqlMapper
     {

@@ -3,7 +3,7 @@
 using System;
 using System.Reflection;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     internal static class TypeExtensions
     {
@@ -28,7 +28,7 @@ namespace Indico.DataAccess.Dapper
         {
 #if COREFX
             return type.GetTypeInfo().IsEnum;
-#else
+#else 
             return type.IsEnum;
 #endif
         }

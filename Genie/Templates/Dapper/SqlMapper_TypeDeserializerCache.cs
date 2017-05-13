@@ -27,90 +27,96 @@ namespace Genie.Templates.Dapper
         public virtual string TransformText()
         {
             this.Write("using System;\r\nusing System.Collections;\r\nusing System.Collections.Generic;\r\nusin" +
-                    "g System.Data;\r\nusing System.Text;\r\n\r\nnamespace Indico.DataAccess.Dapper\r\n{\r\n   " +
-                    " partial class SqlMapper\r\n    {\r\n\r\n        private class TypeDeserializerCache\r\n" +
-                    "        {\r\n            private TypeDeserializerCache(Type type)\r\n            {\r\n" +
-                    "                this.type = type;\r\n            }\r\n            static readonly Ha" +
-                    "shtable byType = new Hashtable();\r\n            private readonly Type type;\r\n    " +
-                    "        internal static void Purge(Type type)\r\n            {\r\n                lo" +
-                    "ck (byType)\r\n                {\r\n                    byType.Remove(type);\r\n      " +
-                    "          }\r\n            }\r\n            internal static void Purge()\r\n          " +
-                    "  {\r\n                lock (byType)\r\n                {\r\n                    byTyp" +
-                    "e.Clear();\r\n                }\r\n            }\r\n\r\n            internal static Func" +
-                    "<IDataReader, object> GetReader(Type type, IDataReader reader, int startBound, i" +
-                    "nt length, bool returnNullIfFirstMissing)\r\n            {\r\n                var fo" +
-                    "und = (TypeDeserializerCache)byType[type];\r\n                if (found == null)\r\n" +
-                    "                {\r\n                    lock (byType)\r\n                    {\r\n   " +
-                    "                     found = (TypeDeserializerCache)byType[type];\r\n             " +
-                    "           if (found == null)\r\n                        {\r\n                      " +
-                    "      byType[type] = found = new TypeDeserializerCache(type);\r\n                 " +
-                    "       }\r\n                    }\r\n                }\r\n                return found" +
-                    ".GetReader(reader, startBound, length, returnNullIfFirstMissing);\r\n            }" +
-                    "\r\n            private Dictionary<DeserializerKey, Func<IDataReader, object>> rea" +
-                    "ders = new Dictionary<DeserializerKey, Func<IDataReader, object>>();\r\n          " +
-                    "  struct DeserializerKey : IEquatable<DeserializerKey>\r\n            {\r\n         " +
-                    "       private readonly int startBound, length;\r\n                private readonl" +
-                    "y bool returnNullIfFirstMissing;\r\n                private readonly IDataReader r" +
-                    "eader;\r\n                private readonly string[] names;\r\n                privat" +
-                    "e readonly Type[] types;\r\n                private readonly int hashCode;\r\n\r\n    " +
-                    "            public DeserializerKey(int hashCode, int startBound, int length, boo" +
-                    "l returnNullIfFirstMissing, IDataReader reader, bool copyDown)\r\n                " +
-                    "{\r\n                    this.hashCode = hashCode;\r\n                    this.start" +
-                    "Bound = startBound;\r\n                    this.length = length;\r\n                " +
-                    "    this.returnNullIfFirstMissing = returnNullIfFirstMissing;\r\n\r\n               " +
-                    "     if (copyDown)\r\n                    {\r\n                        this.reader =" +
-                    " null;\r\n                        names = new string[length];\r\n                   " +
-                    "     types = new Type[length];\r\n                        int index = startBound;\r" +
-                    "\n                        for (int i = 0; i < length; i++)\r\n                     " +
-                    "   {\r\n                            names[i] = reader.GetName(index);\r\n           " +
-                    "                 types[i] = reader.GetFieldType(index++);\r\n                     " +
-                    "   }\r\n                    }\r\n                    else\r\n                    {\r\n  " +
-                    "                      this.reader = reader;\r\n                        names = nul" +
-                    "l;\r\n                        types = null;\r\n                    }\r\n              " +
-                    "  }\r\n\r\n                public override int GetHashCode()\r\n                {\r\n   " +
-                    "                 return hashCode;\r\n                }\r\n                public ove" +
-                    "rride string ToString()\r\n                { // only used in the debugger\r\n       " +
-                    "             if (names != null)\r\n                    {\r\n                        " +
-                    "return string.Join(\", \", names);\r\n                    }\r\n                    if " +
-                    "(reader != null)\r\n                    {\r\n                        var sb = new St" +
-                    "ringBuilder();\r\n                        int index = startBound;\r\n               " +
-                    "         for (int i = 0; i < length; i++)\r\n                        {\r\n          " +
-                    "                  if (i != 0) sb.Append(\", \");\r\n                            sb.A" +
-                    "ppend(reader.GetName(index++));\r\n                        }\r\n                    " +
-                    "    return sb.ToString();\r\n                    }\r\n                    return bas" +
-                    "e.ToString();\r\n                }\r\n                public override bool Equals(ob" +
-                    "ject obj)\r\n                {\r\n                    return obj is DeserializerKey " +
-                    "&& Equals((DeserializerKey)obj);\r\n                }\r\n                public bool" +
-                    " Equals(DeserializerKey other)\r\n                {\r\n                    if (this." +
-                    "hashCode != other.hashCode\r\n                        || this.startBound != other." +
-                    "startBound\r\n                        || this.length != other.length\r\n            " +
-                    "            || this.returnNullIfFirstMissing != other.returnNullIfFirstMissing)\r" +
-                    "\n                    {\r\n                        return false; // clearly differe" +
-                    "nt\r\n                    }\r\n                    for (int i = 0; i < length; i++)\r" +
-                    "\n                    {\r\n                        if ((this.names?[i] ?? this.read" +
-                    "er?.GetName(startBound + i)) != (other.names?[i] ?? other.reader?.GetName(startB" +
-                    "ound + i))\r\n                            ||\r\n                            (this.ty" +
-                    "pes?[i] ?? this.reader?.GetFieldType(startBound + i)) != (other.types?[i] ?? oth" +
-                    "er.reader?.GetFieldType(startBound + i))\r\n                            )\r\n       " +
-                    "                 {\r\n                            return false; // different colum" +
-                    "n name or type\r\n                        }\r\n                    }\r\n              " +
-                    "      return true;\r\n                }\r\n            }\r\n            private Func<I" +
-                    "DataReader, object> GetReader(IDataReader reader, int startBound, int length, bo" +
-                    "ol returnNullIfFirstMissing)\r\n            {\r\n                if (length < 0) len" +
-                    "gth = reader.FieldCount - startBound;\r\n                int hash = GetColumnHash(" +
-                    "reader, startBound, length);\r\n                if (returnNullIfFirstMissing) hash" +
-                    " *= -27;\r\n                // get a cheap key first: false means don\'t copy the v" +
-                    "alues down\r\n                var key = new DeserializerKey(hash, startBound, leng" +
-                    "th, returnNullIfFirstMissing, reader, false);\r\n                Func<IDataReader," +
-                    " object> deser;\r\n                lock (readers)\r\n                {\r\n            " +
-                    "        if (readers.TryGetValue(key, out deser)) return deser;\r\n                " +
-                    "}\r\n                deser = GetTypeDeserializerImpl(type, reader, startBound, len" +
-                    "gth, returnNullIfFirstMissing);\r\n                // get a more expensive key: tr" +
-                    "ue means copy the values down so it can be used as a key later\r\n                " +
-                    "key = new DeserializerKey(hash, startBound, length, returnNullIfFirstMissing, re" +
-                    "ader, true);\r\n                lock (readers)\r\n                {\r\n               " +
-                    "     return readers[key] = deser;\r\n                }\r\n            }\r\n        }\r\n" +
-                    "\r\n    }\r\n}\r\n\r\n");
+                    "g System.Data;\r\nusing System.Text;\r\n\r\nnamespace ");
+            
+            #line 9 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_TypeDeserializerCache.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n\r\n        private class TypeDeser" +
+                    "ializerCache\r\n        {\r\n            private TypeDeserializerCache(Type type)\r\n " +
+                    "           {\r\n                this.type = type;\r\n            }\r\n            stat" +
+                    "ic readonly Hashtable byType = new Hashtable();\r\n            private readonly Ty" +
+                    "pe type;\r\n            internal static void Purge(Type type)\r\n            {\r\n    " +
+                    "            lock (byType)\r\n                { \r\n                    byType.Remove" +
+                    "(type);\r\n                }\r\n            }\r\n            internal static void Purg" +
+                    "e()\r\n            {\r\n                lock (byType)\r\n                {\r\n          " +
+                    "          byType.Clear();\r\n                }\r\n            }\r\n\r\n            inter" +
+                    "nal static Func<IDataReader, object> GetReader(Type type, IDataReader reader, in" +
+                    "t startBound, int length, bool returnNullIfFirstMissing)\r\n            {\r\n       " +
+                    "         var found = (TypeDeserializerCache)byType[type];\r\n                if (f" +
+                    "ound == null)\r\n                {\r\n                    lock (byType)\r\n           " +
+                    "         {\r\n                        found = (TypeDeserializerCache)byType[type];" +
+                    "\r\n                        if (found == null)\r\n                        {\r\n       " +
+                    "                     byType[type] = found = new TypeDeserializerCache(type);\r\n  " +
+                    "                      }\r\n                    }\r\n                }\r\n             " +
+                    "   return found.GetReader(reader, startBound, length, returnNullIfFirstMissing);" +
+                    "\r\n            }\r\n            private Dictionary<DeserializerKey, Func<IDataReade" +
+                    "r, object>> readers = new Dictionary<DeserializerKey, Func<IDataReader, object>>" +
+                    "();\r\n            struct DeserializerKey : IEquatable<DeserializerKey>\r\n         " +
+                    "   {\r\n                private readonly int startBound, length;\r\n                " +
+                    "private readonly bool returnNullIfFirstMissing;\r\n                private readonl" +
+                    "y IDataReader reader;\r\n                private readonly string[] names;\r\n       " +
+                    "         private readonly Type[] types;\r\n                private readonly int ha" +
+                    "shCode;\r\n\r\n                public DeserializerKey(int hashCode, int startBound, " +
+                    "int length, bool returnNullIfFirstMissing, IDataReader reader, bool copyDown)\r\n " +
+                    "               {\r\n                    this.hashCode = hashCode;\r\n               " +
+                    "     this.startBound = startBound;\r\n                    this.length = length;\r\n " +
+                    "                   this.returnNullIfFirstMissing = returnNullIfFirstMissing;\r\n\r\n" +
+                    "                    if (copyDown)\r\n                    {\r\n                      " +
+                    "  this.reader = null;\r\n                        names = new string[length];\r\n    " +
+                    "                    types = new Type[length];\r\n                        int index" +
+                    " = startBound;\r\n                        for (int i = 0; i < length; i++)\r\n      " +
+                    "                  {\r\n                            names[i] = reader.GetName(index" +
+                    ");\r\n                            types[i] = reader.GetFieldType(index++);\r\n      " +
+                    "                  }\r\n                    }\r\n                    else\r\n          " +
+                    "          {\r\n                        this.reader = reader;\r\n                    " +
+                    "    names = null;\r\n                        types = null;\r\n                    }\r" +
+                    "\n                }\r\n\r\n                public override int GetHashCode()\r\n       " +
+                    "         {\r\n                    return hashCode;\r\n                }\r\n           " +
+                    "     public override string ToString()\r\n                { // only used in the de" +
+                    "bugger\r\n                    if (names != null)\r\n                    {\r\n         " +
+                    "               return string.Join(\", \", names);\r\n                    }\r\n        " +
+                    "            if (reader != null)\r\n                    {\r\n                        " +
+                    "var sb = new StringBuilder();\r\n                        int index = startBound;\r\n" +
+                    "                        for (int i = 0; i < length; i++)\r\n                      " +
+                    "  {\r\n                            if (i != 0) sb.Append(\", \");\r\n                 " +
+                    "           sb.Append(reader.GetName(index++));\r\n                        }\r\n     " +
+                    "                   return sb.ToString();\r\n                    }\r\n               " +
+                    "     return base.ToString();\r\n                }\r\n                public override" +
+                    " bool Equals(object obj)\r\n                {\r\n                    return obj is D" +
+                    "eserializerKey && Equals((DeserializerKey)obj);\r\n                }\r\n            " +
+                    "    public bool Equals(DeserializerKey other)\r\n                {\r\n              " +
+                    "      if (this.hashCode != other.hashCode\r\n                        || this.start" +
+                    "Bound != other.startBound\r\n                        || this.length != other.lengt" +
+                    "h\r\n                        || this.returnNullIfFirstMissing != other.returnNullI" +
+                    "fFirstMissing)\r\n                    {\r\n                        return false; // " +
+                    "clearly different\r\n                    }\r\n                    for (int i = 0; i " +
+                    "< length; i++)\r\n                    {\r\n                        if ((this.names?[" +
+                    "i] ?? this.reader?.GetName(startBound + i)) != (other.names?[i] ?? other.reader?" +
+                    ".GetName(startBound + i))\r\n                            ||\r\n                     " +
+                    "       (this.types?[i] ?? this.reader?.GetFieldType(startBound + i)) != (other.t" +
+                    "ypes?[i] ?? other.reader?.GetFieldType(startBound + i))\r\n                       " +
+                    "     )\r\n                        {\r\n                            return false; // " +
+                    "different column name or type\r\n                        }\r\n                    }\r" +
+                    "\n                    return true;\r\n                }\r\n            }\r\n           " +
+                    " private Func<IDataReader, object> GetReader(IDataReader reader, int startBound," +
+                    " int length, bool returnNullIfFirstMissing)\r\n            {\r\n                if (" +
+                    "length < 0) length = reader.FieldCount - startBound;\r\n                int hash =" +
+                    " GetColumnHash(reader, startBound, length);\r\n                if (returnNullIfFir" +
+                    "stMissing) hash *= -27;\r\n                // get a cheap key first: false means d" +
+                    "on\'t copy the values down\r\n                var key = new DeserializerKey(hash, s" +
+                    "tartBound, length, returnNullIfFirstMissing, reader, false);\r\n                Fu" +
+                    "nc<IDataReader, object> deser;\r\n                lock (readers)\r\n                " +
+                    "{\r\n                    if (readers.TryGetValue(key, out deser)) return deser;\r\n " +
+                    "               }\r\n                deser = GetTypeDeserializerImpl(type, reader, " +
+                    "startBound, length, returnNullIfFirstMissing);\r\n                // get a more ex" +
+                    "pensive key: true means copy the values down so it can be used as a key later\r\n " +
+                    "               key = new DeserializerKey(hash, startBound, length, returnNullIfF" +
+                    "irstMissing, reader, true);\r\n                lock (readers)\r\n                {\r\n" +
+                    "                    return readers[key] = deser;\r\n                }\r\n           " +
+                    " }\r\n        }\r\n\r\n    }\r\n}\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

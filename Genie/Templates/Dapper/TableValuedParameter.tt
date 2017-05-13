@@ -6,7 +6,7 @@ using System.Reflection;
 
 
 #if !COREFX
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     /// <summary>
     /// Used to pass a DataTable as a TableValuedParameter
@@ -24,7 +24,7 @@ namespace Indico.DataAccess.Dapper
         /// Create a new instance of TableValuedParameter
         /// </summary>
         public TableValuedParameter(DataTable table, string typeName)
-        {
+        { 
             this.table = table;
             this.typeName = typeName;
         }

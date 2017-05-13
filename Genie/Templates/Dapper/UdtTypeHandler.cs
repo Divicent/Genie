@@ -26,26 +26,33 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace Indico.DataAccess.Dapper\r\n{\r\n    p" +
-                    "artial class SqlMapper\r\n    {\r\n#if !COREFX\r\n        /// <summary>\r\n        /// A" +
-                    " type handler for data-types that are supported by the underlying provider, but " +
-                    "which need\r\n        /// a well-known UdtTypeName to be specified\r\n        /// </" +
-                    "summary>\r\n        public class UdtTypeHandler : ITypeHandler\r\n        {\r\n       " +
-                    "     private readonly string udtTypeName;\r\n            /// <summary>\r\n          " +
-                    "  /// Creates a new instance of UdtTypeHandler with the specified UdtTypeName\r\n " +
-                    "           /// </summary>\r\n            public UdtTypeHandler(string udtTypeName)" +
-                    "\r\n            {\r\n                if (string.IsNullOrEmpty(udtTypeName)) throw ne" +
-                    "w ArgumentException(\"Cannot be null or empty\", udtTypeName);\r\n                th" +
-                    "is.udtTypeName = udtTypeName;\r\n            }\r\n            object ITypeHandler.Pa" +
-                    "rse(Type destinationType, object value)\r\n            {\r\n                return v" +
-                    "alue is DBNull ? null : value;\r\n            }\r\n\r\n            void ITypeHandler.S" +
-                    "etValue(IDbDataParameter parameter, object value)\r\n            {\r\n#pragma warnin" +
-                    "g disable 0618\r\n                parameter.Value = SanitizeParameterValue(value);" +
-                    "\r\n#pragma warning restore 0618\r\n                if (parameter is System.Data.Sql" +
-                    "Client.SqlParameter && !(value is DBNull))\r\n                {\r\n                 " +
-                    "   ((System.Data.SqlClient.SqlParameter)parameter).SqlDbType = SqlDbType.Udt;\r\n " +
-                    "                   ((System.Data.SqlClient.SqlParameter)parameter).UdtTypeName =" +
-                    " udtTypeName;\r\n                }\r\n            }\r\n        }\r\n#endif\r\n    }\r\n}\r\n");
+            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\UdtTypeHandler.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n#if !COREFX\r\n        /// <summary" +
+                    ">\r\n        /// A type handler for data-types that are supported by the underlyin" +
+                    "g provider, but which need\r\n        /// a well-known UdtTypeName to be specified" +
+                    "\r\n        /// </summary>\r\n        public class UdtTypeHandler : ITypeHandler\r\n  " +
+                    "      {\r\n            private readonly string udtTypeName;\r\n            /// <summ" +
+                    "ary>\r\n            /// Creates a new instance of UdtTypeHandler with the specifie" +
+                    "d UdtTypeName\r\n            /// </summary>\r\n            public UdtTypeHandler(str" +
+                    "ing udtTypeName)\r\n            {\r\n                if (string.IsNullOrEmpty(udtTyp" +
+                    "eName)) throw new ArgumentException(\"Cannot be null or empty\", udtTypeName);\r\n  " +
+                    "              this.udtTypeName = udtTypeName;\r\n            }\r\n            object" +
+                    " ITypeHandler.Parse(Type destinationType, object value)\r\n            {\r\n        " +
+                    "        return value is DBNull ? null : value;\r\n            }\r\n\r\n            voi" +
+                    "d ITypeHandler.SetValue(IDbDataParameter parameter, object value)\r\n            {" +
+                    " \r\n#pragma warning disable 0618\r\n                parameter.Value = SanitizeParam" +
+                    "eterValue(value);\r\n#pragma warning restore 0618\r\n                if (parameter i" +
+                    "s System.Data.SqlClient.SqlParameter && !(value is DBNull))\r\n                {\r\n" +
+                    "                    ((System.Data.SqlClient.SqlParameter)parameter).SqlDbType = " +
+                    "SqlDbType.Udt;\r\n                    ((System.Data.SqlClient.SqlParameter)paramet" +
+                    "er).UdtTypeName = udtTypeName;\r\n                }\r\n            }\r\n        }\r\n#en" +
+                    "dif\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

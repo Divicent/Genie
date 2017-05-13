@@ -27,50 +27,56 @@ namespace Genie.Templates.Dapper
         public virtual string TransformText()
         {
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Reflection;\r\n\r\nnam" +
-                    "espace Indico.DataAccess.Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        " +
-                    "sealed class DapperRowMetaObject : System.Dynamic.DynamicMetaObject\r\n        {\r\n" +
-                    "            static readonly MethodInfo getValueMethod = typeof(IDictionary<strin" +
-                    "g, object>).GetProperty(\"Item\").GetGetMethod();\r\n            static readonly Met" +
-                    "hodInfo setValueMethod = typeof(DapperRow).GetMethod(\"SetValue\", new Type[] { ty" +
-                    "peof(string), typeof(object) });\r\n\r\n            public DapperRowMetaObject(\r\n   " +
-                    "             System.Linq.Expressions.Expression expression,\r\n                Sys" +
-                    "tem.Dynamic.BindingRestrictions restrictions\r\n                )\r\n               " +
-                    " : base(expression, restrictions)\r\n            {\r\n            }\r\n\r\n            p" +
-                    "ublic DapperRowMetaObject(\r\n                System.Linq.Expressions.Expression e" +
-                    "xpression,\r\n                System.Dynamic.BindingRestrictions restrictions,\r\n  " +
-                    "              object value\r\n                )\r\n                : base(expression" +
-                    ", restrictions, value)\r\n            {\r\n            }\r\n\r\n            System.Dynam" +
-                    "ic.DynamicMetaObject CallMethod(\r\n                MethodInfo method,\r\n          " +
-                    "      System.Linq.Expressions.Expression[] parameters\r\n                )\r\n      " +
-                    "      {\r\n                var callMethod = new System.Dynamic.DynamicMetaObject(\r" +
-                    "\n                    System.Linq.Expressions.Expression.Call(\r\n                 " +
-                    "       System.Linq.Expressions.Expression.Convert(Expression, LimitType),\r\n     " +
-                    "                   method,\r\n                        parameters),\r\n              " +
-                    "      System.Dynamic.BindingRestrictions.GetTypeRestriction(Expression, LimitTyp" +
-                    "e)\r\n                    );\r\n                return callMethod;\r\n            }\r\n\r" +
-                    "\n            public override System.Dynamic.DynamicMetaObject BindGetMember(Syst" +
-                    "em.Dynamic.GetMemberBinder binder)\r\n            {\r\n                var parameter" +
-                    "s = new System.Linq.Expressions.Expression[]\r\n                                  " +
-                    "   {\r\n                                         System.Linq.Expressions.Expressio" +
-                    "n.Constant(binder.Name)\r\n                                     };\r\n\r\n            " +
-                    "    var callMethod = CallMethod(getValueMethod, parameters);\r\n\r\n                " +
-                    "return callMethod;\r\n            }\r\n\r\n            // Needed for Visual basic dyna" +
-                    "mic support\r\n            public override System.Dynamic.DynamicMetaObject BindIn" +
-                    "vokeMember(System.Dynamic.InvokeMemberBinder binder, System.Dynamic.DynamicMetaO" +
-                    "bject[] args)\r\n            {\r\n                var parameters = new System.Linq.E" +
-                    "xpressions.Expression[]\r\n                                     {\r\n               " +
-                    "                          System.Linq.Expressions.Expression.Constant(binder.Nam" +
-                    "e)\r\n                                     };\r\n\r\n                var callMethod = " +
-                    "CallMethod(getValueMethod, parameters);\r\n\r\n                return callMethod;\r\n " +
-                    "           }\r\n\r\n            public override System.Dynamic.DynamicMetaObject Bin" +
-                    "dSetMember(System.Dynamic.SetMemberBinder binder, System.Dynamic.DynamicMetaObje" +
-                    "ct value)\r\n            {\r\n                var parameters = new System.Linq.Expre" +
-                    "ssions.Expression[]\r\n                                     {\r\n                   " +
-                    "                      System.Linq.Expressions.Expression.Constant(binder.Name),\r" +
-                    "\n                                         value.Expression,\r\n                   " +
-                    "                  };\r\n\r\n                var callMethod = CallMethod(setValueMeth" +
-                    "od, parameters);\r\n\r\n                return callMethod;\r\n            }\r\n        }" +
-                    "\r\n    }\r\n}\r\n");
+                    "espace ");
+            
+            #line 7 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_DapperRowMetaObject.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper \r\n{\r\n    partial class SqlMapper\r\n    {\r\n        sealed class DapperRowMe" +
+                    "taObject : System.Dynamic.DynamicMetaObject\r\n        {\r\n            static reado" +
+                    "nly MethodInfo getValueMethod = typeof(IDictionary<string, object>).GetProperty(" +
+                    "\"Item\").GetGetMethod();\r\n            static readonly MethodInfo setValueMethod =" +
+                    " typeof(DapperRow).GetMethod(\"SetValue\", new Type[] { typeof(string), typeof(obj" +
+                    "ect) });\r\n\r\n            public DapperRowMetaObject(\r\n                System.Linq" +
+                    ".Expressions.Expression expression,\r\n                System.Dynamic.BindingRestr" +
+                    "ictions restrictions\r\n                )\r\n                : base(expression, rest" +
+                    "rictions)\r\n            {\r\n            }\r\n\r\n            public DapperRowMetaObjec" +
+                    "t(\r\n                System.Linq.Expressions.Expression expression,\r\n            " +
+                    "    System.Dynamic.BindingRestrictions restrictions,\r\n                object val" +
+                    "ue\r\n                )\r\n                : base(expression, restrictions, value)\r\n" +
+                    "            {\r\n            }\r\n\r\n            System.Dynamic.DynamicMetaObject Cal" +
+                    "lMethod(\r\n                MethodInfo method,\r\n                System.Linq.Expres" +
+                    "sions.Expression[] parameters\r\n                )\r\n            {\r\n               " +
+                    " var callMethod = new System.Dynamic.DynamicMetaObject(\r\n                    Sys" +
+                    "tem.Linq.Expressions.Expression.Call(\r\n                        System.Linq.Expre" +
+                    "ssions.Expression.Convert(Expression, LimitType),\r\n                        metho" +
+                    "d,\r\n                        parameters),\r\n                    System.Dynamic.Bin" +
+                    "dingRestrictions.GetTypeRestriction(Expression, LimitType)\r\n                    " +
+                    ");\r\n                return callMethod;\r\n            }\r\n\r\n            public over" +
+                    "ride System.Dynamic.DynamicMetaObject BindGetMember(System.Dynamic.GetMemberBind" +
+                    "er binder)\r\n            {\r\n                var parameters = new System.Linq.Expr" +
+                    "essions.Expression[]\r\n                                     {\r\n                  " +
+                    "                       System.Linq.Expressions.Expression.Constant(binder.Name)\r" +
+                    "\n                                     };\r\n\r\n                var callMethod = Cal" +
+                    "lMethod(getValueMethod, parameters);\r\n\r\n                return callMethod;\r\n    " +
+                    "        }\r\n\r\n            // Needed for Visual basic dynamic support\r\n           " +
+                    " public override System.Dynamic.DynamicMetaObject BindInvokeMember(System.Dynami" +
+                    "c.InvokeMemberBinder binder, System.Dynamic.DynamicMetaObject[] args)\r\n         " +
+                    "   {\r\n                var parameters = new System.Linq.Expressions.Expression[]\r" +
+                    "\n                                     {\r\n                                       " +
+                    "  System.Linq.Expressions.Expression.Constant(binder.Name)\r\n                    " +
+                    "                 };\r\n\r\n                var callMethod = CallMethod(getValueMetho" +
+                    "d, parameters);\r\n\r\n                return callMethod;\r\n            }\r\n\r\n        " +
+                    "    public override System.Dynamic.DynamicMetaObject BindSetMember(System.Dynami" +
+                    "c.SetMemberBinder binder, System.Dynamic.DynamicMetaObject value)\r\n            {" +
+                    "\r\n                var parameters = new System.Linq.Expressions.Expression[]\r\n   " +
+                    "                                  {\r\n                                         Sy" +
+                    "stem.Linq.Expressions.Expression.Constant(binder.Name),\r\n                       " +
+                    "                  value.Expression,\r\n                                     };\r\n\r\n" +
+                    "                var callMethod = CallMethod(setValueMethod, parameters);\r\n\r\n    " +
+                    "            return callMethod;\r\n            }\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

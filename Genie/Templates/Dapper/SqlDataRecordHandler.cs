@@ -33,7 +33,7 @@ namespace Genie.Templates.Dapper
             
             #line default
             #line hidden
-            this.Write(@".Dapper
+            this.Write(@".Dapper 
 {
     sealed class SqlDataRecordHandler : SqlMapper.ITypeHandler
     {

@@ -26,36 +26,43 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace Indico.DataAccess.Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n      " +
-                    "  /// <summary>\r\n        /// Permits specifying certain SqlMapper values globall" +
-                    "y.\r\n        /// </summary>\r\n        public static class Settings\r\n        {\r\n   " +
-                    "         static Settings()\r\n            {\r\n                SetDefaults();\r\n     " +
-                    "       }\r\n\r\n            /// <summary>\r\n            /// Resets all Settings to th" +
-                    "eir default values\r\n            /// </summary>\r\n            public static void S" +
-                    "etDefaults()\r\n            {\r\n                CommandTimeout = null;\r\n           " +
-                    "     ApplyNullValues = false;\r\n            }\r\n\r\n            /// <summary>\r\n     " +
-                    "       /// Specifies the default Command Timeout for all Queries\r\n            //" +
-                    "/ </summary>\r\n            public static int? CommandTimeout { get; set; }\r\n\r\n   " +
-                    "         /// <summary>\r\n            /// Indicates whether nulls in data are sile" +
-                    "ntly ignored (default) vs actively applied and assigned to members\r\n            " +
-                    "/// </summary>\r\n            public static bool ApplyNullValues { get; set; }\r\n\r\n" +
-                    "\r\n            /// <summary>\r\n            /// Should list expansions be padded wi" +
-                    "th null-valued parameters, to prevent query-plan saturation? For example,\r\n     " +
-                    "       /// an \'in @foo\' expansion with 7, 8 or 9 values will be sent as a list o" +
-                    "f 10 values, with 3, 2 or 1 of them null.\r\n            /// The padding size is r" +
-                    "elative to the size of the list; \"next 10\" under 150, \"next 50\" under 500,\r\n    " +
-                    "        /// \"next 100\" under 1500, etc.\r\n            /// </summary>\r\n           " +
-                    " /// <remarks>\r\n            /// Caution: this should be treated with care if you" +
-                    "r DB provider (or the specific configuration) allows for null\r\n            /// e" +
-                    "quality (aka \"ansi nulls off\"), as this may change the intent of your query; as " +
-                    "such, this is disabled by \r\n            /// default and must be enabled.\r\n      " +
-                    "      /// </remarks>\r\n            public static bool PadListExpansions { get; se" +
-                    "t; }\r\n            /// <summary>\r\n            /// If set (non-negative), when per" +
-                    "forming in-list expansions of integer types (\"where id in @ids\", etc), switch to" +
-                    " a string_split based\r\n            /// operation if there are more than this man" +
-                    "y elements. Note that this feautre requires SQL Server 2016 / compatibility leve" +
-                    "l 130 (or above).\r\n            /// </summary>\r\n            public static int InL" +
-                    "istStringSplitCount { get; set; } = -1;\r\n        }\r\n    }\r\n}\r\n");
+            this.Write("namespace ");
+            
+            #line 3 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_Settings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        //" +
+                    "/ Permits specifying certain SqlMapper values globally.\r\n        /// </summary>\r" +
+                    "\n        public static class Settings\r\n        {\r\n            static Settings()\r" +
+                    "\n            {\r\n                SetDefaults();\r\n            }\r\n\r\n            ///" +
+                    " <summary>\r\n            /// Resets all Settings to their default values\r\n       " +
+                    "     /// </summary>\r\n            public static void SetDefaults()\r\n            {" +
+                    "\r\n                CommandTimeout = null;\r\n                ApplyNullValues = fals" +
+                    "e;\r\n            }\r\n\r\n            /// <summary>\r\n            /// Specifies the de" +
+                    "fault Command Timeout for all Queries\r\n            /// </summary>\r\n            p" +
+                    "ublic static int? CommandTimeout { get; set; }\r\n\r\n            /// <summary>\r\n   " +
+                    "         /// Indicates whether nulls in data are silently ignored (default) vs a" +
+                    "ctively applied and assigned to members\r\n            /// </summary>\r\n           " +
+                    " public static bool ApplyNullValues { get; set; }\r\n\r\n\r\n            /// <summary>" +
+                    "\r\n            /// Should list expansions be padded with null-valued parameters, " +
+                    "to prevent query-plan saturation? For example,\r\n            /// an \'in @foo\' exp" +
+                    "ansion with 7, 8 or 9 values will be sent as a list of 10 values, with 3, 2 or 1" +
+                    " of them null.\r\n            /// The padding size is relative to the size of the " +
+                    "list; \"next 10\" under 150, \"next 50\" under 500,\r\n            /// \"next 100\" unde" +
+                    "r 1500, etc.\r\n            /// </summary>\r\n            /// <remarks>\r\n           " +
+                    " /// Caution: this should be treated with care if your DB provider (or the speci" +
+                    "fic configuration) allows for null\r\n            /// equality (aka \"ansi nulls of" +
+                    "f\"), as this may change the intent of your query; as such, this is disabled by \r" +
+                    "\n            /// default and must be enabled.\r\n            /// </remarks>\r\n     " +
+                    "       public static bool PadListExpansions { get; set; }\r\n            /// <summ" +
+                    "ary>\r\n            /// If set (non-negative), when performing in-list expansions " +
+                    "of integer types (\"where id in @ids\", etc), switch to a string_split based\r\n    " +
+                    "        /// operation if there are more than this many elements. Note that this " +
+                    "feautre requires SQL Server 2016 / compatibility level 130 (or above).\r\n        " +
+                    "    /// </summary>\r\n            public static int InListStringSplitCount { get; " +
+                    "set; } = -1;\r\n        } \r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

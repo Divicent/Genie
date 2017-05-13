@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace Indico.DataAccess.Dapper
 {
     partial class SqlMapper
     {

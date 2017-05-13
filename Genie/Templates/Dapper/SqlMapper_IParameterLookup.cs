@@ -26,8 +26,14 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"
-namespace Indico.DataAccess.Dapper
+            this.Write("\r\nnamespace ");
+            
+            #line 4 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_IParameterLookup.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(@".Dapper
 {
     partial class SqlMapper
     {
@@ -43,7 +49,7 @@ namespace Indico.DataAccess.Dapper
         }
     }
 }
-");
+ ");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -2,8 +2,8 @@
 <#@ import namespace="Genie.Base" #>
 using System;
 using System.Reflection;
-
-namespace Indico.DataAccess.Dapper
+ 
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {

@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\WriteAttribute.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\WriteAttribute.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class WriteAttribute : WriteAttributeBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Dapper
         {
             this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Dapper\WriteAttribute.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\WriteAttribute.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -44,7 +44,7 @@ namespace Genie.Templates.Dapper
         }
         public bool Write { get; private set; }
     }
-}");
+} ");
             return this.GenerationEnvironment.ToString();
         }
     }

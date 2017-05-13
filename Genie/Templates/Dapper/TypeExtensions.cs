@@ -26,46 +26,53 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace Indico.DataAccess.Dapper\r\n{\r" +
-                    "\n    internal static class TypeExtensions\r\n    {\r\n        public static string N" +
-                    "ame(this Type type)\r\n        {\r\n#if COREFX\r\n            return type.GetTypeInfo(" +
-                    ").Name;\r\n#else\r\n            return type.Name;\r\n#endif\r\n        }\r\n\r\n        publ" +
-                    "ic static bool IsValueType(this Type type)\r\n        {\r\n#if COREFX\r\n            r" +
-                    "eturn type.GetTypeInfo().IsValueType;\r\n#else\r\n            return type.IsValueTyp" +
-                    "e;\r\n#endif\r\n        }\r\n        public static bool IsEnum(this Type type)\r\n      " +
-                    "  {\r\n#if COREFX\r\n            return type.GetTypeInfo().IsEnum;\r\n#else\r\n         " +
-                    "   return type.IsEnum;\r\n#endif\r\n        }\r\n        public static bool IsGenericT" +
-                    "ype(this Type type)\r\n        {\r\n#if COREFX\r\n            return type.GetTypeInfo(" +
-                    ").IsGenericType;\r\n#else\r\n            return type.IsGenericType;\r\n#endif\r\n       " +
-                    " }\r\n        public static bool IsInterface(this Type type)\r\n        {\r\n#if COREF" +
-                    "X\r\n            return type.GetTypeInfo().IsInterface;\r\n#else\r\n            return" +
-                    " type.IsInterface;\r\n#endif\r\n        }\r\n#if COREFX\r\n        public static IEnumer" +
-                    "able<Attribute> GetCustomAttributes(this Type type, bool inherit)\r\n        {\r\n  " +
-                    "          return type.GetTypeInfo().GetCustomAttributes(inherit);\r\n        }\r\n\r\n" +
-                    "        public static TypeCode GetTypeCode(Type type)\r\n        {\r\n            if" +
-                    " (type == null) return TypeCode.Empty;\r\n            TypeCode result;\r\n          " +
-                    "  if (typeCodeLookup.TryGetValue(type, out result)) return result;\r\n\r\n          " +
-                    "  if (type.IsEnum())\r\n            {\r\n                type = Enum.GetUnderlyingTy" +
-                    "pe(type);\r\n                if (typeCodeLookup.TryGetValue(type, out result)) ret" +
-                    "urn result;\r\n            }\r\n            return TypeCode.Object;\r\n        }\r\n    " +
-                    "    static readonly Dictionary<Type, TypeCode> typeCodeLookup = new Dictionary<T" +
-                    "ype, TypeCode>\r\n        {\r\n            {typeof(bool), TypeCode.Boolean },\r\n     " +
-                    "       {typeof(byte), TypeCode.Byte },\r\n            {typeof(char), TypeCode.Char" +
-                    "},\r\n            {typeof(DateTime), TypeCode.DateTime},\r\n            {typeof(deci" +
-                    "mal), TypeCode.Decimal},\r\n            {typeof(double), TypeCode.Double },\r\n     " +
-                    "       {typeof(short), TypeCode.Int16 },\r\n            {typeof(int), TypeCode.Int" +
-                    "32 },\r\n            {typeof(long), TypeCode.Int64 },\r\n            {typeof(object)" +
-                    ", TypeCode.Object},\r\n            {typeof(sbyte), TypeCode.SByte },\r\n            " +
-                    "{typeof(float), TypeCode.Single },\r\n            {typeof(string), TypeCode.String" +
-                    " },\r\n            {typeof(ushort), TypeCode.UInt16 },\r\n            {typeof(uint)," +
-                    " TypeCode.UInt32 },\r\n            {typeof(ulong), TypeCode.UInt64 },\r\n        };\r" +
-                    "\n#else\r\n        public static TypeCode GetTypeCode(Type type)\r\n        {\r\n      " +
-                    "      return Type.GetTypeCode(type);\r\n        }\r\n#endif\r\n        public static M" +
-                    "ethodInfo GetPublicInstanceMethod(this Type type, string name, Type[] types)\r\n  " +
-                    "      {\r\n#if COREFX\r\n            var method = type.GetMethod(name, types);\r\n    " +
-                    "        return (method != null && method.IsPublic && !method.IsStatic) ? method " +
-                    ": null;\r\n#else\r\n            return type.GetMethod(name, BindingFlags.Instance | " +
-                    "BindingFlags.Public, null, types, null);\r\n#endif\r\n        }\r\n\r\n\r\n    }\r\n}\r\n");
+            this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\TypeExtensions.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    internal static class TypeExtensions\r\n    {\r\n        public stati" +
+                    "c string Name(this Type type)\r\n        {\r\n#if COREFX\r\n            return type.Ge" +
+                    "tTypeInfo().Name;\r\n#else\r\n            return type.Name;\r\n#endif\r\n        }\r\n\r\n  " +
+                    "      public static bool IsValueType(this Type type)\r\n        {\r\n#if COREFX\r\n   " +
+                    "         return type.GetTypeInfo().IsValueType;\r\n#else\r\n            return type." +
+                    "IsValueType;\r\n#endif\r\n        }\r\n        public static bool IsEnum(this Type typ" +
+                    "e)\r\n        {\r\n#if COREFX\r\n            return type.GetTypeInfo().IsEnum;\r\n#else " +
+                    "\r\n            return type.IsEnum;\r\n#endif\r\n        }\r\n        public static bool" +
+                    " IsGenericType(this Type type)\r\n        {\r\n#if COREFX\r\n            return type.G" +
+                    "etTypeInfo().IsGenericType;\r\n#else\r\n            return type.IsGenericType;\r\n#end" +
+                    "if\r\n        }\r\n        public static bool IsInterface(this Type type)\r\n        {" +
+                    "\r\n#if COREFX\r\n            return type.GetTypeInfo().IsInterface;\r\n#else\r\n       " +
+                    "     return type.IsInterface;\r\n#endif\r\n        }\r\n#if COREFX\r\n        public sta" +
+                    "tic IEnumerable<Attribute> GetCustomAttributes(this Type type, bool inherit)\r\n  " +
+                    "      {\r\n            return type.GetTypeInfo().GetCustomAttributes(inherit);\r\n  " +
+                    "      }\r\n\r\n        public static TypeCode GetTypeCode(Type type)\r\n        {\r\n   " +
+                    "         if (type == null) return TypeCode.Empty;\r\n            TypeCode result;\r" +
+                    "\n            if (typeCodeLookup.TryGetValue(type, out result)) return result;\r\n\r" +
+                    "\n            if (type.IsEnum())\r\n            {\r\n                type = Enum.GetU" +
+                    "nderlyingType(type);\r\n                if (typeCodeLookup.TryGetValue(type, out r" +
+                    "esult)) return result;\r\n            }\r\n            return TypeCode.Object;\r\n    " +
+                    "    }\r\n        static readonly Dictionary<Type, TypeCode> typeCodeLookup = new D" +
+                    "ictionary<Type, TypeCode>\r\n        {\r\n            {typeof(bool), TypeCode.Boolea" +
+                    "n },\r\n            {typeof(byte), TypeCode.Byte },\r\n            {typeof(char), Ty" +
+                    "peCode.Char},\r\n            {typeof(DateTime), TypeCode.DateTime},\r\n            {" +
+                    "typeof(decimal), TypeCode.Decimal},\r\n            {typeof(double), TypeCode.Doubl" +
+                    "e },\r\n            {typeof(short), TypeCode.Int16 },\r\n            {typeof(int), T" +
+                    "ypeCode.Int32 },\r\n            {typeof(long), TypeCode.Int64 },\r\n            {typ" +
+                    "eof(object), TypeCode.Object},\r\n            {typeof(sbyte), TypeCode.SByte },\r\n " +
+                    "           {typeof(float), TypeCode.Single },\r\n            {typeof(string), Type" +
+                    "Code.String },\r\n            {typeof(ushort), TypeCode.UInt16 },\r\n            {ty" +
+                    "peof(uint), TypeCode.UInt32 },\r\n            {typeof(ulong), TypeCode.UInt64 },\r\n" +
+                    "        };\r\n#else\r\n        public static TypeCode GetTypeCode(Type type)\r\n      " +
+                    "  {\r\n            return Type.GetTypeCode(type);\r\n        }\r\n#endif\r\n        publ" +
+                    "ic static MethodInfo GetPublicInstanceMethod(this Type type, string name, Type[]" +
+                    " types)\r\n        {\r\n#if COREFX\r\n            var method = type.GetMethod(name, ty" +
+                    "pes);\r\n            return (method != null && method.IsPublic && !method.IsStatic" +
+                    ") ? method : null;\r\n#else\r\n            return type.GetMethod(name, BindingFlags." +
+                    "Instance | BindingFlags.Public, null, types, null);\r\n#endif\r\n        }\r\n\r\n\r\n    " +
+                    "}\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

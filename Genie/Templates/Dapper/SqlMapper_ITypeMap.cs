@@ -26,30 +26,36 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace Indico.DataAccess.Dapper\r\n{\r" +
-                    "\n    partial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        /// Implemen" +
-                    "t this interface to change default mapping of reader columns to type members\r\n  " +
-                    "      /// </summary>\r\n        public interface ITypeMap\r\n        {\r\n            " +
-                    "/// <summary>\r\n            /// Finds best constructor\r\n            /// </summary" +
-                    ">\r\n            /// <param name=\"names\">DataReader column names</param>\r\n        " +
-                    "    /// <param name=\"types\">DataReader column types</param>\r\n            /// <re" +
-                    "turns>Matching constructor or default one</returns>\r\n            ConstructorInfo" +
-                    " FindConstructor(string[] names, Type[] types);\r\n\r\n            /// <summary>\r\n  " +
-                    "          /// Returns a constructor which should *always* be used.\r\n            " +
-                    "/// \r\n            /// Parameters will be default values, nulls for reference typ" +
-                    "es and zero\'d for value types.\r\n            /// \r\n            /// Use this class" +
-                    " to force object creation away from parameterless constructors you don\'t control" +
-                    ".\r\n            /// </summary>\r\n            ConstructorInfo FindExplicitConstruct" +
-                    "or();\r\n\r\n            /// <summary>\r\n            /// Gets mapping for constructor" +
-                    " parameter\r\n            /// </summary>\r\n            /// <param name=\"constructor" +
-                    "\">Constructor to resolve</param>\r\n            /// <param name=\"columnName\">DataR" +
-                    "eader column name</param>\r\n            /// <returns>Mapping implementation</retu" +
-                    "rns>\r\n            IMemberMap GetConstructorParameter(ConstructorInfo constructor" +
-                    ", string columnName);\r\n\r\n            /// <summary>\r\n            /// Gets member " +
-                    "mapping for column\r\n            /// </summary>\r\n            /// <param name=\"col" +
-                    "umnName\">DataReader column name</param>\r\n            /// <returns>Mapping implem" +
-                    "entation</returns>\r\n            IMemberMap GetMember(string columnName);\r\n      " +
-                    "  }\r\n    }\r\n}\r\n");
+            this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_ITypeMap.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        //" +
+                    "/ Implement this interface to change default mapping of reader columns to type m" +
+                    "embers\r\n        /// </summary>\r\n        public interface ITypeMap\r\n        {\r\n  " +
+                    "          /// <summary>\r\n            /// Finds best constructor\r\n            ///" +
+                    " </summary>\r\n            /// <param name=\"names\">DataReader column names</param>" +
+                    "\r\n            /// <param name=\"types\">DataReader column types</param>\r\n         " +
+                    "   /// <returns>Matching constructor or default one</returns>\r\n            Const" +
+                    "ructorInfo FindConstructor(string[] names, Type[] types);\r\n\r\n            /// <su" +
+                    "mmary>\r\n            /// Returns a constructor which should *always* be used.\r\n  " +
+                    "          /// \r\n            /// Parameters will be default values, nulls for ref" +
+                    "erence types and zero\'d for value types.\r\n            /// \r\n            /// Use " +
+                    "this class to force object creation away from parameterless constructors you don" +
+                    "\'t control.\r\n            /// </summary>\r\n            ConstructorInfo FindExplici" +
+                    "tConstructor();\r\n\r\n            /// <summary>\r\n            /// Gets mapping for c" +
+                    "onstructor parameter\r\n            /// </summary>\r\n            /// <param name=\"c" +
+                    "onstructor\">Constructor to resolve</param>\r\n            /// <param name=\"columnN" +
+                    "ame\">DataReader column name</param>\r\n            /// <returns>Mapping implementa" +
+                    "tion</returns>\r\n            IMemberMap GetConstructorParameter(ConstructorInfo c" +
+                    "onstructor, string columnName);\r\n\r\n            /// <summary>\r\n            /// Ge" +
+                    "ts member mapping for column\r\n            /// </summary>\r\n            /// <param" +
+                    " name=\"columnName\">DataReader column name</param>\r\n            /// <returns>Mapp" +
+                    "ing implementation</returns>\r\n            IMemberMap GetMember(string columnName" +
+                    ");\r\n        }\r\n    }\r\n} \r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

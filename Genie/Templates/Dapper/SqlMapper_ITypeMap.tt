@@ -3,7 +3,7 @@
 using System;
 using System.Reflection;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {
@@ -45,4 +45,4 @@ namespace Indico.DataAccess.Dapper
             IMemberMap GetMember(string columnName);
         }
     }
-}
+} 

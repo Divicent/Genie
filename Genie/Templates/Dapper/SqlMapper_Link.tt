@@ -2,7 +2,7 @@
 <#@ import namespace="Genie.Base" #>
 using System.Threading;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {
@@ -44,7 +44,7 @@ namespace Indico.DataAccess.Dapper
                     tryAgain = Interlocked.CompareExchange(ref head, newNode, snapshot) != snapshot;
                 } while (tryAgain);
                 return true;
-            }
+            } 
             private Link(TKey key, TValue value, Link<TKey, TValue> tail)
             {
                 Key = key;

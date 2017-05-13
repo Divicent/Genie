@@ -3,7 +3,7 @@
 using System;
 using System.Data;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {
@@ -18,7 +18,7 @@ namespace Indico.DataAccess.Dapper
             /// <param name="parameter">The parameter to configure</param>
             /// <param name="value">Parameter value</param>
             public abstract void SetValue(IDbDataParameter parameter, T value);
-
+ 
             /// <summary>
             /// Parse a database value back to a typed value
             /// </summary>

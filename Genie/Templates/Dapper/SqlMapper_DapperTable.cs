@@ -26,31 +26,37 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace Indico.DataAccess.D" +
-                    "apper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        private sealed class Dappe" +
-                    "rTable\r\n        {\r\n            string[] fieldNames;\r\n            readonly Dictio" +
-                    "nary<string, int> fieldNameLookup;\r\n\r\n            internal string[] FieldNames =" +
-                    "> fieldNames;\r\n\r\n            public DapperTable(string[] fieldNames)\r\n          " +
-                    "  {\r\n                if (fieldNames == null) throw new ArgumentNullException(nam" +
-                    "eof(fieldNames));\r\n                this.fieldNames = fieldNames;\r\n\r\n            " +
-                    "    fieldNameLookup = new Dictionary<string, int>(fieldNames.Length, StringCompa" +
-                    "rer.Ordinal);\r\n                // if there are dups, we want the **first** key t" +
-                    "o be the \"winner\" - so iterate backwards\r\n                for (int i = fieldName" +
-                    "s.Length - 1; i >= 0; i--)\r\n                {\r\n                    string key = " +
-                    "fieldNames[i];\r\n                    if (key != null) fieldNameLookup[key] = i;\r\n" +
-                    "                }\r\n            }\r\n\r\n            internal int IndexOfName(string " +
-                    "name)\r\n            {\r\n                int result;\r\n                return (name " +
-                    "!= null && fieldNameLookup.TryGetValue(name, out result)) ? result : -1;\r\n      " +
-                    "      }\r\n            internal int AddField(string name)\r\n            {\r\n        " +
-                    "        if (name == null) throw new ArgumentNullException(nameof(name));\r\n      " +
-                    "          if (fieldNameLookup.ContainsKey(name)) throw new InvalidOperationExcep" +
-                    "tion(\"Field already exists: \" + name);\r\n                int oldLen = fieldNames." +
-                    "Length;\r\n                Array.Resize(ref fieldNames, oldLen + 1); // yes, this " +
-                    "is sub-optimal, but this is not the expected common case\r\n                fieldN" +
-                    "ames[oldLen] = name;\r\n                fieldNameLookup[name] = oldLen;\r\n         " +
-                    "       return oldLen;\r\n            }\r\n\r\n            internal bool FieldExists(st" +
-                    "ring key) => key != null && fieldNameLookup.ContainsKey(key);\r\n\r\n            pub" +
-                    "lic int FieldCount => fieldNames.Length;\r\n        }\r\n    }\r\n}\r\n");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_DapperTable.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper \r\n{\r\n    partial class SqlMapper\r\n    {\r\n        private sealed class Dap" +
+                    "perTable\r\n        {\r\n            string[] fieldNames;\r\n            readonly Dict" +
+                    "ionary<string, int> fieldNameLookup;\r\n\r\n            internal string[] FieldNames" +
+                    " => fieldNames;\r\n\r\n            public DapperTable(string[] fieldNames)\r\n        " +
+                    "    {\r\n                if (fieldNames == null) throw new ArgumentNullException(n" +
+                    "ameof(fieldNames));\r\n                this.fieldNames = fieldNames;\r\n\r\n          " +
+                    "      fieldNameLookup = new Dictionary<string, int>(fieldNames.Length, StringCom" +
+                    "parer.Ordinal);\r\n                // if there are dups, we want the **first** key" +
+                    " to be the \"winner\" - so iterate backwards\r\n                for (int i = fieldNa" +
+                    "mes.Length - 1; i >= 0; i--)\r\n                {\r\n                    string key " +
+                    "= fieldNames[i];\r\n                    if (key != null) fieldNameLookup[key] = i;" +
+                    "\r\n                }\r\n            }\r\n\r\n            internal int IndexOfName(strin" +
+                    "g name)\r\n            {\r\n                int result;\r\n                return (nam" +
+                    "e != null && fieldNameLookup.TryGetValue(name, out result)) ? result : -1;\r\n    " +
+                    "        }\r\n            internal int AddField(string name)\r\n            {\r\n      " +
+                    "          if (name == null) throw new ArgumentNullException(nameof(name));\r\n    " +
+                    "            if (fieldNameLookup.ContainsKey(name)) throw new InvalidOperationExc" +
+                    "eption(\"Field already exists: \" + name);\r\n                int oldLen = fieldName" +
+                    "s.Length;\r\n                Array.Resize(ref fieldNames, oldLen + 1); // yes, thi" +
+                    "s is sub-optimal, but this is not the expected common case\r\n                fiel" +
+                    "dNames[oldLen] = name;\r\n                fieldNameLookup[name] = oldLen;\r\n       " +
+                    "         return oldLen;\r\n            }\r\n\r\n            internal bool FieldExists(" +
+                    "string key) => key != null && fieldNameLookup.ContainsKey(key);\r\n\r\n            p" +
+                    "ublic int FieldCount => fieldNames.Length;\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

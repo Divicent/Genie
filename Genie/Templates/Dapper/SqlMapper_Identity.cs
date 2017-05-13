@@ -26,67 +26,73 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace Indico.DataAccess.Dapper\r\n{\r\n    p" +
-                    "artial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        /// Identity of a " +
-                    "cached query in Dapper, used for extensibility\r\n        /// </summary>\r\n        " +
-                    "public class Identity : IEquatable<Identity>\r\n        {\r\n            internal Id" +
-                    "entity ForGrid(Type primaryType, int gridIndex)\r\n            {\r\n                " +
-                    "return new Identity(sql, commandType, connectionString, primaryType, parametersT" +
-                    "ype, null, gridIndex);\r\n            }\r\n\r\n            internal Identity ForGrid(T" +
-                    "ype primaryType, Type[] otherTypes, int gridIndex)\r\n            {\r\n             " +
-                    "   return new Identity(sql, commandType, connectionString, primaryType, paramete" +
-                    "rsType, otherTypes, gridIndex);\r\n            }\r\n            /// <summary>\r\n     " +
-                    "       /// Create an identity for use with DynamicParameters, internal use only\r" +
-                    "\n            /// </summary>\r\n            /// <param name=\"type\"></param>\r\n      " +
-                    "      /// <returns></returns>\r\n            public Identity ForDynamicParameters(" +
-                    "Type type)\r\n            {\r\n                return new Identity(sql, commandType," +
-                    " connectionString, this.type, type, null, -1);\r\n            }\r\n\r\n            int" +
-                    "ernal Identity(string sql, CommandType? commandType, IDbConnection connection, T" +
-                    "ype type, Type parametersType, Type[] otherTypes)\r\n                : this(sql, c" +
-                    "ommandType, connection.ConnectionString, type, parametersType, otherTypes, 0)\r\n " +
-                    "           { }\r\n            private Identity(string sql, CommandType? commandTyp" +
-                    "e, string connectionString, Type type, Type parametersType, Type[] otherTypes, i" +
-                    "nt gridIndex)\r\n            {\r\n                this.sql = sql;\r\n                t" +
-                    "his.commandType = commandType;\r\n                this.connectionString = connecti" +
-                    "onString;\r\n                this.type = type;\r\n                this.parametersTyp" +
-                    "e = parametersType;\r\n                this.gridIndex = gridIndex;\r\n              " +
-                    "  unchecked\r\n                {\r\n                    hashCode = 17; // we *know* " +
-                    "we are using this in a dictionary, so pre-compute this\r\n                    hash" +
-                    "Code = hashCode * 23 + commandType.GetHashCode();\r\n                    hashCode " +
-                    "= hashCode * 23 + gridIndex.GetHashCode();\r\n                    hashCode = hashC" +
-                    "ode * 23 + (sql?.GetHashCode() ?? 0);\r\n                    hashCode = hashCode *" +
-                    " 23 + (type?.GetHashCode() ?? 0);\r\n                    if (otherTypes != null)\r\n" +
-                    "                    {\r\n                        foreach (var t in otherTypes)\r\n  " +
-                    "                      {\r\n                            hashCode = hashCode * 23 + " +
-                    "(t?.GetHashCode() ?? 0);\r\n                        }\r\n                    }\r\n    " +
-                    "                hashCode = hashCode * 23 + (connectionString == null ? 0 : conne" +
-                    "ctionStringComparer.GetHashCode(connectionString));\r\n                    hashCod" +
-                    "e = hashCode * 23 + (parametersType?.GetHashCode() ?? 0);\r\n                }\r\n  " +
-                    "          }\r\n\r\n            /// <summary>\r\n            ///\r\n            /// </sum" +
-                    "mary>\r\n            /// <param name=\"obj\"></param>\r\n            /// <returns></re" +
-                    "turns>\r\n            public override bool Equals(object obj)\r\n            {\r\n    " +
-                    "            return Equals(obj as Identity);\r\n            }\r\n            /// <sum" +
-                    "mary>\r\n            /// The sql\r\n            /// </summary>\r\n            public r" +
-                    "eadonly string sql;\r\n            /// <summary>\r\n            /// The command type" +
-                    "\r\n            /// </summary>\r\n            public readonly CommandType? commandTy" +
-                    "pe;\r\n\r\n            /// <summary>\r\n            ///\r\n            /// </summary>\r\n " +
-                    "           public readonly int hashCode, gridIndex;\r\n            /// <summary>\r\n" +
-                    "            ///\r\n            /// </summary>\r\n            public readonly Type ty" +
-                    "pe;\r\n            /// <summary>\r\n            ///\r\n            /// </summary>\r\n   " +
-                    "         public readonly string connectionString;\r\n            /// <summary>\r\n  " +
-                    "          ///\r\n            /// </summary>\r\n            public readonly Type para" +
-                    "metersType;\r\n            /// <summary>\r\n            ///\r\n            /// </summa" +
-                    "ry>\r\n            /// <returns></returns>\r\n            public override int GetHas" +
-                    "hCode()\r\n            {\r\n                return hashCode;\r\n            }\r\n       " +
-                    "     /// <summary>\r\n            /// Compare 2 Identity objects\r\n            /// " +
-                    "</summary>\r\n            /// <param name=\"other\"></param>\r\n            /// <retur" +
-                    "ns></returns>\r\n            public bool Equals(Identity other)\r\n            {\r\n  " +
-                    "              return\r\n                    other != null &&\r\n                    " +
-                    "gridIndex == other.gridIndex &&\r\n                    type == other.type &&\r\n    " +
-                    "                sql == other.sql &&\r\n                    commandType == other.co" +
-                    "mmandType &&\r\n                    connectionStringComparer.Equals(connectionStri" +
-                    "ng, other.connectionString) &&\r\n                    parametersType == other.para" +
-                    "metersType;\r\n            }\r\n        }\r\n    }\r\n}\r\n");
+            this.Write("using System;\r\nusing System.Data;\r\n \r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_Identity.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        //" +
+                    "/ Identity of a cached query in Dapper, used for extensibility\r\n        /// </su" +
+                    "mmary>\r\n        public class Identity : IEquatable<Identity>\r\n        {\r\n       " +
+                    "     internal Identity ForGrid(Type primaryType, int gridIndex)\r\n            {\r\n" +
+                    "                return new Identity(sql, commandType, connectionString, primaryT" +
+                    "ype, parametersType, null, gridIndex);\r\n            }\r\n\r\n            internal Id" +
+                    "entity ForGrid(Type primaryType, Type[] otherTypes, int gridIndex)\r\n            " +
+                    "{\r\n                return new Identity(sql, commandType, connectionString, prima" +
+                    "ryType, parametersType, otherTypes, gridIndex);\r\n            }\r\n            /// " +
+                    "<summary>\r\n            /// Create an identity for use with DynamicParameters, in" +
+                    "ternal use only\r\n            /// </summary>\r\n            /// <param name=\"type\">" +
+                    "</param>\r\n            /// <returns></returns>\r\n            public Identity ForDy" +
+                    "namicParameters(Type type)\r\n            {\r\n                return new Identity(s" +
+                    "ql, commandType, connectionString, this.type, type, null, -1);\r\n            }\r\n\r" +
+                    "\n            internal Identity(string sql, CommandType? commandType, IDbConnecti" +
+                    "on connection, Type type, Type parametersType, Type[] otherTypes)\r\n             " +
+                    "   : this(sql, commandType, connection.ConnectionString, type, parametersType, o" +
+                    "therTypes, 0)\r\n            { }\r\n            private Identity(string sql, Command" +
+                    "Type? commandType, string connectionString, Type type, Type parametersType, Type" +
+                    "[] otherTypes, int gridIndex)\r\n            {\r\n                this.sql = sql;\r\n " +
+                    "               this.commandType = commandType;\r\n                this.connectionS" +
+                    "tring = connectionString;\r\n                this.type = type;\r\n                th" +
+                    "is.parametersType = parametersType;\r\n                this.gridIndex = gridIndex;" +
+                    "\r\n                unchecked\r\n                {\r\n                    hashCode = 1" +
+                    "7; // we *know* we are using this in a dictionary, so pre-compute this\r\n        " +
+                    "            hashCode = hashCode * 23 + commandType.GetHashCode();\r\n             " +
+                    "       hashCode = hashCode * 23 + gridIndex.GetHashCode();\r\n                    " +
+                    "hashCode = hashCode * 23 + (sql?.GetHashCode() ?? 0);\r\n                    hashC" +
+                    "ode = hashCode * 23 + (type?.GetHashCode() ?? 0);\r\n                    if (other" +
+                    "Types != null)\r\n                    {\r\n                        foreach (var t in" +
+                    " otherTypes)\r\n                        {\r\n                            hashCode = " +
+                    "hashCode * 23 + (t?.GetHashCode() ?? 0);\r\n                        }\r\n           " +
+                    "         }\r\n                    hashCode = hashCode * 23 + (connectionString == " +
+                    "null ? 0 : connectionStringComparer.GetHashCode(connectionString));\r\n           " +
+                    "         hashCode = hashCode * 23 + (parametersType?.GetHashCode() ?? 0);\r\n     " +
+                    "           }\r\n            }\r\n\r\n            /// <summary>\r\n            ///\r\n     " +
+                    "       /// </summary>\r\n            /// <param name=\"obj\"></param>\r\n            /" +
+                    "// <returns></returns>\r\n            public override bool Equals(object obj)\r\n   " +
+                    "         {\r\n                return Equals(obj as Identity);\r\n            }\r\n    " +
+                    "        /// <summary>\r\n            /// The sql\r\n            /// </summary>\r\n    " +
+                    "        public readonly string sql;\r\n            /// <summary>\r\n            /// " +
+                    "The command type\r\n            /// </summary>\r\n            public readonly Comman" +
+                    "dType? commandType;\r\n\r\n            /// <summary>\r\n            ///\r\n            /" +
+                    "// </summary>\r\n            public readonly int hashCode, gridIndex;\r\n           " +
+                    " /// <summary>\r\n            ///\r\n            /// </summary>\r\n            public " +
+                    "readonly Type type;\r\n            /// <summary>\r\n            ///\r\n            ///" +
+                    " </summary>\r\n            public readonly string connectionString;\r\n            /" +
+                    "// <summary>\r\n            ///\r\n            /// </summary>\r\n            public re" +
+                    "adonly Type parametersType;\r\n            /// <summary>\r\n            ///\r\n       " +
+                    "     /// </summary>\r\n            /// <returns></returns>\r\n            public ove" +
+                    "rride int GetHashCode()\r\n            {\r\n                return hashCode;\r\n      " +
+                    "      }\r\n            /// <summary>\r\n            /// Compare 2 Identity objects\r\n" +
+                    "            /// </summary>\r\n            /// <param name=\"other\"></param>\r\n      " +
+                    "      /// <returns></returns>\r\n            public bool Equals(Identity other)\r\n " +
+                    "           {\r\n                return\r\n                    other != null &&\r\n    " +
+                    "                gridIndex == other.gridIndex &&\r\n                    type == oth" +
+                    "er.type &&\r\n                    sql == other.sql &&\r\n                    command" +
+                    "Type == other.commandType &&\r\n                    connectionStringComparer.Equal" +
+                    "s(connectionString, other.connectionString) &&\r\n                    parametersTy" +
+                    "pe == other.parametersType;\r\n            }\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

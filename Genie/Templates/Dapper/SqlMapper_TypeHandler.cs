@@ -26,43 +26,50 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace Indico.DataAccess.Dapper\r\n{\r\n    p" +
-                    "artial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        /// Base-class for" +
-                    " simple type-handlers\r\n        /// </summary>\r\n        public abstract class Typ" +
-                    "eHandler<T> : ITypeHandler\r\n        {\r\n            /// <summary>\r\n            //" +
-                    "/ Assign the value of a parameter before a command executes\r\n            /// </s" +
-                    "ummary>\r\n            /// <param name=\"parameter\">The parameter to configure</par" +
-                    "am>\r\n            /// <param name=\"value\">Parameter value</param>\r\n            pu" +
-                    "blic abstract void SetValue(IDbDataParameter parameter, T value);\r\n\r\n           " +
-                    " /// <summary>\r\n            /// Parse a database value back to a typed value\r\n  " +
-                    "          /// </summary>\r\n            /// <param name=\"value\">The value from the" +
-                    " database</param>\r\n            /// <returns>The typed value</returns>\r\n         " +
-                    "   public abstract T Parse(object value);\r\n\r\n            void ITypeHandler.SetVa" +
-                    "lue(IDbDataParameter parameter, object value)\r\n            {\r\n                if" +
-                    " (value is DBNull)\r\n                {\r\n                    parameter.Value = val" +
-                    "ue;\r\n                }\r\n                else\r\n                {\r\n               " +
-                    "     SetValue(parameter, (T)value);\r\n                }\r\n            }\r\n\r\n       " +
-                    "     object ITypeHandler.Parse(Type destinationType, object value)\r\n            " +
-                    "{\r\n                return Parse(value);\r\n            }\r\n        }\r\n        /// <" +
-                    "summary>\r\n        /// Base-class for simple type-handlers that are based around " +
-                    "strings\r\n        /// </summary>\r\n        public abstract class StringTypeHandler" +
-                    "<T> : TypeHandler<T>\r\n        {\r\n            /// <summary>\r\n            /// Pars" +
-                    "e a string into the expected type (the string will never be null)\r\n            /" +
-                    "// </summary>\r\n            protected abstract T Parse(string xml);\r\n            " +
-                    "/// <summary>\r\n            /// Format an instace into a string (the instance wil" +
-                    "l never be null)\r\n            /// </summary>\r\n            protected abstract str" +
-                    "ing Format(T xml);\r\n            /// <summary>\r\n            /// Assign the value " +
-                    "of a parameter before a command executes\r\n            /// </summary>\r\n          " +
-                    "  /// <param name=\"parameter\">The parameter to configure</param>\r\n            //" +
-                    "/ <param name=\"value\">Parameter value</param>\r\n            public override void " +
-                    "SetValue(IDbDataParameter parameter, T value)\r\n            {\r\n                pa" +
-                    "rameter.Value = value == null ? (object)DBNull.Value : Format(value);\r\n         " +
-                    "   }\r\n            /// <summary>\r\n            /// Parse a database value back to " +
+            this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace ");
+            
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_TypeHandler.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        //" +
+                    "/ Base-class for simple type-handlers\r\n        /// </summary>\r\n        public ab" +
+                    "stract class TypeHandler<T> : ITypeHandler\r\n        {\r\n            /// <summary>" +
+                    "\r\n            /// Assign the value of a parameter before a command executes\r\n   " +
+                    "         /// </summary>\r\n            /// <param name=\"parameter\">The parameter t" +
+                    "o configure</param>\r\n            /// <param name=\"value\">Parameter value</param>" +
+                    "\r\n            public abstract void SetValue(IDbDataParameter parameter, T value)" +
+                    ";\r\n \r\n            /// <summary>\r\n            /// Parse a database value back to " +
                     "a typed value\r\n            /// </summary>\r\n            /// <param name=\"value\">T" +
                     "he value from the database</param>\r\n            /// <returns>The typed value</re" +
-                    "turns>\r\n            public override T Parse(object value)\r\n            {\r\n      " +
-                    "          if (value == null || value is DBNull) return default(T);\r\n            " +
-                    "    return Parse((string)value);\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n");
+                    "turns>\r\n            public abstract T Parse(object value);\r\n\r\n            void I" +
+                    "TypeHandler.SetValue(IDbDataParameter parameter, object value)\r\n            {\r\n " +
+                    "               if (value is DBNull)\r\n                {\r\n                    para" +
+                    "meter.Value = value;\r\n                }\r\n                else\r\n                {" +
+                    "\r\n                    SetValue(parameter, (T)value);\r\n                }\r\n       " +
+                    "     }\r\n\r\n            object ITypeHandler.Parse(Type destinationType, object val" +
+                    "ue)\r\n            {\r\n                return Parse(value);\r\n            }\r\n       " +
+                    " }\r\n        /// <summary>\r\n        /// Base-class for simple type-handlers that " +
+                    "are based around strings\r\n        /// </summary>\r\n        public abstract class " +
+                    "StringTypeHandler<T> : TypeHandler<T>\r\n        {\r\n            /// <summary>\r\n   " +
+                    "         /// Parse a string into the expected type (the string will never be nul" +
+                    "l)\r\n            /// </summary>\r\n            protected abstract T Parse(string xm" +
+                    "l);\r\n            /// <summary>\r\n            /// Format an instace into a string " +
+                    "(the instance will never be null)\r\n            /// </summary>\r\n            prote" +
+                    "cted abstract string Format(T xml);\r\n            /// <summary>\r\n            /// " +
+                    "Assign the value of a parameter before a command executes\r\n            /// </sum" +
+                    "mary>\r\n            /// <param name=\"parameter\">The parameter to configure</param" +
+                    ">\r\n            /// <param name=\"value\">Parameter value</param>\r\n            publ" +
+                    "ic override void SetValue(IDbDataParameter parameter, T value)\r\n            {\r\n " +
+                    "               parameter.Value = value == null ? (object)DBNull.Value : Format(v" +
+                    "alue);\r\n            }\r\n            /// <summary>\r\n            /// Parse a databa" +
+                    "se value back to a typed value\r\n            /// </summary>\r\n            /// <par" +
+                    "am name=\"value\">The value from the database</param>\r\n            /// <returns>Th" +
+                    "e typed value</returns>\r\n            public override T Parse(object value)\r\n    " +
+                    "        {\r\n                if (value == null || value is DBNull) return default(" +
+                    "T);\r\n                return Parse((string)value);\r\n            }\r\n        }\r\n   " +
+                    " }\r\n}\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

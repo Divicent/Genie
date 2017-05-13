@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {
@@ -22,7 +22,7 @@ namespace Indico.DataAccess.Dapper
             internal static void Purge(Type type)
             {
                 lock (byType)
-                {
+                { 
                     byType.Remove(type);
                 }
             }

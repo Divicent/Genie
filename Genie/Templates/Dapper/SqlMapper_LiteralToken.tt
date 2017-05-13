@@ -2,7 +2,7 @@
 <#@ import namespace="Genie.Base" #>
 using System.Collections.Generic;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
     partial class SqlMapper
     {
@@ -24,7 +24,7 @@ namespace Indico.DataAccess.Dapper
             internal LiteralToken(string token, string member)
             {
                 Token = token;
-                Member = member;
+                Member = member; 
             }
 
             internal static readonly IList<LiteralToken> None = new LiteralToken[0];

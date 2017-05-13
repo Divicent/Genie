@@ -26,9 +26,14 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"using System.Data;
-
-namespace Indico.DataAccess.Dapper
+            this.Write("using System.Data;\r\n\r\nnamespace ");
+            
+            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\WrappedDataReader.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(@".Dapper
 {
     /// <summary>
     /// Describes a reader that controls the lifetime of both a command and a reader,
@@ -46,7 +51,7 @@ namespace Indico.DataAccess.Dapper
         IDbCommand Command { get; }
     }
 }
-");
+ ");
             return this.GenerationEnvironment.ToString();
         }
     }

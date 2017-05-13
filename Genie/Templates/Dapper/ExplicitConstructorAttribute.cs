@@ -33,7 +33,7 @@ namespace Genie.Templates.Dapper
             
             #line default
             #line hidden
-            this.Write(@".Dapper
+            this.Write(@".Dapper 
 {
     /// <summary>
     /// Tell Dapper to use an explicit constructor, passing nulls or 0s for all parameters

@@ -26,34 +26,40 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System.Threading;\r\n\r\nnamespace Indico.DataAccess.Dapper\r\n{\r\n    partial cla" +
-                    "ss SqlMapper\r\n    {\r\n        /// <summary>\r\n        /// This is a micro-cache; s" +
-                    "uitable when the number of terms is controllable (a few hundred, for example),\r\n" +
-                    "        /// and strictly append-only; you cannot change existing values. All key" +
-                    " matches are on **REFERENCE**\r\n        /// equality. The type is fully thread-sa" +
-                    "fe.\r\n        /// </summary>\r\n        internal class Link<TKey, TValue> where TKe" +
-                    "y : class\r\n        {\r\n            public static bool TryGet(Link<TKey, TValue> l" +
-                    "ink, TKey key, out TValue value)\r\n            {\r\n                while (link != " +
-                    "null)\r\n                {\r\n                    if ((object)key == (object)link.Ke" +
-                    "y)\r\n                    {\r\n                        value = link.Value;\r\n        " +
-                    "                return true;\r\n                    }\r\n                    link = " +
-                    "link.Tail;\r\n                }\r\n                value = default(TValue);\r\n       " +
-                    "         return false;\r\n            }\r\n            public static bool TryAdd(ref" +
-                    " Link<TKey, TValue> head, TKey key, ref TValue value)\r\n            {\r\n          " +
-                    "      bool tryAgain;\r\n                do\r\n                {\r\n                   " +
-                    " var snapshot = Interlocked.CompareExchange(ref head, null, null);\r\n            " +
-                    "        TValue found;\r\n                    if (TryGet(snapshot, key, out found))" +
-                    "\r\n                    { // existing match; report the existing value instead\r\n  " +
-                    "                      value = found;\r\n                        return false;\r\n   " +
-                    "                 }\r\n                    var newNode = new Link<TKey, TValue>(key" +
-                    ", value, snapshot);\r\n                    // did somebody move our cheese?\r\n     " +
-                    "               tryAgain = Interlocked.CompareExchange(ref head, newNode, snapsho" +
-                    "t) != snapshot;\r\n                } while (tryAgain);\r\n                return tru" +
-                    "e;\r\n            }\r\n            private Link(TKey key, TValue value, Link<TKey, T" +
-                    "Value> tail)\r\n            {\r\n                Key = key;\r\n                Value =" +
-                    " value;\r\n                Tail = tail;\r\n            }\r\n            public TKey Ke" +
-                    "y { get; }\r\n            public TValue Value { get; }\r\n            public Link<TK" +
-                    "ey, TValue> Tail { get; }\r\n        }\r\n    }\r\n}\r\n");
+            this.Write("using System.Threading;\r\n\r\nnamespace ");
+            
+            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_Link.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(".Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        /// <summary>\r\n        //" +
+                    "/ This is a micro-cache; suitable when the number of terms is controllable (a fe" +
+                    "w hundred, for example),\r\n        /// and strictly append-only; you cannot chang" +
+                    "e existing values. All key matches are on **REFERENCE**\r\n        /// equality. T" +
+                    "he type is fully thread-safe.\r\n        /// </summary>\r\n        internal class Li" +
+                    "nk<TKey, TValue> where TKey : class\r\n        {\r\n            public static bool T" +
+                    "ryGet(Link<TKey, TValue> link, TKey key, out TValue value)\r\n            {\r\n     " +
+                    "           while (link != null)\r\n                {\r\n                    if ((obj" +
+                    "ect)key == (object)link.Key)\r\n                    {\r\n                        val" +
+                    "ue = link.Value;\r\n                        return true;\r\n                    }\r\n " +
+                    "                   link = link.Tail;\r\n                }\r\n                value =" +
+                    " default(TValue);\r\n                return false;\r\n            }\r\n            pub" +
+                    "lic static bool TryAdd(ref Link<TKey, TValue> head, TKey key, ref TValue value)\r" +
+                    "\n            {\r\n                bool tryAgain;\r\n                do\r\n            " +
+                    "    {\r\n                    var snapshot = Interlocked.CompareExchange(ref head, " +
+                    "null, null);\r\n                    TValue found;\r\n                    if (TryGet(" +
+                    "snapshot, key, out found))\r\n                    { // existing match; report the " +
+                    "existing value instead\r\n                        value = found;\r\n                " +
+                    "        return false;\r\n                    }\r\n                    var newNode = " +
+                    "new Link<TKey, TValue>(key, value, snapshot);\r\n                    // did somebo" +
+                    "dy move our cheese?\r\n                    tryAgain = Interlocked.CompareExchange(" +
+                    "ref head, newNode, snapshot) != snapshot;\r\n                } while (tryAgain);\r\n" +
+                    "                return true;\r\n            } \r\n            private Link(TKey key," +
+                    " TValue value, Link<TKey, TValue> tail)\r\n            {\r\n                Key = ke" +
+                    "y;\r\n                Value = value;\r\n                Tail = tail;\r\n            }\r" +
+                    "\n            public TKey Key { get; }\r\n            public TValue Value { get; }\r" +
+                    "\n            public Link<TKey, TValue> Tail { get; }\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

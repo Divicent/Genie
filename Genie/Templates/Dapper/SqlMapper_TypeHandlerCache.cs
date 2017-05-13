@@ -26,11 +26,14 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"using System;
-using System.ComponentModel;
-using System.Data;
-
-namespace Indico.DataAccess.Dapper
+            this.Write("using System;\r\nusing System.ComponentModel;\r\nusing System.Data;\r\n\r\nnamespace ");
+            
+            #line 7 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_TypeHandlerCache.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(@".Dapper
 {
     partial class SqlMapper
     {
@@ -52,7 +55,7 @@ namespace Indico.DataAccess.Dapper
             {
                 return (T)handler.Parse(typeof(T), value);
             }
-
+ 
             /// <summary>
             /// Not intended for direct usage
             /// </summary>
