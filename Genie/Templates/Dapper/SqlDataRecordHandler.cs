@@ -26,9 +26,10 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\n\r\n#if !COREFX\r\nnamespace ");
+            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\n\r\n#if !CORE" +
+                    "FX\r\nnamespace ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\SqlDataRecordHandler.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Dapper\SqlDataRecordHandler.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

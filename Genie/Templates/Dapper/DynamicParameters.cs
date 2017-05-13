@@ -26,11 +26,23 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Data;\r\nusing Syste" +
-                    "m.Linq;\r\n\r\n\r\n#if COREFX\r\nusing ApplicationException = System.InvalidOperationExc" +
-                    "eption;\r\n#endif\r\n\r\n\r\nnamespace ");
+            this.Write(@"using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.Emit;
+
+
+#if COREFX
+using ApplicationException = System.InvalidOperationException;
+#endif
+
+
+namespace ");
             
-            #line 14 "D:\Projects\Genie\Genie\Templates\Dapper\DynamicParameters.tt"
+            #line 17 "D:\Projects\Genie\Genie\Templates\Dapper\DynamicParameters.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

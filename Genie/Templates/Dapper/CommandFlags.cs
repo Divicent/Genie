@@ -26,9 +26,9 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 3 "D:\Projects\Genie\Genie\Templates\Dapper\CommandFlags.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\CommandFlags.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
