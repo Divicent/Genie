@@ -32,6 +32,10 @@ namespace Genie.Base
             {
                 files = new List<ITemplateFile>
                 {
+                    new CommandDefinition(@"Dapper\CommandDefinition"),
+                    new CommandFlags(@"Dapper\CommandFlags"),
+                    new DapperRow(@"Dapper\DapperRow"),
+                    new DataTableHandler(@"Dapper\DataTableHandler"),
                     new SqlMapper(@"Dapper\SqlMapper"),
                     new CustomPropertyTypeMap(@"Dapper\CustomPropertyTypeMap"),
                     new DbString(@"Dapper\DbString"),

@@ -5,6 +5,77 @@ using Genie.Templates.Extensions;
 
 namespace Genie.Templates.Dapper
 {
+    public partial class CommandFlags : ITemplateFile
+    {
+        private readonly string _path;
+        public CommandFlags(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+    public partial class CommandDefinition : ITemplateFile
+    {
+        private readonly string _path;
+        public CommandDefinition(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class DapperRow : ITemplateFile
+    {
+        private readonly string _path;
+        public DapperRow(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
+    public partial class DataTableHandler : ITemplateFile
+    {
+        private readonly string _path;
+        public DataTableHandler(string path)
+        {
+            _path = path;
+        }
+
+        public IContentFile Generate()
+        {
+            return new ContentFile
+            {
+                Content = TransformText(),
+                Path = _path
+            };
+        }
+    }
+
     public partial class SqlMapper : ITemplateFile
     {
         private readonly string _path;

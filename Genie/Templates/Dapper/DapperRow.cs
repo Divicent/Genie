@@ -16,9 +16,9 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\CustomPropertyTypeMap.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\DapperRow.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class CustomPropertyTypeMap : CustomPropertyTypeMapBase
+    public partial class DapperRow : DapperRowBase
     {
 #line hidden
         /// <summary>
@@ -26,46 +26,112 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace ");
+            this.Write("using System;\r\nusing System.Collections;\r\nusing System.Collections.Generic;\r\nusin" +
+                    "g System.Linq;\r\n\r\nnamespace ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\CustomPropertyTypeMap.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Dapper\DapperRow.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Implements custom property mapping by user" +
-                    " provided criteria (usually presence of some custom attribute with column to mem" +
-                    "ber mapping)\r\n    /// </summary>\r\n    public sealed class CustomPropertyTypeMap " +
-                    ": SqlMapper.ITypeMap\r\n    {\r\n        private readonly Type _type;\r\n        priva" +
-                    "te readonly Func<Type, string, PropertyInfo> _propertySelector;\r\n\r\n        /// <" +
-                    "summary>\r\n        /// Creates custom property mapping\r\n        /// </summary>\r\n " +
-                    "       /// <param name=\"type\">Target entity type</param>\r\n        /// <param nam" +
-                    "e=\"propertySelector\">Property selector based on target type and DataReader colum" +
-                    "n name</param>\r\n        public CustomPropertyTypeMap(Type type, Func<Type, strin" +
-                    "g, PropertyInfo> propertySelector)\r\n        {\r\n            if (type == null)\r\n  " +
-                    "              throw new ArgumentNullException(\"type\");\r\n\r\n            if (proper" +
-                    "tySelector == null)\r\n                throw new ArgumentNullException(\"propertySe" +
-                    "lector\");\r\n\r\n            _type = type;\r\n            _propertySelector = property" +
-                    "Selector;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Always returns defaul" +
-                    "t constructor\r\n        /// </summary>\r\n        /// <param name=\"names\">DataReade" +
-                    "r column names</param>\r\n        /// <param name=\"types\">DataReader column types<" +
-                    "/param>\r\n        /// <returns>Default constructor</returns>\r\n        public Cons" +
-                    "tructorInfo FindConstructor(string[] names, Type[] types)\r\n        {\r\n          " +
-                    "  return _type.GetConstructor(new Type[0]);\r\n        }\r\n\r\n        /// <summary>\r" +
-                    "\n        /// Always returns null\r\n        /// </summary>\r\n        /// <returns><" +
-                    "/returns>\r\n        public ConstructorInfo FindExplicitConstructor()\r\n        {\r\n" +
-                    "            return null;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Not im" +
-                    "plemented as far as default constructor used for all cases\r\n        /// </summar" +
-                    "y>\r\n        /// <param name=\"constructor\"></param>\r\n        /// <param name=\"col" +
-                    "umnName\"></param>\r\n        /// <returns></returns>\r\n        public SqlMapper.IMe" +
-                    "mberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)\r" +
-                    "\n        {\r\n            throw new NotSupportedException();\r\n        }\r\n\r\n       " +
-                    " /// <summary>\r\n        /// Returns property based on selector strategy\r\n       " +
-                    " /// </summary>\r\n        /// <param name=\"columnName\">DataReader column name</pa" +
-                    "ram>\r\n        /// <returns>Poperty member map</returns>\r\n        public SqlMappe" +
-                    "r.IMemberMap GetMember(string columnName)\r\n        {\r\n            var prop = _pr" +
-                    "opertySelector(_type, columnName);\r\n            return prop != null ? new Simple" +
-                    "MemberMap(columnName, prop) : null;\r\n        }\r\n    }\r\n}");
+            this.Write(".Dapper\r\n{\r\n    partial class SqlMapper\r\n    {\r\n        private sealed class Dapp" +
+                    "erRow\r\n            : System.Dynamic.IDynamicMetaObjectProvider\r\n            , ID" +
+                    "ictionary<string, object>\r\n        {\r\n            readonly DapperTable table;\r\n " +
+                    "           object[] values;\r\n\r\n            public DapperRow(DapperTable table, o" +
+                    "bject[] values)\r\n            {\r\n                if (table == null) throw new Arg" +
+                    "umentNullException(nameof(table));\r\n                if (values == null) throw ne" +
+                    "w ArgumentNullException(nameof(values));\r\n                this.table = table;\r\n " +
+                    "               this.values = values;\r\n            }\r\n            private sealed " +
+                    "class DeadValue\r\n            {\r\n                public static readonly DeadValue" +
+                    " Default = new DeadValue();\r\n                private DeadValue() { }\r\n          " +
+                    "  }\r\n            int ICollection<KeyValuePair<string, object>>.Count\r\n          " +
+                    "  {\r\n                get\r\n                {\r\n                    int count = 0;\r" +
+                    "\n                    for (int i = 0; i < values.Length; i++)\r\n                  " +
+                    "  {\r\n                        if (!(values[i] is DeadValue)) count++;\r\n          " +
+                    "          }\r\n                    return count;\r\n                }\r\n            }" +
+                    "\r\n\r\n            public bool TryGetValue(string name, out object value)\r\n        " +
+                    "    {\r\n                var index = table.IndexOfName(name);\r\n                if " +
+                    "(index < 0)\r\n                { // doesn\'t exist\r\n                    value = nul" +
+                    "l;\r\n                    return false;\r\n                }\r\n                // exi" +
+                    "sts, **even if** we don\'t have a value; consider table rows heterogeneous\r\n     " +
+                    "           value = index < values.Length ? values[index] : null;\r\n              " +
+                    "  if (value is DeadValue)\r\n                { // pretend it isn\'t here\r\n         " +
+                    "           value = null;\r\n                    return false;\r\n                }\r\n" +
+                    "                return true;\r\n            }\r\n\r\n            public override strin" +
+                    "g ToString()\r\n            {\r\n                var sb = GetStringBuilder().Append(" +
+                    "\"{DapperRow\");\r\n                foreach (var kv in this)\r\n                {\r\n   " +
+                    "                 var value = kv.Value;\r\n                    sb.Append(\", \").Appe" +
+                    "nd(kv.Key);\r\n                    if (value != null)\r\n                    {\r\n    " +
+                    "                    sb.Append(\" = \'\").Append(kv.Value).Append(\'\\\'\');\r\n          " +
+                    "          }\r\n                    else\r\n                    {\r\n                  " +
+                    "      sb.Append(\" = NULL\");\r\n                    }\r\n                }\r\n\r\n       " +
+                    "         return sb.Append(\'}\').__ToStringRecycle();\r\n            }\r\n\r\n          " +
+                    "  System.Dynamic.DynamicMetaObject System.Dynamic.IDynamicMetaObjectProvider.Get" +
+                    "MetaObject(\r\n                System.Linq.Expressions.Expression parameter)\r\n    " +
+                    "        {\r\n                return new DapperRowMetaObject(parameter, System.Dyna" +
+                    "mic.BindingRestrictions.Empty, this);\r\n            }\r\n\r\n            public IEnum" +
+                    "erator<KeyValuePair<string, object>> GetEnumerator()\r\n            {\r\n           " +
+                    "     var names = table.FieldNames;\r\n                for (var i = 0; i < names.Le" +
+                    "ngth; i++)\r\n                {\r\n                    object value = i < values.Len" +
+                    "gth ? values[i] : null;\r\n                    if (!(value is DeadValue))\r\n       " +
+                    "             {\r\n                        yield return new KeyValuePair<string, ob" +
+                    "ject>(names[i], value);\r\n                    }\r\n                }\r\n            }" +
+                    "\r\n\r\n            IEnumerator IEnumerable.GetEnumerator()\r\n            {\r\n        " +
+                    "        return GetEnumerator();\r\n            }\r\n\r\n            #region Implementa" +
+                    "tion of ICollection<KeyValuePair<string,object>>\r\n\r\n            void ICollection" +
+                    "<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> item)\r\n         " +
+                    "   {\r\n                IDictionary<string, object> dic = this;\r\n                d" +
+                    "ic.Add(item.Key, item.Value);\r\n            }\r\n\r\n            void ICollection<Key" +
+                    "ValuePair<string, object>>.Clear()\r\n            { // removes values for **this r" +
+                    "ow**, but doesn\'t change the fundamental table\r\n                for (int i = 0; " +
+                    "i < values.Length; i++)\r\n                    values[i] = DeadValue.Default;\r\n   " +
+                    "         }\r\n\r\n            bool ICollection<KeyValuePair<string, object>>.Contain" +
+                    "s(KeyValuePair<string, object> item)\r\n            {\r\n                object valu" +
+                    "e;\r\n                return TryGetValue(item.Key, out value) && Equals(value, ite" +
+                    "m.Value);\r\n            }\r\n\r\n            void ICollection<KeyValuePair<string, ob" +
+                    "ject>>.CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)\r\n           " +
+                    " {\r\n                foreach (var kv in this)\r\n                {\r\n               " +
+                    "     array[arrayIndex++] = kv; // if they didn\'t leave enough space; not our fau" +
+                    "lt\r\n                }\r\n            }\r\n\r\n            bool ICollection<KeyValuePai" +
+                    "r<string, object>>.Remove(KeyValuePair<string, object> item)\r\n            {\r\n   " +
+                    "             IDictionary<string, object> dic = this;\r\n                return dic" +
+                    ".Remove(item.Key);\r\n            }\r\n\r\n            bool ICollection<KeyValuePair<s" +
+                    "tring, object>>.IsReadOnly => false;\r\n            #endregion\r\n\r\n            #reg" +
+                    "ion Implementation of IDictionary<string,object>\r\n\r\n            bool IDictionary" +
+                    "<string, object>.ContainsKey(string key)\r\n            {\r\n                int ind" +
+                    "ex = table.IndexOfName(key);\r\n                if (index < 0 || index >= values.L" +
+                    "ength || values[index] is DeadValue) return false;\r\n                return true;" +
+                    "\r\n            }\r\n\r\n            void IDictionary<string, object>.Add(string key, " +
+                    "object value)\r\n            {\r\n                SetValue(key, value, true);\r\n     " +
+                    "       }\r\n\r\n            bool IDictionary<string, object>.Remove(string key)\r\n   " +
+                    "         {\r\n                int index = table.IndexOfName(key);\r\n               " +
+                    " if (index < 0 || index >= values.Length || values[index] is DeadValue) return f" +
+                    "alse;\r\n                values[index] = DeadValue.Default;\r\n                retur" +
+                    "n true;\r\n            }\r\n\r\n            object IDictionary<string, object>.this[st" +
+                    "ring key]\r\n            {\r\n                get { object val; TryGetValue(key, out" +
+                    " val); return val; }\r\n                set { SetValue(key, value, false); }\r\n    " +
+                    "        }\r\n\r\n            public object SetValue(string key, object value)\r\n     " +
+                    "       {\r\n                return SetValue(key, value, false);\r\n            }\r\n\r\n" +
+                    "            private object SetValue(string key, object value, bool isAdd)\r\n     " +
+                    "       {\r\n                if (key == null) throw new ArgumentNullException(nameo" +
+                    "f(key));\r\n                int index = table.IndexOfName(key);\r\n                i" +
+                    "f (index < 0)\r\n                {\r\n                    index = table.AddField(key" +
+                    ");\r\n                }\r\n                else if (isAdd && index < values.Length &" +
+                    "& !(values[index] is DeadValue))\r\n                {\r\n                    // then" +
+                    " semantically, this value already exists\r\n                    throw new Argument" +
+                    "Exception(\"An item with the same key has already been added\", nameof(key));\r\n   " +
+                    "             }\r\n                int oldLength = values.Length;\r\n                " +
+                    "if (oldLength <= index)\r\n                {\r\n                    // we\'ll assume " +
+                    "they\'re doing lots of things, and\r\n                    // grow it to the full wi" +
+                    "dth of the table\r\n                    Array.Resize(ref values, table.FieldCount)" +
+                    ";\r\n                    for (int i = oldLength; i < values.Length; i++)\r\n        " +
+                    "            {\r\n                        values[i] = DeadValue.Default;\r\n         " +
+                    "           }\r\n                }\r\n                return values[index] = value;\r\n" +
+                    "            }\r\n\r\n            ICollection<string> IDictionary<string, object>.Key" +
+                    "s\r\n            {\r\n                get { return this.Select(kv => kv.Key).ToArray" +
+                    "(); }\r\n            }\r\n\r\n            ICollection<object> IDictionary<string, obje" +
+                    "ct>.Values\r\n            {\r\n                get { return this.Select(kv => kv.Val" +
+                    "ue).ToArray(); }\r\n            }\r\n\r\n            #endregion\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -77,7 +143,7 @@ namespace Genie.Templates.Dapper
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class CustomPropertyTypeMapBase
+    public class DapperRowBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

@@ -16,9 +16,9 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\CustomPropertyTypeMap.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\CommandDefinition.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class CustomPropertyTypeMap : CustomPropertyTypeMapBase
+    public partial class CommandDefinition : CommandDefinitionBase
     {
 #line hidden
         /// <summary>
@@ -26,46 +26,96 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace ");
+            this.Write("using System;\r\nusing System.Data;\r\nusing System.Reflection;\r\nusing System.Reflect" +
+                    "ion.Emit;\r\n\r\nnamespace ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\CustomPropertyTypeMap.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Dapper\CommandDefinition.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Implements custom property mapping by user" +
-                    " provided criteria (usually presence of some custom attribute with column to mem" +
-                    "ber mapping)\r\n    /// </summary>\r\n    public sealed class CustomPropertyTypeMap " +
-                    ": SqlMapper.ITypeMap\r\n    {\r\n        private readonly Type _type;\r\n        priva" +
-                    "te readonly Func<Type, string, PropertyInfo> _propertySelector;\r\n\r\n        /// <" +
-                    "summary>\r\n        /// Creates custom property mapping\r\n        /// </summary>\r\n " +
-                    "       /// <param name=\"type\">Target entity type</param>\r\n        /// <param nam" +
-                    "e=\"propertySelector\">Property selector based on target type and DataReader colum" +
-                    "n name</param>\r\n        public CustomPropertyTypeMap(Type type, Func<Type, strin" +
-                    "g, PropertyInfo> propertySelector)\r\n        {\r\n            if (type == null)\r\n  " +
-                    "              throw new ArgumentNullException(\"type\");\r\n\r\n            if (proper" +
-                    "tySelector == null)\r\n                throw new ArgumentNullException(\"propertySe" +
-                    "lector\");\r\n\r\n            _type = type;\r\n            _propertySelector = property" +
-                    "Selector;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Always returns defaul" +
-                    "t constructor\r\n        /// </summary>\r\n        /// <param name=\"names\">DataReade" +
-                    "r column names</param>\r\n        /// <param name=\"types\">DataReader column types<" +
-                    "/param>\r\n        /// <returns>Default constructor</returns>\r\n        public Cons" +
-                    "tructorInfo FindConstructor(string[] names, Type[] types)\r\n        {\r\n          " +
-                    "  return _type.GetConstructor(new Type[0]);\r\n        }\r\n\r\n        /// <summary>\r" +
-                    "\n        /// Always returns null\r\n        /// </summary>\r\n        /// <returns><" +
-                    "/returns>\r\n        public ConstructorInfo FindExplicitConstructor()\r\n        {\r\n" +
-                    "            return null;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Not im" +
-                    "plemented as far as default constructor used for all cases\r\n        /// </summar" +
-                    "y>\r\n        /// <param name=\"constructor\"></param>\r\n        /// <param name=\"col" +
-                    "umnName\"></param>\r\n        /// <returns></returns>\r\n        public SqlMapper.IMe" +
-                    "mberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)\r" +
-                    "\n        {\r\n            throw new NotSupportedException();\r\n        }\r\n\r\n       " +
-                    " /// <summary>\r\n        /// Returns property based on selector strategy\r\n       " +
-                    " /// </summary>\r\n        /// <param name=\"columnName\">DataReader column name</pa" +
-                    "ram>\r\n        /// <returns>Poperty member map</returns>\r\n        public SqlMappe" +
-                    "r.IMemberMap GetMember(string columnName)\r\n        {\r\n            var prop = _pr" +
-                    "opertySelector(_type, columnName);\r\n            return prop != null ? new Simple" +
-                    "MemberMap(columnName, prop) : null;\r\n        }\r\n    }\r\n}");
+            this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Represents the key aspects of a sql operat" +
+                    "ion\r\n    /// </summary>\r\n    public struct CommandDefinition\r\n    {\r\n        int" +
+                    "ernal static CommandDefinition ForCallback(object parameters)\r\n        {\r\n      " +
+                    "      if (parameters is DynamicParameters)\r\n            {\r\n                retur" +
+                    "n new CommandDefinition(parameters);\r\n            }\r\n            else\r\n         " +
+                    "   {\r\n                return default(CommandDefinition);\r\n            }\r\n       " +
+                    " }\r\n\r\n        internal void OnCompleted()\r\n        {\r\n            (Parameters as" +
+                    " SqlMapper.IParameterCallbacks)?.OnCompleted();\r\n        }\r\n\r\n        /// <summa" +
+                    "ry>\r\n        /// The command (sql or a stored-procedure name) to execute\r\n      " +
+                    "  /// </summary>\r\n        public string CommandText { get; }\r\n\r\n        /// <sum" +
+                    "mary>\r\n        /// The parameters associated with the command\r\n        /// </sum" +
+                    "mary>\r\n        public object Parameters { get; }\r\n\r\n        /// <summary>\r\n     " +
+                    "   /// The active transaction for the command\r\n        /// </summary>\r\n        p" +
+                    "ublic IDbTransaction Transaction { get; }\r\n\r\n        /// <summary>\r\n        /// " +
+                    "The effective timeout for the command\r\n        /// </summary>\r\n        public in" +
+                    "t? CommandTimeout { get; }\r\n\r\n        /// <summary>\r\n        /// The type of com" +
+                    "mand that the command-text represents\r\n        /// </summary>\r\n        public Co" +
+                    "mmandType? CommandType { get; }\r\n\r\n        /// <summary>\r\n        /// Should dat" +
+                    "a be buffered before returning?\r\n        /// </summary>\r\n        public bool Buf" +
+                    "fered => (Flags & CommandFlags.Buffered) != 0;\r\n\r\n        /// <summary>\r\n       " +
+                    " /// Should the plan for this query be cached?\r\n        /// </summary>\r\n        " +
+                    "internal bool AddToCache => (Flags & CommandFlags.NoCache) == 0;\r\n\r\n        /// " +
+                    "<summary>\r\n        /// Additional state flags against this command\r\n        /// " +
+                    "</summary>\r\n        public CommandFlags Flags { get; }\r\n\r\n        /// <summary>\r" +
+                    "\n        /// Can async queries be pipelined?\r\n        /// </summary>\r\n        pu" +
+                    "blic bool Pipelined => (Flags & CommandFlags.Pipelined) != 0;\r\n\r\n        /// <su" +
+                    "mmary>\r\n        /// Initialize the command definition\r\n        /// </summary>\r\n " +
+                    "       public CommandDefinition(string commandText, object parameters = null, ID" +
+                    "bTransaction transaction = null, int? commandTimeout = null,\r\n                  " +
+                    "               CommandType? commandType = null, CommandFlags flags = CommandFlag" +
+                    "s.Buffered\r\n#if ASYNC\r\n                                 , CancellationToken canc" +
+                    "ellationToken = default(CancellationToken)\r\n#endif\r\n            )\r\n        {\r\n  " +
+                    "          CommandText = commandText;\r\n            Parameters = parameters;\r\n    " +
+                    "        Transaction = transaction;\r\n            CommandTimeout = commandTimeout;" +
+                    "\r\n            CommandType = commandType;\r\n            Flags = flags;\r\n#if ASYNC\r" +
+                    "\n            CancellationToken = cancellationToken;\r\n#endif\r\n        }\r\n\r\n      " +
+                    "  private CommandDefinition(object parameters) : this()\r\n        {\r\n            " +
+                    "Parameters = parameters;\r\n        }\r\n\r\n#if ASYNC\r\n\r\n        /// <summary>\r\n     " +
+                    "   /// For asynchronous operations, the cancellation-token\r\n        /// </summar" +
+                    "y>\r\n        public CancellationToken CancellationToken { get; }\r\n#endif\r\n\r\n     " +
+                    "   internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, object" +
+                    "> paramReader)\r\n        {\r\n            var cmd = cnn.CreateCommand();\r\n         " +
+                    "   var init = GetInit(cmd.GetType());\r\n            init?.Invoke(cmd);\r\n         " +
+                    "   if (Transaction != null)\r\n                cmd.Transaction = Transaction;\r\n   " +
+                    "         cmd.CommandText = CommandText;\r\n            if (CommandTimeout.HasValue" +
+                    ")\r\n            {\r\n                cmd.CommandTimeout = CommandTimeout.Value;\r\n  " +
+                    "          }\r\n            else if (SqlMapper.Settings.CommandTimeout.HasValue)\r\n " +
+                    "           {\r\n                cmd.CommandTimeout = SqlMapper.Settings.CommandTim" +
+                    "eout.Value;\r\n            }\r\n            if (CommandType.HasValue)\r\n             " +
+                    "   cmd.CommandType = CommandType.Value;\r\n            paramReader?.Invoke(cmd, Pa" +
+                    "rameters);\r\n            return cmd;\r\n        }\r\n\r\n        private static SqlMapp" +
+                    "er.Link<Type, Action<IDbCommand>> commandInitCache;\r\n\r\n        private static Ac" +
+                    "tion<IDbCommand> GetInit(Type commandType)\r\n        {\r\n            if (commandTy" +
+                    "pe == null)\r\n                return null; // GIGO\r\n            Action<IDbCommand" +
+                    "> action;\r\n            if (SqlMapper.Link<Type, Action<IDbCommand>>.TryGet(comma" +
+                    "ndInitCache, commandType, out action))\r\n            {\r\n                return ac" +
+                    "tion;\r\n            }\r\n            var bindByName = GetBasicPropertySetter(comman" +
+                    "dType, \"BindByName\", typeof(bool));\r\n            var initialLongFetchSize = GetB" +
+                    "asicPropertySetter(commandType, \"InitialLONGFetchSize\", typeof(int));\r\n\r\n       " +
+                    "     action = null;\r\n            if (bindByName != null || initialLongFetchSize " +
+                    "!= null)\r\n            {\r\n                var method = new DynamicMethod(commandT" +
+                    "ype.Name + \"_init\", null, new Type[] { typeof(IDbCommand) });\r\n                v" +
+                    "ar il = method.GetILGenerator();\r\n\r\n                if (bindByName != null)\r\n   " +
+                    "             {\r\n                    // .BindByName = true\r\n                    i" +
+                    "l.Emit(OpCodes.Ldarg_0);\r\n                    il.Emit(OpCodes.Castclass, command" +
+                    "Type);\r\n                    il.Emit(OpCodes.Ldc_I4_1);\r\n                    il.E" +
+                    "mitCall(OpCodes.Callvirt, bindByName, null);\r\n                }\r\n               " +
+                    " if (initialLongFetchSize != null)\r\n                {\r\n                    // .I" +
+                    "nitialLONGFetchSize = -1\r\n                    il.Emit(OpCodes.Ldarg_0);\r\n       " +
+                    "             il.Emit(OpCodes.Castclass, commandType);\r\n                    il.Em" +
+                    "it(OpCodes.Ldc_I4_M1);\r\n                    il.EmitCall(OpCodes.Callvirt, initia" +
+                    "lLongFetchSize, null);\r\n                }\r\n                il.Emit(OpCodes.Ret);" +
+                    "\r\n                action = (Action<IDbCommand>)method.CreateDelegate(typeof(Acti" +
+                    "on<IDbCommand>));\r\n            }\r\n            // cache it\r\n            SqlMapper" +
+                    ".Link<Type, Action<IDbCommand>>.TryAdd(ref commandInitCache, commandType, ref ac" +
+                    "tion);\r\n            return action;\r\n        }\r\n\r\n        private static MethodIn" +
+                    "fo GetBasicPropertySetter(Type declaringType, string name, Type expectedType)\r\n " +
+                    "       {\r\n            var prop = declaringType.GetProperty(name, BindingFlags.Pu" +
+                    "blic | BindingFlags.Instance);\r\n            if (prop != null && prop.CanWrite &&" +
+                    " prop.PropertyType == expectedType && prop.GetIndexParameters().Length == 0)\r\n  " +
+                    "          {\r\n                return prop.GetSetMethod();\r\n            }\r\n       " +
+                    "     return null;\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -77,7 +127,7 @@ namespace Genie.Templates.Dapper
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class CustomPropertyTypeMapBase
+    public class CommandDefinitionBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

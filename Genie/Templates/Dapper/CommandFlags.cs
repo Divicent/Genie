@@ -16,9 +16,9 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\CustomPropertyTypeMap.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\CommandFlags.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class CustomPropertyTypeMap : CustomPropertyTypeMapBase
+    public partial class CommandFlags : CommandFlagsBase
     {
 #line hidden
         /// <summary>
@@ -26,46 +26,39 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("using System;\r\nusing System.Reflection;\r\n\r\nnamespace ");
+            this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\CustomPropertyTypeMap.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\CommandFlags.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Implements custom property mapping by user" +
-                    " provided criteria (usually presence of some custom attribute with column to mem" +
-                    "ber mapping)\r\n    /// </summary>\r\n    public sealed class CustomPropertyTypeMap " +
-                    ": SqlMapper.ITypeMap\r\n    {\r\n        private readonly Type _type;\r\n        priva" +
-                    "te readonly Func<Type, string, PropertyInfo> _propertySelector;\r\n\r\n        /// <" +
-                    "summary>\r\n        /// Creates custom property mapping\r\n        /// </summary>\r\n " +
-                    "       /// <param name=\"type\">Target entity type</param>\r\n        /// <param nam" +
-                    "e=\"propertySelector\">Property selector based on target type and DataReader colum" +
-                    "n name</param>\r\n        public CustomPropertyTypeMap(Type type, Func<Type, strin" +
-                    "g, PropertyInfo> propertySelector)\r\n        {\r\n            if (type == null)\r\n  " +
-                    "              throw new ArgumentNullException(\"type\");\r\n\r\n            if (proper" +
-                    "tySelector == null)\r\n                throw new ArgumentNullException(\"propertySe" +
-                    "lector\");\r\n\r\n            _type = type;\r\n            _propertySelector = property" +
-                    "Selector;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Always returns defaul" +
-                    "t constructor\r\n        /// </summary>\r\n        /// <param name=\"names\">DataReade" +
-                    "r column names</param>\r\n        /// <param name=\"types\">DataReader column types<" +
-                    "/param>\r\n        /// <returns>Default constructor</returns>\r\n        public Cons" +
-                    "tructorInfo FindConstructor(string[] names, Type[] types)\r\n        {\r\n          " +
-                    "  return _type.GetConstructor(new Type[0]);\r\n        }\r\n\r\n        /// <summary>\r" +
-                    "\n        /// Always returns null\r\n        /// </summary>\r\n        /// <returns><" +
-                    "/returns>\r\n        public ConstructorInfo FindExplicitConstructor()\r\n        {\r\n" +
-                    "            return null;\r\n        }\r\n\r\n        /// <summary>\r\n        /// Not im" +
-                    "plemented as far as default constructor used for all cases\r\n        /// </summar" +
-                    "y>\r\n        /// <param name=\"constructor\"></param>\r\n        /// <param name=\"col" +
-                    "umnName\"></param>\r\n        /// <returns></returns>\r\n        public SqlMapper.IMe" +
-                    "mberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)\r" +
-                    "\n        {\r\n            throw new NotSupportedException();\r\n        }\r\n\r\n       " +
-                    " /// <summary>\r\n        /// Returns property based on selector strategy\r\n       " +
-                    " /// </summary>\r\n        /// <param name=\"columnName\">DataReader column name</pa" +
-                    "ram>\r\n        /// <returns>Poperty member map</returns>\r\n        public SqlMappe" +
-                    "r.IMemberMap GetMember(string columnName)\r\n        {\r\n            var prop = _pr" +
-                    "opertySelector(_type, columnName);\r\n            return prop != null ? new Simple" +
-                    "MemberMap(columnName, prop) : null;\r\n        }\r\n    }\r\n}");
+            this.Write(@".Dapper
+{
+     /// <summary>
+    /// Additional state flags that control command behaviour
+    /// </summary>
+    [Flags]
+    public enum CommandFlags
+    {
+        /// <summary>
+        /// No additional flags
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Should data be buffered before returning?
+        /// </summary>
+        Buffered = 1,
+        /// <summary>
+        /// Can async queries be pipelined?
+        /// </summary>
+        Pipelined = 2,
+        /// <summary>
+        /// Should the plan cache be bypassed?
+        /// </summary>
+        NoCache = 4,
+    }
+}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -77,7 +70,7 @@ namespace Genie.Templates.Dapper
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class CustomPropertyTypeMapBase
+    public class CommandFlagsBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
