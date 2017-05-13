@@ -26,11 +26,14 @@ namespace Genie.Templates.Dapper
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"using System.Data;
-using System.Xml;
-using System.Xml.Linq;
-
-namespace Indico.DataAccess.Dapper
+            this.Write("using System.Data;\r\nusing System.Xml;\r\nusing System.Xml.Linq;\r\n\r\nnamespace ");
+            
+            #line 7 "D:\Projects\Genie\Genie\Templates\Dapper\XmlHandlers.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(@".Dapper
 {
 
     internal abstract class XmlTypeHandler<T> : SqlMapper.StringTypeHandler<T>
@@ -57,7 +60,7 @@ namespace Indico.DataAccess.Dapper
         protected override string Format(XDocument xml) => xml.ToString();
     }
     internal sealed class XElementHandler : XmlTypeHandler<XElement>
-    {
+    { 
         protected override XElement Parse(string xml) => XElement.Parse(xml);
         protected override string Format(XElement xml) => xml.ToString();
     }

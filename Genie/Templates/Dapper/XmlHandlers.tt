@@ -4,7 +4,7 @@ using System.Data;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Indico.DataAccess.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
 
     internal abstract class XmlTypeHandler<T> : SqlMapper.StringTypeHandler<T>
@@ -31,7 +31,7 @@ namespace Indico.DataAccess.Dapper
         protected override string Format(XDocument xml) => xml.ToString();
     }
     internal sealed class XElementHandler : XmlTypeHandler<XElement>
-    {
+    { 
         protected override XElement Parse(string xml) => XElement.Parse(xml);
         protected override string Format(XElement xml) => xml.ToString();
     }
