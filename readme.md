@@ -80,9 +80,10 @@ The generated DAL uses [Dapper](https://github.com/StackExchange/Dapper) (micro 
 Implements unit of work pattern and repository pattern.
 each table and view has a model object and a repository.
 
-All repositories can be accessed through the unit of work.
+All repositories can be accessed through a unit of work.
 
-the UnitOfWork, DapperContext, FactoryRepository should be singletons and can be implemented using a DI Container in an upper layer.
+the DapperContext,should be singleton.
+UnitOfWork, DapperContext can be implemented using a DI Container in an upper layer.
 
 ```CS
 // An example using Ninject
@@ -98,7 +99,6 @@ namespace Example.Business.Base.Concrete.Modules
         {
             Bind<IUnitOfWork>().To<UnitOfWork>().InSingletonScope();
             Bind<IDapperContext>().To<DapperContext>().InSingletonScope();
-            Bind<IRepositoryFactory>().To<FactoryRepository>().InSingletonScope();
         }
     }
 }
@@ -107,31 +107,40 @@ namespace Example.Business.Base.Concrete.Modules
 ## Repositories
 
 UnitOfWork can be used to access the repositories.
+Unit() function in the DapperContext can be used to create new Unit
 A repository contains methods to get, add, update, remove database entities
+all unit of work objects must be used in a using block.
 
+a unit has the Commit method that can be used to commit changes to the database
 ```CS
-var userRepository = UnitOfWork.UserRepository; // getting the repository
-var users = userRepository.Get().Where.GivenName.Contains("John").Filter().Query().ToList(); // Getting objects
-if (users.Count < 1)
-    return null;
-var user = users.First();
-user.GivenName = "Doe";
-userRepository.Update(user); // Updating the object . this will only updated properties of the object. (for this  the GivenName property only)
-var rusith = userRepository.Get().Where.GivenName.Contains("Rusith").Filter().Top(1).Query().FirstOrDefault(); // Getting an object
-userRepository.Remove(rusith); // deleting an object
+using(var unit = Context.Unit())
+{
+    var userRepository = unit.UserRepository; // getting the repository
+    var users = userRepository.Get().Where.GivenName.Contains("John").Filter().Query().ToList(); // Getting objects
+    if (users.Count < 1)
+        return null;
+    var user = users.First();
+    user.GivenName = "Doe"; // Updating the object .will update when committing changes 
+    userRepository.Update(user); 
+    var rusith = userRepository.Get().Where.GivenName.Contains("Rusith").Filter().Top(1).Query().FirstOrDefault(); // Getting an object
+    userRepository.Remove(rusith); // deleting an object
 
-var newUser = new User {FamilyName = "Example", Username = "e@e.com", GivenName = "User"};
-userRepository.Add(newUser); // adding an object
+    var newUser = new User {FamilyName = "Example", Username = "e@e.com", GivenName = "User"};
+    userRepository.Add(newUser); // adding an object
+
+    unit.Commit();
+}
+
 ```
 
 ## Procedures
 
-All Stored procedures of the the database can be accessed through the UnitOfWork, all the parameters of the methods are nullable and null by default.
+All Stored procedures of the the database can be accessed through the Procedures object of any Unit Of Work object, all the parameters of the methods are nullable and null by default.
 A generic parameter should be provided in order to execute a procedure and the result will be mapped to the given class type.
 
 ```CS
 // Executing a procedure
-UnitOfWork.Procedures.SPC_GetOrders<OrderDetailModel>_List(100);
+unit.Procedures.SPC_GetOrders<OrderDetailModel>_List(100);
 ```
 
 There are three functions for each procedure (List, Single and Void)
@@ -141,11 +150,11 @@ Void is for no result
 
 ```CS
 // List
-IEnumarable<>UnitOfWork.Procedures.SPC_GetOrders_List<OrderDetailModel>();
+IEnumarable<>unit.Procedures.SPC_GetOrders_List<OrderDetailModel>();
 // Single
-int deleted = UnitOfWork.Procedures.SPC_DeleteOrder_Single<bool>(100);
+int deleted = unit.Procedures.SPC_DeleteOrder_Single<bool>(100);
 // Void
-UnitOfWork.Procedures.SPC_DeleteOrder_Void(100);
+unit.Procedures.SPC_DeleteOrder_Void(100);
 ```
 
 ## Querying
@@ -218,6 +227,74 @@ The `Query` function ends the QueryContext and returns the query result.
 ### Count Function
 The `Count` function returns the count of the result.
 
+### Filter
+
+This function needs an `IEnumerable<IPropertyFilter>` which is a collection of property  names, operations and values(if necessary) . this method can be used to filter the result in a customizable way 
+    How the operations are filtered and what are the operations : 
+```C#
+  switch (type.ToLower())
+    {
+        case "equals":
+        case "eq":
+            return QueryMaker.EqualsTo(propName, value, quoted);
+        case "notequals":
+        case "neq":
+        case "ne":
+            return QueryMaker.NotEquals(propName, value, quoted);
+        case "contains":
+        case "c":
+            return QueryMaker.Contains(propName, value);
+        case "notcontains":
+        case "nc":
+            return QueryMaker.NotContains(propName, value);
+        case "startswith":
+        case "sw":
+            return QueryMaker.StartsWith(propName, value);
+        case "notstartswith":
+        case "nsw":
+            return QueryMaker.NotStartsWith(propName, value);
+        case "endswith":
+        case "ew":
+            return QueryMaker.EndsWith(propName, value);
+        case "notendswith":
+        case "new":
+            return QueryMaker.NotEndsWith(propName, value);
+        case "isempty":
+        case "ie":
+            return QueryMaker.IsEmpty(propName);
+        case "isnotempty":
+        case "ino":
+            return QueryMaker.IsNotEmpty(propName);
+        case "isnull":
+        case "in":
+            return QueryMaker.IsNull(propName);
+        case "isnotnull":
+        case "inn":
+            return QueryMaker.IsNotNull(propName);
+        case "greaterthan":
+        case "gt":
+            return QueryMaker.GreaterThan(propName, value, quoted);
+        case "lessthan":
+        case "lt":
+            return QueryMaker.LessThan(propName, value, quoted);
+        case "greaterthanorequals":
+        case "gtoe":
+        case "gte":
+            return QueryMaker.GreaterThanOrEquals(propName, value, quoted);
+        case "lessthanorequals":
+        case "ltoe":
+        case "lte":
+            return QueryMaker.LessThanOrEquals(propName, value, quoted);
+        case "istrue":
+        case "it":
+            return QueryMaker.IsTrue(propName);
+        case "isfalse":
+        case "if":
+            return QueryMaker.IsFalse(propName);
+        default:
+            return "";
+    }
+```
 
 ## Transactions
 
