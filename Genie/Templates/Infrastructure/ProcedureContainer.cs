@@ -112,7 +112,7 @@ foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
-            this.Write(") { return Context.Connection.Query<T>(\"EXEC ");
+            this.Write(") { return Context.Connection.QueryFirstOrDefault<T>(\"EXEC ");
             
             #line 26 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
@@ -126,7 +126,7 @@ foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
-            this.Write("\").FirstOrDefault(); }\r\n");
+            this.Write("\"); }\r\n");
             
             #line 27 "D:\Projects\Genie\Genie\Templates\Infrastructure\ProcedureContainer.tt"
 }

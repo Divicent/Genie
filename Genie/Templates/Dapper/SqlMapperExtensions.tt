@@ -103,7 +103,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static int Count(this IDbConnection connection, IRepoQuery query)
         {
-	        return connection.Query<int>(GetRetriveQuery(query, true), transaction: query.Transaction).FirstOrDefault();
+	        return connection.ExecuteScalar<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
         }
 
 	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false)
