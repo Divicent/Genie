@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\DefaultTypeMap.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\DefaultTypeMap.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class DefaultTypeMap : DefaultTypeMapBase
     {
@@ -29,77 +29,129 @@ namespace Genie.Templates.Dapper
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing Syste" +
                     "m.Reflection;\r\n\r\nnamespace ");
             
-            #line 8 "F:\Projects\Genie\Genie\Templates\Dapper\DefaultTypeMap.tt"
+            #line 8 "D:\Projects\Genie\Genie\Templates\Dapper\DefaultTypeMap.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// Represents default type mapping strategy u" +
-                    "sed by Dapper\r\n    /// </summary>\r\n    sealed class DefaultTypeMap : SqlMapper.I" +
-                    "TypeMap\r\n    {\r\n        private readonly List<FieldInfo> _fields;\r\n        priva" +
-                    "te readonly List<PropertyInfo> _properties;\r\n        private readonly Type _type" +
-                    ";\r\n\r\n        /// <summary>\r\n        /// Creates default type map\r\n        /// </" +
-                    "summary>\r\n        /// <param name=\"type\">Entity type</param>\r\n        public Def" +
-                    "aultTypeMap(Type type)\r\n        {\r\n            if (type == null)\r\n              " +
-                    "  throw new ArgumentNullException(\"type\");\r\n\r\n            _fields = GetSettableF" +
-                    "ields(type);\r\n            _properties = GetSettableProps(type);\r\n            _ty" +
-                    "pe = type;\r\n        }\r\n\r\n        internal static MethodInfo GetPropertySetter(Pr" +
-                    "opertyInfo propertyInfo, Type type)\r\n        {\r\n            return propertyInfo." +
-                    "DeclaringType == type ?\r\n                propertyInfo.GetSetMethod(true) :\r\n    " +
-                    "            propertyInfo.DeclaringType.GetProperty(propertyInfo.Name, BindingFla" +
-                    "gs.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetSetMethod(true);\r" +
-                    "\n        }\r\n\r\n        internal static List<PropertyInfo> GetSettableProps(Type t" +
-                    ")\r\n        {\r\n            return t\r\n                    .GetProperties(BindingFl" +
-                    "ags.Public | BindingFlags.NonPublic | BindingFlags.Instance)\r\n                  " +
-                    "  .Where(p => GetPropertySetter(p, t) != null)\r\n                    .ToList();\r\n" +
-                    "        }\r\n\r\n        internal static List<FieldInfo> GetSettableFields(Type t)\r\n" +
-                    "        {\r\n            return t.GetFields(BindingFlags.Public | BindingFlags.Non" +
-                    "Public | BindingFlags.Instance).ToList();\r\n        }\r\n\r\n        /// <summary>\r\n " +
-                    "       /// Finds best constructor\r\n        /// </summary>\r\n        /// <param na" +
-                    "me=\"names\">DataReader column names</param>\r\n        /// <param name=\"types\">Data" +
-                    "Reader column types</param>\r\n        /// <returns>Matching constructor or defaul" +
-                    "t one</returns>\r\n        public ConstructorInfo FindConstructor(string[] names, " +
-                    "Type[] types)\r\n        {\r\n            var constructors = _type.GetConstructors(B" +
-                    "indingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);\r\n         " +
-                    "   foreach (ConstructorInfo ctor in constructors.OrderBy(c => c.IsPublic ? 0 : (" +
-                    "c.IsPrivate ? 2 : 1)).ThenBy(c => c.GetParameters().Length))\r\n            {\r\n   " +
-                    "             ParameterInfo[] ctorParameters = ctor.GetParameters();\r\n           " +
-                    "     if (ctorParameters.Length == 0)\r\n                    return ctor;\r\n\r\n      " +
-                    "          if (ctorParameters.Length != types.Length)\r\n                    contin" +
-                    "ue;\r\n\r\n                int i = 0;\r\n                for (; i < ctorParameters.Len" +
-                    "gth; i++)\r\n                {\r\n                    if (!String.Equals(ctorParamet" +
-                    "ers[i].Name, names[i], StringComparison.OrdinalIgnoreCase))\r\n                   " +
-                    "     break;\r\n                    if (types[i] == typeof(byte[]) && ctorParameter" +
-                    "s[i].ParameterType.FullName == SqlMapper.LinqBinary)\r\n                        co" +
-                    "ntinue;\r\n                    var unboxedType = Nullable.GetUnderlyingType(ctorPa" +
-                    "rameters[i].ParameterType) ?? ctorParameters[i].ParameterType;\r\n                " +
-                    "    if (unboxedType != types[i]\r\n                        && !(unboxedType.IsEnum" +
-                    " && Enum.GetUnderlyingType(unboxedType) == types[i])\r\n                        &&" +
-                    " !(unboxedType == typeof(char) && types[i] == typeof(string)))\r\n                " +
-                    "        break;\r\n                }\r\n\r\n                if (i == ctorParameters.Len" +
-                    "gth)\r\n                    return ctor;\r\n            }\r\n\r\n            return null" +
-                    ";\r\n        }\r\n\r\n        /// <summary>\r\n        /// Gets mapping for constructor " +
-                    "parameter\r\n        /// </summary>\r\n        /// <param name=\"constructor\">Constru" +
-                    "ctor to resolve</param>\r\n        /// <param name=\"columnName\">DataReader column " +
-                    "name</param>\r\n        /// <returns>Mapping implementation</returns>\r\n        pub" +
-                    "lic SqlMapper.IMemberMap GetConstructorParameter(ConstructorInfo constructor, st" +
-                    "ring columnName)\r\n        {\r\n            var parameters = constructor.GetParamet" +
-                    "ers();\r\n\r\n            return new SimpleMemberMap(columnName, parameters.FirstOrD" +
-                    "efault(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase" +
-                    ")));\r\n        }\r\n\r\n        /// <summary>\r\n        /// Gets member mapping for co" +
-                    "lumn\r\n        /// </summary>\r\n        /// <param name=\"columnName\">DataReader co" +
-                    "lumn name</param>\r\n        /// <returns>Mapping implementation</returns>\r\n      " +
-                    "  public SqlMapper.IMemberMap GetMember(string columnName)\r\n        {\r\n         " +
-                    "   var property = _properties.FirstOrDefault(p => string.Equals(p.Name, columnNa" +
-                    "me, StringComparison.Ordinal))\r\n                ?? _properties.FirstOrDefault(p " +
-                    "=> string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase));\r\n\r\n  " +
-                    "          if (property != null)\r\n                return new SimpleMemberMap(colu" +
-                    "mnName, property);\r\n\r\n            var field = _fields.FirstOrDefault(p => string" +
-                    ".Equals(p.Name, columnName, StringComparison.Ordinal))\r\n                ?? _fiel" +
-                    "ds.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.Ordina" +
-                    "lIgnoreCase));\r\n\r\n            if (field != null)\r\n                return new Sim" +
-                    "pleMemberMap(columnName, field);\r\n\r\n            return null;\r\n        }\r\n    }\r\n" +
-                    "\r\n}");
+                    "sed by Dapper\r\n    /// </summary>\r\n    public sealed class DefaultTypeMap : SqlM" +
+                    "apper.ITypeMap\r\n    {\r\n        private readonly List<FieldInfo> _fields;\r\n      " +
+                    "  private readonly Type _type;\r\n\r\n        /// <summary>\r\n        /// Creates def" +
+                    "ault type map\r\n        /// </summary>\r\n        /// <param name=\"type\">Entity typ" +
+                    "e</param>\r\n        public DefaultTypeMap(Type type)\r\n        {\r\n            if (" +
+                    "type == null)\r\n                throw new ArgumentNullException(nameof(type));\r\n\r" +
+                    "\n            _fields = GetSettableFields(type);\r\n            Properties = GetSet" +
+                    "tableProps(type);\r\n            _type = type;\r\n        }\r\n#if COREFX\r\n        sta" +
+                    "tic bool IsParameterMatch(ParameterInfo[] x, ParameterInfo[] y)\r\n        {\r\n    " +
+                    "        if (ReferenceEquals(x, y)) return true;\r\n            if (x == null || y " +
+                    "== null) return false;\r\n            if (x.Length != y.Length) return false;\r\n   " +
+                    "         for (int i = 0; i < x.Length; i++)\r\n                if (x[i].ParameterT" +
+                    "ype != y[i].ParameterType) return false;\r\n            return true;\r\n        }\r\n#" +
+                    "endif\r\n        internal static MethodInfo GetPropertySetter(PropertyInfo propert" +
+                    "yInfo, Type type)\r\n        {\r\n            if (propertyInfo.DeclaringType == type" +
+                    ") return propertyInfo.GetSetMethod(true);\r\n#if COREFX\r\n            return proper" +
+                    "tyInfo.DeclaringType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic " +
+                    "| BindingFlags.Instance)\r\n                    .Single(x => x.Name == propertyInf" +
+                    "o.Name\r\n                        && x.PropertyType == propertyInfo.PropertyType\r\n" +
+                    "                        && IsParameterMatch(x.GetIndexParameters(), propertyInfo" +
+                    ".GetIndexParameters())\r\n                        ).GetSetMethod(true);\r\n#else\r\n  " +
+                    "          return propertyInfo.DeclaringType.GetProperty(\r\n                   pro" +
+                    "pertyInfo.Name,\r\n                   BindingFlags.Public | BindingFlags.NonPublic" +
+                    " | BindingFlags.Instance,\r\n                   Type.DefaultBinder,\r\n             " +
+                    "      propertyInfo.PropertyType,\r\n                   propertyInfo.GetIndexParame" +
+                    "ters().Select(p => p.ParameterType).ToArray(),\r\n                   null).GetSetM" +
+                    "ethod(true);\r\n#endif\r\n        }\r\n\r\n        internal static List<PropertyInfo> Ge" +
+                    "tSettableProps(Type t)\r\n        {\r\n            return t\r\n                  .GetP" +
+                    "roperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)\r" +
+                    "\n                  .Where(p => GetPropertySetter(p, t) != null)\r\n               " +
+                    "   .ToList();\r\n        }\r\n\r\n        internal static List<FieldInfo> GetSettableF" +
+                    "ields(Type t)\r\n        {\r\n            return t.GetFields(BindingFlags.Public | B" +
+                    "indingFlags.NonPublic | BindingFlags.Instance).ToList();\r\n        }\r\n\r\n        /" +
+                    "// <summary>\r\n        /// Finds best constructor\r\n        /// </summary>\r\n      " +
+                    "  /// <param name=\"names\">DataReader column names</param>\r\n        /// <param na" +
+                    "me=\"types\">DataReader column types</param>\r\n        /// <returns>Matching constr" +
+                    "uctor or default one</returns>\r\n        public ConstructorInfo FindConstructor(s" +
+                    "tring[] names, Type[] types)\r\n        {\r\n            var constructors = _type.Ge" +
+                    "tConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPubl" +
+                    "ic);\r\n            foreach (ConstructorInfo ctor in constructors.OrderBy(c => c.I" +
+                    "sPublic ? 0 : (c.IsPrivate ? 2 : 1)).ThenBy(c => c.GetParameters().Length))\r\n   " +
+                    "         {\r\n                ParameterInfo[] ctorParameters = ctor.GetParameters(" +
+                    ");\r\n                if (ctorParameters.Length == 0)\r\n                    return " +
+                    "ctor;\r\n\r\n                if (ctorParameters.Length != types.Length)\r\n           " +
+                    "         continue;\r\n\r\n                int i = 0;\r\n                for (; i < cto" +
+                    "rParameters.Length; i++)\r\n                {\r\n                    if (!String.Equ" +
+                    "als(ctorParameters[i].Name, names[i], StringComparison.OrdinalIgnoreCase))\r\n    " +
+                    "                    break;\r\n                    if (types[i] == typeof(byte[]) &" +
+                    "& ctorParameters[i].ParameterType.FullName == SqlMapper.LinqBinary)\r\n           " +
+                    "             continue;\r\n                    var unboxedType = Nullable.GetUnderl" +
+                    "yingType(ctorParameters[i].ParameterType) ?? ctorParameters[i].ParameterType;\r\n " +
+                    "                   if ((unboxedType != types[i] && !SqlMapper.HasTypeHandler(unb" +
+                    "oxedType))\r\n                        && !(unboxedType.IsEnum() && Enum.GetUnderly" +
+                    "ingType(unboxedType) == types[i])\r\n                        && !(unboxedType == t" +
+                    "ypeof(char) && types[i] == typeof(string))\r\n                        && !(unboxed" +
+                    "Type.IsEnum() && types[i] == typeof(string)))\r\n                    {\r\n          " +
+                    "              break;\r\n                    }\r\n                }\r\n\r\n              " +
+                    "  if (i == ctorParameters.Length)\r\n                    return ctor;\r\n           " +
+                    " }\r\n\r\n            return null;\r\n        }\r\n\r\n        /// <summary>\r\n        /// " +
+                    "Returns the constructor, if any, that has the ExplicitConstructorAttribute on it" +
+                    ".\r\n        /// </summary>\r\n        public ConstructorInfo FindExplicitConstructo" +
+                    "r()\r\n        {\r\n            var constructors = _type.GetConstructors(BindingFlag" +
+                    "s.Instance | BindingFlags.Public | BindingFlags.NonPublic);\r\n#if COREFX\r\n       " +
+                    "     var withAttr = constructors.Where(c => c.CustomAttributes.Any(x => x.Attrib" +
+                    "uteType == typeof(ExplicitConstructorAttribute))).ToList();\r\n#else\r\n            " +
+                    "var withAttr = constructors.Where(c => c.GetCustomAttributes(typeof(ExplicitCons" +
+                    "tructorAttribute), true).Length > 0).ToList();\r\n#endif\r\n\r\n            if (withAt" +
+                    "tr.Count() == 1)\r\n            {\r\n                return withAttr[0];\r\n          " +
+                    "  }\r\n\r\n            return null;\r\n        }\r\n\r\n        /// <summary>\r\n        ///" +
+                    " Gets mapping for constructor parameter\r\n        /// </summary>\r\n        /// <pa" +
+                    "ram name=\"constructor\">Constructor to resolve</param>\r\n        /// <param name=\"" +
+                    "columnName\">DataReader column name</param>\r\n        /// <returns>Mapping impleme" +
+                    "ntation</returns>\r\n        public SqlMapper.IMemberMap GetConstructorParameter(C" +
+                    "onstructorInfo constructor, string columnName)\r\n        {\r\n            var param" +
+                    "eters = constructor.GetParameters();\r\n\r\n            return new SimpleMemberMap(c" +
+                    "olumnName, parameters.FirstOrDefault(p => string.Equals(p.Name, columnName, Stri" +
+                    "ngComparison.OrdinalIgnoreCase)));\r\n        }\r\n\r\n        /// <summary>\r\n        " +
+                    "/// Gets member mapping for column\r\n        /// </summary>\r\n        /// <param n" +
+                    "ame=\"columnName\">DataReader column name</param>\r\n        /// <returns>Mapping im" +
+                    "plementation</returns>\r\n        public SqlMapper.IMemberMap GetMember(string col" +
+                    "umnName)\r\n        {\r\n            var property = Properties.FirstOrDefault(p => s" +
+                    "tring.Equals(p.Name, columnName, StringComparison.Ordinal))\r\n               ?? P" +
+                    "roperties.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison" +
+                    ".OrdinalIgnoreCase));\r\n\r\n            if (property == null && MatchNamesWithUnder" +
+                    "scores)\r\n            {\r\n                property = Properties.FirstOrDefault(p =" +
+                    "> string.Equals(p.Name, columnName.Replace(\"_\", \"\"), StringComparison.Ordinal))\r" +
+                    "\n                    ?? Properties.FirstOrDefault(p => string.Equals(p.Name, col" +
+                    "umnName.Replace(\"_\", \"\"), StringComparison.OrdinalIgnoreCase));\r\n            }\r\n" +
+                    "\r\n            if (property != null)\r\n                return new SimpleMemberMap(" +
+                    "columnName, property);\r\n\r\n            // roslyn automatically implemented proper" +
+                    "ties, in particular for get-only properties: <{Name}>k__BackingField;\r\n         " +
+                    "   var backingFieldName = \"<\" + columnName + \">k__BackingField\";\r\n\r\n            " +
+                    "// preference order is:\r\n            // exact match over underscre match, exact " +
+                    "case over wrong case, backing fields over regular fields, match-inc-underscores " +
+                    "over match-exc-underscores\r\n            var field = _fields.FirstOrDefault(p => " +
+                    "string.Equals(p.Name, columnName, StringComparison.Ordinal))\r\n                ??" +
+                    " _fields.FirstOrDefault(p => string.Equals(p.Name, backingFieldName, StringCompa" +
+                    "rison.Ordinal))\r\n                ?? _fields.FirstOrDefault(p => string.Equals(p." +
+                    "Name, columnName, StringComparison.OrdinalIgnoreCase))\r\n                ?? _fiel" +
+                    "ds.FirstOrDefault(p => string.Equals(p.Name, backingFieldName, StringComparison." +
+                    "OrdinalIgnoreCase));\r\n\r\n            if (field == null && MatchNamesWithUnderscor" +
+                    "es)\r\n            {\r\n                var effectiveColumnName = columnName.Replace" +
+                    "(\"_\", \"\");\r\n                backingFieldName = \"<\" + effectiveColumnName + \">k__" +
+                    "BackingField\";\r\n\r\n                field = _fields.FirstOrDefault(p => string.Equ" +
+                    "als(p.Name, effectiveColumnName, StringComparison.Ordinal))\r\n                   " +
+                    " ?? _fields.FirstOrDefault(p => string.Equals(p.Name, backingFieldName, StringCo" +
+                    "mparison.Ordinal))\r\n                    ?? _fields.FirstOrDefault(p => string.Eq" +
+                    "uals(p.Name, effectiveColumnName, StringComparison.OrdinalIgnoreCase))\r\n        " +
+                    "            ?? _fields.FirstOrDefault(p => string.Equals(p.Name, backingFieldNam" +
+                    "e, StringComparison.OrdinalIgnoreCase));\r\n            }\r\n\r\n            if (field" +
+                    " != null)\r\n                return new SimpleMemberMap(columnName, field);\r\n\r\n   " +
+                    "         return null;\r\n        }\r\n        /// <summary>\r\n        /// Should colu" +
+                    "mn names like User_Id be allowed to match properties/fields like UserId ?\r\n     " +
+                    "   /// </summary>\r\n        public static bool MatchNamesWithUnderscores { get; s" +
+                    "et; }\r\n\r\n        /// <summary>\r\n        /// The settable properties for this typ" +
+                    "emap\r\n        /// </summary>\r\n        public List<PropertyInfo> Properties { get" +
+                    "; }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

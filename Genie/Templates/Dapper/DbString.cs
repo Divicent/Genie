@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\DbString.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\DbString.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class DbString : DbStringBase
     {
@@ -28,36 +28,44 @@ namespace Genie.Templates.Dapper
         {
             this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace ");
             
-            #line 6 "F:\Projects\Genie\Genie\Templates\Dapper\DbString.tt"
+            #line 6 "D:\Projects\Genie\Genie\Templates\Dapper\DbString.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Dapper\r\n{\r\n\t/// <summary>\r\n    /// This class represents a SQL string, it can be" +
-                    " used if you need to denote your parameter is a Char vs VarChar vs nVarChar vs n" +
-                    "Char\r\n    /// </summary>\r\n    sealed class DbString\r\n    {\r\n        /// <summary" +
-                    ">\r\n        /// Create a new DbString\r\n        /// </summary>\r\n        public DbS" +
-                    "tring() { Length = -1; }\r\n        /// <summary>\r\n        /// Ansi vs Unicode \r\n " +
-                    "       /// </summary>\r\n        public bool IsAnsi { get; set; }\r\n        /// <su" +
-                    "mmary>\r\n        /// Fixed length \r\n        /// </summary>\r\n        public bool I" +
-                    "sFixedLength { get; set; }\r\n        /// <summary>\r\n        /// Length of the str" +
-                    "ing -1 for max\r\n        /// </summary>\r\n        public int Length { get; set; }\r" +
-                    "\n        /// <summary>\r\n        /// The value of the string\r\n        /// </summa" +
-                    "ry>\r\n        public string Value { get; set; }\r\n        /// <summary>\r\n        /" +
-                    "// Add the parameter to the command... internal use only\r\n        /// </summary>" +
-                    "\r\n        /// <param name=\"command\"></param>\r\n        /// <param name=\"name\"></p" +
-                    "aram>\r\n        public void AddParameter(IDbCommand command, string name)\r\n      " +
-                    "  {\r\n            if (IsFixedLength && Length == -1)\r\n            {\r\n            " +
-                    "    throw new InvalidOperationException(\"If specifying IsFixedLength,  a Length " +
-                    "must also be specified\");\r\n            }\r\n            var param = command.Create" +
-                    "Parameter();\r\n            param.ParameterName = name;\r\n            param.Value =" +
-                    " (object)Value ?? DBNull.Value;\r\n            if (Length == -1 && Value != null &" +
-                    "& Value.Length <= 4000)\r\n            {\r\n                param.Size = 4000;\r\n    " +
-                    "        }\r\n            else\r\n            {\r\n                param.Size = Length;" +
-                    "\r\n            }\r\n            param.DbType = IsAnsi ? (IsFixedLength ? DbType.Ans" +
-                    "iStringFixedLength : DbType.AnsiString) : (IsFixedLength ? DbType.StringFixedLen" +
-                    "gth : DbType.String);\r\n            command.Parameters.Add(param);\r\n        }\r\n  " +
-                    "  }\r\n}\r\n");
+            this.Write(".Dapper\r\n{\r\n    /// <summary>\r\n    /// This class represents a SQL string, it can" +
+                    " be used if you need to denote your parameter is a Char vs VarChar vs nVarChar v" +
+                    "s nChar\r\n    /// </summary>\r\n    public sealed class DbString : SqlMapper.ICusto" +
+                    "mQueryParameter\r\n    {\r\n        /// <summary>\r\n        /// Default value for IsA" +
+                    "nsi.\r\n        /// </summary>\r\n        public static bool IsAnsiDefault { get; se" +
+                    "t; }\r\n\r\n        /// <summary>\r\n        /// A value to set the default value of s" +
+                    "trings\r\n        /// going through Dapper. Default is 4000, any value larger than" +
+                    " this\r\n        /// field will not have the default value applied.\r\n        /// <" +
+                    "/summary>\r\n        public const int DefaultLength = 4000;\r\n\r\n        /// <summar" +
+                    "y>\r\n        /// Create a new DbString\r\n        /// </summary>\r\n        public Db" +
+                    "String()\r\n        {\r\n            Length = -1;\r\n            IsAnsi = IsAnsiDefaul" +
+                    "t;\r\n        }\r\n        /// <summary>\r\n        /// Ansi vs Unicode \r\n        /// " +
+                    "</summary>\r\n        public bool IsAnsi { get; set; }\r\n        /// <summary>\r\n   " +
+                    "     /// Fixed length \r\n        /// </summary>\r\n        public bool IsFixedLengt" +
+                    "h { get; set; }\r\n        /// <summary>\r\n        /// Length of the string -1 for " +
+                    "max\r\n        /// </summary>\r\n        public int Length { get; set; }\r\n        //" +
+                    "/ <summary>\r\n        /// The value of the string\r\n        /// </summary>\r\n      " +
+                    "  public string Value { get; set; }\r\n        /// <summary>\r\n        /// Add the " +
+                    "parameter to the command... internal use only\r\n        /// </summary>\r\n        /" +
+                    "// <param name=\"command\"></param>\r\n        /// <param name=\"name\"></param>\r\n    " +
+                    "    public void AddParameter(IDbCommand command, string name)\r\n        {\r\n      " +
+                    "      if (IsFixedLength && Length == -1)\r\n            {\r\n                throw n" +
+                    "ew InvalidOperationException(\"If specifying IsFixedLength,  a Length must also b" +
+                    "e specified\");\r\n            }\r\n            var param = command.CreateParameter()" +
+                    ";\r\n            param.ParameterName = name;\r\n#pragma warning disable 0618\r\n      " +
+                    "      param.Value = SqlMapper.SanitizeParameterValue(Value);\r\n#pragma warning re" +
+                    "store 0618\r\n            if (Length == -1 && Value != null && Value.Length <= Def" +
+                    "aultLength)\r\n            {\r\n                param.Size = DefaultLength;\r\n       " +
+                    "     }\r\n            else\r\n            {\r\n                param.Size = Length;\r\n " +
+                    "           }\r\n            param.DbType = IsAnsi ? (IsFixedLength ? DbType.AnsiSt" +
+                    "ringFixedLength : DbType.AnsiString) : (IsFixedLength ? DbType.StringFixedLength" +
+                    " : DbType.String);\r\n            command.Parameters.Add(param);\r\n        }\r\n    }" +
+                    "\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -16,7 +16,7 @@ namespace Genie.Templates.Dapper
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\KeyAttribute.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\KeyAttribute.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class KeyAttribute : KeyAttributeBase
     {
@@ -28,13 +28,13 @@ namespace Genie.Templates.Dapper
         {
             this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 5 "F:\Projects\Genie\Genie\Templates\Dapper\KeyAttribute.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\KeyAttribute.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
-            this.Write(".Dapper\r\n{\r\n\t[AttributeUsage(AttributeTargets.Property)]\r\n    public class KeyAtt" +
-                    "ribute : Attribute\r\n    {\r\n    }\r\n}");
+            this.Write(".Dapper \r\n{\r\n\t[AttributeUsage(AttributeTargets.Property)]\r\n    public class KeyAt" +
+                    "tribute : Attribute\r\n    {\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -2,7 +2,7 @@
 <#@ import namespace="Genie.Base" #>
 using System;
 
-namespace <#=GenerationContext.BaseNamespace#>.Dapper
+namespace <#=GenerationContext.BaseNamespace#>.Dapper 
 {
 	[AttributeUsage(AttributeTargets.Property)]
     public class KeyAttribute : Attribute

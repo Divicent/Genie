@@ -5,10 +5,10 @@ using System.Reflection;
 
 namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
-	/// <summary>
+    /// <summary>
     /// Implements custom property mapping by user provided criteria (usually presence of some custom attribute with column to member mapping)
     /// </summary>
-    sealed class CustomPropertyTypeMap : SqlMapper.ITypeMap
+    public sealed class CustomPropertyTypeMap : SqlMapper.ITypeMap
     {
         private readonly Type _type;
         private readonly Func<Type, string, PropertyInfo> _propertySelector;
@@ -42,6 +42,15 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         }
 
         /// <summary>
+        /// Always returns null
+        /// </summary>
+        /// <returns></returns>
+        public ConstructorInfo FindExplicitConstructor()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Not implemented as far as default constructor used for all cases
         /// </summary>
         /// <param name="constructor"></param>
@@ -56,7 +65,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         /// Returns property based on selector strategy
         /// </summary>
         /// <param name="columnName">DataReader column name</param>
-        /// <returns>Property member map</returns>
+        /// <returns>Poperty member map</returns>
         public SqlMapper.IMemberMap GetMember(string columnName)
         {
             var prop = _propertySelector(_type, columnName);

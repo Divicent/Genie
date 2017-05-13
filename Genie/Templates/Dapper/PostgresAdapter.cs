@@ -34,27 +34,27 @@ namespace Genie.Templates.Dapper
             
             #line default
             #line hidden
-            this.Write(".Dapper\r\n{\r\n\tpublic class PostgresAdapter : ISqlAdapter\r\n    {\r\n        public in" +
-                    "t? Insert(IDbConnection connection, IDbTransaction transaction, int? commandTime" +
-                    "out, String tableName, string columnList, string parameterList, List<PropertyInf" +
-                    "o> keyProperties, object entityToInsert)\r\n        {\r\n            StringBuilder s" +
-                    "b = new StringBuilder();\r\n            sb.AppendFormat(\"insert into {0} ({1}) val" +
-                    "ues ({2})\", tableName, columnList, parameterList);\r\n\r\n            // If no prima" +
-                    "ry key then safe to assume a join table with not too much data to return\r\n      " +
-                    "      if (!keyProperties.Any())\r\n                sb.Append(\" RETURNING *\");\r\n   " +
-                    "         else\r\n            {\r\n                sb.Append(\" RETURNING \");\r\n       " +
-                    "         bool first = true;\r\n                foreach (var property in keyPropert" +
-                    "ies)\r\n                {\r\n                    if (!first)\r\n                      " +
-                    "  sb.Append(\", \");\r\n                    first = false;\r\n                    sb.A" +
-                    "ppend(property.Name);\r\n                }\r\n            }\r\n\r\n            var resul" +
-                    "ts = connection.Query(sb.ToString(), entityToInsert, transaction: transaction, c" +
-                    "ommandTimeout: commandTimeout);\r\n\r\n            // Return the key by assinging th" +
-                    "e corresponding property in the object - by product is that it supports compound" +
-                    " primary keys\r\n            int id = 0;\r\n            foreach (var p in keyPropert" +
-                    "ies)\r\n            {\r\n                var value = ((IDictionary<string, object>)r" +
-                    "esults.First())[p.Name.ToLower()];\r\n                p.SetValue(entityToInsert, v" +
-                    "alue, null);\r\n                if (id == 0)\r\n                    id = Convert.ToI" +
-                    "nt32(value);\r\n            }\r\n            return id;\r\n        }\r\n    }\r\n}");
+            this.Write(".Dapper \r\n{\r\n\tpublic class PostgresAdapter : ISqlAdapter\r\n    {\r\n        public i" +
+                    "nt? Insert(IDbConnection connection, IDbTransaction transaction, int? commandTim" +
+                    "eout, String tableName, string columnList, string parameterList, List<PropertyIn" +
+                    "fo> keyProperties, object entityToInsert)\r\n        {\r\n            StringBuilder " +
+                    "sb = new StringBuilder();\r\n            sb.AppendFormat(\"insert into {0} ({1}) va" +
+                    "lues ({2})\", tableName, columnList, parameterList);\r\n\r\n            // If no prim" +
+                    "ary key then safe to assume a join table with not too much data to return\r\n     " +
+                    "       if (!keyProperties.Any())\r\n                sb.Append(\" RETURNING *\");\r\n  " +
+                    "          else\r\n            {\r\n                sb.Append(\" RETURNING \");\r\n      " +
+                    "          bool first = true;\r\n                foreach (var property in keyProper" +
+                    "ties)\r\n                {\r\n                    if (!first)\r\n                     " +
+                    "   sb.Append(\", \");\r\n                    first = false;\r\n                    sb." +
+                    "Append(property.Name);\r\n                }\r\n            }\r\n\r\n            var resu" +
+                    "lts = connection.Query(sb.ToString(), entityToInsert, transaction: transaction, " +
+                    "commandTimeout: commandTimeout);\r\n\r\n            // Return the key by assinging t" +
+                    "he corresponding property in the object - by product is that it supports compoun" +
+                    "d primary keys\r\n            int id = 0;\r\n            foreach (var p in keyProper" +
+                    "ties)\r\n            {\r\n                var value = ((IDictionary<string, object>)" +
+                    "results.First())[p.Name.ToLower()];\r\n                p.SetValue(entityToInsert, " +
+                    "value, null);\r\n                if (id == 0)\r\n                    id = Convert.To" +
+                    "Int32(value);\r\n            }\r\n            return id;\r\n        }\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
