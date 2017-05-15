@@ -73,7 +73,10 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
                     "ressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public IExpressionJoin<T," +
                     " TQ> In(params double[] items)\r\n        {\r\n            _parent.Add(QueryMaker.In" +
                     "(_propertyName, items.Cast<object>().ToArray(), false));\r\n            return new" +
-                    " ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n    }\r\n}\r\n");
+                    " ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public IExpressionJoi" +
+                    "n<T, TQ> NotIn(params double[] items)\r\n        {\r\n            _parent.Add(QueryM" +
+                    "aker.NotIn(_propertyName, items.Cast<object>().ToArray(), false));\r\n            " +
+                    "return new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

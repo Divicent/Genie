@@ -81,14 +81,17 @@ namespace Genie.Templates.Infrastructure.Collections.Concrete
 		{
             if (entityToAdd == null)
                 return;
-            if (_creator.DatabaseModelStatus == ModelStatus.Retrieved)
-                _addAction(entityToAdd);
-            else if (_creator.DatabaseModelStatus == ModelStatus.ToAdd)
+            switch (_creator.DatabaseModelStatus)
             {
-                if(_creator.ActionsToRunWhenAdding == null)
-                    _creator.ActionsToRunWhenAdding = new List<IAddAction>();
-                _creator.ActionsToRunWhenAdding.Add(new AddAction(_addAction, entityToAdd));
-            }   
+                case ModelStatus.Retrieved:
+                    _addAction(entityToAdd);
+                    break;
+                case ModelStatus.ToAdd:
+                    if(_creator.ActionsToRunWhenAdding == null)
+                        _creator.ActionsToRunWhenAdding = new List<IAddAction>();
+                    _creator.ActionsToRunWhenAdding.Add(new AddAction(_addAction, entityToAdd));
+                    break;
+            }    
 			_collection.Add(entityToAdd);
 		}
 

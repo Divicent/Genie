@@ -49,6 +49,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         IExpressionJoin<T, TQ> IsNull();
         IExpressionJoin<T, TQ> IsNotNull();
         IExpressionJoin<T, TQ> In(params string[] items);
+        IExpressionJoin<T, TQ> NotIn(params string[] items);
     }
 }
 

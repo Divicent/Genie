@@ -81,7 +81,11 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
                     "   internal static string In(string propertyName, object[] values, bool quoted)\r" +
                     "\n        {\r\n            return string.Format(\"[{0}] IN({1})\", propertyName, valu" +
                     "es.Aggregate(\"\", (c, n) => c + string.Format(\",{1}{0}{1}\", n, quoted ? \"\'\" : \"\")" +
-                    ").TrimStart(\',\'));\r\n        }\r\n    }\r\n}\r\n");
+                    ").TrimStart(\',\'));\r\n        }\r\n\r\n        internal static string NotIn(string pro" +
+                    "pertyName, object[] values, bool quoted)\r\n        {\r\n            return string.F" +
+                    "ormat(\"[{0}] NOT IN({1})\", propertyName, values.Aggregate(\"\", (c, n) => c + stri" +
+                    "ng.Format(\",{1}{0}{1}\", n, quoted ? \"\'\" : \"\")).TrimStart(\',\'));\r\n        }\r\n    " +
+                    "}\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

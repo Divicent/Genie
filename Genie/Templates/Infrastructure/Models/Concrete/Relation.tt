@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using <#=GenerationContext.BaseNamespace#>.Dapper;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Concrete;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Actions.Abstract;
+using <#=GenerationContext.BaseNamespace#>.Infrastructure.Actions.Concrete;
 
 <#var entity = _relation;
 var name = _relation.Name;
@@ -38,6 +40,25 @@ entity.ForeignKeyAttributes){#>
 		public <#=atd.ReferencingRelationName#> Get<#=atd.ReferencingNonForeignKeyAttribute.Name#>(IDbTransaction transaction =null)
         {
             return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.Get().Where.<#=atd.ReferencingTableColumnName#>.EqualsTo(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#><#=atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ?  ".GetValueOrDefault()" : ""#>).Filter().Top(1).Query(transaction).FirstOrDefault()) : null;
+        }
+<#}#>
+
+<#foreach(var atd in entity.ForeignKeyAttributes){#>
+		public void Set<#=atd.ReferencingNonForeignKeyAttribute.Name#>(<#=atd.ReferencingRelationName#> entity)
+        {
+            if (entity == null)
+                return;
+            switch (entity.DatabaseModelStatus)
+            {
+                case ModelStatus.Retrieved:
+                    <#=atd.ReferencingNonForeignKeyAttribute.Name#> = entity.<#=atd.ReferencingTableColumnName#>;
+                    break;
+                case ModelStatus.ToAdd:
+                    if (entity.ActionsToRunWhenAdding == null)
+                        entity.ActionsToRunWhenAdding = new List<IAddAction>();
+                    entity.ActionsToRunWhenAdding.Add(new AddAction(i => { <#=atd.ReferencingNonForeignKeyAttribute.Name#> = ((<#=atd.ReferencingRelationName#>) i).<#=atd.ReferencingTableColumnName#>; }, entity));
+                    break;
+            }
         }
 <#}#>
 

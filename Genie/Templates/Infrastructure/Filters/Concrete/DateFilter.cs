@@ -73,7 +73,10 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
                     "_parent, _q);\r\n        }\r\n\r\n        public IExpressionJoin<T, TQ> In(params Date" +
                     "Time[] items)\r\n        {\r\n            _parent.Add(QueryMaker.In(_propertyName, i" +
                     "tems.Cast<object>().ToArray(), true));\r\n            return new ExpressionJoin<T," +
-                    " TQ>(_parent, _q);\r\n        }\r\n    }\r\n}\r\n");
+                    " TQ>(_parent, _q);\r\n        }\r\n\r\n        public IExpressionJoin<T, TQ> NotIn(par" +
+                    "ams DateTime[] items)\r\n        {\r\n            _parent.Add(QueryMaker.NotIn(_prop" +
+                    "ertyName, items.Cast<object>().ToArray(), true));\r\n            return new Expres" +
+                    "sionJoin<T, TQ>(_parent, _q);\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

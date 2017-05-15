@@ -77,5 +77,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
             _parent.Add(QueryMaker.In(_propertyName, items.Cast<object>().ToArray(), false));
             return new ExpressionJoin<T, TQ>(_parent, _q);
         }
+
+        public IExpressionJoin<T, TQ> NotIn(params double[] items)
+        {
+            _parent.Add(QueryMaker.NotIn(_propertyName, items.Cast<object>().ToArray(), false));
+            return new ExpressionJoin<T, TQ>(_parent, _q);
+        }
     }
 }

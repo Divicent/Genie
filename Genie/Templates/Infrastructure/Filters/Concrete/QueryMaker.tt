@@ -105,5 +105,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
         {
             return string.Format("[{0}] IN({1})", propertyName, values.Aggregate("", (c, n) => c + string.Format(",{1}{0}{1}", n, quoted ? "'" : "")).TrimStart(','));
         }
+
+        internal static string NotIn(string propertyName, object[] values, bool quoted)
+        {
+            return string.Format("[{0}] NOT IN({1})", propertyName, values.Aggregate("", (c, n) => c + string.Format(",{1}{0}{1}", n, quoted ? "'" : "")).TrimStart(','));
+        }
     }
 }
