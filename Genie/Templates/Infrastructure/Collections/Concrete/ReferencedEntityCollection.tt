@@ -53,5 +53,5 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Collections.Concre
             return _collection.GetEnumerator();
         }
     }
-}
+} 
 

@@ -18,5 +18,5 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
         IExpressionJoin<T, TQ> In(params string[] items);
         IExpressionJoin<T, TQ> NotIn(params string[] items);
     }
-}
+} 
 

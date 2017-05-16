@@ -83,5 +83,5 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
             _parent.Add(QueryMaker.NotIn(_propertyName, items.Cast<object>().ToArray(), false));
             return new ExpressionJoin<T, TQ>(_parent, _q);
         }
-    }
+    } 
 }

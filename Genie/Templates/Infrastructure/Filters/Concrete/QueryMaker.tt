@@ -39,7 +39,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
         internal static string EndsWith(string propertyName, object value)
         {
             return string.Format("[{0}] LIKE '%{1}'", propertyName, value);
-        }
+        } 
 
         internal static string NotEndsWith(string propertyName, object value)
         {

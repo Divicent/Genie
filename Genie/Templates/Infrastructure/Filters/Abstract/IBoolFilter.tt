@@ -12,3 +12,4 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
 	}
 }
 
+ 

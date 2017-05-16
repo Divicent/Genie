@@ -369,7 +369,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ConditionExtension.tt</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Infrastructure\Filters\Abstract\IBoolFilter.cs">
+    <Compile Include="Templates\Infrastructure\Filters\Abstract\IBoolFilter1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IBoolFilter.tt</DependentUpon>
@@ -836,7 +836,7 @@
     </Content>
     <Content Include="Templates\Infrastructure\Filters\Abstract\IBoolFilter.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>IBoolFilter.cs</LastGenOutput>
+      <LastGenOutput>IBoolFilter1.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\Infrastructure\Filters\Abstract\IDateFilter.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

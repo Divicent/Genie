@@ -47,7 +47,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
         {
             _parent.Add(QueryMaker.GreaterThanOrEquals(_propertyName, date, true));
             return new ExpressionJoin<T, TQ>(_parent, _q);
-        }
+        } 
 
         public IExpressionJoin<T, TQ> LessThanOrEqualTo(DateTime date)
         {

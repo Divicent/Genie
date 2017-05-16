@@ -1,5 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+<#@ import namespace="System.Linq" #>
+using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Context;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
@@ -15,6 +17,14 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories
 	    public interface I<#=relation.Name#>Repository : IRepository<<#=relation.Name#>>
 	    {
 		    I<#=relation.Name#>QueryContext Get();
+<#
+        var keys= relation.Attributes.Where(a => a.IsKey).ToList();
+#>
+<#if(keys.Count > 0){
+            var keyString = keys.Aggregate("", (c,n) => c + (", " + n.DataType  + " " + n.Name.ToLower())).TrimStart(',').TrimStart(' ');
+#>
+            <#=relation.Name#> GetByKey(<#=keyString#>);
+<#}#>
 	    }
 <#}#>
 
@@ -37,6 +47,22 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Repositories
             }
 
 		    public I<#=relation.Name#>QueryContext Get() { return new <#=relation.Name#>QueryContext(this); }
+
+<#
+        var keys= relation.Attributes.Where(a => a.IsKey).ToList();
+
+#>
+<#if(keys.Count > 0){
+            var keyString = keys.Aggregate("", (c,n) => c + (", " + n.DataType + " " + n.Name.ToLower())).TrimStart(',').TrimStart(' ');
+#>
+
+            public <#=relation.Name#> GetByKey(<#=keyString#>)
+            {
+                return Get().Where
+<#var str = keys.Aggregate("", (c,n) => c + (".And." + n.Name + ".EqualsTo(" + n.Name.ToLower() + ")")).TrimStart('.').TrimStart('A').TrimStart('n').TrimStart('d');#>
+                    <#=str#>.Filter().Query().FirstOrDefault();
+            }
+<#}#>
 	    }
 <#}#>
 

@@ -16,9 +16,9 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IBoolFilter.tt"
+    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IDateFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class IBoolFilter : IBoolFilterBase
+    public partial class IDateFilter : IDateFilterBase
     {
 #line hidden
         /// <summary>
@@ -26,26 +26,32 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("namespace ");
+            this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 3 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IBoolFilter.tt"
+            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Abstract\IDateFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(@".Infrastructure.Filters.Abstract
 {
-	public interface IBoolFilter<out T, out TQ> where T : IFilterContext
-	{
-		IExpressionJoin<T, TQ> Is(bool value);
-		IExpressionJoin<T, TQ> IsFalse();
-		IExpressionJoin<T, TQ> IsTrue();
-		IExpressionJoin<T, TQ> IsNull();
-		IExpressionJoin<T, TQ> IsNotNull();
-	}
+    public interface IDateFilter<out T, out TQ> where T : IFilterContext
+    {
+        IExpressionJoin<T, TQ> EqualsTo(DateTime date);
+        IExpressionJoin<T, TQ> NotEquals(DateTime date);
+        IExpressionJoin<T, TQ> LargerThan(DateTime number);
+        IExpressionJoin<T, TQ> LessThan(DateTime date);
+        IExpressionJoin<T, TQ> LargerThanOrEqualTo(DateTime date);
+        IExpressionJoin<T, TQ> LessThanOrEqualTo(DateTime date);
+        IExpressionJoin<T, TQ> Between(DateTime from, DateTime to);
+        IExpressionJoin<T, TQ> IsNull();
+        IExpressionJoin<T, TQ> IsNotNull();
+        IExpressionJoin<T, TQ> In(params DateTime[] items);
+        IExpressionJoin<T, TQ> NotIn(params DateTime[] items);
+    }
 }
 
-");
+ ");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -57,7 +63,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class IBoolFilterBase
+    public class IDateFilterBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
