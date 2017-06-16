@@ -26,5 +26,15 @@
         /// Relative path to the project file
         /// </summary>
         string ProjectFile { get; set; }
+
+        /// <summary>
+        /// Should intergrate dapper code ? if false dapper should be referenced externaly
+        /// </summary>
+        bool NoDapper { get; set; }
+
+        /// <summary>
+        /// Is for a core enviorenment (.net core)
+        /// </summary>
+        bool Core { get; set; }
     }
 }

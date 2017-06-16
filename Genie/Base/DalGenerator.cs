@@ -32,57 +32,6 @@ namespace Genie.Base
             {
                 files = new List<ITemplateFile>
                 {
-                    new XmlHandlers(@"Dapper\XmlHandlers"),
-                    new WrappedReader(@"Dapper\WrappedReader"),
-                    new WrappedDataReader(@"Dapper\WrappedDataReader"),
-                    new UdtTypeHandler(@"Dapper\UdtTypeHandler"),
-                    new TypeExtensions(@"Dapper\TypeExtensions"),
-                    new TableValuedParameter(@"Dapper\TableValuedParameter"),
-                    new SqlMapper_TypeHandlerCache(@"Dapper\SqlMapper.TypeHandlerCache"),
-                    new SqlMapper_TypeHandler(@"Dapper\SqlMapper.TypeHandler"),
-                    new SqlMapper_TypeDeserializerCache(@"Dapper\SqlMapper.TypeDeserializerCache"),
-                    new SqlMapper_Settings(@"Dapper\SqlMapper.Settings"),
-                    new SqlMapper_LiteralToken(@"Dapper\SqlMapper.LiteralToken"),
-                    new SqlMapper_Link(@"Dapper\SqlMapper.Link"),
-                    new SqlMapper_ITypeMap(@"Dapper\SqlMapper.ITypeMap"),
-                    new SqlMapper_ITypeHandler(@"Dapper\SqlMapper.ITypeHandler"),
-                    new SqlMapper_IParameterLookup(@"Dapper\SqlMapper.IParameterLookup"),
-                    new SqlMapper_IParameterCallbacks(@"Dapper\SqlMapper.IParameterCallbacks"),
-                    new SqlMapper_IMemberMap(@"Dapper\SqlMapper.IMemberMap"),
-                    new SqlMapper_IDynamicParameters(@"Dapper\SqlMapper.IDynamicParameters"),
-                    new SqlMapper_Identity(@"Dapper\SqlMapper.Identity"),
-                    new SqlMapper_IDataReader(@"Dapper\SqlMapper.IDataReader"),
-                    new SqlMapper_ICustomQueryParameter(@"Dapper\SqlMapper.ICustomQueryParameter"),
-                    new SqlMapper_GridReader(@"Dapper\SqlMapper.GridReader"),
-                    new SqlMapper_DontMap(@"Dapper\SqlMapper.DontMap"),
-                    new SqlMapper_DeserializerState(@"Dapper\SqlMapper.DeserializerState"),
-                    new SqlMapper_DapperTable(@"Dapper\SqlMapper.DapperTable"),
-                    new SqlMapper_DapperRowMetaObject(@"Dapper\SqlMapper.DapperRowMetaObject"),
-                    new SqlMapper_CacheInfo(@"Dapper\SqlMapper.CacheInfo"),
-                    new SqlDataRecordListTVPParameter(@"Dapper\SqlDataRecordListTVPParameter"),
-                    new SqlDataRecordHandler(@"Dapper\SqlDataRecordHandler"),
-                    new ExplicitConstructorAttribute(@"Dapper\ExplicitConstructorAttribute"),
-                    new DynamicParameters_CachedOutputSetters(@"Dapper\DynamicParameters.CachedOutputSetters"),
-                    new DynamicParameters_ParamInfo(@"Dapper\DynamicParameters.ParamInfo"),
-                    new CommandDefinition(@"Dapper\CommandDefinition"),
-                    new CommandFlags(@"Dapper\CommandFlags"),
-                    new DapperRow(@"Dapper\DapperRow"),
-                    new DataTableHandler(@"Dapper\DataTableHandler"),
-                    new SqlMapper(@"Dapper\SqlMapper"),
-                    new CustomPropertyTypeMap(@"Dapper\CustomPropertyTypeMap"),
-                    new DbString(@"Dapper\DbString"),
-                    new DefaultTypeMap(@"Dapper\DefaultTypeMap"),
-                    new DynamicParameters(@"Dapper\DynamicParameters"),
-                    new FeatureSupport(@"Dapper\FeatureSupport"),
-                    new ISqlAdapter(@"Dapper\ISqlAdapter"),
-                    new KeyAttribute(@"Dapper\KeyAttribute"),
-                    new PostgresAdapter(@"Dapper\PostgresAdapter"),
-                    new SimpleMemberMap(@"Dapper\SimpleMemberMap"),
-                    new SqlMapperExtensions(@"Dapper\SqlMapperExtensions"),
-                    new SqlServerAdapter(@"Dapper\SqlServerAdapter"),
-                    new TableAttribute(@"Dapper\TableAttribute"),
-                    new WriteAttribute(@"Dapper\WriteAttribute"),
-
                     new ConditionExtension(@"Infrastructure\Enum\ConditionExtension"),
 
                     new IBoolFilter(@"Infrastructure\Filters\Abstract\IBoolFilter"),
@@ -135,6 +84,76 @@ namespace Genie.Base
                     new BaseQueryContext(@"Infrastructure\Models\Concrete\Context\BaseQueryContext")
                 };
 
+                if (configuration.NoDapper)
+                {
+                    files.AddRange(new List<ITemplateFile>
+                    {
+                        new ISqlAdapter(@"Dapper\ISqlAdapter"),
+                        new KeyAttribute(@"Dapper\KeyAttribute"),
+                        new PostgresAdapter(@"Dapper\PostgresAdapter"),
+                        new SqlMapperExtensions(@"Dapper\SqlMapperExtensions"),
+                        new SqlServerAdapter(@"Dapper\SqlServerAdapter"),
+                        new TableAttribute(@"Dapper\TableAttribute"),
+                        new WriteAttribute(@"Dapper\WriteAttribute"),
+                    });
+                }
+                else
+                {
+                    files.AddRange(new List<ITemplateFile>
+                    {
+                        new XmlHandlers(@"Dapper\XmlHandlers"),
+                        new WrappedReader(@"Dapper\WrappedReader"),
+                        new WrappedDataReader(@"Dapper\WrappedDataReader"),
+                        new UdtTypeHandler(@"Dapper\UdtTypeHandler"),
+                        new TypeExtensions(@"Dapper\TypeExtensions"),
+                        new TableValuedParameter(@"Dapper\TableValuedParameter"),
+                        new SqlMapper_TypeHandlerCache(@"Dapper\SqlMapper.TypeHandlerCache"),
+                        new SqlMapper_TypeHandler(@"Dapper\SqlMapper.TypeHandler"),
+                        new SqlMapper_TypeDeserializerCache(@"Dapper\SqlMapper.TypeDeserializerCache"),
+                        new SqlMapper_Settings(@"Dapper\SqlMapper.Settings"),
+                        new SqlMapper_LiteralToken(@"Dapper\SqlMapper.LiteralToken"),
+                        new SqlMapper_Link(@"Dapper\SqlMapper.Link"),
+                        new SqlMapper_ITypeMap(@"Dapper\SqlMapper.ITypeMap"),
+                        new SqlMapper_ITypeHandler(@"Dapper\SqlMapper.ITypeHandler"),
+                        new SqlMapper_IParameterLookup(@"Dapper\SqlMapper.IParameterLookup"),
+                        new SqlMapper_IParameterCallbacks(@"Dapper\SqlMapper.IParameterCallbacks"),
+                        new SqlMapper_IMemberMap(@"Dapper\SqlMapper.IMemberMap"),
+                        new SqlMapper_IDynamicParameters(@"Dapper\SqlMapper.IDynamicParameters"),
+                        new SqlMapper_Identity(@"Dapper\SqlMapper.Identity"),
+                        new SqlMapper_IDataReader(@"Dapper\SqlMapper.IDataReader"),
+                        new SqlMapper_ICustomQueryParameter(@"Dapper\SqlMapper.ICustomQueryParameter"),
+                        new SqlMapper_GridReader(@"Dapper\SqlMapper.GridReader"),
+                        new SqlMapper_DontMap(@"Dapper\SqlMapper.DontMap"),
+                        new SqlMapper_DeserializerState(@"Dapper\SqlMapper.DeserializerState"),
+                        new SqlMapper_DapperTable(@"Dapper\SqlMapper.DapperTable"),
+                        new SqlMapper_DapperRowMetaObject(@"Dapper\SqlMapper.DapperRowMetaObject"),
+                        new SqlMapper_CacheInfo(@"Dapper\SqlMapper.CacheInfo"),
+                        new SqlDataRecordListTVPParameter(@"Dapper\SqlDataRecordListTVPParameter"),
+                        new SqlDataRecordHandler(@"Dapper\SqlDataRecordHandler"),
+                        new ExplicitConstructorAttribute(@"Dapper\ExplicitConstructorAttribute"),
+                        new DynamicParameters_CachedOutputSetters(@"Dapper\DynamicParameters.CachedOutputSetters"),
+                        new DynamicParameters_ParamInfo(@"Dapper\DynamicParameters.ParamInfo"),
+                        new CommandDefinition(@"Dapper\CommandDefinition"),
+                        new CommandFlags(@"Dapper\CommandFlags"),
+                        new DapperRow(@"Dapper\DapperRow"),
+                        new DataTableHandler(@"Dapper\DataTableHandler"),
+                        new SqlMapper(@"Dapper\SqlMapper"),
+                        new CustomPropertyTypeMap(@"Dapper\CustomPropertyTypeMap"),
+                        new DbString(@"Dapper\DbString"),
+                        new DefaultTypeMap(@"Dapper\DefaultTypeMap"),
+                        new DynamicParameters(@"Dapper\DynamicParameters"),
+                        new FeatureSupport(@"Dapper\FeatureSupport"),
+                        new ISqlAdapter(@"Dapper\ISqlAdapter"),
+                        new KeyAttribute(@"Dapper\KeyAttribute"),
+                        new PostgresAdapter(@"Dapper\PostgresAdapter"),
+                        new SimpleMemberMap(@"Dapper\SimpleMemberMap"),
+                        new SqlMapperExtensions(@"Dapper\SqlMapperExtensions"),
+                        new SqlServerAdapter(@"Dapper\SqlServerAdapter"),
+                        new TableAttribute(@"Dapper\TableAttribute"),
+                        new WriteAttribute(@"Dapper\WriteAttribute"),
+                    });
+                }
+
 
                 foreach (var relation in schema.Relations)
                 {
@@ -162,7 +181,7 @@ namespace Genie.Base
                     files.Add(new ModelOrderContext(view.Name, view.Attributes, @"Infrastructure\Models\Concrete\Context\" + view.Name + "OrderContext"));
                 }
 
-                output.WriteInformation(string.Format("{0} file found.", files.Count));
+                output.WriteInformation($"{files.Count} file found.");
             }
             catch (Exception e)
             {
@@ -172,14 +191,24 @@ namespace Genie.Base
             try
             {
                 GenerationContext.BaseNamespace = configuration.BaseNamespace;
+                GenerationContext.Core = configuration.Core;
+                GenerationContext.NoDapper = configuration.NoDapper;
                 output.WriteInformation("Generating File content.");
                 var contentFiles =
                     files.Select(templateFile => templateFile.Generate()).ToList();
 
-                output.WriteSuccess(string.Format("Successfully generated {0} files.", contentFiles.Count));
+                output.WriteSuccess($"Successfully generated {contentFiles.Count} files.");
 
-                var comment = string.Format("/*This file is generated by Genie. https://www.github.com/rusith/genie\n" +
-                              "Modifications made to this file may be overwritten by the generator*/\n\n");
+                const string comment = 
+@"// ------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by Genie (http://www.github.com/rusith/genie).
+//  
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+// ------------------------------------------------------------------------------
+";
 
                 foreach (var contentFile in contentFiles)
                 {
