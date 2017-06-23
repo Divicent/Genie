@@ -1,4 +1,6 @@
-﻿namespace Genie.Base.Abstract
+﻿using Genie.Base.Configuration.Abstract;
+
+namespace Genie.Base.Abstract
 {
 
     /// <summary>

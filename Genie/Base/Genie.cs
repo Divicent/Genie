@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using Genie.Base.Abstract;
+using Genie.Base.Configuration.Abstract;
+using Genie.Base.Configuration.Concrete;
 using Genie.Tools;
 using Newtonsoft.Json;
 

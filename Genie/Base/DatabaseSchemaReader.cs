@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Genie.Base.Abstract;
+using Genie.Base.Configuration.Abstract;
 using Genie.Models;
 using Genie.Models.Abstract;
 using Genie.Tools;

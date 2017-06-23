@@ -1,7 +1,7 @@
 ﻿using System;
-using Genie.Base.Abstract;
+using Genie.Base.Configuration.Abstract;
 
-namespace Genie.Base
+namespace Genie.Base.Configuration.Concrete
 {
     /// <summary>
     /// Contains configurations that are need to do the data access layer generation

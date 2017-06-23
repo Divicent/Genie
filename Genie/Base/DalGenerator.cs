@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Genie.Base.Abstract;
+using Genie.Base.Configuration.Abstract;
 using Genie.Models.Abstract;
 using Genie.Templates.Dapper;
 using Genie.Templates.Extensions;
