@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Genie.Base.Abstract;
+using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Writing.Abstract;
 using Genie.Models.Abstract;
 

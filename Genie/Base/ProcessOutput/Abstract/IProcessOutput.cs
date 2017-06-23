@@ -1,5 +1,5 @@
 ﻿
-namespace Genie.Base.Abstract
+namespace Genie.Base.ProcessOutput.Abstract
 {
     /// <summary>
     /// Used to give output to the generator user

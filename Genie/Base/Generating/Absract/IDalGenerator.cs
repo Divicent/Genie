@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Genie.Base.Abstract;
 using Genie.Base.Configuration.Abstract;
+using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Reading.Abstract;
 using Genie.Models.Abstract;
 

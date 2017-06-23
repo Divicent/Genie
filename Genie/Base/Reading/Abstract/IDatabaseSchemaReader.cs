@@ -1,5 +1,5 @@
-﻿using Genie.Base.Abstract;
-using Genie.Base.Configuration.Abstract;
+﻿using Genie.Base.Configuration.Abstract;
+using Genie.Base.ProcessOutput.Abstract;
 
 namespace Genie.Base.Reading.Abstract
 {

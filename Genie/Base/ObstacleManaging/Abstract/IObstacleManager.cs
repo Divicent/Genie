@@ -1,4 +1,4 @@
-﻿using Genie.Base.Abstract;
+﻿using Genie.Base.ProcessOutput.Abstract;
 
 namespace Genie.Base.ObstacleManaging.Abstract
 {

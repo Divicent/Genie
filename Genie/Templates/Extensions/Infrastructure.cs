@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Genie.Base.Abstract;
 using Genie.Base.Reading.Abstract;
 using Genie.Models;
 using Genie.Models.Abstract;

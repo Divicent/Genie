@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Genie.Base.Abstract;
 using Genie.Base.Configuration.Abstract;
 using Genie.Base.Generating.Absract;
+using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Reading.Abstract;
 using Genie.Models.Abstract;
 using Genie.Templates.Dapper;

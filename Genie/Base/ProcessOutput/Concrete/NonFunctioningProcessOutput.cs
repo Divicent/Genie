@@ -1,6 +1,6 @@
-﻿using Genie.Base.Abstract;
+﻿using Genie.Base.ProcessOutput.Abstract;
 
-namespace Genie.Base
+namespace Genie.Base.ProcessOutput
 {
     /// <summary>
     /// A process output implementation that does not do anything

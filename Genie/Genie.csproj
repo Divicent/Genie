@@ -48,7 +48,7 @@
     <Compile Include="Base\Writing\Abstract\IFileWriter.cs" />
     <Compile Include="Base\ObstacleManaging\Abstract\IObstacleManager.cs" />
     <Compile Include="Base\ProjectFileManaging\Abstract\IProjectItemManager.cs" />
-    <Compile Include="Base\Abstract\IProgressReporter.cs" />
+    <Compile Include="Base\ProcessOutput\Abstract\IProgressReporter.cs" />
     <Compile Include="Base\Configuration\Concrete\ConfigurationEnumTable.cs" />
     <Compile Include="Base\Generating\Concrete\ContentGenerator.cs" />
     <Compile Include="Base\Generating\Concrete\DalGenerator.cs" />
@@ -63,7 +63,7 @@
     <Compile Include="Base\Configuration\Concrete\GenieConfiguration.cs" />
     <Compile Include="Base\Generating\Concrete\GenieGenerationResult.cs" />
     <Compile Include="Base\ProjectFileManaging\Concrete\CSharpProjectItemManager.cs" />
-    <Compile Include="Base\NonFunctionningProgressReporter.cs" />
+    <Compile Include="Base\ProcessOutput\Concrete\NonFunctionningProgressReporter.cs" />
     <Compile Include="Base\ObstacleManaging\Concrete\ObstacleManager.cs" />
     <Compile Include="Extensions\CharExtensions.cs" />
     <Compile Include="Models\Abstract\IAttribute.cs" />
@@ -597,8 +597,8 @@
     <Compile Include="Tools\GenieExceptionMessageFormatter.cs" />
     <Compile Include="Base\Configuration\Abstract\IValidatableConfiguration.cs" />
     <Compile Include="Tools\IMessageFormatter.cs" />
-    <Compile Include="Base\Abstract\IProcessOutput.cs" />
-    <Compile Include="Base\NonFunctioningProcessOutput.cs" />
+    <Compile Include="Base\ProcessOutput\Abstract\IProcessOutput.cs" />
+    <Compile Include="Base\ProcessOutput\Concrete\NonFunctioningProcessOutput.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -607,7 +607,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Base\Abstract\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\Dapper\CommandDefinition.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

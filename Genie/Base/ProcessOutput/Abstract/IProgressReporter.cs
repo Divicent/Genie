@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Genie.Base.Abstract
+namespace Genie.Base.ProcessOutput.Abstract
 {
     /// <summary>
     /// Reports a progress
