@@ -22,6 +22,5 @@ namespace Genie.Base
         /// List of stored procedures
         /// </summary>
         public List<IStoredProcedure> Procedures { get; set; }
-
     }
 }

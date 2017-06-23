@@ -23,10 +23,10 @@ namespace Genie.Base.Abstract
         /// </summary>
         /// <param name="content">Content to write</param>
         void WriteInformation(string content);
+        ///// </summary>
+        ///// Start to write a progress to the output
 
         ///// <summary>
-        ///// Start to write a progress to the output
-        ///// </summary>
         ///// <returns></returns>
         //IProgressReporter WriteProgress();
     }

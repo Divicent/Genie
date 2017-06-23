@@ -65,6 +65,5 @@
 
             return str + "s";
         }
-
     }
 }

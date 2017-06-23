@@ -34,7 +34,7 @@ namespace Genie.Base
 
             return schema;
         }
-        
+
         private static void ProcessRelationships(IReadOnlyCollection<IRelation> relations, IProcessOutput output)
         {
             output.WriteInformation("Processing relationships.");
@@ -70,8 +70,6 @@ namespace Genie.Base
             }
             output.WriteSuccess("Relationships processed.");
         }
-
-
 
 
         private static DatabaseSchema ReadDatabase(string connectionString)

@@ -8,8 +8,8 @@ namespace Genie.Templates.Infrastructure
 {
     public partial class DapperContext : ITemplateFile
     {
-
         private readonly string _path;
+
         public DapperContext(string path)
         {
             _path = path;
@@ -28,6 +28,7 @@ namespace Genie.Templates.Infrastructure
     public partial class Repository : ITemplateFile
     {
         private readonly string _path;
+
         public Repository(string path)
         {
             _path = path;
@@ -67,6 +68,7 @@ namespace Genie.Templates.Infrastructure
     public partial class ReadOnlyRepository : ITemplateFile
     {
         private readonly string _path;
+
         public ReadOnlyRepository(string path)
         {
             _path = path;
@@ -106,6 +108,7 @@ namespace Genie.Templates.Infrastructure
     public partial class Operation : ITemplateFile
     {
         private readonly string _path;
+
         public Operation(string path)
         {
             _path = path;
@@ -126,6 +129,7 @@ namespace Genie.Templates.Infrastructure
         public partial class ConditionExtension : ITemplateFile
         {
             private readonly string _path;
+
             public ConditionExtension(string path)
             {
                 _path = path;
@@ -146,9 +150,9 @@ namespace Genie.Templates.Infrastructure
     {
         public partial class RepositoryImplementation : ITemplateFile
         {
+            private readonly string _path;
             private readonly List<IRelation> _relations;
             private readonly List<IView> _views;
-            private readonly string _path;
 
             internal RepositoryImplementation(string path, List<IRelation> relations, List<IView> views)
             {
@@ -173,6 +177,7 @@ namespace Genie.Templates.Infrastructure
         public partial class IDapperContext : ITemplateFile
         {
             private readonly string _path;
+
             public IDapperContext(string path)
             {
                 _path = path;
@@ -191,6 +196,7 @@ namespace Genie.Templates.Infrastructure
         public partial class IRepository : ITemplateFile
         {
             private readonly string _path;
+
             public IRepository(string path)
             {
                 _path = path;
@@ -210,11 +216,13 @@ namespace Genie.Templates.Infrastructure
         {
             private readonly string _path;
             private readonly IDatabaseSchema _schema;
+
             internal IUnitOfWork(IDatabaseSchema schema, string path)
             {
                 _path = path;
                 _schema = schema;
             }
+
             public IContentFile Generate()
             {
                 return new ContentFile
@@ -228,6 +236,7 @@ namespace Genie.Templates.Infrastructure
         public partial class IReadOnlyRepository : ITemplateFile
         {
             private readonly string _path;
+
             public IReadOnlyRepository(string path)
             {
                 _path = path;
@@ -408,9 +417,9 @@ namespace Genie.Templates.Infrastructure
 
                 public partial class IModelFilterContext : ITemplateFile
                 {
+                    private readonly List<ISimpleAttribute> _attributes;
                     private readonly string _name;
                     private readonly string _path;
-                    private readonly List<ISimpleAttribute> _attributes;
 
                     internal IModelFilterContext(string name, List<ISimpleAttribute> attributes, string path)
                     {
@@ -432,9 +441,9 @@ namespace Genie.Templates.Infrastructure
 
                 public partial class IModelOrderContext : ITemplateFile
                 {
+                    private readonly List<ISimpleAttribute> _attributes;
                     private readonly string _name;
                     private readonly string _path;
-                    private readonly List<ISimpleAttribute> _attributes;
 
                     internal IModelOrderContext(string name, List<ISimpleAttribute> attributes, string path)
                     {
@@ -488,7 +497,7 @@ namespace Genie.Templates.Infrastructure
                     private readonly string _name;
                     private readonly string _path;
                     private IEnumerable<ISimpleAttribute> _attributes;
-                     
+
                     internal ModelQueryContext(string name, IEnumerable<ISimpleAttribute> attributes, string path)
                     {
                         _name = name;
@@ -509,9 +518,9 @@ namespace Genie.Templates.Infrastructure
 
                 public partial class ModelFilterContext : ITemplateFile
                 {
+                    private readonly List<ISimpleAttribute> _attributes;
                     private readonly string _name;
                     private readonly string _path;
-                    private readonly List<ISimpleAttribute> _attributes;
 
                     internal ModelFilterContext(string name, List<ISimpleAttribute> attributes, string path)
                     {
@@ -533,9 +542,9 @@ namespace Genie.Templates.Infrastructure
 
                 public partial class ModelOrderContext : ITemplateFile
                 {
+                    private readonly List<ISimpleAttribute> _attributes;
                     private readonly string _name;
                     private readonly string _path;
-                    private readonly List<ISimpleAttribute> _attributes;
 
                     internal ModelOrderContext(string name, List<ISimpleAttribute> attributes, string path)
                     {
@@ -560,6 +569,7 @@ namespace Genie.Templates.Infrastructure
             public partial class BaseModel : ITemplateFile
             {
                 private readonly string _path;
+
                 public BaseModel(string path)
                 {
                     _path = path;
@@ -577,8 +587,8 @@ namespace Genie.Templates.Infrastructure
 
             public partial class Relation : ITemplateFile
             {
-                private readonly IRelation _relation;
                 private readonly string _path;
+                private readonly IRelation _relation;
 
                 internal Relation(IRelation relation, string path)
                 {
@@ -599,8 +609,8 @@ namespace Genie.Templates.Infrastructure
 
             public partial class View : ITemplateFile
             {
-                private readonly IView _view;
                 private readonly string _path;
+                private readonly IView _view;
 
                 internal View(IView view, string path)
                 {

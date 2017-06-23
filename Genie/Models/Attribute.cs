@@ -13,6 +13,6 @@ namespace Genie.Models
         public string Name { get; set; }
         public string FieldName { get; set; }
         public string RefPropName { get; set; }
-        public bool IsLiteralType { get; set; }          
+        public bool IsLiteralType { get; set; }
     }
 }

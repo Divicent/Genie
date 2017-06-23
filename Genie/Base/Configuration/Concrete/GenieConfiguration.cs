@@ -9,7 +9,7 @@ namespace Genie.Base.Configuration.Concrete
     public class GenieConfiguration : IConfiguration
     {
         public string ConnectionString { get; set; }
-        
+
         public string ProjectPath { get; set; }
 
         public string BaseNamespace { get; set; }

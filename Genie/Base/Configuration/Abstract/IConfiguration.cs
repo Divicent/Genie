@@ -37,7 +37,5 @@ namespace Genie.Base.Configuration.Abstract
         /// Is for a core environment (.net core)
         /// </summary>
         bool Core { get; set; }
-
-
     }
 }
