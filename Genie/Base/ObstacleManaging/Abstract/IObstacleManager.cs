@@ -1,4 +1,6 @@
-﻿namespace Genie.Base.Abstract
+﻿using Genie.Base.Abstract;
+
+namespace Genie.Base.ObstacleManaging.Abstract
 {
     /// <summary>
     /// Helps to clear the target folder before generating 

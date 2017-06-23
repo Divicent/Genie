@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Genie.Base.Abstract;
 
-namespace Genie.Base.Abstract
+namespace Genie.Base.ProjectFileManaging.Abstract
 {
     /// <summary>
     /// Manages items of an existing project file

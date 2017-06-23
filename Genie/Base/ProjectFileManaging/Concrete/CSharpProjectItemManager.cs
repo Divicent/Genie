@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Genie.Base.Abstract;
+using Genie.Base.ProjectFileManaging.Abstract;
 using Microsoft.Build.Evaluation;
 
-namespace Genie.Base
+namespace Genie.Base.ProjectFileManaging.Concrete
 {
     internal class CSharpProjectItemManager: IProjectItemManager
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using Genie.Base.Abstract;
+using Genie.Base.ObstacleManaging.Abstract;
 
-namespace Genie.Base
+namespace Genie.Base.ObstacleManaging.Concrete
 {
     internal class ObstacleManager : IObstacleManager
     {
