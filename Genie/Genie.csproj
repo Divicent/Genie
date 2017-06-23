@@ -45,14 +45,14 @@
     <Compile Include="Base\Configuration\Abstract\IConfigurationEnumTable.cs" />
     <Compile Include="Base\Generating\Absract\IContentGenerator.cs" />
     <Compile Include="Base\Generating\Absract\IDalGenerator.cs" />
-    <Compile Include="Base\Abstract\IFileWriter.cs" />
+    <Compile Include="Base\Writing\Abstract\IFileWriter.cs" />
     <Compile Include="Base\Abstract\IObstacleManager.cs" />
     <Compile Include="Base\Abstract\IProjectItemManager.cs" />
     <Compile Include="Base\Abstract\IProgressReporter.cs" />
     <Compile Include="Base\Configuration\Concrete\ConfigurationEnumTable.cs" />
     <Compile Include="Base\Generating\Concrete\ContentGenerator.cs" />
     <Compile Include="Base\Generating\Concrete\DalGenerator.cs" />
-    <Compile Include="Base\DalWriter.cs" />
+    <Compile Include="Base\Writing\Concrete\DalWriter.cs" />
     <Compile Include="Base\Reading\Concrete\DatabaseSchema.cs" />
     <Compile Include="Base\Reading\Concrete\DatabaseSchemaReader.cs" />
     <Compile Include="Base\Configuration\Abstract\IConfiguration.cs" />

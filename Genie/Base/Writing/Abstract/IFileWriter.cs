@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Genie.Base.Abstract;
 using Genie.Models.Abstract;
 
-namespace Genie.Base.Abstract
+namespace Genie.Base.Writing.Abstract
 {
     /// <summary>
     /// Writes list of content file to the disk

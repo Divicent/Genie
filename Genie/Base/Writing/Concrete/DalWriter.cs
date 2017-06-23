@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using Genie.Base.Abstract;
+using Genie.Base.Writing.Abstract;
 using Genie.Models.Abstract;
 
-namespace Genie.Base
+namespace Genie.Base.Writing.Concrete
 {
     internal class DalWriter : IFileWriter
     {
