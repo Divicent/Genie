@@ -28,13 +28,15 @@
         string ProjectFile { get; set; }
 
         /// <summary>
-        /// Should intergrate dapper code ? if false dapper should be referenced externaly
+        /// Should integrate dapper code ? if false dapper should be referenced externally
         /// </summary>
         bool NoDapper { get; set; }
 
         /// <summary>
-        /// Is for a core enviorenment (.net core)
+        /// Is for a core environment (.net core)
         /// </summary>
         bool Core { get; set; }
+
+
     }
 }
