@@ -53,11 +53,11 @@
     <Compile Include="Base\ContentGenerator.cs" />
     <Compile Include="Base\DalGenerator.cs" />
     <Compile Include="Base\DalWriter.cs" />
-    <Compile Include="Base\Reader\Concrete\DatabaseSchema.cs" />
-    <Compile Include="Base\Reader\Concrete\DatabaseSchemaReader.cs" />
+    <Compile Include="Base\Reading\Concrete\DatabaseSchema.cs" />
+    <Compile Include="Base\Reading\Concrete\DatabaseSchemaReader.cs" />
     <Compile Include="Base\Configuration\Abstract\IConfiguration.cs" />
-    <Compile Include="Base\Reader\Abstract\IDatabaseSchema.cs" />
-    <Compile Include="Base\Reader\Abstract\IDatabaseSchemaReader.cs" />
+    <Compile Include="Base\Reading\Abstract\IDatabaseSchema.cs" />
+    <Compile Include="Base\Reading\Abstract\IDatabaseSchemaReader.cs" />
     <Compile Include="Base\GenerationContext.cs" />
     <Compile Include="Base\Genie.cs" />
     <Compile Include="Base\Configuration\Concrete\GenieConfiguration.cs" />

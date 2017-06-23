@@ -1,7 +1,7 @@
 ﻿using Genie.Base.Abstract;
 using Genie.Base.Configuration.Abstract;
 
-namespace Genie.Base.Reader.Abstract
+namespace Genie.Base.Reading.Abstract
 {
 
     /// <summary>

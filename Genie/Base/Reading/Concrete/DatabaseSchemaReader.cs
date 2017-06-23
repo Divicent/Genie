@@ -4,12 +4,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using Genie.Base.Abstract;
 using Genie.Base.Configuration.Abstract;
-using Genie.Base.Reader.Abstract;
+using Genie.Base.Reading.Abstract;
 using Genie.Models;
 using Genie.Models.Abstract;
 using Genie.Tools;
 
-namespace Genie.Base.Reader.Concrete
+namespace Genie.Base.Reading.Concrete
 {
     internal class DatabaseSchemaReader : IDatabaseSchemaReader
     {
