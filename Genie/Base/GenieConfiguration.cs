@@ -14,6 +14,10 @@ namespace Genie.Base
 
         public string BaseNamespace { get; set; }
 
+        public bool NoDapper { get; set; }
+
+        public bool Core { get; set; }
+
         public void Validate()
         {
             string error = null;

@@ -1,6 +1,11 @@
 ﻿<#@ template language="C#" #>
 <#@ import namespace="Genie.Base" #>
+
+<#if(GenerationContext.Core){#>
+using Microsoft.Extensions.Configuration;
+<#}else{#>
 using System.Configuration;
+<#}#>
 using System.Data;
 using System.Data.SqlClient;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;
@@ -20,8 +25,13 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         /// </summary>
         public DapperContext()
         {
-            var connectionStringName = ConfigurationManager.AppSettings["UsedConnectionString"];
-            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString; ;
+<#if(GenerationContext.Core){#>
+		var config = new ConfigurationBuilder().Build();
+        _connectionString = config["connectionString"];
+<#}else{#>
+		var connectionStringName = ConfigurationManager.AppSettings["UsedConnectionString"];
+        _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
+<#}#>
         }
 
 		/// <summary>

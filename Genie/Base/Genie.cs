@@ -33,7 +33,7 @@ namespace Genie.Base
                 output.WriteInformation("Checking configuration file.");
 
                 if(!File.Exists(pathToConfiguraionJsonFile))
-                    throw new Exception(string.Format("The configuration file ({0}) could not be found (File.Exists returned false).", pathToConfiguraionJsonFile));
+                    throw new Exception($"The configuration file ({pathToConfiguraionJsonFile}) could not be found (File.Exists returned false).");
 
                 output.WriteSuccess("Configuration file found, ready to read.");
 
@@ -45,7 +45,7 @@ namespace Genie.Base
                 }
                 catch (Exception exception)
                 {
-                    throw new Exception(string.Format("Unable to deserialize the configuration file ({0}), the configuration file may have syntax errors.",exception.Message));
+                    throw new Exception($"Unable to deserialize the configuration file ({exception.Message}), the configuration file may have syntax errors.");
                 }
 
                 output.WriteSuccess("Successfully Deserialized the configuration file.");

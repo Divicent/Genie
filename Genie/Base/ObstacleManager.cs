@@ -14,7 +14,6 @@ namespace Genie.Base
             {
                 DeleteIfExists(Path.Combine(basePath, "Dapper"));
                 DeleteIfExists(Path.Combine(basePath, "Infrastructure"));
-                DeleteIfExists(Path.Combine(basePath, "SqlMaker"));
             }
             catch (Exception e)
             {
