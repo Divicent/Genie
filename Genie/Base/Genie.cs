@@ -26,7 +26,7 @@ namespace Genie.Base
             IMessageFormatter exceptionFormatter = new GenieExceptionMessageFormatter();
 
             var result = new GenieGenerationResult();
-            IBasicConfiguration config = null;
+            IConfiguration config = null;
 
             try
             {
@@ -41,7 +41,7 @@ namespace Genie.Base
 
                 try
                 {
-                    config = JsonConvert.DeserializeObject<GenieBasicConfiguration>(File.ReadAllText(pathToConfiguraionJsonFile));
+                    config = JsonConvert.DeserializeObject<GenieConfiguration>(File.ReadAllText(pathToConfiguraionJsonFile));
                 }
                 catch (Exception exception)
                 {

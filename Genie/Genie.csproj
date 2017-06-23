@@ -56,12 +56,12 @@
     <Compile Include="Base\DalWriter.cs" />
     <Compile Include="Base\DatabaseSchema.cs" />
     <Compile Include="Base\DatabaseSchemaReader.cs" />
-    <Compile Include="Base\Abstract\IBasicConfiguration.cs" />
+    <Compile Include="Base\Abstract\IConfiguration.cs" />
     <Compile Include="Base\Abstract\IDatabaseSchema.cs" />
     <Compile Include="Base\Abstract\IDatabaseSchemaReader.cs" />
     <Compile Include="Base\GenerationContext.cs" />
     <Compile Include="Base\Genie.cs" />
-    <Compile Include="Base\GenieBasicConfiguration.cs" />
+    <Compile Include="Base\GenieConfiguration.cs" />
     <Compile Include="Base\GenieGenerationResult.cs" />
     <Compile Include="Base\CSharpProjectItemManager.cs" />
     <Compile Include="Base\NonFunctionningProgressReporter.cs" />

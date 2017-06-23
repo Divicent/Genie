@@ -20,4 +20,3 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
         object Value { get; set; }
     }
 }
-

@@ -6,7 +6,7 @@ namespace Genie.Base
     /// <summary>
     /// Contains configurations that are need to do the data access layer generation
     /// </summary>
-    public class GenieBasicConfiguration : IBasicConfiguration
+    public class GenieConfiguration : IConfiguration
     {
         public string ConnectionString { get; set; }
         

@@ -11,7 +11,7 @@ namespace Genie.Base
 {
     internal class DatabaseSchemaReader : IDatabaseSchemaReader
     {
-        public IDatabaseSchema Read(IBasicConfiguration configuration, IProcessOutput output)
+        public IDatabaseSchema Read(IConfiguration configuration, IProcessOutput output)
         {
             output.WriteInformation("Reading database meta data.");
 

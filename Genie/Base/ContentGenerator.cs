@@ -6,7 +6,7 @@ namespace Genie.Base
 {
     internal class ContentGenerator : IContentGenerator
     {
-        public List<IContentFile> Generate(IDatabaseSchema schema, IBasicConfiguration configuration)
+        public List<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration)
         {
             return new List<IContentFile>();
         }
