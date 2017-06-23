@@ -19,5 +19,6 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Co
 	    IEnumerable<Concrete.<#=_name#>> Query(IDbTransaction transaction = null);
 		I<#=_name#>QueryContext Filter(IEnumerable<IPropertyFilter> filters);
 	    int Count(IDbTransaction transaction = null);
+		string GetWhereClause();
 	}
 }

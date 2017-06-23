@@ -17,7 +17,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Co
 
 		protected abstract bool? IsQuoted(ref string propertyName);
 		
-        protected void ProcessFilter(Queue<string> queue, IEnumerable<IPropertyFilter> f)  
+		protected void ProcessFilter(Queue<string> queue, IEnumerable<IPropertyFilter> f)  
 		{
 		    var filters = f?.ToList();
             if(filters == null)
@@ -29,8 +29,28 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Co
 		    {
 		        var propName = propertyFilter.PropertyName;
                 var qotd = IsQuoted(ref propName);
-                if(qotd == null)
-                    continue;
+                switch (qotd)
+                {
+                    case null:
+                        continue;
+                    case false:
+                        var valueString = propertyFilter.Value.ToString();
+                        switch (valueString)
+                        {
+                            case "true":
+                                propertyFilter.Value = "1";
+                                break;
+                            case "false":
+                                propertyFilter.Value = "2";
+                                break;
+                        }
+                        break;
+                    default:
+                        continue;
+                }
+
+		        if (qotd == true && propertyFilter.Value.ToString() == "true" || propertyFilter.Value.ToString() == "false")
+
 		        
                 queue.Enqueue("and");
 		        queue.Enqueue(GetExpression(propertyFilter.Type, propName, propertyFilter.Value,

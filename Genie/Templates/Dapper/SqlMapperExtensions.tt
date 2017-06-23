@@ -9,6 +9,9 @@ using System.Reflection;
 using System.Text;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
+<#if(GenerationContext.NoDapper){#>
+using Dapper;
+<#}#>
 
 namespace <#=GenerationContext.BaseNamespace#>.Dapper
 {
@@ -77,9 +80,9 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         public static bool IsWriteable(PropertyInfo pi)
         {
             var attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false);
-            if (attributes.Length != 1)
+            if (attributes<#=GenerationContext.Core ? ".Count()" : ".Length"#> != 1)
                 return true;
-            var write = (WriteAttribute)attributes[0];
+            var write = (WriteAttribute)attributes<#=GenerationContext.Core ? ".First()" : "[0]"#>;
             return write.Write;
         }
 
@@ -106,80 +109,96 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	        return connection.ExecuteScalar<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
         }
 
-	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false)
+		/// <summary>
+	    /// Returns the where clause of the resulting query
+	    /// </summary>
+	    /// <param name="connection">Open SqlConnection</param>
+	    /// <param name="query"></param>
+	    /// <returns>Entity of T</returns>
+	    public static string GetWhereClause(this IDbConnection connection, IRepoQuery query)
 	    {
-            var queryBuilder = new StringBuilder(string.Format("select {0} {1} from " + query.Target, query.Limit != null ? " top " + query.Limit : "", isCount ? "count(*)" : "*"));
+	        return GetRetriveQuery(query, false, true);
+	    }
+
+	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false, bool whereOnly = false)
+	    {
+            var queryBuilder = new StringBuilder(whereOnly ? "" : string.Format("select {0} {1} from " + query.Target, query.Limit != null ? " top " + query.Limit : "", isCount ? "count(*)" : "*"));
             
-            if (query.Where != null && query.Where.Count > 0)
-            {
-                queryBuilder.Append(" where ");
+            var where = query.Where == null ? new Queue<string>() : new Queue<string>(query.Where);
+            var order = query.Order == null ? new Queue<string>() : new Queue<string>(query.Order);
 
-                var first = true;
-                var previous = "";
+	        if (where.Count > 0)
+	        {
+	            queryBuilder.Append(" where ");
 
-                while (query.Where.Count > 0)
-                {
-                    var current = query.Where.Dequeue();
+	            var first = true;
+	            var previous = "";
 
-                    if (AndOrOr(current))
-                    {
-                        if (first)
-                        {
-                            first = false;
-                            previous = current;
-                            continue;
-                        }
+	            while (where.Count > 0)
+	            {
+	                var current = where.Dequeue();
 
-                        if (AndOrOr(previous))
-                        {
-                            previous = current;
-                            continue;
-                        }
+	                if (AndOrOr(current))
+	                {
+	                    if (first)
+	                    {
+	                        first = false;
+	                        previous = current;
+	                        continue;
+	                    }
 
-                        previous = current;
-                        queryBuilder.Append(string.Format(" {0} ", current));
-                    }
-                    else
-                    {
-                        if (!first && !AndOrOr(previous))
-                        {
-                            queryBuilder.Append(string.Format(" {0} ", "and"));
-                        }
+	                    if (AndOrOr(previous))
+	                    {
+	                        previous = current;
+	                        continue;
+	                    }
 
-                        previous = current;
-                        queryBuilder.Append(string.Format(" {0} ", current));
-                    }
+	                    previous = current;
+	                    queryBuilder.Append($" {current} ");
+	                }
+	                else
+	                {
+	                    if (!first && !AndOrOr(previous))
+	                    {
+	                        queryBuilder.Append(" and ");
+	                    }
 
-                    first = false;
-                }
-            }
+	                    previous = current;
+	                    queryBuilder.Append($" {current} ");
+	                }
 
-            if (query.Order != null && query.Order.Count > 0)
-            {
-                queryBuilder.Append(" order by ");
-                while (query.Order.Count > 0)
-                {
-                    var item = query.Order.Dequeue();
-                    queryBuilder.Append(string.Format(" {0} ", item));
-                }
-            }
+	                first = false;
+	            }
+	        }
 
-            if (query.Page != null && query.PageSize != null)
-            {
-                queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS " +
-                                           " FETCH NEXT {1} ROWS ONLY ", query.Page * query.PageSize, query.PageSize));
-            }
-            else
-            {
-                if (query.Skip != null)
-                    queryBuilder.Append(string.Format(" OFFSET ({0}) ROWS ", query.Skip));
+	        if (whereOnly)
+	            return queryBuilder.ToString();
 
-                if (query.Take != null)
-                    queryBuilder.Append(string.Format(" FETCH NEXT {0} ROWS ONLY ", query.Take));
-            }
+	        if (order.Count > 0)
+	        {
+	            queryBuilder.Append(" order by ");
+	            while (order.Count > 0)
+	            {
+	                var item = order.Dequeue();
+	                queryBuilder.Append($" {item} ");
+	            }
+	        }
+
+	        if (query.Page != null && query.PageSize != null)
+	        {
+	            queryBuilder.Append($" OFFSET ({query.Page * query.PageSize}) ROWS " + $" FETCH NEXT {query.PageSize} ROWS ONLY ");
+	        }
+	        else
+	        {
+	            if (query.Skip != null)
+	                queryBuilder.Append($" OFFSET ({query.Skip}) ROWS ");
+
+	            if (query.Take != null)
+	                queryBuilder.Append($" FETCH NEXT {query.Take} ROWS ONLY ");
+	        }
 
 	        return queryBuilder.ToString();
-	    }
+        }
 
         private static bool AndOrOr(string str)
 	    {
@@ -192,10 +211,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             string name;
             if (TypeTableName.TryGetValue(type.TypeHandle, out name)) return name;
             name = type.Name + "s";
-            if (type.IsInterface && name.StartsWith("I"))
+            if (type.<#=GenerationContext.Core ? "GetTypeInfo()." : ""#>IsInterface && name.StartsWith("I"))
                 name = name.Substring(1);
 
-            var tableattr = type.GetCustomAttributes(false).SingleOrDefault(attr => attr.GetType().Name == "TableAttribute") as
+            var tableattr = type.<#=GenerationContext.Core ? "GetTypeInfo()." : ""#>GetCustomAttributes(false).SingleOrDefault(attr => attr.GetType().Name == "TableAttribute") as
                 dynamic;
             if (tableattr != null)
                 name = tableattr.Name;

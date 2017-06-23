@@ -30,5 +30,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
         {
             return Conn.Count(query);
         }
+
+		public string GetWhereClause(IRepoQuery query) 
+		{
+			return Conn.GetWhereClause(query);
+		}
     }
 }

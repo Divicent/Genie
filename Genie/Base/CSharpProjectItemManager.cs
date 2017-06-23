@@ -17,8 +17,12 @@ namespace Genie.Base
                 var project = projectCollection.LoadProject(projectFilePath);
 
                 foreach (var projectItem in project.GetItems("Compile").ToList())
-                    project.RemoveItem(projectItem);
-
+                {
+                    if (projectItem.EvaluatedInclude.StartsWith("Dapper") || projectItem.EvaluatedInclude.StartsWith("Infrastructure"))
+                    {
+                        project.RemoveItem(projectItem);
+                    }
+                }
                 foreach (var file in files)
                     project.AddItem("Compile", file);
 

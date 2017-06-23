@@ -6,6 +6,9 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+<#if(GenerationContext.NoDapper){#>
+using Dapper;
+<#}#>
 
 namespace <#=GenerationContext.BaseNamespace#>.Dapper 
 {
