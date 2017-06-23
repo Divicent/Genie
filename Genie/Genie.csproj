@@ -43,25 +43,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\Configuration\Abstract\IConfigurationEnumTable.cs" />
-    <Compile Include="Base\Abstract\IContentGenerator.cs" />
-    <Compile Include="Base\Abstract\IDalGenerator.cs" />
+    <Compile Include="Base\Generating\Absract\IContentGenerator.cs" />
+    <Compile Include="Base\Generating\Absract\IDalGenerator.cs" />
     <Compile Include="Base\Abstract\IFileWriter.cs" />
     <Compile Include="Base\Abstract\IObstacleManager.cs" />
     <Compile Include="Base\Abstract\IProjectItemManager.cs" />
     <Compile Include="Base\Abstract\IProgressReporter.cs" />
     <Compile Include="Base\Configuration\Concrete\ConfigurationEnumTable.cs" />
-    <Compile Include="Base\ContentGenerator.cs" />
-    <Compile Include="Base\DalGenerator.cs" />
+    <Compile Include="Base\Generating\Concrete\ContentGenerator.cs" />
+    <Compile Include="Base\Generating\Concrete\DalGenerator.cs" />
     <Compile Include="Base\DalWriter.cs" />
     <Compile Include="Base\Reading\Concrete\DatabaseSchema.cs" />
     <Compile Include="Base\Reading\Concrete\DatabaseSchemaReader.cs" />
     <Compile Include="Base\Configuration\Abstract\IConfiguration.cs" />
     <Compile Include="Base\Reading\Abstract\IDatabaseSchema.cs" />
     <Compile Include="Base\Reading\Abstract\IDatabaseSchemaReader.cs" />
-    <Compile Include="Base\GenerationContext.cs" />
+    <Compile Include="Base\Generating\Concrete\GenerationContext.cs" />
     <Compile Include="Base\Genie.cs" />
     <Compile Include="Base\Configuration\Concrete\GenieConfiguration.cs" />
-    <Compile Include="Base\GenieGenerationResult.cs" />
+    <Compile Include="Base\Generating\Concrete\GenieGenerationResult.cs" />
     <Compile Include="Base\CSharpProjectItemManager.cs" />
     <Compile Include="Base\NonFunctionningProgressReporter.cs" />
     <Compile Include="Base\ObstacleManager.cs" />

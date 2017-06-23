@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Genie.Base.Abstract;
 using Genie.Base.Configuration.Abstract;
+using Genie.Base.Generating.Absract;
 using Genie.Base.Reading.Abstract;
 using Genie.Models.Abstract;
 
-namespace Genie.Base
+namespace Genie.Base.Generating.Concrete
 {
     internal class ContentGenerator : IContentGenerator
     {

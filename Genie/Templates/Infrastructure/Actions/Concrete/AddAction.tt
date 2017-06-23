@@ -1,5 +1,5 @@
 ﻿<#@ template language="C#" #>
-<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Base.Generating.Concrete" #>
 using System;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Actions.Abstract;
 

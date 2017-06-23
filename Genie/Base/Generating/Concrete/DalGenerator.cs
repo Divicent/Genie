@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Genie.Base.Abstract;
 using Genie.Base.Configuration.Abstract;
+using Genie.Base.Generating.Absract;
 using Genie.Base.Reading.Abstract;
 using Genie.Models.Abstract;
 using Genie.Templates.Dapper;
@@ -14,14 +15,14 @@ using Genie.Templates.Infrastructure.Collections.Abstract;
 using Genie.Templates.Infrastructure.Collections.Concrete;
 using Genie.Templates.Infrastructure.Enum;
 using Genie.Templates.Infrastructure.Filters.Abstract;
-using Genie.Templates.Infrastructure.Interfaces;
-using Genie.Templates.Infrastructure.Repositories;
 using Genie.Templates.Infrastructure.Filters.Concrete;
+using Genie.Templates.Infrastructure.Interfaces;
 using Genie.Templates.Infrastructure.Models.Abstract.Context;
 using Genie.Templates.Infrastructure.Models.Concrete;
 using Genie.Templates.Infrastructure.Models.Concrete.Context;
+using Genie.Templates.Infrastructure.Repositories;
 
-namespace Genie.Base
+namespace Genie.Base.Generating.Concrete
 {
     internal class DalGenerator : IDalGenerator
     {

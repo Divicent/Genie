@@ -1,10 +1,9 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Genie.Base.Configuration.Abstract;
 using Genie.Base.Reading.Abstract;
 using Genie.Models.Abstract;
 
-namespace Genie.Base.Abstract
+namespace Genie.Base.Generating.Absract
 {
     /// <summary>
     /// Helps to generate a DAL content from a database schema and settings

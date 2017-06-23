@@ -1,4 +1,4 @@
-﻿namespace Genie.Base
+﻿namespace Genie.Base.Generating.Concrete
 {
     /// <summary>
     /// Result of the process of generation
