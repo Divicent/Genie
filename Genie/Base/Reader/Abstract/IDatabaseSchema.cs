@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Genie.Models.Abstract;
 
-namespace Genie.Base.Abstract
+namespace Genie.Base.Reader.Abstract
 {
     /// <summary>
     /// Schema of a database
