@@ -598,7 +598,7 @@
     </Compile>
     <Compile Include="Tools\CommonTools.cs" />
     <Compile Include="Tools\GenieExceptionMessageFormatter.cs" />
-    <Compile Include="Base\Abstract\IValidatableConfiguration.cs" />
+    <Compile Include="Base\Configuration\Abstract\IValidatableConfiguration.cs" />
     <Compile Include="Tools\IMessageFormatter.cs" />
     <Compile Include="Base\Abstract\IProcessOutput.cs" />
     <Compile Include="Base\NonFunctioningProcessOutput.cs" />

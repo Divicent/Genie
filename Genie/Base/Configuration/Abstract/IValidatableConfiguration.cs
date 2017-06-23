@@ -1,4 +1,4 @@
-﻿namespace Genie.Base.Abstract
+﻿namespace Genie.Base.Configuration.Abstract
 {
     /// <summary>
     /// Validates a configuration object

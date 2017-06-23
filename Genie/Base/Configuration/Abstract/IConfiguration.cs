@@ -1,5 +1,4 @@
-﻿using Genie.Base.Abstract;
-
+﻿
 namespace Genie.Base.Configuration.Abstract
 {
     /// <summary>
