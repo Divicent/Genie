@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Genie.Models.Abstract;
 
-namespace Genie.Models
+namespace Genie.Models.Concrete
 {
     internal class View: IView
     {

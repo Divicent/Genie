@@ -1,8 +1,8 @@
 ﻿using Genie.Models.Abstract;
 
-namespace Genie.Models
+namespace Genie.Models.Concrete
 {
-    class SimpleAttribute: ISimpleAttribute
+    internal class SimpleAttribute: ISimpleAttribute
     {
         public string DataType { get; set; }
         public string Name { get; set; }

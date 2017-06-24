@@ -5,13 +5,15 @@ using System.Linq;
 using Genie.Base.Configuration.Abstract;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Reading.Abstract;
-using Genie.Models;
 using Genie.Models.Abstract;
+using Genie.Models.Concrete;
 using Genie.Tools;
+using Attribute = Genie.Models.Concrete.Attribute;
+using Enum = Genie.Models.Concrete.Enum;
 
 namespace Genie.Base.Reading.Concrete
 {
-    internal class DatabaseSchemaReader : IDatabaseSchemaReader
+    internal class SqlServerSchemaReader : IDatabaseSchemaReader
     {
         public IDatabaseSchema Read(IConfiguration configuration, IProcessOutput output)
         {
@@ -22,16 +24,27 @@ namespace Genie.Base.Reading.Concrete
             {
                 schema = ReadDatabase(configuration.ConnectionString);
                 schema.BaseNamespace = configuration.BaseNamespace;
-
             }
             catch (Exception e)
             {
                 throw new Exception("Unable to read database meta data", e);
             }
-            
+
             output.WriteSuccess("Schema reading successful.");
 
             ProcessRelationships(schema.Relations, output);
+
+            if (configuration.Enums != null && configuration.Enums.Count > 0)
+            {
+                foreach (var e in configuration.Enums)
+                    if (schema.Relations.All(r => r.Name != e.Table))
+                        throw new Exception($"{e.Table} is not a table. (Enums)");
+                schema.Enums = ReadEnums(configuration.ConnectionString, configuration.Enums, output);
+            }
+            else
+            {
+                schema.Enums = new List<IEnum>();
+            }
 
             return schema;
         }
@@ -51,18 +64,16 @@ namespace Genie.Base.Reading.Concrete
                  */
 
                 foreach (var relation in relations)
+                foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
                 {
-                    foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
+                    var referencingRelation =
+                        relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
+                    referencingRelation?.ReferenceLists.Add(new ReferenceList
                     {
-                        var referencingRelation =
-                            relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
-                        referencingRelation?.ReferenceLists.Add(new ReferenceList
-                        {
-                            ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
-                            ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
-                            ReferncedRelationName = relation.Name
-                        });
-                    }
+                        ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
+                        ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
+                        ReferncedRelationName = relation.Name
+                    });
                 }
             }
             catch (Exception e)
@@ -72,10 +83,8 @@ namespace Genie.Base.Reading.Concrete
             output.WriteSuccess("Relationships processed.");
         }
 
-
         private static DatabaseSchema ReadDatabase(string connectionString)
         {
-
             var databaseSchemaColumns = new List<DatabaseSchemaColumn>();
             var databaseParameters = new List<DatabaseParameter>();
 
@@ -141,12 +150,11 @@ namespace Genie.Base.Reading.Concrete
                     }
 
                     var filtered = new List<DatabaseSchemaColumn>();
-                    foreach (var databaseSchemaColumn in databaseSchemaColumns.Where(databaseSchemaColumn => !filtered.Any(
-                        f =>
-                            f.TableName == databaseSchemaColumn.TableName && f.Name == databaseSchemaColumn.Name)))
-                    {
+                    foreach (var databaseSchemaColumn in databaseSchemaColumns.Where(
+                        databaseSchemaColumn => !filtered.Any(
+                            f =>
+                                f.TableName == databaseSchemaColumn.TableName && f.Name == databaseSchemaColumn.Name)))
                         filtered.Add(databaseSchemaColumn);
-                    }
 
                     foreach (var databaseSchemaColumn in filtered)
                     {
@@ -185,17 +193,15 @@ namespace Genie.Base.Reading.Concrete
                     WHERE r.ROUTINE_TYPE = 'PROCEDURE'
                     ORDER BY p.SCOPE_NAME , p.ORDINAL_POSITION", connection, transaction);
 
-                using (var reader = commandToGetParameters.ExecuteReader()) 
+                using (var reader = commandToGetParameters.ExecuteReader())
                 {
                     while (reader.HasRows && reader.Read())
-                    {
                         databaseParameters.Add(new DatabaseParameter
                         {
-                            Procedure =  reader.GetString(0),
+                            Procedure = reader.GetString(0),
                             Name = reader.GetString(1),
                             DataType = reader.GetString(2)
-                        });           
-                    }
+                        });
                 }
 
                 transaction.Commit();
@@ -205,7 +211,8 @@ namespace Genie.Base.Reading.Concrete
             return Process(databaseSchemaColumns, databaseParameters);
         }
 
-        private static DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns, IReadOnlyCollection<DatabaseParameter> parameters)
+        private static DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns,
+            IReadOnlyCollection<DatabaseParameter> parameters)
         {
             if (columns == null || columns.Count < 1)
                 return null;
@@ -237,16 +244,18 @@ namespace Genie.Base.Reading.Concrete
 
                             tables.Add(table);
                         }
-                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType, databaseSchemaColumn.Nullable);
+                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
+                            databaseSchemaColumn.Nullable);
                         lit = dataType == "string" || dataType.StartsWith("DateTime");
 
-                        var attribute = new Models.Attribute
+                        var attribute = new Attribute
                         {
-                            IsLiteralType =  lit,
+                            IsLiteralType = lit,
                             IsKey = databaseSchemaColumn.IsPrimaryKey,
                             Name = databaseSchemaColumn.Name,
                             DataType = dataType,
-                            FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() + databaseSchemaColumn.Name.Substring(1)
+                            FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
+                                        databaseSchemaColumn.Name.Substring(1)
                         };
 
                         if (databaseSchemaColumn.IsForeignKey)
@@ -280,14 +289,16 @@ namespace Genie.Base.Reading.Concrete
                             views.Add(view);
                         }
 
-                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType, databaseSchemaColumn.Nullable);
+                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
+                            databaseSchemaColumn.Nullable);
                         lit = dataType == "string" || dataType.StartsWith("DateTime");
 
                         view.Attributes.Add(new SimpleAttribute
                         {
                             Name = databaseSchemaColumn.Name,
                             IsLiteralType = lit,
-                            FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() + databaseSchemaColumn.Name.Substring(1),
+                            FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
+                                        databaseSchemaColumn.Name.Substring(1),
                             DataType = dataType
                         });
                         break;
@@ -301,17 +312,26 @@ namespace Genie.Base.Reading.Concrete
                     var procedure = storedProcedures.FirstOrDefault(p => p.Name == parameter.Procedure);
                     if (procedure == null)
                     {
-                        procedure = new StoredProcedure { Name = parameter.Procedure, Parameters = new List<ProcedureParameter>() };
+                        procedure = new StoredProcedure
+                        {
+                            Name = parameter.Procedure,
+                            Parameters = new List<ProcedureParameter>()
+                        };
                         storedProcedures.Add(procedure);
                     }
 
-                    procedure.Parameters.Add(new ProcedureParameter {DataType = parameter.DataType, Name = parameter.Name});
+                    procedure.Parameters.Add(
+                        new ProcedureParameter {DataType = parameter.DataType, Name = parameter.Name});
                 }
 
                 foreach (var storedProcedure in storedProcedures)
                 {
-                    var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current + string.Format("{0} {1} = null", CommonTools.GetCSharpDataType(param.DataType, true), param.Name.Replace("@", "")) + ",");
-                    var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => current + string.Format("{1} = \"+({0} == null ? \"NULL\" : \"'\" + {0} + \"'\")+\"", param.Name.Replace("@", ""), param.Name) + ",");
+                    var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
+                                                                                                       $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
+                                                                                                       ",");
+                    var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
+                                                                                                           $"{param.Name} = \"+({param.Name.Replace("@", "")} == null ? \"NULL\" : \"'\" + {param.Name.Replace("@", "")} + \"'\")+\"" +
+                                                                                                           ",");
 
                     storedProcedure.ParamString = parameterString.TrimEnd(',');
                     storedProcedure.PassString = parameterPassString.TrimEnd(',');
@@ -320,8 +340,81 @@ namespace Genie.Base.Reading.Concrete
 
             return new DatabaseSchema {Procedures = storedProcedures, Relations = tables, Views = views};
         }
+
+        private static List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,
+            IProcessOutput output)
+        {
+            output.WriteInformation("Reading enum tables.");
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var enums = new List<IEnum>();
+                foreach (var configurationEnumTable in enumTables)
+                {
+                    var query = $"SELECT [{configurationEnumTable.NameColumn}] AS [Name]," +
+                                $"       [{configurationEnumTable.ValueColumn}] AS [Value]" +
+                                $" FROM [dbo].[{configurationEnumTable.Table}]";
+
+                    var type = configurationEnumTable.Type;
+                    var values = new Dictionary<string, object>();
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                string name;
+                                try
+                                {
+                                    name = reader.GetString(0);
+                                    if (string.IsNullOrWhiteSpace(name))
+                                        throw new Exception("Name should not be empty of an enum");
+                                }
+                                catch (Exception)
+                                {
+                                    throw new Exception(
+                                        $"Cannot read Name as string. in the enum table {configurationEnumTable.Table}");
+                                }
+
+                                object value = null;
+                                try
+                                {
+                                    switch (type)
+                                    {
+                                        case "string":
+                                            value = reader.GetString(1);
+                                            break;
+                                        case "int":
+                                            value = reader.GetInt32(1);
+                                            break;
+                                        case "double":
+                                            value = reader.GetDouble(1);
+                                            break;
+                                        case "bool":
+                                            value = reader.GetBoolean(1);
+                                            break;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    throw new Exception("Unable to read enum table using specified value type.", e);
+                                }
+
+                                values.Add(name, value);
+                            }
+
+                            enums.Add(new Enum {TableName = configurationEnumTable.Table, Values = values});
+                        }
+                    }
+                }
+
+                connection.Close();
+
+                return enums;
+            }
+        }
     }
-    
 
     internal class DatabaseSchemaColumn
     {

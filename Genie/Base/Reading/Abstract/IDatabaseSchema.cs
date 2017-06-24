@@ -27,5 +27,10 @@ namespace Genie.Base.Reading.Abstract
         /// List of stored procedures
         /// </summary>
         List<IStoredProcedure> Procedures { get; set; }
+
+        /// <summary>
+        /// List of table enums
+        /// </summary>
+        List<IEnum> Enums { get; set; }
     }
 }

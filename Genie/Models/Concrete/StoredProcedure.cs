@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Genie.Models.Abstract;
 
-namespace Genie.Models
+namespace Genie.Models.Concrete
 {
-    public class StoredProcedure : IStoredProcedure
+    internal class StoredProcedure : IStoredProcedure
     {
         public string Name { get; set; }
         public string PassString { get; set; }

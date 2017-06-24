@@ -1,7 +1,7 @@
 ﻿
 using Genie.Models.Abstract;
 
-namespace Genie.Models
+namespace Genie.Models.Concrete
 {
     /// <summary>
     /// represents an attribute

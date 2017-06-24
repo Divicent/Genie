@@ -1,6 +1,6 @@
 ﻿using Genie.Models.Abstract;
 
-namespace Genie.Models
+namespace Genie.Models.Concrete
 {
     internal class ForeignKeyAttribute: IForeignKeyAttribute
     {

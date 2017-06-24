@@ -2,6 +2,7 @@
 using Genie.Base.Reading.Abstract;
 using Genie.Models;
 using Genie.Models.Abstract;
+using Genie.Models.Concrete;
 using Genie.Templates.Extensions;
 
 namespace Genie.Templates.Infrastructure

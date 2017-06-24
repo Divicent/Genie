@@ -7,6 +7,7 @@ using Genie.Base.Generating.Absract;
 using Genie.Base.Generating.Concrete;
 using Genie.Base.ObstacleManaging.Abstract;
 using Genie.Base.ObstacleManaging.Concrete;
+using Genie.Base.ProcessOutput;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.ProjectFileManaging.Abstract;
 using Genie.Base.ProjectFileManaging.Concrete;
@@ -83,7 +84,7 @@ namespace Genie.Base
 
             try
             {
-                IDatabaseSchemaReader schemaReader = new DatabaseSchemaReader();
+                IDatabaseSchemaReader schemaReader = new SqlServerSchemaReader();
                 var schema = schemaReader.Read(config, output);
 
                 IDalGenerator dalGenerator = new DalGenerator();

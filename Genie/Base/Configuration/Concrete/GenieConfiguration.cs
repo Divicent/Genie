@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Genie.Base.Configuration.Abstract;
 
 namespace Genie.Base.Configuration.Concrete
@@ -17,19 +19,33 @@ namespace Genie.Base.Configuration.Concrete
         public bool NoDapper { get; set; }
 
         public bool Core { get; set; }
+        public List<IConfigurationEnumTable> Enums { get; set; }
 
         public void Validate()
         {
-            string error = null;
+            var error = new StringBuilder();
             if (string.IsNullOrWhiteSpace(ConnectionString))
-                error = "ConnectionString (connectionString in JSON) not found in the configuration";
-            else if (string.IsNullOrWhiteSpace(ProjectPath))
-                error = "ProjectPath (projectPath in JSON) not found in the configuration";
-            else if (string.IsNullOrWhiteSpace(BaseNamespace))
-                error = "BaseNamespace (baseNamespace in JSON) not found in the configuration file";
-
-            if(error != null)
-                throw new Exception(error);
+                error.AppendLine("ConnectionString (connectionString in JSON) not found in the configuration");
+            if (string.IsNullOrWhiteSpace(ProjectPath))
+                error.AppendLine("ProjectPath (projectPath in JSON) not found in the configuration");
+            if (string.IsNullOrWhiteSpace(BaseNamespace))
+                error.AppendLine("BaseNamespace (baseNamespace in JSON) not found in the configuration file");
+            if (Enums != null && Enums.Count > 0)
+            {
+                foreach (var configurationEnumTable in Enums)
+                {
+                    try
+                    {
+                        configurationEnumTable.Validate();
+                    }
+                    catch (Exception e)
+                    {
+                        error.AppendLine(e.Message);
+                    }
+                }
+            }
+            if(error.Length > 0)
+                throw new Exception(error.ToString());
         }
 
         public string ProjectFile { get; set; }
