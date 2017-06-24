@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Filters.Concrete
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class DateFilter : DateFilterBase
     {
@@ -28,14 +28,14 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
         {
             this.Write("using System;\r\nusing System.Linq;\r\nusing ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Filters.Abstract;\r\n\r\nnamespace ");
             
-            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\DateFilter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

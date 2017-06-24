@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Models.Concrete
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class BaseModel : BaseModelBase
     {
@@ -28,21 +28,21 @@ namespace Genie.Templates.Infrastructure.Models.Concrete
         {
             this.Write("using System.Collections.Generic;\r\nusing ");
             
-            #line 4 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
+            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces;\r\nusing ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Actions.Abstract;\r\n\r\nnamespace ");
             
-            #line 7 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\BaseModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

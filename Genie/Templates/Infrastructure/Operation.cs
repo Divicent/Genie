@@ -9,7 +9,7 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using Genie.Extensions;
     using System;
     

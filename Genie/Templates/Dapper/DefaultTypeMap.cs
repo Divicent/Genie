@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Dapper
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\DefaultTypeMap.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\DefaultTypeMap.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class DefaultTypeMap : DefaultTypeMapBase
     {
@@ -29,7 +29,7 @@ namespace Genie.Templates.Dapper
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing Syste" +
                     "m.Reflection;\r\n\r\nnamespace ");
             
-            #line 8 "D:\Projects\Genie\Genie\Templates\Dapper\DefaultTypeMap.tt"
+            #line 8 "F:\Projects\Genie\Genie\Templates\Dapper\DefaultTypeMap.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

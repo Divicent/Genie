@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Dapper
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\KeyAttribute.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\KeyAttribute.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class KeyAttribute : KeyAttributeBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Dapper
         {
             this.Write("using System;\r\n\r\nnamespace ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\KeyAttribute.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Dapper\KeyAttribute.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

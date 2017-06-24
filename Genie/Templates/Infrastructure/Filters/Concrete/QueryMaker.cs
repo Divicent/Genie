@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Filters.Concrete
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class QueryMaker : QueryMakerBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
         {
             this.Write("using System.Linq;\r\n\r\nnamespace ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Filters\Concrete\QueryMaker.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

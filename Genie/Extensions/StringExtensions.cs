@@ -66,5 +66,20 @@
             return str + "s";
         }
 
+
+        public static string FirstCharLower(this string str)
+        {
+            if (str.Length < 1)
+                return str;
+            var first = str[0];
+            if (str.Length > 1)
+                return (first + "").ToLower() + str.Substring(1);
+            return (first + "").ToLower();
+        }
+
+        public static string ToFieldName(this string str)
+        {
+            return "_" + str.FirstCharLower();
+        }
     }
 }

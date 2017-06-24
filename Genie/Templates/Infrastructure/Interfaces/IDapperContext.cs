@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Interfaces
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IDapperContext.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IDapperContext.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class IDapperContext : IDapperContextBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Infrastructure.Interfaces
         {
             this.Write("using System;\r\nusing System.Data;\r\n\r\nnamespace ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IDapperContext.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IDapperContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

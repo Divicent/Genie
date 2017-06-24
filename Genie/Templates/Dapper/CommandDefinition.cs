@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Dapper
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\CommandDefinition.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\CommandDefinition.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class CommandDefinition : CommandDefinitionBase
     {
@@ -29,7 +29,7 @@ namespace Genie.Templates.Dapper
             this.Write("using System;\r\nusing System.Data;\r\nusing System.Reflection;\r\nusing System.Reflect" +
                     "ion.Emit;\r\n\r\nnamespace ");
             
-            #line 8 "D:\Projects\Genie\Genie\Templates\Dapper\CommandDefinition.tt"
+            #line 8 "F:\Projects\Genie\Genie\Templates\Dapper\CommandDefinition.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

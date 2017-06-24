@@ -10,7 +10,7 @@ namespace Genie.Models.Abstract
         /// Is this a primary key of the relation 
         /// </summary>
         bool IsKey { get; set; }
-      
+
         /// <summary>
         /// Reference property name if available
         /// </summary>

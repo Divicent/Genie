@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Dapper
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapper.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class SqlMapper : SqlMapperBase
     {
@@ -45,7 +45,7 @@ using Label = System.Reflection.Emit.Label;
 
 namespace ");
             
-            #line 20 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper.tt"
+            #line 20 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapper.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

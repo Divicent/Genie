@@ -19,6 +19,5 @@
         /// Referenced Property on this relation
         /// </summary>
         string ReferencedPropertyOnThisRelation { get; set; }
-
     }
 }

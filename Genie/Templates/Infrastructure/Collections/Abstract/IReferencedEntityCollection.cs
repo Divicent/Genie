@@ -9,7 +9,7 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Collections.Abstract
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>

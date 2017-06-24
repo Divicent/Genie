@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Collections.Concrete
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class ReferencedEntityCollection : ReferencedEntityCollectionBase
     {
@@ -28,14 +28,14 @@ namespace Genie.Templates.Infrastructure.Collections.Concrete
         {
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Models.Concrete;\r\nusing ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
@@ -43,21 +43,21 @@ namespace Genie.Templates.Infrastructure.Collections.Concrete
             this.Write(".Infrastructure.Collections.Abstract;\r\nusing System.Collections;\r\nusing System.Li" +
                     "nq;\r\nusing ");
             
-            #line 9 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            #line 9 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Actions.Abstract;\r\nusing ");
             
-            #line 10 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Actions.Concrete;\r\n\r\n\r\nnamespace ");
             
-            #line 13 "D:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
+            #line 13 "F:\Projects\Genie\Genie\Templates\Infrastructure\Collections\Concrete\ReferencedEntityCollection.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

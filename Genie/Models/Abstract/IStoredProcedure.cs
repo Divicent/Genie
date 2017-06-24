@@ -11,7 +11,7 @@ namespace Genie.Models.Abstract
     /// <summary>
     /// Represents a stored procedure with all the properties to just generate an accessible code
     /// </summary>
-    interface IStoredProcedure
+    internal interface IStoredProcedure
     {
         /// <summary>
         /// Name of the Stored Procedure

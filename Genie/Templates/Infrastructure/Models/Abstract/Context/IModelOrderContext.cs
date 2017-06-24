@@ -9,7 +9,7 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Models.Abstract.Context
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using Genie.Extensions;
     using System.Linq;
     using System;

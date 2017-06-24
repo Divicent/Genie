@@ -1,5 +1,5 @@
 ﻿<#@ template language="C#" #>
-<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Base.Generating.Concrete" #>
 <#@ import namespace="Genie.Extensions"#>
 <#@ import namespace="System.Linq"#>
 using System;
@@ -17,6 +17,30 @@ var name = _relation.Name;
 #>
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete
 {
+<#if(_enum != null && _enum.Values.Count > 0){#>
+	public sealed class <#=_enum.Name#>
+	{
+		private readonly <#=_enum.Type#> _value;
+		private <#=_enum.Name#>(<#=_enum.Type#> value)
+	    {
+	        _value = value;
+	    }
+
+		public static implicit operator <#=_enum.Type#>(<#=_enum.Name#> @enum)
+	    {
+	        return @enum._value;
+	    }
+
+<#foreach(var key in _enum.Values){#>
+		private static <#=_enum.Name#> <#=key.FieldName#>;
+<#}#>
+
+<#foreach(var key in _enum.Values){#>
+		public static <#=_enum.Name#> <#=key.Name#> => <#=key.FieldName#> ?? ( <#=key.FieldName#> = new <#=_enum.Name#>(<#=key.Value#>));
+<#}#>
+	}
+
+<#}#>
     [Table("[dbo].[<#=name#>]")]
     public class <#=name#> : BaseModel
     {

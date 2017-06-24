@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Dapper
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\DapperRow.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\DapperRow.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class DapperRow : DapperRowBase
     {
@@ -29,7 +29,7 @@ namespace Genie.Templates.Dapper
             this.Write("using System;\r\nusing System.Collections;\r\nusing System.Collections.Generic;\r\nusin" +
                     "g System.Linq;\r\n\r\nnamespace ");
             
-            #line 8 "D:\Projects\Genie\Genie\Templates\Dapper\DapperRow.tt"
+            #line 8 "F:\Projects\Genie\Genie\Templates\Dapper\DapperRow.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

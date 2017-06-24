@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Actions.Abstract
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Actions\Abstract\IAddAction.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Actions\Abstract\IAddAction.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class IAddAction : IAddActionBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Infrastructure.Actions.Abstract
         {
             this.Write("\r\nnamespace ");
             
-            #line 4 "D:\Projects\Genie\Genie\Templates\Infrastructure\Actions\Abstract\IAddAction.tt"
+            #line 4 "F:\Projects\Genie\Genie\Templates\Infrastructure\Actions\Abstract\IAddAction.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

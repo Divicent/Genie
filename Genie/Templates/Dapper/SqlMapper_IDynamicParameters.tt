@@ -1,12 +1,12 @@
 ﻿<#@ template language="C#" #>
-<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Base.Generating.Concrete" #>
 using System.Data;
 
 namespace <#=GenerationContext.BaseNamespace#>.Dapper 
 {
     partial class SqlMapper
     {
-        /// <summary>
+        /// <summary>  
         /// Implement this interface to pass an arbitrary db specific set of parameters to Dapper
         /// </summary>
         public interface IDynamicParameters

@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Infrastructure.Interfaces
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class IProcedureContainer : IProcedureContainerBase
     {
@@ -28,91 +28,91 @@ namespace Genie.Templates.Infrastructure.Interfaces
         {
             this.Write("using System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace ");
             
-            #line 6 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 6 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default
             #line hidden
             this.Write(".Infrastructure.Interfaces\r\n{\r\n\tpublic interface IProcedureContainer\r\n    {\r\n");
             
-            #line 10 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 10 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
 foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
             this.Write("\t\tIEnumerable<T> ");
             
-            #line 11 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write("_List<T>(");
             
-            #line 11 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 11 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 12 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 12 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 14 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 14 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
 foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
             this.Write("\t\tT ");
             
-            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 15 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write("_Single<T>(");
             
-            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 15 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 16 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
 }
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 18 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
 foreach(var sp in _schema.Procedures){
             
             #line default
             #line hidden
             this.Write("\t\tvoid ");
             
-            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.Name));
             
             #line default
             #line hidden
             this.Write("_Void(");
             
-            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sp.ParamString));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
+            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Interfaces\IProcedureContainer.tt"
 }
             
             #line default

@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Dapper
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_CacheInfo.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_CacheInfo.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class SqlMapper_CacheInfo : SqlMapper_CacheInfoBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Dapper
         {
             this.Write("using System;\r\nusing System.Data;\r\nusing System.Threading;\r\n\r\nnamespace ");
             
-            #line 7 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_CacheInfo.tt"
+            #line 7 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_CacheInfo.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

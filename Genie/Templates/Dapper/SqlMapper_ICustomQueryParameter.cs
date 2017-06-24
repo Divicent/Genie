@@ -9,14 +9,14 @@
 // ------------------------------------------------------------------------------
 namespace Genie.Templates.Dapper
 {
-    using Genie.Base;
+    using Genie.Base.Generating.Concrete;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_ICustomQueryParameter.tt"
+    #line 1 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_ICustomQueryParameter.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class SqlMapper_ICustomQueryParameter : SqlMapper_ICustomQueryParameterBase
     {
@@ -28,7 +28,7 @@ namespace Genie.Templates.Dapper
         {
             this.Write("using System.Data;\r\n\r\nnamespace ");
             
-            #line 5 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_ICustomQueryParameter.tt"
+            #line 5 "F:\Projects\Genie\Genie\Templates\Dapper\SqlMapper_ICustomQueryParameter.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.BaseNamespace));
             
             #line default

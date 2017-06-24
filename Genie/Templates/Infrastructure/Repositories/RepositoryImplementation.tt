@@ -1,5 +1,5 @@
 ﻿<#@ template language="C#" #>
-<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Base.Generating.Concrete" #>
 <#@ import namespace="System.Linq" #>
 using System.Linq;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Interfaces;

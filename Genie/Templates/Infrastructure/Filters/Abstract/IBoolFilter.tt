@@ -1,5 +1,5 @@
 ﻿<#@ template language="C#" #>
-<#@ import namespace="Genie.Base" #>
+<#@ import namespace="Genie.Base.Generating.Concrete" #>
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
 {
 	public interface IBoolFilter<out T, out TQ> where T : IFilterContext

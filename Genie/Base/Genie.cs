@@ -1,7 +1,20 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Genie.Base.Abstract;
+using Genie.Base.Configuration.Abstract;
+using Genie.Base.Configuration.Concrete;
+using Genie.Base.Generating.Absract;
+using Genie.Base.Generating.Concrete;
+using Genie.Base.ObstacleManaging.Abstract;
+using Genie.Base.ObstacleManaging.Concrete;
+using Genie.Base.ProcessOutput;
+using Genie.Base.ProcessOutput.Abstract;
+using Genie.Base.ProjectFileManaging.Abstract;
+using Genie.Base.ProjectFileManaging.Concrete;
+using Genie.Base.Reading.Abstract;
+using Genie.Base.Reading.Concrete;
+using Genie.Base.Writing.Abstract;
+using Genie.Base.Writing.Concrete;
 using Genie.Tools;
 using Newtonsoft.Json;
 
@@ -71,7 +84,7 @@ namespace Genie.Base
 
             try
             {
-                IDatabaseSchemaReader schemaReader = new DatabaseSchemaReader();
+                IDatabaseSchemaReader schemaReader = new SqlServerSchemaReader();
                 var schema = schemaReader.Read(config, output);
 
                 IDalGenerator dalGenerator = new DalGenerator();
