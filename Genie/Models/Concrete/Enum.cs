@@ -5,7 +5,8 @@ namespace Genie.Models.Concrete
 {
     internal class Enum: IEnum
     {
-        public string TableName { get; set; }
-        public Dictionary<string, object> Values { get; set; }
+        public string Type { get; set; }
+        public string Name { get; set; }
+        public List<IEnumValue> Values { get; set; }
     }
 }

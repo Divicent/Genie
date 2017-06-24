@@ -160,7 +160,7 @@ namespace Genie.Base.Generating.Concrete
 
                 foreach (var relation in schema.Relations)
                 {
-                    files.Add(new Relation(relation, @"Infrastructure\Models\Concrete\" + relation.Name));
+                    files.Add(new Relation(relation, @"Infrastructure\Models\Concrete\" + relation.Name, schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum")));
 
                     files.Add(new IModelQueryContext(relation.Name, @"Infrastructure\Models\Abstract\Context\I" + relation.Name + "QueryContext"));
                     files.Add(new IModelFilterContext(relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList(), @"Infrastructure\Models\Abstract\Context\I" + relation.Name + "FilterContext"));

@@ -7,7 +7,8 @@ namespace Genie.Models.Abstract
     /// </summary>
     internal interface IEnum
     {
-        string TableName { get; set; }
-        Dictionary<string, object> Values { get; set; }
+        string Type { get; }
+        string Name { get; }
+        List<IEnumValue> Values { get; }
     }
 }

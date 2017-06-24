@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using Genie.Base.Configuration.Concrete;
 
 namespace Genie.Base.Configuration.Abstract
 {
@@ -40,6 +41,6 @@ namespace Genie.Base.Configuration.Abstract
         /// </summary>
         bool Core { get; }
 
-        List<IConfigurationEnumTable> Enums { get; }
+        List<ConfigurationEnumTable> Enums { get; }
     }
 }

@@ -69,6 +69,7 @@
     <Compile Include="Models\Abstract\IAttribute.cs" />
     <Compile Include="Models\Abstract\IContentFile.cs" />
     <Compile Include="Models\Abstract\IEnum.cs" />
+    <Compile Include="Models\Abstract\IEnumValue.cs" />
     <Compile Include="Models\Abstract\IForeignKeyAttribute.cs" />
     <Compile Include="Models\Abstract\IReferenceList.cs" />
     <Compile Include="Models\Abstract\IRelation.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="Models\Abstract\ISimpleAttribute.cs" />
     <Compile Include="Models\Concrete\Attribute.cs" />
     <Compile Include="Models\Concrete\ContentFile.cs" />
+    <Compile Include="Models\Concrete\Enum.cs" />
+    <Compile Include="Models\Concrete\EnumValue.cs" />
     <Compile Include="Models\Concrete\ForeignKeyAttribute.cs" />
     <Compile Include="Models\Concrete\ReferenceList.cs" />
     <Compile Include="Models\Concrete\Relation.cs" />

@@ -590,11 +590,13 @@ namespace Genie.Templates.Infrastructure
             {
                 private readonly string _path;
                 private readonly IRelation _relation;
+                private readonly IEnum _enum;
 
-                internal Relation(IRelation relation, string path)
+                internal Relation(IRelation relation, string path, IEnum @enum)
                 {
                     _relation = relation;
                     _path = path;
+                    _enum = @enum;
                 }
 
                 public IContentFile Generate()

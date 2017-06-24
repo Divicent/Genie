@@ -5,6 +5,7 @@ using System.Linq;
 using Genie.Base.Configuration.Abstract;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Reading.Abstract;
+using Genie.Extensions;
 using Genie.Models.Abstract;
 using Genie.Models.Concrete;
 using Genie.Tools;
@@ -356,7 +357,7 @@ namespace Genie.Base.Reading.Concrete
                                 $" FROM [dbo].[{configurationEnumTable.Table}]";
 
                     var type = configurationEnumTable.Type;
-                    var values = new Dictionary<string, object>();
+                    var values = new List<IEnumValue>();
 
                     using (var command = new SqlCommand(query, connection))
                     {
@@ -383,7 +384,7 @@ namespace Genie.Base.Reading.Concrete
                                     switch (type)
                                     {
                                         case "string":
-                                            value = reader.GetString(1);
+                                            value = $"\"{reader.GetString(1)}\"";
                                             break;
                                         case "int":
                                             value = reader.GetInt32(1);
@@ -400,11 +401,11 @@ namespace Genie.Base.Reading.Concrete
                                 {
                                     throw new Exception("Unable to read enum table using specified value type.", e);
                                 }
-
-                                values.Add(name, value);
+                                name = name.Replace(" ", "_");
+                                values.Add(new EnumValue {Name = name, FieldName = name.ToFieldName(), Value = value});
                             }
 
-                            enums.Add(new Enum {TableName = configurationEnumTable.Table, Values = values});
+                            enums.Add(new Enum {Name = configurationEnumTable.Table + "Enum", Values = values, Type = type});
                         }
                     }
                 }

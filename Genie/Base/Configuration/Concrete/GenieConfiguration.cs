@@ -19,7 +19,7 @@ namespace Genie.Base.Configuration.Concrete
         public bool NoDapper { get; set; }
 
         public bool Core { get; set; }
-        public List<IConfigurationEnumTable> Enums { get; set; }
+        public List<ConfigurationEnumTable> Enums { get; set; }
 
         public void Validate()
         {
