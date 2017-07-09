@@ -23,49 +23,27 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 		/// <summary>
         /// Initialize  a new dapper context 
         /// </summary>
-        public DapperContext()
-        {
 <#if(GenerationContext.Core){#>
-		var config = new ConfigurationBuilder().Build();
-        _connectionString = config["connectionString"];
+        public DapperContext(IConfiguration configuration)
+        {
+			 _connectionString = configuration["connectionString"];
+		}
 <#}else{#>
-		var connectionStringName = ConfigurationManager.AppSettings["UsedConnectionString"];
-        _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
+		public DapperContext()
+        {
+			var connectionStringName = ConfigurationManager.AppSettings["UsedConnectionString"];
+			_connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
+		}
 <#}#>
-        }
 
 		/// <summary>
         /// Get the connection to the database
         /// </summary>
-        public IDbConnection Connection
-        {
-		    get
-		    {
-                if (_connection == null)
-                    _connection = new SqlConnection(_connectionString);
-                if (_connection.State != ConnectionState.Open)
-                    _connection.Open();
-
-                return _connection;
-            }
-        }
+        public IDbConnection Connection => _connection ?? (_connection = new SqlConnection(_connectionString));
 
         public IUnitOfWork Unit() 
         {
             return new UnitOfWork(this);
-        }
-
-		/// <summary>
-        /// Dispose the context
-        /// </summary>
-        public void Dispose()
-        {
-		    if (_connection == null)
-                return;
-
-		    if (_connection.State != ConnectionState.Closed)
-		        _connection.Close();
-		    _connection.Dispose();
         }
     }
 }

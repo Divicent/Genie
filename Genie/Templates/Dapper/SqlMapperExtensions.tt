@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -79,8 +80,8 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 
         public static bool IsWriteable(PropertyInfo pi)
         {
-            var attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false);
-            if (attributes<#=GenerationContext.Core ? ".Count()" : ".Length"#> != 1)
+            var attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false).ToList();
+            if (attributes<#=GenerationContext.Core ? ".Count" : ".Length"#> != 1)
                 return true;
             var write = (WriteAttribute)attributes<#=GenerationContext.Core ? ".First()" : "[0]"#>;
             return write.Write;
@@ -95,7 +96,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
         {
-           return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
+			using(connection = new SqlConnection(connection.ConnectionString))
+			{
+				return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
+			}
         }
 
 	    /// <summary>
@@ -106,7 +110,10 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 	    /// <returns>Entity of T</returns>
 	    public static int Count(this IDbConnection connection, IRepoQuery query)
         {
-	        return connection.ExecuteScalar<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
+			using(connection = new SqlConnection(connection.ConnectionString))
+			{
+				return connection.ExecuteScalar<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
+			}
         }
 
 		/// <summary>
@@ -248,7 +255,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             foreach (var property in lst)
 	        {
                 sbColumnList.AppendFormat("[{0}]", property.Name);
-                if (index < lst.Count() - 1)
+                if (index < lst.Count - 1)
                     sbColumnList.Append(", ");
 	            index ++;
 	        }
@@ -259,15 +266,17 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             foreach (var property in lst)
             {
                 sbParameterList.AppendFormat("@{0}", property.Name);
-                if (index < lst.Count() - 1)
+                if (index < lst.Count - 1)
                     sbParameterList.Append(", ");
                 index++;
             }
             
             var adapter = GetFormatter(connection);
-
-            var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
-            return id;
+			using(connection = new SqlConnection(connection.ConnectionString))
+			{
+				var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
+				return id;
+			}
         }
 
 	    /// <summary>
@@ -301,25 +310,28 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             var nonIdProps = allProperties.Where(a => !keyProperties.Contains(a) && entityToUpdate.UpdatedProperties.Contains(a.Name)).ToList(); // Only updated properties
 
 
-            for (var i = 0; i < nonIdProps.Count(); i++)
+            for (var i = 0; i < nonIdProps.Count; i++)
             {
                 var property = nonIdProps.ElementAt(i);
                 sb.AppendFormat("[{0}] = @{1}", property.Name, property.Name);
-                if (i < nonIdProps.Count() - 1)
+                if (i < nonIdProps.Count - 1)
                     sb.AppendFormat(", ");
             }
 
             sb.Append(" where ");
-            for (var i = 0; i < keyProperties.Count(); i++)
+            for (var i = 0; i < keyProperties.Count; i++)
             {
                 var property = keyProperties.ElementAt(i);
                 sb.AppendFormat("[{0}] = @{1}", property.Name, property.Name);
-                if (i < keyProperties.Count() - 1)
+                if (i < keyProperties.Count - 1)
                     sb.AppendFormat(" and ");
             }
 
-            var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
-            return updated > 0;
+			using(connection = new SqlConnection(connection.ConnectionString))
+			{
+				var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
+				return updated > 0;
+			}
         }
 
 	    /// <summary>
@@ -334,7 +346,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         {
 	        if (entity == null)
 	        {
-                throw new ArgumentException("The entity is null, cannot delete a null entity", "entity");
+                throw new ArgumentException("The entity is null, cannot delete a null entity", nameof(entity));
             }
 
             var type = entity.GetType();
@@ -348,15 +360,19 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             var sb = new StringBuilder();
             sb.AppendFormat("delete from {0} where ", name);
 
-            for (var i = 0; i < keyProperties.Count(); i++)
+            for (var i = 0; i < keyProperties.Count; i++)
             {
                 var property = keyProperties.ElementAt(i);
                 sb.AppendFormat("[{0}] = @{1}", property.Name, property.Name);
-                if (i < keyProperties.Count() - 1)
+                if (i < keyProperties.Count - 1)
                     sb.AppendFormat(" and ");
             }
-            var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
-            return deleted;
+
+			using(connection = new SqlConnection(connection.ConnectionString))
+			{
+				var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
+				return deleted;
+			}
         }
 
         public static ISqlAdapter GetFormatter(IDbConnection connection)
