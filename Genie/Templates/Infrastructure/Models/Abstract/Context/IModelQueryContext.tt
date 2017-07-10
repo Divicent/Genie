@@ -2,6 +2,7 @@
 <#@ import namespace="Genie.Base.Generating.Concrete" #>
 <#@ import namespace="Genie.Extensions"#>
 <#@ import namespace="System.Linq"#>
+using System;
 using System.Data;
 using System.Collections.Generic;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract;
@@ -18,6 +19,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Co
 		I<#=_name#>OrderContext OrderBy { get; }
 	    IEnumerable<Concrete.<#=_name#>> Query(IDbTransaction transaction = null);
 		I<#=_name#>QueryContext Filter(IEnumerable<IPropertyFilter> filters);
+		I<#=_name#>QueryContext SortBy(Tuple<string, bool> sortInfo);
 	    int Count(IDbTransaction transaction = null);
 		string GetWhereClause();
 	}

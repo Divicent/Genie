@@ -2,6 +2,7 @@
 <#@ import namespace="Genie.Base.Generating.Concrete" #>
 <#@ import namespace="Genie.Extensions"#>
 <#@ import namespace="System.Linq"#>
+using System;
 using System.Data;
 using System.Collections.Generic;
 using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract;
@@ -64,6 +65,15 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Co
             ProcessFilter(Where.GetFilterExpressions(), filters);
 			return this;	
 		}
+
+		public I<#=_name#>QueryContext SortBy(Tuple<string, bool> sortInfo)
+	    {
+			if(sortInfo == null)
+				return this;
+
+            Sort(OrderBy.GetOrderExpressions(), sortInfo.Item1, sortInfo.Item2);
+	        return this;
+	    }
 
 	    private IRepoQuery GetQuery(IDbTransaction transaction)
 	    {

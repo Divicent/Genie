@@ -99,15 +99,8 @@ if(GenerationContext.NoDapper){
                     "ype.TypeHandle] = properties;\r\n            return properties;\r\n        }\r\n\r\n    " +
                     "    public static bool IsWriteable(PropertyInfo pi)\r\n        {\r\n            var " +
                     "attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false).ToList();\r\n  " +
-                    "          if (attributes");
-            
-            #line 84 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.Core ? ".Count" : ".Length"));
-            
-            #line default
-            #line hidden
-            this.Write(" != 1)\r\n                return true;\r\n            var write = (WriteAttribute)att" +
-                    "ributes");
+                    "          if (attributes.Count != 1)\r\n                return true;\r\n            " +
+                    "var write = (WriteAttribute)attributes");
             
             #line 86 "D:\Projects\Genie\Genie\Templates\Dapper\SqlMapperExtensions.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GenerationContext.Core ? ".First()" : "[0]"));

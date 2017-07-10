@@ -16,6 +16,15 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete.Co
         protected int? _take;
 
 		protected abstract bool? IsQuoted(ref string propertyName);
+
+		protected void Sort(Queue<string> queue, string property, bool asc)
+        {
+            var qotd = IsQuoted(ref property);
+            if(qotd == null)
+                return;
+            var type = asc ? "ASC" : "DESC";
+            queue.Enqueue($" [{property}] {type} ");
+        }
 		
 		protected void ProcessFilter(Queue<string> queue, IEnumerable<IPropertyFilter> f)  
 		{

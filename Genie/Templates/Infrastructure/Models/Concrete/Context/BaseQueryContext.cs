@@ -50,59 +50,63 @@ namespace Genie.Templates.Infrastructure.Models.Concrete.Context
             this.Write(".Infrastructure.Models.Concrete.Context\r\n{\r\n    public abstract class BaseQueryCo" +
                     "ntext\r\n    {\r\n        protected int? _page;\r\n        protected int? _pageSize;\r\n" +
                     "        protected int? _limit;\r\n        protected int? _skip;\r\n        protected" +
-                    " int? _take;\r\n\r\n\t\tprotected abstract bool? IsQuoted(ref string propertyName);\r\n\t" +
-                    "\t\r\n\t\tprotected void ProcessFilter(Queue<string> queue, IEnumerable<IPropertyFilt" +
-                    "er> f)  \r\n\t\t{\r\n\t\t    var filters = f?.ToList();\r\n            if(filters == null)" +
-                    "\r\n                return;\r\n            if(filters.Count < 1)\r\n                re" +
-                    "turn;\r\n\r\n\t\t    foreach (var propertyFilter in filters)\r\n\t\t    {\r\n\t\t        var p" +
-                    "ropName = propertyFilter.PropertyName;\r\n                var qotd = IsQuoted(ref " +
-                    "propName);\r\n                switch (qotd)\r\n                {\r\n                  " +
-                    "  case null:\r\n                        continue;\r\n                    case false:" +
-                    "\r\n                        var valueString = propertyFilter.Value.ToString();\r\n  " +
-                    "                      switch (valueString)\r\n                        {\r\n         " +
-                    "                   case \"true\":\r\n                                propertyFilter." +
-                    "Value = \"1\";\r\n                                break;\r\n                          " +
-                    "  case \"false\":\r\n                                propertyFilter.Value = \"2\";\r\n  " +
-                    "                              break;\r\n                        }\r\n               " +
-                    "         break;\r\n                }\r\n\r\n\t\t        if (qotd == true && propertyFilt" +
-                    "er.Value.ToString() == \"true\" || propertyFilter.Value.ToString() == \"false\")\r\n\r\n" +
-                    "\t\t        \r\n                queue.Enqueue(\"and\");\r\n\t\t        queue.Enqueue(GetEx" +
-                    "pression(propertyFilter.Type, propName, propertyFilter.Value,\r\n\t\t            qot" +
-                    "d.GetValueOrDefault()));\r\n\t\t    }\r\n\t\t}\r\n\r\n        private static string GetExpre" +
-                    "ssion(string type, string propName, object value, bool quoted )\r\n        {\r\n    " +
-                    "        switch (type.ToLower())\r\n            {\r\n                case \"equals\":\r\n" +
-                    "                case \"eq\":\r\n                    return QueryMaker.EqualsTo(propN" +
-                    "ame, value, quoted);\r\n                case \"notequals\":\r\n                case \"n" +
-                    "eq\":\r\n                case \"ne\":\r\n                    return QueryMaker.NotEqual" +
-                    "s(propName, value, quoted);\r\n                case \"contains\":\r\n                c" +
-                    "ase \"c\":\r\n                    return QueryMaker.Contains(propName, value);\r\n    " +
-                    "            case \"notcontains\":\r\n                case \"nc\":\r\n                   " +
-                    " return QueryMaker.NotContains(propName, value);\r\n                case \"startswi" +
-                    "th\":\r\n                case \"sw\":\r\n                    return QueryMaker.StartsWi" +
-                    "th(propName, value);\r\n                case \"notstartswith\":\r\n                cas" +
-                    "e \"nsw\":\r\n                    return QueryMaker.NotStartsWith(propName, value);\r" +
-                    "\n                case \"endswith\":\r\n                case \"ew\":\r\n                 " +
-                    "   return QueryMaker.EndsWith(propName, value);\r\n                case \"notendswi" +
-                    "th\":\r\n                case \"new\":\r\n                    return QueryMaker.NotEnds" +
-                    "With(propName, value);\r\n                case \"isempty\":\r\n                case \"i" +
-                    "e\":\r\n                    return QueryMaker.IsEmpty(propName);\r\n                c" +
-                    "ase \"isnotempty\":\r\n                case \"ino\":\r\n                    return Query" +
-                    "Maker.IsNotEmpty(propName);\r\n                case \"isnull\":\r\n                cas" +
-                    "e \"in\":\r\n                    return QueryMaker.IsNull(propName);\r\n              " +
-                    "  case \"isnotnull\":\r\n                case \"inn\":\r\n                    return Que" +
-                    "ryMaker.IsNotNull(propName);\r\n                case \"greaterthan\":\r\n             " +
-                    "   case \"gt\":\r\n                    return QueryMaker.GreaterThan(propName, value" +
-                    ", quoted);\r\n                case \"lessthan\":\r\n                case \"lt\":\r\n      " +
-                    "              return QueryMaker.LessThan(propName, value, quoted);\r\n            " +
-                    "    case \"greaterthanorequals\":\r\n                case \"gtoe\":\r\n                c" +
-                    "ase \"gte\":\r\n                    return QueryMaker.GreaterThanOrEquals(propName, " +
-                    "value, quoted);\r\n                case \"lessthanorequals\":\r\n                case " +
-                    "\"ltoe\":\r\n                case \"lte\":\r\n                    return QueryMaker.Less" +
-                    "ThanOrEquals(propName, value, quoted);\r\n                case \"istrue\":\r\n        " +
-                    "        case \"it\":\r\n                    return QueryMaker.IsTrue(propName);\r\n   " +
-                    "             case \"isfalse\":\r\n                case \"if\":\r\n                    re" +
-                    "turn QueryMaker.IsFalse(propName);\r\n                default:\r\n                  " +
-                    "  return \"\";\r\n            }\r\n        }\r\n    }\r\n}\r\n");
+                    " int? _take;\r\n\r\n\t\tprotected abstract bool? IsQuoted(ref string propertyName);\r\n\r" +
+                    "\n\t\tprotected void Sort(Queue<string> queue, string property, bool asc)\r\n        " +
+                    "{\r\n            var qotd = IsQuoted(ref property);\r\n            if(qotd == null)\r" +
+                    "\n                return;\r\n            var type = asc ? \"ASC\" : \"DESC\";\r\n        " +
+                    "    queue.Enqueue($\" [{property}] {type} \");\r\n        }\r\n\t\t\r\n\t\tprotected void Pr" +
+                    "ocessFilter(Queue<string> queue, IEnumerable<IPropertyFilter> f)  \r\n\t\t{\r\n\t\t    v" +
+                    "ar filters = f?.ToList();\r\n            if(filters == null)\r\n                retu" +
+                    "rn;\r\n            if(filters.Count < 1)\r\n                return;\r\n\r\n\t\t    foreach" +
+                    " (var propertyFilter in filters)\r\n\t\t    {\r\n\t\t        var propName = propertyFilt" +
+                    "er.PropertyName;\r\n                var qotd = IsQuoted(ref propName);\r\n          " +
+                    "      switch (qotd)\r\n                {\r\n                    case null:\r\n        " +
+                    "                continue;\r\n                    case false:\r\n                    " +
+                    "    var valueString = propertyFilter.Value.ToString();\r\n                        " +
+                    "switch (valueString)\r\n                        {\r\n                            cas" +
+                    "e \"true\":\r\n                                propertyFilter.Value = \"1\";\r\n        " +
+                    "                        break;\r\n                            case \"false\":\r\n     " +
+                    "                           propertyFilter.Value = \"2\";\r\n                        " +
+                    "        break;\r\n                        }\r\n                        break;\r\n     " +
+                    "           }\r\n\r\n\t\t        if (qotd == true && propertyFilter.Value.ToString() ==" +
+                    " \"true\" || propertyFilter.Value.ToString() == \"false\")\r\n\r\n\t\t        \r\n          " +
+                    "      queue.Enqueue(\"and\");\r\n\t\t        queue.Enqueue(GetExpression(propertyFilte" +
+                    "r.Type, propName, propertyFilter.Value,\r\n\t\t            qotd.GetValueOrDefault())" +
+                    ");\r\n\t\t    }\r\n\t\t}\r\n\r\n        private static string GetExpression(string type, str" +
+                    "ing propName, object value, bool quoted )\r\n        {\r\n            switch (type.T" +
+                    "oLower())\r\n            {\r\n                case \"equals\":\r\n                case \"" +
+                    "eq\":\r\n                    return QueryMaker.EqualsTo(propName, value, quoted);\r\n" +
+                    "                case \"notequals\":\r\n                case \"neq\":\r\n                " +
+                    "case \"ne\":\r\n                    return QueryMaker.NotEquals(propName, value, quo" +
+                    "ted);\r\n                case \"contains\":\r\n                case \"c\":\r\n            " +
+                    "        return QueryMaker.Contains(propName, value);\r\n                case \"notc" +
+                    "ontains\":\r\n                case \"nc\":\r\n                    return QueryMaker.Not" +
+                    "Contains(propName, value);\r\n                case \"startswith\":\r\n                " +
+                    "case \"sw\":\r\n                    return QueryMaker.StartsWith(propName, value);\r\n" +
+                    "                case \"notstartswith\":\r\n                case \"nsw\":\r\n            " +
+                    "        return QueryMaker.NotStartsWith(propName, value);\r\n                case " +
+                    "\"endswith\":\r\n                case \"ew\":\r\n                    return QueryMaker.E" +
+                    "ndsWith(propName, value);\r\n                case \"notendswith\":\r\n                " +
+                    "case \"new\":\r\n                    return QueryMaker.NotEndsWith(propName, value);" +
+                    "\r\n                case \"isempty\":\r\n                case \"ie\":\r\n                 " +
+                    "   return QueryMaker.IsEmpty(propName);\r\n                case \"isnotempty\":\r\n   " +
+                    "             case \"ino\":\r\n                    return QueryMaker.IsNotEmpty(propN" +
+                    "ame);\r\n                case \"isnull\":\r\n                case \"in\":\r\n             " +
+                    "       return QueryMaker.IsNull(propName);\r\n                case \"isnotnull\":\r\n " +
+                    "               case \"inn\":\r\n                    return QueryMaker.IsNotNull(prop" +
+                    "Name);\r\n                case \"greaterthan\":\r\n                case \"gt\":\r\n       " +
+                    "             return QueryMaker.GreaterThan(propName, value, quoted);\r\n          " +
+                    "      case \"lessthan\":\r\n                case \"lt\":\r\n                    return Q" +
+                    "ueryMaker.LessThan(propName, value, quoted);\r\n                case \"greaterthano" +
+                    "requals\":\r\n                case \"gtoe\":\r\n                case \"gte\":\r\n          " +
+                    "          return QueryMaker.GreaterThanOrEquals(propName, value, quoted);\r\n     " +
+                    "           case \"lessthanorequals\":\r\n                case \"ltoe\":\r\n             " +
+                    "   case \"lte\":\r\n                    return QueryMaker.LessThanOrEquals(propName," +
+                    " value, quoted);\r\n                case \"istrue\":\r\n                case \"it\":\r\n  " +
+                    "                  return QueryMaker.IsTrue(propName);\r\n                case \"isf" +
+                    "alse\":\r\n                case \"if\":\r\n                    return QueryMaker.IsFals" +
+                    "e(propName);\r\n                default:\r\n                    return \"\";\r\n        " +
+                    "    }\r\n        }\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

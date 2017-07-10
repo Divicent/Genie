@@ -81,7 +81,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         public static bool IsWriteable(PropertyInfo pi)
         {
             var attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false).ToList();
-            if (attributes<#=GenerationContext.Core ? ".Count" : ".Length"#> != 1)
+            if (attributes.Count != 1)
                 return true;
             var write = (WriteAttribute)attributes<#=GenerationContext.Core ? ".First()" : "[0]"#>;
             return write.Write;
