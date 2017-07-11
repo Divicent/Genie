@@ -98,6 +98,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
         {
 			using(connection = new SqlConnection(connection.ConnectionString))
 			{
+				connection.Open();
 				return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
 			}
         }
@@ -274,6 +275,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
             var adapter = GetFormatter(connection);
 			using(connection = new SqlConnection(connection.ConnectionString))
 			{
+				connection.Open();
 				var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
 				return id;
 			}
@@ -329,6 +331,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 
 			using(connection = new SqlConnection(connection.ConnectionString))
 			{
+				connection.Open();
 				var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
 				return updated > 0;
 			}
@@ -370,6 +373,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Dapper
 
 			using(connection = new SqlConnection(connection.ConnectionString))
 			{
+				connection.Open();
 				var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
 				return deleted;
 			}
