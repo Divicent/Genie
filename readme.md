@@ -4,7 +4,7 @@
 
 ### Data Access Layer Generator
 
-Genie is a .Net library that can generate a data access layer for a layered system.
+Genie is a .Net library that can generate a data access layer for any system.
 
 ## How It Works
 
