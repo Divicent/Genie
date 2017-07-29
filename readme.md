@@ -1,6 +1,5 @@
 # Genie
 
-<svg></
 <img src="/icon/genie.svg" alt="Icon" style="width: 200px;"/>
 ### Data Access Layer Generator
 
