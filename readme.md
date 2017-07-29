@@ -19,7 +19,9 @@ It should be something like this
     "connectionString": "...",
     "projectPath": "...",
     "baseNamespace": "...",
-    "ProjectFile": "..."
+    "ProjectFile": "...",
+    "noDapper": true/false,
+    "core": true/false
 }
 ```
 
@@ -35,6 +37,16 @@ This path should point to a existing directory.
 ### baseNamespace 
 
 The base namespace of the data access layer (ex :Example.DataAccess)
+
+### noDapper
+
+Include the dapper source code in the generated code (/Dapper)
+Dapper will not be included if set to true . will need to reference dapper externally.
+
+### core
+
+If this is set to true , the generated code will target .net core framework.
+This uses .Net cores inbuilt DI. the DapperContext should be injected to use connection string.
 
 ### projectFile (optional)
 
