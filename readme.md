@@ -1,6 +1,7 @@
-# Genie
+<h1>
+<img src="https://raw.githubusercontent.com/rusith/genie/develop/icon/genie.png" alt="Icon" style="width: 200px;"/> Genie
+</h1>
 
-<img src="https://raw.githubusercontent.com/rusith/genie/develop/icon/genie.png" alt="Icon" style="width: 200px;"/>
 ### Data Access Layer Generator
 
 Genie is a .Net library that can generate a data access layer for a layered system.
