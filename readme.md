@@ -24,8 +24,8 @@ It should be something like this
     "projectPath": "...",
     "baseNamespace": "...",
     "ProjectFile": "...",
-    "noDapper": true|false,
-    "core": true|false
+    "noDapper": false,
+    "core": false
 }
 ```
 
