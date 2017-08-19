@@ -11,6 +11,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete
     {
 
 <#foreach(var atd in entity.Attributes){#>
+
+<# if(!string.IsNullOrWhiteSpace(atd.Comment)) {#>
+		/// <summary>
+		/// <#=atd.Comment#>
+		/// </summary>
+<#}#>
 		public <#=atd.DataType#> <#=atd.Name#> { get; set; } 
 <#}#>
     }
