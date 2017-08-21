@@ -12,7 +12,7 @@ using <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Concrete;
 namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 {
     public abstract class Repository<T> : IRepository<T>
-        where T : BaseModel
+        where T : BaseModel 
     {
         public IDbConnection Conn { get; }
         public IDapperContext Context { get;}

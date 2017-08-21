@@ -14,5 +14,7 @@ namespace Genie.Models.Concrete
         public string FieldName { get; set; }
         public string RefPropName { get; set; }
         public bool IsLiteralType { get; set; }
+        public string Comment { get; set; }
+
     }
 }

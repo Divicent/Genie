@@ -1,8 +1,13 @@
-# Genie
+<h1>
+<img src="https://raw.githubusercontent.com/rusith/genie/develop/icon/genie.png" alt="Icon" style="width: 200px;"/> Genie
+</h1>
+
+[![Build Status](https://travis-ci.org/rusith/Genie.svg?branch=develop)](https://travis-ci.org/rusith/Genie)
+<a href="https://gitlab.com/rusith/Generator"><h5>CLI Generator Implementation</h5></a>
+
 ### Data Access Layer Generator
 
-
-Genie is a .Net library that can generate a data access layer for a layered system.
+Genie is a .Net library that can generate a data access layer for any system.
 
 ## How It Works
 
@@ -19,7 +24,9 @@ It should be something like this
     "connectionString": "...",
     "projectPath": "...",
     "baseNamespace": "...",
-    "ProjectFile": "..."
+    "ProjectFile": "...",
+    "noDapper": false,
+    "core": false
 }
 ```
 
@@ -35,6 +42,16 @@ This path should point to a existing directory.
 ### baseNamespace 
 
 The base namespace of the data access layer (ex :Example.DataAccess)
+
+### noDapper
+
+Include the dapper source code in the generated code (/Dapper)
+Dapper will not be included if set to true . will need to reference dapper externally.
+
+### core
+
+If this is set to true , the generated code will target .net core framework.
+This uses .Net cores inbuilt DI. the DapperContext should be injected to use connection string.
 
 ### projectFile (optional)
 

@@ -63,41 +63,41 @@ namespace Genie.Templates.Infrastructure
             #line default
             #line hidden
             this.Write(".Infrastructure\r\n{\r\n    public abstract class Repository<T> : IRepository<T>\r\n   " +
-                    "     where T : BaseModel\r\n    {\r\n        public IDbConnection Conn { get; }\r\n   " +
-                    "     public IDapperContext Context { get;}\r\n        public IUnitOfWork UnitOfWor" +
-                    "k { get;}\r\n\r\n        protected Repository(IDapperContext context, IUnitOfWork un" +
-                    "itOfWork)\r\n        {\r\n            Context = context;\r\n            Conn = Context" +
-                    ".Connection;\r\n            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public " +
-                    "virtual void Add(T entity, IDbTransaction transaction = null, int? commandTimeou" +
-                    "t = null)\r\n        {\r\n            if (entity == null)\r\n            {\r\n          " +
-                    "      throw new ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n     " +
-                    "       }\r\n            \r\n            entity.DatabaseUnitOfWork = UnitOfWork;     " +
-                    "      \r\n            var operation = new Operation(OperationType.Add, entity);\r\n " +
-                    "           UnitOfWork.AddOp(operation);    \r\n            entity.DatabaseModelSta" +
-                    "tus = ModelStatus.ToAdd;  \r\n        }\r\n\r\n        public virtual void Add(IEnumer" +
-                    "able<T> entities, IDbTransaction transaction = null, int? commandTimeout = null)" +
-                    "\r\n        {\r\n            if (entities == null)\r\n            {\r\n                t" +
-                    "hrow new ArgumentNullException(\"entities\", \"Add to DB null entity\");\r\n          " +
-                    "  }\r\n            \r\n            foreach(var entity in entities)\r\n                " +
-                    "Add(entity, transaction, commandTimeout);\r\n        }\r\n\r\n        public virtual v" +
-                    "oid Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = nu" +
-                    "ll)\r\n        {\r\n            if (entity == null)\r\n            {\r\n                " +
-                    "throw new ArgumentNullException(\"entity\", \"Remove in DB null entity\");\r\n        " +
-                    "    }\r\n            \r\n            var operation = new Operation(OperationType.Rem" +
-                    "ove, entity);\r\n            UnitOfWork.AddOp(operation);\r\n        }\r\n\r\n        pu" +
-                    "blic virtual void Remove(IEnumerable<T> entities, IDbTransaction transaction = n" +
-                    "ull, int? commandTimeout = null)\r\n        {\r\n            if (entities == null)\r\n" +
-                    "            {\r\n                throw new ArgumentNullException(\"entities\", \"Remo" +
-                    "ve in DB null entity\");\r\n            }\r\n\r\n            foreach(var entity in enti" +
-                    "ties)\r\n                Remove(entity, transaction, commandTimeout);\r\n        }\r\n" +
-                    "\r\n        public virtual IEnumerable<T> Get(IRepoQuery query)\r\n        {\r\n      " +
-                    "      var items = Conn.Get<T>(query).ToList();\r\n\r\n            foreach (var item " +
-                    "in items)\r\n            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;\r" +
-                    "\n                item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n            " +
-                    "    UnitOfWork.AddObj(item);\r\n            }\r\n            return items;\r\n        " +
-                    "}\r\n\r\n        public virtual int Count(IRepoQuery query)\r\n        {\r\n            " +
-                    "return Conn.Count(query);\r\n        }\r\n\r\n\t\tpublic string GetWhereClause(IRepoQuer" +
-                    "y query) \r\n\t\t{\r\n\t\t\treturn Conn.GetWhereClause(query);\r\n\t\t}\r\n    }\r\n}\r\n");
+                    "     where T : BaseModel \r\n    {\r\n        public IDbConnection Conn { get; }\r\n  " +
+                    "      public IDapperContext Context { get;}\r\n        public IUnitOfWork UnitOfWo" +
+                    "rk { get;}\r\n\r\n        protected Repository(IDapperContext context, IUnitOfWork u" +
+                    "nitOfWork)\r\n        {\r\n            Context = context;\r\n            Conn = Contex" +
+                    "t.Connection;\r\n            UnitOfWork = unitOfWork;\r\n        }\r\n\r\n        public" +
+                    " virtual void Add(T entity, IDbTransaction transaction = null, int? commandTimeo" +
+                    "ut = null)\r\n        {\r\n            if (entity == null)\r\n            {\r\n         " +
+                    "       throw new ArgumentNullException(\"entity\", \"Add to DB null entity\");\r\n    " +
+                    "        }\r\n            \r\n            entity.DatabaseUnitOfWork = UnitOfWork;    " +
+                    "       \r\n            var operation = new Operation(OperationType.Add, entity);\r\n" +
+                    "            UnitOfWork.AddOp(operation);    \r\n            entity.DatabaseModelSt" +
+                    "atus = ModelStatus.ToAdd;  \r\n        }\r\n\r\n        public virtual void Add(IEnume" +
+                    "rable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null" +
+                    ")\r\n        {\r\n            if (entities == null)\r\n            {\r\n                " +
+                    "throw new ArgumentNullException(\"entities\", \"Add to DB null entity\");\r\n         " +
+                    "   }\r\n            \r\n            foreach(var entity in entities)\r\n               " +
+                    " Add(entity, transaction, commandTimeout);\r\n        }\r\n\r\n        public virtual " +
+                    "void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = n" +
+                    "ull)\r\n        {\r\n            if (entity == null)\r\n            {\r\n               " +
+                    " throw new ArgumentNullException(\"entity\", \"Remove in DB null entity\");\r\n       " +
+                    "     }\r\n            \r\n            var operation = new Operation(OperationType.Re" +
+                    "move, entity);\r\n            UnitOfWork.AddOp(operation);\r\n        }\r\n\r\n        p" +
+                    "ublic virtual void Remove(IEnumerable<T> entities, IDbTransaction transaction = " +
+                    "null, int? commandTimeout = null)\r\n        {\r\n            if (entities == null)\r" +
+                    "\n            {\r\n                throw new ArgumentNullException(\"entities\", \"Rem" +
+                    "ove in DB null entity\");\r\n            }\r\n\r\n            foreach(var entity in ent" +
+                    "ities)\r\n                Remove(entity, transaction, commandTimeout);\r\n        }\r" +
+                    "\n\r\n        public virtual IEnumerable<T> Get(IRepoQuery query)\r\n        {\r\n     " +
+                    "       var items = Conn.Get<T>(query).ToList();\r\n\r\n            foreach (var item" +
+                    " in items)\r\n            {\r\n                item.DatabaseUnitOfWork = UnitOfWork;" +
+                    "\r\n                item.DatabaseModelStatus = ModelStatus.Retrieved;\r\n           " +
+                    "     UnitOfWork.AddObj(item);\r\n            }\r\n            return items;\r\n       " +
+                    " }\r\n\r\n        public virtual int Count(IRepoQuery query)\r\n        {\r\n           " +
+                    " return Conn.Count(query);\r\n        }\r\n\r\n\t\tpublic string GetWhereClause(IRepoQue" +
+                    "ry query) \r\n\t\t{\r\n\t\t\treturn Conn.GetWhereClause(query);\r\n\t\t}\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

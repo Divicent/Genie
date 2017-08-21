@@ -24,5 +24,10 @@
         /// Name of the field
         /// </summary>
         string FieldName { get; set; }
+
+        /// <summary>
+        /// Additional Comment for the attribute
+        /// </summary>
+        string Comment { get; set;}
     }
 }

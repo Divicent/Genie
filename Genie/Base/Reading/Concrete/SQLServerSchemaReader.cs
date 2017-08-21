@@ -65,17 +65,17 @@ namespace Genie.Base.Reading.Concrete
                  */
 
                 foreach (var relation in relations)
-                foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
-                {
-                    var referencingRelation =
-                        relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
-                    referencingRelation?.ReferenceLists.Add(new ReferenceList
+                    foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
                     {
-                        ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
-                        ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
-                        ReferncedRelationName = relation.Name
-                    });
-                }
+                        var referencingRelation =
+                            relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
+                        referencingRelation?.ReferenceLists.Add(new ReferenceList
+                        {
+                            ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
+                            ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
+                            ReferncedRelationName = relation.Name
+                        });
+                    }
             }
             catch (Exception e)
             {
@@ -88,6 +88,7 @@ namespace Genie.Base.Reading.Concrete
         {
             var databaseSchemaColumns = new List<DatabaseSchemaColumn>();
             var databaseParameters = new List<DatabaseParameter>();
+            var databaseExtendedProperties = new List<ExtendedProperyInfo>();
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -205,15 +206,39 @@ namespace Genie.Base.Reading.Concrete
                         });
                 }
 
+                var commandToGetExtendedProperties = new SqlCommand(
+                    @"SELECT
+	                     s.[name] AS SchemaName
+	                    ,oo.[name] AS ObjectName
+	                    ,col.[name] AS ColumnName
+	                    ,ep.[value] AS Property
+                        FROM sys.all_objects oo 
+                    INNER JOIN sys.extended_properties ep ON ep.major_id = oo.object_id 
+                    LEFT JOIN sys.schemas s on oo.schema_id = s.schema_id
+                    INNER JOIN sys.columns AS col ON ep.major_id = col.object_id AND ep.minor_id = col.column_id
+                    WHERE ep.[value] IS NOT NULL AND ep.[value] <> ''", connection, transaction);
+
+                using (var reader = commandToGetExtendedProperties.ExecuteReader())
+                {
+                    while (reader.HasRows && reader.Read())
+                        databaseExtendedProperties.Add(new ExtendedProperyInfo
+                        {
+                            SchemaName = reader.GetString(0),
+                            ObjectName = reader.GetString(1),
+                            ColumnName = reader.GetString(2),
+                            Property = reader.GetString(3)
+                        });
+                }
+
                 transaction.Commit();
                 connection.Close();
             }
 
-            return Process(databaseSchemaColumns, databaseParameters);
+            return Process(databaseSchemaColumns, databaseParameters, databaseExtendedProperties);
         }
 
         private static DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns,
-            IReadOnlyCollection<DatabaseParameter> parameters)
+            IReadOnlyCollection<DatabaseParameter> parameters, IReadOnlyCollection<ExtendedProperyInfo> extendedProperties)
         {
             if (columns == null || columns.Count < 1)
                 return null;
@@ -272,6 +297,12 @@ namespace Genie.Base.Reading.Concrete
                             table.ForeignKeyAttributes.Add(fkAttribute);
                         }
 
+                        var extendedProperty = extendedProperties.FirstOrDefault(e => e.ObjectName == table.Name && e.ColumnName == attribute.Name);
+                        if (extendedProperty != null)
+                        {
+                            attribute.Comment = extendedProperty.Property;
+                        }
+
                         table.Attributes.Add(attribute);
                         break;
                     case "VIEW":
@@ -294,14 +325,23 @@ namespace Genie.Base.Reading.Concrete
                             databaseSchemaColumn.Nullable);
                         lit = dataType == "string" || dataType.StartsWith("DateTime");
 
-                        view.Attributes.Add(new SimpleAttribute
+                     
+                        var attr = new SimpleAttribute
                         {
                             Name = databaseSchemaColumn.Name,
                             IsLiteralType = lit,
                             FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
                                         databaseSchemaColumn.Name.Substring(1),
                             DataType = dataType
-                        });
+                        };
+
+                        var exproperty = extendedProperties.FirstOrDefault(e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
+                        if (exproperty != null)
+                        {
+                            attr.Comment = exproperty.Property;
+                        }
+
+                        view.Attributes.Add(attr);
                         break;
                 }
             }
@@ -322,7 +362,7 @@ namespace Genie.Base.Reading.Concrete
                     }
 
                     procedure.Parameters.Add(
-                        new ProcedureParameter {DataType = parameter.DataType, Name = parameter.Name});
+                        new ProcedureParameter { DataType = parameter.DataType, Name = parameter.Name });
                 }
 
                 foreach (var storedProcedure in storedProcedures)
@@ -339,7 +379,7 @@ namespace Genie.Base.Reading.Concrete
                 }
             }
 
-            return new DatabaseSchema {Procedures = storedProcedures, Relations = tables, Views = views};
+            return new DatabaseSchema { Procedures = storedProcedures, Relations = tables, Views = views };
         }
 
         private static List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,
@@ -402,10 +442,10 @@ namespace Genie.Base.Reading.Concrete
                                     throw new Exception("Unable to read enum table using specified value type.", e);
                                 }
                                 name = name.Replace(" ", "_");
-                                values.Add(new EnumValue {Name = name, FieldName = name.ToFieldName(), Value = value});
+                                values.Add(new EnumValue { Name = name, FieldName = name.ToFieldName(), Value = value });
                             }
 
-                            enums.Add(new Enum {Name = configurationEnumTable.Table + "Enum", Values = values, Type = type});
+                            enums.Add(new Enum { Name = configurationEnumTable.Table + "Enum", Values = values, Type = type });
                         }
                     }
                 }
@@ -415,26 +455,35 @@ namespace Genie.Base.Reading.Concrete
                 return enums;
             }
         }
+
+        private class DatabaseSchemaColumn
+        {
+            public string Name { get; set; }
+            public string TableFullName { get; set; }
+            public string TableName { get; set; }
+            public string Type { get; set; }
+            public bool Nullable { get; set; }
+            public string DataType { get; set; }
+            public bool IsPrimaryKey { get; set; }
+            public bool IsForeignKey { get; set; }
+            public string ReferencedTableName { get; set; }
+            public string ReferencedColumnName { get; set; }
+        }
+
+        private class DatabaseParameter
+        {
+            public string Procedure { get; set; }
+            public string Name { get; set; }
+            public string DataType { get; set; }
+        }
+
+        private class ExtendedProperyInfo
+        {
+            public string SchemaName { get; set; }
+            public string ObjectName { get; set; }
+            public string ColumnName { get; set; }
+            public string Property { get; set;}
+        }
     }
 
-    internal class DatabaseSchemaColumn
-    {
-        public string Name { get; set; }
-        public string TableFullName { get; set; }
-        public string TableName { get; set; }
-        public string Type { get; set; }
-        public bool Nullable { get; set; }
-        public string DataType { get; set; }
-        public bool IsPrimaryKey { get; set; }
-        public bool IsForeignKey { get; set; }
-        public string ReferencedTableName { get; set; }
-        public string ReferencedColumnName { get; set; }
-    }
-
-    internal class DatabaseParameter
-    {
-        public string Procedure { get; set; }
-        public string Name { get; set; }
-        public string DataType { get; set; }
-    }
 }

@@ -54,6 +54,12 @@ entity.ForeignKeyAttributes){#>
 <#}#>
 
 <#foreach(var atd in entity.Attributes){#>
+
+<# if(!string.IsNullOrWhiteSpace(atd.Comment)) {#>
+		/// <summary>
+		/// <#=atd.Comment#>
+		/// </summary>
+<#}#>
 <#	if(atd.IsKey) {#>
 		[Key]
 <#	}#>
@@ -61,6 +67,10 @@ entity.ForeignKeyAttributes){#>
 <#}#>
 
 <#foreach(var atd in entity.ForeignKeyAttributes){#>
+
+		/// <summary>
+		/// Get <#=atd.ReferencingRelationName#> object from <#=atd.ReferencingNonForeignKeyAttribute.Name#> value.<para />This object will be cache within this instance.
+		/// </summary>
 		public <#=atd.ReferencingRelationName#> Get<#=atd.ReferencingNonForeignKeyAttribute.Name#>(IDbTransaction transaction =null)
         {
             return DatabaseUnitOfWork != null ? <#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj ?? (<#=atd.ReferencingNonForeignKeyAttribute.FieldName#>Obj = DatabaseUnitOfWork.<#=atd.ReferencingRelationName#>Repository.Get().Where.<#=atd.ReferencingTableColumnName#>.EqualsTo(<#=atd.ReferencingNonForeignKeyAttribute.FieldName#><#=atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ?  ".GetValueOrDefault()" : ""#>).Filter().Top(1).Query(transaction).FirstOrDefault()) : null;
@@ -68,6 +78,10 @@ entity.ForeignKeyAttributes){#>
 <#}#>
 
 <#foreach(var atd in entity.ForeignKeyAttributes){#>
+
+		/// <summary>
+		/// Set <#=atd.ReferencingRelationName#> object for <#=atd.ReferencingNonForeignKeyAttribute.Name#> value. <para />This will also change the <#=atd.ReferencingNonForeignKeyAttribute.Name#> value.
+		/// </summary>
 		public void Set<#=atd.ReferencingNonForeignKeyAttribute.Name#>(<#=atd.ReferencingRelationName#> entity)
         {
             if (entity == null)
@@ -87,6 +101,7 @@ entity.ForeignKeyAttributes){#>
 <#}#>
 
 <#foreach(var list in entity.ReferenceLists){#>
+
 		public IReferencedEntityCollection<<#=list.ReferncedRelationName#>> <#=list.ReferncedRelationName.ToPlural()#>WhereThisIs<#=list.ReferencedPropertyName#>(IDbTransaction transaction = null ){  return new ReferencedEntityCollection<<#=list.ReferncedRelationName#>>(DatabaseUnitOfWork.<#=list.ReferncedRelationName#>Repository.Get().Where.<#=list.ReferencedPropertyName#>.EqualsTo(<#=list.ReferencedPropertyOnThisRelation#>).Filter().Query(transaction), (i) => { ((<#=list.ReferncedRelationName#>)i).<#=list.ReferencedPropertyName#> = <#=list.ReferencedPropertyOnThisRelation#>;}, this); }
 <#}#>
         internal override void SetId(object id)

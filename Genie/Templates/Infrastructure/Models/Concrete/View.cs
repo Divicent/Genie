@@ -74,23 +74,44 @@ foreach(var atd in entity.Attributes){
             
             #line default
             #line hidden
+            this.Write("\r\n");
+            
+            #line 15 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
+ if(!string.IsNullOrWhiteSpace(atd.Comment)) {
+            
+            #line default
+            #line hidden
+            this.Write("\t\t/// <summary>\r\n\t\t/// ");
+            
+            #line 17 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(atd.Comment));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\t\t/// </summary>\r\n");
+            
+            #line 19 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
+}
+            
+            #line default
+            #line hidden
             this.Write("\t\tpublic ");
             
-            #line 14 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
+            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.DataType));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 14 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
+            #line 20 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get; set; } \r\n");
             
-            #line 15 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
+            #line 21 "F:\Projects\Genie\Genie\Templates\Infrastructure\Models\Concrete\View.tt"
 }
             
             #line default
