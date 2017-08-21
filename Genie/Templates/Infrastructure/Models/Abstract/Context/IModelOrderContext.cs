@@ -56,37 +56,51 @@ foreach(var atd in _attributes){
             
             #line default
             #line hidden
-            this.Write("\t\t/// <summary>\r\n\t\t/// ");
+            this.Write("\r\n");
             
             #line 13 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
+ if(!string.IsNullOrWhiteSpace(atd.Comment)) {
+            
+            #line default
+            #line hidden
+            this.Write("\t\t/// <summary>\r\n\t\t/// ");
+            
+            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Comment));
             
             #line default
             #line hidden
-            this.Write("\r\n\t\t/// </summary>\r\n\t\tIOrderElement<I");
+            this.Write("\r\n\t\t/// </summary>\r\n");
             
-            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
+            #line 17 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
+}
+            
+            #line default
+            #line hidden
+            this.Write("\t\tIOrderElement<I");
+            
+            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("OrderContext,I");
             
-            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
+            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
+            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get; }\r\n");
             
-            #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
+            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelOrderContext.tt"
 }
             
             #line default

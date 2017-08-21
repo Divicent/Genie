@@ -9,9 +9,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Co
 	public interface I<#=_name#>FilterContext : IFilterContext
 	{
 <#foreach(var atd in _attributes){#>
+
+<# if(!string.IsNullOrWhiteSpace(atd.Comment)) {#>
 		/// <summary>
 		/// <#=atd.Comment#>
 		/// </summary>
+<#}#>
 <#if(atd.DataType == "string"){#>
 	    IStringFilter<I<#=_name#>FilterContext,I<#=_name#>QueryContext> <#=atd.Name#> { get; }
 <#} else if(atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" || atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" || atd.DataType == "long" || atd.DataType == "long?" ){#>

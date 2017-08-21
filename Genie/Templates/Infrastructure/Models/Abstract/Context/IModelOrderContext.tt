@@ -9,9 +9,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Co
     public interface I<#=_name#>OrderContext: IOrderContext
     {
 <#foreach(var atd in _attributes){#>
+
+<# if(!string.IsNullOrWhiteSpace(atd.Comment)) {#>
 		/// <summary>
 		/// <#=atd.Comment#>
 		/// </summary>
+<#}#>
 		IOrderElement<I<#=_name#>OrderContext,I<#=_name#>QueryContext> <#=atd.Name#> { get; }
 <#}#>
     }

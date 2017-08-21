@@ -56,134 +56,147 @@ foreach(var atd in _attributes){
             
             #line default
             #line hidden
-            this.Write("\t\t/// <summary>\r\n\t\t/// ");
+            this.Write("\r\n");
             
             #line 13 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+ if(!string.IsNullOrWhiteSpace(atd.Comment)) {
+            
+            #line default
+            #line hidden
+            this.Write("\t\t/// <summary>\r\n\t\t/// ");
+            
+            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Comment));
             
             #line default
             #line hidden
             this.Write("\r\n\t\t/// </summary>\r\n");
             
-            #line 15 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 17 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+}
+            
+            #line default
+            #line hidden
+            
+            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
 if(atd.DataType == "string"){
             
             #line default
             #line hidden
             this.Write("\t    IStringFilter<I");
             
-            #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("FilterContext,I");
             
-            #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 16 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get; }\r\n");
             
-            #line 17 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
 } else if(atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" || atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" || atd.DataType == "long" || atd.DataType == "long?" ){
             
             #line default
             #line hidden
             this.Write("\t\tINumberFilter<I");
             
-            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("FilterContext,I");
             
-            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 18 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get; }\r\n");
             
-            #line 19 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
 }else if(atd.DataType == "DateTime" || atd.DataType == "DateTime?"){
             
             #line default
             #line hidden
             this.Write("\t    IDateFilter<I");
             
-            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("FilterContext,I");
             
-            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 20 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get; }\r\n");
             
-            #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 24 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
 }else if(atd.DataType == "bool" || atd.DataType == "bool?"){
             
             #line default
             #line hidden
             this.Write("\t    IBoolFilter<I");
             
-            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 25 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("FilterContext,I");
             
-            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 25 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
             this.Write("QueryContext> ");
             
-            #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 25 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(atd.Name));
             
             #line default
             #line hidden
             this.Write(" { get; }\r\n");
             
-            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 26 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
 }
             
             #line default
             #line hidden
             
-            #line 24 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
+            #line 27 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelFilterContext.tt"
 }
             
             #line default
