@@ -49,5 +49,7 @@ namespace Genie.Base.Configuration.Concrete
         }
 
         public string ProjectFile { get; set; }
+
+        public List<string> IgnoreFiles { get; set; }
     }
 }

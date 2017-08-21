@@ -14,6 +14,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
         IExpressionJoin<T, TQ> IsEmpty();
         IExpressionJoin<T, TQ> IsNotEmpty();
         IExpressionJoin<T, TQ> IsNull();
+		IExpressionJoin<T, TQ> IsNull(bool isNull);
         IExpressionJoin<T, TQ> IsNotNull();
         IExpressionJoin<T, TQ> In(params string[] items);
         IExpressionJoin<T, TQ> NotIn(params string[] items);

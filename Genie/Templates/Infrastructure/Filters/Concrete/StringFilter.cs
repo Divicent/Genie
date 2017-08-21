@@ -74,15 +74,18 @@ namespace Genie.Templates.Infrastructure.Filters.Concrete
                     "nt.Add(QueryMaker.IsNull(_propertyName));\r\n            return new ExpressionJoin" +
                     "<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public IExpressionJoin<T, TQ> IsNotN" +
                     "ull()\r\n        {\r\n            _parent.Add(QueryMaker.IsNotNull(_propertyName));\r" +
-                    "\n            return new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n      " +
-                    "  public IExpressionJoin<T, TQ> In(params string[] items)\r\n        {\r\n          " +
-                    "  _parent.Add(QueryMaker.In(_propertyName, items.Select(Prepare).Cast<object>()." +
-                    "ToArray(), true));\r\n            return new ExpressionJoin<T, TQ>(_parent, _q);\r\n" +
-                    "        }\r\n\r\n        public IExpressionJoin<T, TQ> NotIn(params string[] items)\r" +
-                    "\n        {\r\n            _parent.Add(QueryMaker.NotIn(_propertyName, items.Select" +
-                    "(Prepare).Cast<object>().ToArray(), true));\r\n            return new ExpressionJo" +
-                    "in<T, TQ>(_parent, _q);\r\n        }\r\n\r\n\t\tprivate static string Prepare(string str" +
-                    ") \r\n\t\t{\r\n\t\t\treturn str.Replace(\"\'\", \"\'\'\");\r\n\t\t}\r\n    } \r\n}\r\n");
+                    "\n            return new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n\t\tpubl" +
+                    "ic IExpressionJoin<T, TQ> IsNull(bool isNull)\r\n        {\r\n\t\t\t_parent.Add(isNull " +
+                    "? QueryMaker.IsNull(_propertyName) : QueryMaker.IsNotNull(_propertyName));\r\n\t\t\tr" +
+                    "eturn new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n        public IExpr" +
+                    "essionJoin<T, TQ> In(params string[] items)\r\n        {\r\n            _parent.Add(" +
+                    "QueryMaker.In(_propertyName, items.Select(Prepare).Cast<object>().ToArray(), tru" +
+                    "e));\r\n            return new ExpressionJoin<T, TQ>(_parent, _q);\r\n        }\r\n\r\n " +
+                    "       public IExpressionJoin<T, TQ> NotIn(params string[] items)\r\n        {\r\n  " +
+                    "          _parent.Add(QueryMaker.NotIn(_propertyName, items.Select(Prepare).Cast" +
+                    "<object>().ToArray(), true));\r\n            return new ExpressionJoin<T, TQ>(_par" +
+                    "ent, _q);\r\n        }\r\n\r\n\t\tprivate static string Prepare(string str) \r\n\t\t{\r\n\t\t\tre" +
+                    "turn str.Replace(\"\'\", \"\'\'\");\r\n\t\t}\r\n    } \r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

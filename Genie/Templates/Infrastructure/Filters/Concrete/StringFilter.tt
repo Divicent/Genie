@@ -84,6 +84,12 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Concrete
             return new ExpressionJoin<T, TQ>(_parent, _q);
         }
 
+		public IExpressionJoin<T, TQ> IsNull(bool isNull)
+        {
+			_parent.Add(isNull ? QueryMaker.IsNull(_propertyName) : QueryMaker.IsNotNull(_propertyName));
+			return new ExpressionJoin<T, TQ>(_parent, _q);
+        }
+
         public IExpressionJoin<T, TQ> In(params string[] items)
         {
             _parent.Add(QueryMaker.In(_propertyName, items.Select(Prepare).Cast<object>().ToArray(), true));

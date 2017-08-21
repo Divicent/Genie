@@ -9,6 +9,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Filters.Abstract
 		IExpressionJoin<T, TQ> IsTrue();
 		IExpressionJoin<T, TQ> IsNull();
 		IExpressionJoin<T, TQ> IsNotNull();
+		IExpressionJoin<T, TQ> IsNull(bool isNull);
 	}
 }
 
