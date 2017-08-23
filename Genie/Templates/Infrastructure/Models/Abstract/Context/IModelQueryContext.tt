@@ -18,6 +18,7 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure.Models.Abstract.Co
 		I<#=_name#>FilterContext Where { get; }
 		I<#=_name#>OrderContext OrderBy { get; }
 	    IEnumerable<Concrete.<#=_name#>> Query(IDbTransaction transaction = null);
+		Concrete.<#=_name#> FirstOrDefault(IDbTransaction transaction = null);
 		I<#=_name#>QueryContext Filter(IEnumerable<IPropertyFilter> filters);
 		I<#=_name#>QueryContext SortBy(Tuple<string, bool> sortInfo);
 	    int Count(IDbTransaction transaction = null);

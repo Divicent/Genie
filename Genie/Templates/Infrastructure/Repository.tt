@@ -76,12 +76,18 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             var items = Conn.Get<T>(query).ToList();
 
             foreach (var item in items)
-            {
-                item.DatabaseUnitOfWork = UnitOfWork;
-                item.DatabaseModelStatus = ModelStatus.Retrieved;
-                UnitOfWork.AddObj(item);
-            }
-            return items;
+				AddItemToUnit(item);
+            
+			return items;
+        }
+
+		public virtual T GetFirstOrDefault(IRepoQuery query)
+        {
+            var item = Conn.Get<T>(query).FirstOrDefault();
+			if(item == null)
+				return null;
+			AddItemToUnit(item);
+			return item;
         }
 
         public virtual int Count(IRepoQuery query)
@@ -92,6 +98,13 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
 		public string GetWhereClause(IRepoQuery query) 
 		{
 			return Conn.GetWhereClause(query);
+		}
+
+		private void AddItemToUnit(T item) 
+		{
+			item.DatabaseUnitOfWork = UnitOfWork;
+            item.DatabaseModelStatus = ModelStatus.Retrieved;
+            UnitOfWork.AddObj(item);
 		}
     }
 }

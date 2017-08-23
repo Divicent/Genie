@@ -98,16 +98,23 @@ namespace Genie.Templates.Infrastructure.Models.Abstract.Context
             
             #line default
             #line hidden
-            this.Write("> Query(IDbTransaction transaction = null);\r\n\t\tI");
+            this.Write("> Query(IDbTransaction transaction = null);\r\n\t\tConcrete.");
             
             #line 21 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
             #line hidden
-            this.Write("QueryContext Filter(IEnumerable<IPropertyFilter> filters);\r\n\t\tI");
+            this.Write(" FirstOrDefault(IDbTransaction transaction = null);\r\n\t\tI");
             
             #line 22 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelQueryContext.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_name));
+            
+            #line default
+            #line hidden
+            this.Write("QueryContext Filter(IEnumerable<IPropertyFilter> filters);\r\n\t\tI");
+            
+            #line 23 "D:\Projects\Genie\Genie\Templates\Infrastructure\Models\Abstract\Context\IModelQueryContext.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_name));
             
             #line default
