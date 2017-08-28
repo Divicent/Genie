@@ -21,6 +21,11 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
             Conn = Context.Connection;
         }
 
+	    public virtual T GetFirstOrDefault(IRepoQuery query)
+        {
+            return Conn.Get<T>(query).FirstOrDefault();
+        }
+
         public virtual IEnumerable<T> Get(IRepoQuery query)
         {
             return Conn.Get<T>(query).ToList();

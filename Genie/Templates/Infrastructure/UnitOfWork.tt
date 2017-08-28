@@ -75,6 +75,16 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
                     var toUpdate = _operations.Where(o => o.Type == OperationType.Update).ToList();
 
                     var connection = Context.Connection;
+
+					if (toDelete.Count > 0)
+					{
+                    	foreach (var operation in toDelete)
+						{
+                            var deleted = connection.Delete(operation.Object);
+                            if (deleted) { operation.Object.DatabaseModelStatus = ModelStatus.Deleted; }
+                        }
+					}
+
 					if (toAdd.Count > 0)
 					{
                         foreach (var operation in toAdd)
@@ -100,16 +110,8 @@ namespace <#=GenerationContext.BaseNamespace#>.Infrastructure
                             operation.Object.UpdatedProperties.Clear();
                         }
 					}
-
-					if (toDelete.Count > 0)
-					{
-                    	foreach (var operation in toDelete)
-						{
-                            var deleted = connection.Delete(operation.Object);
-                            if (deleted) { operation.Object.DatabaseModelStatus = ModelStatus.Deleted; }
-                        }
-					}
-                    _operations.Clear();
+                    
+					_operations.Clear();
                 }
             }
             catch (Exception e)
