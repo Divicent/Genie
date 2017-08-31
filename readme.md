@@ -26,7 +26,17 @@ It should be something like this
     "baseNamespace": "...",
     "ProjectFile": "...",
     "noDapper": false,
-    "core": false
+    "core": false,
+    "enums": [
+        {
+            "table": "",
+            "valueColumn": "",
+            "nameColumn": "",
+            "type": ""
+        }
+        ,
+        ...
+    ]
 }
 ```
 
@@ -56,6 +66,54 @@ This uses .Net cores inbuilt DI. the DapperContext should be injected to use con
 ### projectFile (optional)
 
 The relative path to the project file from project path. this is an optional property. if this is provided the generator will process the project file.
+
+
+### enums (optional)
+
+List of table details that can be used as enums. if a table has predefined set of rows which need to be  accessed often,this table can be used as an enum table.
+
+example :
+
+the OrderType table (ID, Name) has 3 rows and these rows do not change. we can use this table as an enum table and can be defined in the configuration file as 
+```
+{
+    "table": "OrderType",
+    "valueColumn": "ID",
+    "nameColumn": "Name",
+    "type": "int"
+}
+```
+* type can be string / int / bool or double
+
+this will result a class which has static members for each row and and those members can be implicitly converted to the specified type.
+
+the resulting class will be  something like this.
+
+```CS
+public sealed class OrderTypeEnum
+{
+    private readonly int _value;
+    private OrderTypeEnum(int value)
+    {
+        _value = value;
+    }
+
+    public static implicit operator int(OrderTypeEnum @enum)
+    {
+        return @enum._value;
+    }
+
+    private static OrderTypeEnum _shipped;
+    private static OrderTypeEnum _preShipped;
+    private static OrderTypeEnum _pending;
+
+    public static OrderTypeEnum Shipped => _shipped ?? ( _shipped = new OrderTypeEnum(1));
+    
+    public static OrderTypeEnum PreShipped => _preShipped ?? ( _preShipped = new OrderTypeEnum(2));
+
+    public static OrderTypeEnum Pending => _pending ?? ( _pending = new OrderTypeEnum(3));
+}
+```
 
 
 ## The Process Output
