@@ -33,9 +33,7 @@ It should be something like this
             "valueColumn": "",
             "nameColumn": "",
             "type": ""
-        }
-        ,
-        ...
+        },
     ]
 }
 ```
