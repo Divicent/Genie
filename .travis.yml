@@ -31,4 +31,5 @@ deploy:
     - genieCLI_win-x64.zip
   skip_cleanup: true
   on:
-    tags: false
+    tags: true
+    all_branches: true
