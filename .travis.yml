@@ -18,6 +18,8 @@ script:
 - "./travis-build.sh"
 # after_success:
 # - "./travis-aftersuccess.sh"
+before_deploy:
+  - "./travis-beforedeploy.sh"
 notifications:
   email:
     on_success: never
@@ -31,11 +33,6 @@ deploy:
     - /home/travis/build/rusith/Genie/genieCLI_linux-x64-${TRAVIS_TAG}.zip
     - /home/travis/build/rusith/Genie/genieCLI_osx-x64-${TRAVIS_TAG}.zip
   skip_cleanup: true
-  before_deploy:
-  -  echo "${PWD}"
-  - zip -r genieCLI_win-x64-${TRAVIS_TAG}.zip /home/travis/build/rusith/Genie/GenieCLI/bin/release/netcoreapp1.1/win10-x64/publish
-  - zip -r genieCLI_linux-x64-${TRAVIS_TAG}.zip /home/travis/build/rusith/Genie/GenieCLI/bin/release/netcoreapp1.1/ubuntu.16.10-x64/publish
-  - zip -r genieCLI_osx-x64-${TRAVIS_TAG}.zip /home/travis/build/rusith/Genie/GenieCLI/bin/release/netcoreapp1.1/osx.10.11-x64/publish
   on:
     repo: rusith/Genie
     branch: core
