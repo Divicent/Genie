@@ -31,8 +31,7 @@ deploy:
     - genieCLI_win-x64.zip
   skip_cleanup: true
   on:
-    repo: rusith/genie
-    tags: true
+    tags: false
   branches:
     only:
       - core
