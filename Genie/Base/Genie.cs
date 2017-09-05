@@ -28,10 +28,10 @@ namespace Genie.Base
         /// <summary>
         /// Generates the Data Access Layer using given configuration file
         /// </summary>
-        /// <param name="pathToConfiguraionJsonFile">the full readable path to the configuration JSON file.</param>
+        /// <param name="pathToConfigurationJsonFile">the full readable path to the configuration JSON file.</param>
         /// <param name="output">Just implement your own one and pass it here or leave it null if you don't need a detailed output</param>
         /// <returns>the result of the generation process</returns>
-        public static GenieGenerationResult Generate(string pathToConfiguraionJsonFile, IProcessOutput output = null)
+        public static GenieGenerationResult Generate(string pathToConfigurationJsonFile, IProcessOutput output = null)
         {
             if(output == null)
                 output = new NonFunctioningProcessOutput();
@@ -45,8 +45,8 @@ namespace Genie.Base
             {
                 output.WriteInformation("Checking configuration file.");
 
-                if(!File.Exists(pathToConfiguraionJsonFile))
-                    throw new Exception($"The configuration file ({pathToConfiguraionJsonFile}) could not be found (File.Exists returned false).");
+                if(!File.Exists(pathToConfigurationJsonFile))
+                    throw new Exception($"The configuration file ({pathToConfigurationJsonFile}) could not be found (File.Exists returned false).");
 
                 output.WriteSuccess("Configuration file found, ready to read.");
 
@@ -54,7 +54,7 @@ namespace Genie.Base
 
                 try
                 {
-                    config = JsonConvert.DeserializeObject<GenieConfiguration>(File.ReadAllText(pathToConfiguraionJsonFile));
+                    config = JsonConvert.DeserializeObject<GenieConfiguration>(File.ReadAllText(pathToConfigurationJsonFile));
                 }
                 catch (Exception exception)
                 {
@@ -96,7 +96,7 @@ namespace Genie.Base
                 IFileWriter writer = new DalWriter();
                 writer.Write(contentFiles, config.ProjectPath, output);
 
-                if (!string.IsNullOrWhiteSpace(config.ProjectFile))
+                if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
                 {
                     IProjectItemManager projectItemManager = new CSharpProjectItemManager();
                     projectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectFile), contentFiles.Select(c => c.Path).ToList(), output);
