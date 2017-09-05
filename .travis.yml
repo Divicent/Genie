@@ -12,9 +12,10 @@ dotnet: 1.0.1
 branches:
   only:
     - core
+before_script:
+  - chmod a+x ./travis-build.sh
 script:
-  - dotnet restore
-  - dotnet build
+  - ./travis-build.sh
 notifications:
   email:
     on_success: never
