@@ -20,3 +20,13 @@ notifications:
   email:
     on_success: never
     on_failure: always
+
+deploy:
+  provider: releases
+  api_key:
+      secure: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRv3J4UftWDXxrantj0RK1sY7Ks9us91aCvpQLHYzNX6rrVMhDx1Kjp8JQfss8FlOkAg0A/PYZOhsho+2seE7SrWTwukoAp+moX4FH58msk6bJbeC4f6p6wlEYomRHqcKTY4oIBdblPZefuyH01WoWLVglK9qVtNYxgtMv4nZHLgRy+X/E92FzTiUEdHgwvBPsJsklaYuOwwg4s1WeKkZRo+ZSeS16pYiNkq8gywNeByngd2S6B2du2O4DyBf0F95BK/0e4W12rvtl3lpMaFEXa4Rf0kcFi8sMub4CWowomwocOw3AqvX+LgJiyYpLZxf8zpD35OZuw1N3jfjB6BUj srlso@DESKTOP-8CFSBBB
+  file: 
+      - genieCLI.zip
+  skip_cleanup: true
+  on:
+      tags: true
