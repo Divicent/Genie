@@ -1,12 +1,10 @@
 dist: trusty
 sudo: required
 mono: none
-dotnet: 1.0.4
+dotnet: 1.0.1
 branches:
   only:
     - core
-before_script:
-  - chmod a+x ./travis-build.sh
 script:
   - dotnet restore
   - dotnet build
