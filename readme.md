@@ -6,7 +6,13 @@
 
 ### Data Access Layer Generator
 
-Genie is a .Net library  that can generate a data access layer for any .Net or .Net Core system.
+Genie is a cross platform .Net library  that can generate a data access layer for any .Net or .Net Core system.
+
+
+## Getting Started
+
+Download latest release or build the project
+run GenieCLI from the genieSetting file's location 
 
 ## How It Works
 
@@ -109,39 +115,6 @@ public sealed class OrderTypeEnum
     public static OrderTypeEnum PreShipped => _preShipped ?? ( _preShipped = new OrderTypeEnum(2));
 
     public static OrderTypeEnum Pending => _pending ?? ( _pending = new OrderTypeEnum(3));
-}
-```
-
-
-## The Process Output
-
-you can pass an implemented process output to the Generate method or pass null to ignore output .
-
-An example process output for a console application:
-
-```CS
-public class ProcessOutput : IProcessOutput
-{
-    public void WriteInformation(string content)
-    {
-        Console.WriteLine(":> " + content);
-    }
-
-    public void WriteSuccess(string content)
-    {
-        Console.Write(":> ");
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine(content);
-        Console.ResetColor();
-    }
-
-    public void WriteWarning(string content)
-    {
-        Console.Write(":> ");
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(content);
-        Console.ResetColor();
-    }
 }
 ```
 
