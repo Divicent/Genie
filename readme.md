@@ -3,16 +3,18 @@
 </h1>
 
 [![Build Status](https://travis-ci.org/rusith/Genie.svg?branch=core)](https://travis-ci.org/rusith/Genie)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f502047d1b9043feaf8ec4463574bf51)](https://www.codacy.com/app/rusith/Genie?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rusith/Genie&amp;utm_campaign=Badge_Grade)
 
 ### Data Access Layer Generator
 
-Genie is a cross platform .Net library  that can generate a data access layer for any .Net or .Net Core system.
+Genie is a cross platform .Net library that can generate a data access layer for any .Net or .Net Core system using a relational database.
 
+Genie is written in C# for .Net core framework
 
 ## Getting Started
 
-Download latest release or build the project
-run GenieCLI from the genieSetting file's location 
+* Download latest release or build the project
+* run GenieCLI executable from the genieSetting.json file's location 
 
 ## How It Works
 
