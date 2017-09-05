@@ -8,7 +8,7 @@
         /// <summary>
         /// Referenced Relation Name
         /// </summary>
-        string ReferncedRelationName { get; set; }
+        string ReferencedRelationName { get; set; }
 
         /// <summary>
         /// Referenced property name

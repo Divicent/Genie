@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.ProjectFileManaging.Abstract;
-using Microsoft.Build.Evaluation;
 
 namespace Genie.Base.ProjectFileManaging.Concrete
 {
@@ -14,20 +13,20 @@ namespace Genie.Base.ProjectFileManaging.Concrete
             output.WriteInformation("Processing project file.");
             try
             {
-                var projectCollection = new ProjectCollection();
-                var project = projectCollection.LoadProject(projectFilePath);
+                // var projectCollection = new ProjectCollection();
+                // var project = projectCollection.LoadProject(projectFilePath);
 
-                foreach (var projectItem in project.GetItems("Compile").ToList())
-                {
-                    if (projectItem.EvaluatedInclude.StartsWith("Dapper") || projectItem.EvaluatedInclude.StartsWith("Infrastructure"))
-                    {
-                        project.RemoveItem(projectItem);
-                    }
-                }
-                foreach (var file in files)
-                    project.AddItem("Compile", file);
+                // foreach (var projectItem in project.GetItems("Compile").ToList())
+                // {
+                //     if (projectItem.EvaluatedInclude.StartsWith("Dapper") || projectItem.EvaluatedInclude.StartsWith("Infrastructure"))
+                //     {
+                //         project.RemoveItem(projectItem);
+                //     }
+                // }
+                // foreach (var file in files)
+                //     project.AddItem("Compile", file);
 
-                project.Save();
+                // project.Save();
             }
             catch (Exception e)
             {

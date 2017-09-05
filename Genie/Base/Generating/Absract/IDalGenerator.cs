@@ -18,6 +18,6 @@ namespace Genie.Base.Generating.Absract
         /// <param name="configuration">Configuration to use</param>
         /// <param name="output">Process output</param>
         /// <returns>Collection of file contents</returns>
-        List<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration, IProcessOutput output);
+        IEnumerable<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration, IProcessOutput output);
     }
 }

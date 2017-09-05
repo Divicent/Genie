@@ -73,7 +73,7 @@ namespace Genie.Base.Reading.Concrete
                         {
                             ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
                             ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
-                            ReferncedRelationName = relation.Name
+                            ReferencedRelationName = relation.Name
                         });
                     }
             }

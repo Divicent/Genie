@@ -88,7 +88,7 @@ namespace Genie.Base
                 var schema = schemaReader.Read(config, output);
 
                 IDalGenerator dalGenerator = new DalGenerator();
-                var contentFiles = dalGenerator.Generate(schema, config, output);
+                var contentFiles = dalGenerator.Generate(schema, config, output).ToList();
 
                 IObstacleManager obstacleManager = new ObstacleManager();
                 obstacleManager.Clear(config.ProjectPath, output);
