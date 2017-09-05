@@ -25,7 +25,8 @@ deploy:
   provider: releases
   api_key:
     secure: lF3LaVODsl1ZIZki5/zwXks4NNstMBmoTC9DAqQDjN9I00Si83Fl1bjlrVmylIW194df0tAGxgwAFtOpi1DQDfxcMlhWsKbwWLeipIt3pPC+8THhZ106oNbWzhGFDb9MRjM/njOv8Qh/f7d8D6/0uuwcPTS9qPVECqeaKtF7faT/5PxnaGXDSowPnaGgzi37ETCqpQH6K0ZbWcSftWeI9kdaBQQgSM4Lb3fuRipZy+yy9woZymxp+YFdZRfpjpIZ8ODzU9mjajt0LH9FCEUnODB828nV3qt20g5NqnUiUer/BWP0bzJY4VhQtEKyIT7eZGAWpc+QzO70fQWmagVzKF0XshNpdi0e7d9Onvq+jM46PYhgoX05lCSjaxjt5pke/A8hWdk9DEn9QhKK09NcaH6idav/l09qPfDNShkT6gPkgCR5d1R8mCvN/E5jeh+i3BeqRckuGg9S42IXJ2gcR9VI8OsGI18IsAd+kCiz/uaAFQ5ft+5reZMCrhcA62EoXCFoSV9WArbKEArgmszzikJ81W5LmctwAu6J821WeiRzVSylaCMMMZli27Z79puC03ICa3zO8ew4sJuSmu0G8uxEXrMgh3Yuo1PnouTGFMAlPlIU0+5l3wcia4Gk21p5Gsf96pFhLOIduSM6gGttaTCSH7HQPKySItP4cJaJmQY=
-  file: genieCLI_win-x64.zip
+  file: ./genieCLI_win-x64.zip
+  skip_cleanup: true
   on:
     repo: rusith/Genie
     branch: core
