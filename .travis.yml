@@ -15,8 +15,7 @@ before_script:
 script:
 - "./travis-build.sh"
 after_success:
-- dotnet publish -c release -r win10-x64
-- zip -r genieCLI_win-x64.zip GenieCLI/bin/Release/netcoreapp1.1/win10-x64/publish
+- "./travis-aftersuccess.sh"
 notifications:
   email:
     on_success: never
