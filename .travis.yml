@@ -12,11 +12,12 @@ mono: none
 dotnet: 1.0.1
 before_script:
 - chmod a+x ./travis-build.sh
-- chmod a+x ./travis-aftersuccess.sh
+#- chmod a+x ./travis-aftersuccess.sh
+- chmod a+x ./travis-beforedeploy.sh
 script:
 - "./travis-build.sh"
-after_success:
-- "./travis-aftersuccess.sh"
+# after_success:
+# - "./travis-aftersuccess.sh"
 notifications:
   email:
     on_success: never
@@ -30,6 +31,8 @@ deploy:
     - /home/travis/build/rusith/Genie/genieCLI_linux-x64-${TRAVIS_TAG}.zip
     - /home/travis/build/rusith/Genie/genieCLI_osx-x64-${TRAVIS_TAG}.zip
   skip_cleanup: true
+  before_deploy:
+  - "./travis-beforedeploy.sh"
   on:
     repo: rusith/Genie
     branch: core
