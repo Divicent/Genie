@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-dotnet restore && dotnet build
+sudo dotnet restore && sudo dotnet build
