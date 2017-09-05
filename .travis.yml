@@ -1,8 +1,9 @@
 addons:
   apt:
     sources:
-    - sourceline: 'deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ trusty main'
-      key_url: 'https://apt-mo.trafficmanager.net/keys/microsoft.asc'
+    - sourceline: deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/
+        trusty main
+      key_url: https://apt-mo.trafficmanager.net/keys/microsoft.asc
     packages:
     - dotnet-dev-1.0.1
 dist: trusty
@@ -10,12 +11,12 @@ sudo: required
 mono: none
 dotnet: 1.0.1
 before_script:
-  - chmod a+x ./travis-build.sh
+- chmod a+x ./travis-build.sh
 script:
-  - ./travis-build.sh
+- "./travis-build.sh"
 after_success:
-  - dotnet publish -c release -r win10-x64
-  - zip -r genieCLI_win-x64.zip ./GenieCLI/bin/Release/netcoreapp1.1/win10-x64/publish
+- dotnet publish -c release -r win10-x64
+- zip -r genieCLI_win-x64.zip ./GenieCLI/bin/Release/netcoreapp1.1/win10-x64/publish
 notifications:
   email:
     on_success: never
@@ -23,10 +24,8 @@ notifications:
 deploy:
   provider: releases
   api_key:
-    secure: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRv3J4UftWDXxrantj0RK1sY7Ks9us91aCvpQLHYzNX6rrVMhDx1Kjp8JQfss8FlOkAg0A/PYZOhsho+2seE7SrWTwukoAp+moX4FH58msk6bJbeC4f6p6wlEYomRHqcKTY4oIBdblPZefuyH01WoWLVglK9qVtNYxgtMv4nZHLgRy+X/E92FzTiUEdHgwvBPsJsklaYuOwwg4s1WeKkZRo+ZSeS16pYiNkq8gywNeByngd2S6B2du2O4DyBf0F95BK/0e4W12rvtl3lpMaFEXa4Rf0kcFi8sMub4CWowomwocOw3AqvX+LgJiyYpLZxf8zpD35OZuw1N3jfjB6BUj srlso@DESKTOP-8CFSBBB
-  file: 
-    - genieCLI_win-x64.zip
-  skip_cleanup: true
+    secure: lF3LaVODsl1ZIZki5/zwXks4NNstMBmoTC9DAqQDjN9I00Si83Fl1bjlrVmylIW194df0tAGxgwAFtOpi1DQDfxcMlhWsKbwWLeipIt3pPC+8THhZ106oNbWzhGFDb9MRjM/njOv8Qh/f7d8D6/0uuwcPTS9qPVECqeaKtF7faT/5PxnaGXDSowPnaGgzi37ETCqpQH6K0ZbWcSftWeI9kdaBQQgSM4Lb3fuRipZy+yy9woZymxp+YFdZRfpjpIZ8ODzU9mjajt0LH9FCEUnODB828nV3qt20g5NqnUiUer/BWP0bzJY4VhQtEKyIT7eZGAWpc+QzO70fQWmagVzKF0XshNpdi0e7d9Onvq+jM46PYhgoX05lCSjaxjt5pke/A8hWdk9DEn9QhKK09NcaH6idav/l09qPfDNShkT6gPkgCR5d1R8mCvN/E5jeh+i3BeqRckuGg9S42IXJ2gcR9VI8OsGI18IsAd+kCiz/uaAFQ5ft+5reZMCrhcA62EoXCFoSV9WArbKEArgmszzikJ81W5LmctwAu6J821WeiRzVSylaCMMMZli27Z79puC03ICa3zO8ew4sJuSmu0G8uxEXrMgh3Yuo1PnouTGFMAlPlIU0+5l3wcia4Gk21p5Gsf96pFhLOIduSM6gGttaTCSH7HQPKySItP4cJaJmQY=
+  file: genieCLI_win-x64.zip
   on:
-    tags: true
-    all_branches: true
+    repo: rusith/Genie
+    branch: core
