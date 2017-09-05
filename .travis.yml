@@ -28,6 +28,7 @@ deploy:
   file: 
     - /home/travis/build/rusith/Genie/genieCLI_win-x64-${TRAVIS_TAG}.zip
     - /home/travis/build/rusith/Genie/genieCLI_linux-x64-${TRAVIS_TAG}.zip
+    - /home/travis/build/rusith/Genie/genieCLI_osx-x64-${TRAVIS_TAG}.zip
   skip_cleanup: true
   on:
     repo: rusith/Genie
