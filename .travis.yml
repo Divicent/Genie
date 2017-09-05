@@ -1,2 +1,7 @@
 language: csharp
-solution: Genie.sln
+dist: trusty
+sudo: required
+mono: none
+dotnet: 1.0.1
+script:
+  - ./GenieCLI/build.sh --quiet verify
