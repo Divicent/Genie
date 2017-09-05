@@ -29,3 +29,4 @@ deploy:
   on:
     repo: rusith/Genie
     branch: core
+    tags: true
