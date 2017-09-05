@@ -3,11 +3,10 @@
 </h1>
 
 [![Build Status](https://travis-ci.org/rusith/Genie.svg?branch=develop)](https://travis-ci.org/rusith/Genie)
-<a href="https://gitlab.com/rusith/Generator"><h5>CLI Generator Implementation</h5></a>
 
 ### Data Access Layer Generator
 
-Genie is a .Net library that can generate a data access layer for any system.
+Genie is a .Net library  that can generate a data access layer for any .Net or .Net Core system.
 
 ## How It Works
 
