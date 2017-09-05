@@ -12,6 +12,7 @@ mono: none
 dotnet: 1.0.1
 before_script:
 - chmod a+x ./travis-build.sh
+- chmod a+x ./travis-aftersuccess.sh
 script:
 - "./travis-build.sh"
 after_success:
