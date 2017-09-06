@@ -16,7 +16,7 @@ before_script:
 script:
 - "./travis-build.sh"
 before_deploy:
-  - "./travis-beforedeploy.sh"
+- "./travis-beforedeploy.sh"
 notifications:
   email:
     on_success: never
@@ -34,3 +34,4 @@ deploy:
     repo: rusith/Genie
     branch: core
     tags: true
+
