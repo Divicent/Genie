@@ -1,5 +1,5 @@
 <h1>
-<img src="https://raw.githubusercontent.com/rusith/genie/develop/icon/genie.png" alt="Icon" style="width: 200px;"/> Genie
+<img src="https://raw.githubusercontent.com/rusith/genie/core/icon/genie.png" alt="Icon" style="width: 200px;"/> Genie
 </h1>
 
 [![Build Status](https://travis-ci.org/rusith/Genie.svg?branch=core)](https://travis-ci.org/rusith/Genie)
