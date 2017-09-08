@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Genie.Base.Configuration.Abstract;
 using Genie.Base.Configuration.Concrete;
+using Genie.Base.Exceptions;
 using Genie.Base.Generating.Absract;
 using Genie.Base.Generating.Concrete;
 using Genie.Base.ObstacleManaging.Abstract;
@@ -46,7 +47,7 @@ namespace Genie.Base
                 output.WriteInformation("Checking configuration file.");
 
                 if(!File.Exists(pathToConfigurationJsonFile))
-                    throw new Exception($"The configuration file ({pathToConfigurationJsonFile}) could not be found (File.Exists returned false).");
+                    throw new GenieException($"The configuration file ({pathToConfigurationJsonFile}) could not be found (File.Exists returned false).");
 
                 output.WriteSuccess("Configuration file found, ready to read.");
 
@@ -58,7 +59,7 @@ namespace Genie.Base
                 }
                 catch (Exception exception)
                 {
-                    throw new Exception($"Unable to deserialize the configuration file ({exception.Message}), the configuration file may have syntax errors.");
+                    throw new GenieException($"Unable to deserialize the configuration file ({exception.Message}), the configuration file may have syntax errors.");
                 }
 
                 output.WriteSuccess("Successfully Deserialized the configuration file.");

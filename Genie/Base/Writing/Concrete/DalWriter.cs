@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Genie.Base.Exceptions;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Writing.Abstract;
 using Genie.Models.Abstract;
@@ -34,7 +35,7 @@ namespace Genie.Base.Writing.Concrete
             }
             catch (Exception e)
             {
-                throw new Exception("Unable to write files to the disc", e);
+                throw new GenieException("Unable to write files to the disc", e);
             }
 
             output.WriteSuccess(string.Format("Successfully written {0} file to the disk.", files.Count));

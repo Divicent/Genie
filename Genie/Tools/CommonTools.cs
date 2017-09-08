@@ -47,8 +47,9 @@ namespace Genie.Tools
                     return "string";
                 case "bit":
                     return "bool";
+                default:
+                    return "";
             }
-            return "";
         }
     }
 }

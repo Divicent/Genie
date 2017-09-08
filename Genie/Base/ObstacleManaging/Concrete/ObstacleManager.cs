@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Genie.Base.Exceptions;
 using Genie.Base.ObstacleManaging.Abstract;
 using Genie.Base.ProcessOutput.Abstract;
 
@@ -18,7 +19,7 @@ namespace Genie.Base.ObstacleManaging.Concrete
             }
             catch (Exception e)
             {
-                throw new Exception("Unable to clear target folder", e);
+                throw new GenieException("Unable to clear target folder", e);
             }
             
 
