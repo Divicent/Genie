@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Genie.Base.Exceptions;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.ProjectFileManaging.Abstract;
 
@@ -70,7 +71,7 @@ namespace Genie.Base.ProjectFileManaging.Concrete
       }
       catch (Exception e)
       {
-        throw new Exception("Unable to process file.", e);
+        throw new GenieException("Unable to process file.", e);
       }
       output.WriteSuccess("Project file processed.");
     }

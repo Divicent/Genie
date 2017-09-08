@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Genie.Base.Configuration.Abstract;
+using Genie.Base.Exceptions;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Reading.Abstract;
 using Genie.Extensions;
@@ -28,7 +29,7 @@ namespace Genie.Base.Reading.Concrete
             }
             catch (Exception e)
             {
-                throw new Exception("Unable to read database meta data", e);
+                throw new GenieException("Unable to read database meta data", e);
             }
 
             output.WriteSuccess("Schema reading successful.");
@@ -39,7 +40,7 @@ namespace Genie.Base.Reading.Concrete
             {
                 foreach (var e in configuration.Enums)
                     if (schema.Relations.All(r => r.Name != e.Table))
-                        throw new Exception($"{e.Table} is not a table. (Enums)");
+                        throw new GenieException($"{e.Table} is not a table. (Enums)");
                 schema.Enums = ReadEnums(configuration.ConnectionString, configuration.Enums, output);
             }
             else
@@ -79,7 +80,7 @@ namespace Genie.Base.Reading.Concrete
             }
             catch (Exception e)
             {
-                throw new Exception("Unable to process relationships of the tables", e);
+                throw new GenieException("Unable to process relationships of the tables", e);
             }
             output.WriteSuccess("Relationships processed.");
         }
@@ -410,11 +411,11 @@ namespace Genie.Base.Reading.Concrete
                                 {
                                     name = reader.GetString(0);
                                     if (string.IsNullOrWhiteSpace(name))
-                                        throw new Exception("Name should not be empty of an enum");
+                                        throw new GenieException("Name should not be empty of an enum");
                                 }
                                 catch (Exception)
                                 {
-                                    throw new Exception(
+                                    throw new GenieException(
                                         $"Cannot read Name as string. in the enum table {configurationEnumTable.Table}");
                                 }
 
@@ -439,7 +440,7 @@ namespace Genie.Base.Reading.Concrete
                                 }
                                 catch (Exception e)
                                 {
-                                    throw new Exception("Unable to read enum table using specified value type.", e);
+                                    throw new GenieException("Unable to read enum table using specified value type.", e);
                                 }
                                 name = name.Replace(" ", "_");
                                 values.Add(new EnumValue { Name = name, FieldName = name.ToFieldName(), Value = value });

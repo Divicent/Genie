@@ -22,6 +22,7 @@ using Genie.Templates.Infrastructure.Collections.Concrete;
 using Genie.Templates.Infrastructure.Actions.Abstract;
 using Genie.Templates.Infrastructure.Actions.Concrete;
 using Genie.Templates.Infrastructure.Enum;
+using Genie.Base.Exceptions;
 
 namespace Genie.Base.Generating.Concrete
 {
@@ -188,7 +189,7 @@ namespace Genie.Base.Generating.Concrete
             }
             catch (Exception e)
             {
-                throw new Exception("Unable to create list of template files.", e);
+                throw new GenieException("Unable to create list of template files.", e);
             }
 
             try
@@ -224,7 +225,7 @@ namespace Genie.Base.Generating.Concrete
             }
             catch (Exception e)
             {
-                throw new Exception("Unable to generate file content", e);
+                throw new GenieException("Unable to generate file content", e);
             }
 
         }

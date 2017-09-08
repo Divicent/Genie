@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Genie.Base.Configuration.Abstract;
+using Genie.Base.Exceptions;
 
 namespace Genie.Base.Configuration.Concrete
 {
@@ -29,7 +30,7 @@ namespace Genie.Base.Configuration.Concrete
                     $"{Type} is not a supported type. only string, int, bool, double are supported for enum table type");
             if (error.Length > 0)
             {
-                throw new Exception(error.ToString());
+                throw new GenieException(error.ToString());
             }
         }
     }

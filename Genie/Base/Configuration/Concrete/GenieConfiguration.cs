@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Genie.Base.Configuration.Abstract;
+using Genie.Base.Exceptions;
 
 namespace Genie.Base.Configuration.Concrete
 {
@@ -45,7 +46,7 @@ namespace Genie.Base.Configuration.Concrete
                 }
             }
             if(error.Length > 0)
-                throw new Exception(error.ToString());
+                throw new GenieException(error.ToString());
         }
 
         public string ProjectFile { get; set; }
