@@ -23,21 +23,6 @@
 
 <body>
     <div id="fb-root"></div>
-    <script type="text/javascript">
-        onShareButtonClick(obj, name)
-        {
-            var href = obj.getAttribute("href");
-            ga('send', {
-                'hitType': 'social',
-                'socialNetwork': name,
-                'socialTarget': href,
-                'page': 'https://rusith.github.io/Genie',
-                'hitCallback': function() {
-                    window.open(href, '_blank');
-                }
-            });
-        }
-    </script>
     <script>(function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -474,6 +459,22 @@
 
         ga('create', 'UA-106184053-1', 'auto');
         ga('send', 'pageview');
+    </script>
+
+    <script type="text/javascript">
+        function onShareButtonClick(obj, name)
+        {
+            var href = obj.getAttribute("href");
+            ga('send', {
+                'hitType': 'social',
+                'socialNetwork': name,
+                'socialTarget': href,
+                'page': 'https://rusith.github.io/Genie',
+                'hitCallback': function() {
+                    window.open(href, '_blank');
+                }
+            });
+        }
     </script>
 
 </body>
