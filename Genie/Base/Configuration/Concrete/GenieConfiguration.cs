@@ -22,6 +22,8 @@ namespace Genie.Base.Configuration.Concrete
         public bool Core { get; set; }
         public List<ConfigurationEnumTable> Enums { get; set; }
 
+        public string DBMS { get; set; }
+
         public void Validate()
         {
             var error = new StringBuilder();
@@ -45,7 +47,7 @@ namespace Genie.Base.Configuration.Concrete
                     }
                 }
             }
-            if(error.Length > 0)
+            if (error.Length > 0)
                 throw new GenieException(error.ToString());
         }
 

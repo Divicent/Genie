@@ -7,7 +7,7 @@ namespace Genie.Base.Configuration.Abstract
     /// <summary>
     /// Basic configuration for genie
     /// </summary>
-    internal interface IConfiguration: IValidatableConfiguration
+    internal interface IConfiguration : IValidatableConfiguration
     {
         /// <summary>
         /// Open able , accessible connection string to the target database 
@@ -41,6 +41,14 @@ namespace Genie.Base.Configuration.Abstract
         /// </summary>
         bool Core { get; }
 
+        /// <summary>
+        /// List of enum table definitions
+        /// </summary>
         List<ConfigurationEnumTable> Enums { get; }
+
+        /// <summary>
+        /// Name of the Database Management System
+        /// </summary>
+        string DBMS { get; }
     }
 }
