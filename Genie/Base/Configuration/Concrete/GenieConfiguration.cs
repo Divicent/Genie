@@ -32,7 +32,6 @@ namespace Genie.Base.Configuration.Concrete
             {
                 error.AppendLine("ConnectionString (connectionString in JSON) not found in the configuration");
             }
-                
             if (string.IsNullOrWhiteSpace(ProjectPath))
             {
                 error.AppendLine("ProjectPath (projectPath in JSON) not found in the configuration");
