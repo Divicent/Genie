@@ -4,6 +4,16 @@ using Genie.Base.Configuration.Concrete;
 
 namespace Genie.Base.Configuration.Abstract
 {
+
+    /// <summary>
+    /// Set of supported Database Management Systems
+    /// </summary>
+    internal enum DBMS 
+    {
+        MSSQL = 1,
+        MySQL =2
+    }
+
     /// <summary>
     /// Basic configuration for genie
     /// </summary>
