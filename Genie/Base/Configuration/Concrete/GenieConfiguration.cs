@@ -29,13 +29,23 @@ namespace Genie.Base.Configuration.Concrete
         {
             var error = new StringBuilder();
             if (string.IsNullOrWhiteSpace(ConnectionString))
+            {
                 error.AppendLine("ConnectionString (connectionString in JSON) not found in the configuration");
+            }
+                
             if (string.IsNullOrWhiteSpace(ProjectPath))
+            {
                 error.AppendLine("ProjectPath (projectPath in JSON) not found in the configuration");
+            }
             if (string.IsNullOrWhiteSpace(BaseNamespace))
+            {
                 error.AppendLine("BaseNamespace (baseNamespace in JSON) not found in the configuration file");
+            }
+                
             if(string.IsNullOrWhiteSpace(DBMS))
+            {
                 error.AppendLine("DBMS (dbms in JSON) not found in the configuration file");
+            }
             else 
             {
                 switch(DBMS.ToLower()) 
