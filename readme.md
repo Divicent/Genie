@@ -34,6 +34,7 @@ It should be something like this
     "ProjectFile": "...",
     "noDapper": false,
     "core": false,
+    "dbms": "",
     "enums": [
         {
             "table": "",
@@ -67,6 +68,11 @@ Dapper will not be included if set to true . will need to reference dapper exter
 
 If this is set to true , the generated code will target .net core framework.
 This uses .Net cores inbuilt DI. the DapperContext should be injected to use connection string.
+
+### dbms 
+
+Name of the targeting Database Management System .
+Currently Supported Values are `mssql` and `mysql`
 
 ### projectFile (optional)
 
