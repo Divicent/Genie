@@ -41,22 +41,22 @@
         <!-- I got these buttons from simplesharebuttons.com -->
         <div id="share-buttons">
             <!-- Email -->
-            <a href="mailto:?Subject=Simple Share Buttons&amp;Body=I%20saw%20this%20and%20thought%20of%20you!%20 https://rusith.github.io/Genie">
+            <a onclick="onShareButtonClick(this, 'Email')" href="mailto:?Subject=Simple Share Buttons&amp;Body=I%20saw%20this%20and%20thought%20of%20you!%20 https://rusith.github.io/Genie">
                 <img src="https://simplesharebuttons.com/images/somacro/email.png" alt="Email" />
             </a>
 
             <!-- Facebook -->
-            <a href="http://www.facebook.com/sharer.php?u=https://rusith.github.io/Genie" target="_blank">
+            <a onclick="onShareButtonClick(this, 'Email')" href="http://www.facebook.com/sharer.php?u=https://rusith.github.io/Genie" target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
             </a>
 
             <!-- Google+ -->
-            <a href="https://plus.google.com/share?url=https://rusith.github.io/Genie" target="_blank">
+            <a onclick="onShareButtonClick(this, 'Email')" href="https://plus.google.com/share?url=https://rusith.github.io/Genie" target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" />
             </a>
 
             <!-- LinkedIn -->
-            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://rusith.github.io/Genie" target="_blank">
+            <a onclick="onShareButtonClick(this, 'Email')" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://rusith.github.io/Genie" target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" />
             </a>
 
@@ -66,18 +66,18 @@
             </a>
 
             <!-- Reddit -->
-            <a href="http://reddit.com/submit?url=https://rusith.github.io/Genie&amp;title=Simple Share Buttons" target="_blank">
+            <a onclick="onShareButtonClick(this, 'Email')" href="http://reddit.com/submit?url=https://rusith.github.io/Genie&amp;title=Simple Share Buttons" target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/reddit.png" alt="Reddit" />
             </a>
 
             <!-- Twitter -->
-            <a href="https://twitter.com/share?url=https://rusith.github.io/Genie&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons"
+            <a onclick="onShareButtonClick(this, 'Email')" href="https://twitter.com/share?url=https://rusith.github.io/Genie&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons"
                 target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
             </a>
 
             <!-- VK -->
-            <a href="http://vkontakte.ru/share.php?url=https://rusith.github.io/Genie" target="_blank">
+            <a onclick="onShareButtonClick(this, 'Email')" href="http://vkontakte.ru/share.php?url=https://rusith.github.io/Genie" target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/vk.png" alt="VK" />
             </a>
         </div>
@@ -444,7 +444,7 @@
     </section>
 
     <div style="text-align: center;">
-            <div class="fb-comments" data-href="https://rusith.github.io/Genie" data-width="600px" data-numposts="10"></div>
+            <div class="fb-comments" data-href="https://rusith.github.io/Genie" data-width="800px" data-numposts="10"></div>
     </div>
     
 
@@ -459,6 +459,22 @@
 
         ga('create', 'UA-106184053-1', 'auto');
         ga('send', 'pageview');
+    </script>
+
+    <script type="text/javascript">
+        onShareButtonClick(obj, name)
+        {
+            var href = obj.getAttribute("href");
+            ga('send', {
+                'hitType': 'social',
+                'socialNetwork': name,
+                'socialTarget': href,
+                'page': 'https://rusith.github.io/Genie',
+                'hitCallback': function() {
+                    window.open(href, '_blank');
+                }
+            });
+        }
     </script>
 
 </body>
