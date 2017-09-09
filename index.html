@@ -465,15 +465,8 @@
         function onShareButtonClick(obj, name)
         {
             var href = obj.getAttribute("href");
-            ga('send', {
-                'hitType': 'social',
-                'socialNetwork': name,
-                'socialTarget': href,
-                'page': 'https://rusith.github.io/Genie',
-                'hitCallback': function() {
-                    window.open(href, '_blank');
-                }
-            });
+            ga('send', 'event' , 'social', name , name + ' Share', href);
+            window.open(href, '_blank');
         }
     </script>
 
