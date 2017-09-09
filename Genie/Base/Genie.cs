@@ -85,7 +85,9 @@ namespace Genie.Base
 
             try
             {
-                IDatabaseSchemaReader schemaReader = new SqlServerSchemaReader();
+                IDatabaseSchemaReaderFactory databaseSchemaReaderFactory = new DatabaseSchemaReaderFactory();
+
+                IDatabaseSchemaReader schemaReader = databaseSchemaReaderFactory.GetReader(config.DBMS);
                 var schema = schemaReader.Read(config, output);
 
                 IDalGenerator dalGenerator = new DalGenerator();
