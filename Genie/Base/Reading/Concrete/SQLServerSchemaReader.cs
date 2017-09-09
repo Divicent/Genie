@@ -17,6 +17,7 @@ namespace Genie.Base.Reading.Concrete
 {
     internal class SqlServerSchemaReader : IDatabaseSchemaReader
     {
+
         public IDatabaseSchema Read(IConfiguration configuration, IProcessOutput output)
         {
             output.WriteInformation("Reading database meta data.");
