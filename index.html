@@ -22,6 +22,14 @@
 </head>
 
 <body>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
     <section class="page-header">
         <img src="imgs/genie.png">
         <h1 class="project-name">Genie</h1>
@@ -32,78 +40,46 @@
 
         <!-- I got these buttons from simplesharebuttons.com -->
         <div id="share-buttons">
-
-            <!-- Buffer -->
-            <a href="https://bufferapp.com/add?url=https://rusith.github.io/Genie&amp;text=Simple Share Buttons" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/buffer.png" alt="Buffer" />
-    </a>
-
-            <!-- Digg -->
-            <a href="http://www.digg.com/submit?url=https://rusith.github.io/Genie" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/diggit.png" alt="Digg" />
-    </a>
-
             <!-- Email -->
             <a href="mailto:?Subject=Simple Share Buttons&amp;Body=I%20saw%20this%20and%20thought%20of%20you!%20 https://rusith.github.io/Genie">
-        <img src="https://simplesharebuttons.com/images/somacro/email.png" alt="Email" />
-    </a>
+                <img src="https://simplesharebuttons.com/images/somacro/email.png" alt="Email" />
+            </a>
 
             <!-- Facebook -->
             <a href="http://www.facebook.com/sharer.php?u=https://rusith.github.io/Genie" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
-    </a>
+                <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+            </a>
 
             <!-- Google+ -->
             <a href="https://plus.google.com/share?url=https://rusith.github.io/Genie" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" />
-    </a>
+                <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" />
+            </a>
 
             <!-- LinkedIn -->
             <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://rusith.github.io/Genie" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" />
-    </a>
-
-            <!-- Pinterest -->
-            <a href="javascript:void((function()%7Bvar%20e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','http://assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)%7D)());">
-        <img src="https://simplesharebuttons.com/images/somacro/pinterest.png" alt="Pinterest" />
-    </a>
+                <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" />
+            </a>
 
             <!-- Print -->
             <a href="javascript:;" onclick="window.print()">
-        <img src="https://simplesharebuttons.com/images/somacro/print.png" alt="Print" />
-    </a>
+                <img src="https://simplesharebuttons.com/images/somacro/print.png" alt="Print" />
+            </a>
 
             <!-- Reddit -->
             <a href="http://reddit.com/submit?url=https://rusith.github.io/Genie&amp;title=Simple Share Buttons" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/reddit.png" alt="Reddit" />
-    </a>
-
-            <!-- StumbleUpon-->
-            <a href="http://www.stumbleupon.com/submit?url=https://rusith.github.io/Genie&amp;title=Simple Share Buttons" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/stumbleupon.png" alt="StumbleUpon" />
-    </a>
-
-            <!-- Tumblr-->
-            <a href="http://www.tumblr.com/share/link?url=https://rusith.github.io/Genie&amp;title=Simple Share Buttons" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/tumblr.png" alt="Tumblr" />
-    </a>
+                <img src="https://simplesharebuttons.com/images/somacro/reddit.png" alt="Reddit" />
+            </a>
 
             <!-- Twitter -->
             <a href="https://twitter.com/share?url=https://rusith.github.io/Genie&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons"
                 target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
-    </a>
+                <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+            </a>
 
             <!-- VK -->
             <a href="http://vkontakte.ru/share.php?url=https://rusith.github.io/Genie" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/vk.png" alt="VK" />
-    </a>
-
-            <!-- Yummly -->
-            <a href="http://www.yummly.com/urb/verify?url=https://rusith.github.io/Genie&amp;title=Simple Share Buttons" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/yummly.png" alt="Yummly" />
-    </a>
-
+                <img src="https://simplesharebuttons.com/images/somacro/vk.png" alt="VK" />
+            </a>
         </div>
     </section>
 
@@ -466,6 +442,8 @@
             to commit the transaction.</p>
         </div>
     </section>
+
+    <div class="fb-comments" data-href="https://rusith.github.io/Genie" data-width="600px" data-numposts="10"></div>
 
     <!--Scripts-->
     <script>
