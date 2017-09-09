@@ -33,6 +33,9 @@ namespace Genie.Base.Configuration.Concrete
                 error.AppendLine("ProjectPath (projectPath in JSON) not found in the configuration");
             if (string.IsNullOrWhiteSpace(BaseNamespace))
                 error.AppendLine("BaseNamespace (baseNamespace in JSON) not found in the configuration file");
+            if(string.IsNullOrWhiteSpace(DBMS))
+                error.AppendLine("DBMS (dbms in JSON) not found in the configuration file");
+
             if (Enums != null && Enums.Count > 0)
             {
                 foreach (var configurationEnumTable in Enums)
