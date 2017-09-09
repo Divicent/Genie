@@ -6,6 +6,7 @@ using Genie.Base.Exceptions;
 
 namespace Genie.Base.Configuration.Concrete
 {
+
     /// <summary>
     /// Contains configurations that are need to do the data access layer generation
     /// </summary>
@@ -21,6 +22,8 @@ namespace Genie.Base.Configuration.Concrete
 
         public bool Core { get; set; }
         public List<ConfigurationEnumTable> Enums { get; set; }
+        internal DBMS DBMSName { get; set; }
+        public string DBMS { get; set; }
 
         public void Validate()
         {
@@ -31,6 +34,24 @@ namespace Genie.Base.Configuration.Concrete
                 error.AppendLine("ProjectPath (projectPath in JSON) not found in the configuration");
             if (string.IsNullOrWhiteSpace(BaseNamespace))
                 error.AppendLine("BaseNamespace (baseNamespace in JSON) not found in the configuration file");
+            if(string.IsNullOrWhiteSpace(DBMS))
+                error.AppendLine("DBMS (dbms in JSON) not found in the configuration file");
+            else 
+            {
+                switch(DBMS.ToLower()) 
+                {
+                    case "mssql":
+                        DBMSName = Abstract.DBMS.MSSQL;
+                        break;
+                    case "mysql":
+                        DBMSName = Abstract.DBMS.MySQL;
+                        break;
+                    default:
+                        error.AppendLine($"DBMS name {DBMS} is not supported values are mssql(Microsoft SQL Server) and mysql (MySQL)");
+                        break;
+                }
+            }
+
             if (Enums != null && Enums.Count > 0)
             {
                 foreach (var configurationEnumTable in Enums)
@@ -45,7 +66,7 @@ namespace Genie.Base.Configuration.Concrete
                     }
                 }
             }
-            if(error.Length > 0)
+            if (error.Length > 0)
                 throw new GenieException(error.ToString());
         }
 

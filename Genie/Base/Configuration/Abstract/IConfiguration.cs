@@ -4,10 +4,20 @@ using Genie.Base.Configuration.Concrete;
 
 namespace Genie.Base.Configuration.Abstract
 {
+
+    /// <summary>
+    /// Set of supported Database Management Systems
+    /// </summary>
+    internal enum DBMS 
+    {
+        MSSQL = 1,
+        MySQL =2
+    }
+
     /// <summary>
     /// Basic configuration for genie
     /// </summary>
-    internal interface IConfiguration: IValidatableConfiguration
+    internal interface IConfiguration : IValidatableConfiguration
     {
         /// <summary>
         /// Open able , accessible connection string to the target database 
@@ -41,6 +51,14 @@ namespace Genie.Base.Configuration.Abstract
         /// </summary>
         bool Core { get; }
 
+        /// <summary>
+        /// List of enum table definitions
+        /// </summary>
         List<ConfigurationEnumTable> Enums { get; }
+
+        /// <summary>
+        /// Name of the Database Management System
+        /// </summary>
+        string DBMS { get; }
     }
 }
