@@ -35,6 +35,7 @@ It should be something like this
     "noDapper": false,
     "core": false,
     "dbms": "",
+    "schema": "",
     "enums": [
         {
             "table": "",
@@ -73,6 +74,11 @@ This uses .Net cores inbuilt DI. the DapperContext should be injected to use con
 
 Name of the targeting Database Management System .
 Currently Supported Values are `mssql` and `mysql`
+
+### schema
+
+Database schema to read data from
+Ex : dbo in MSSQL, database name in MySql
 
 ### projectFile (optional)
 
