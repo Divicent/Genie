@@ -1,7 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Genie.Base.Configuration.Abstract;
+using Genie.Base.Exceptions;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Reading.Abstract;
+using Genie.Base.Reading.Concrete.Models;
+using Genie.Extensions;
+using Genie.Models.Abstract;
+using Genie.Models.Concrete;
+using Genie.Tools;
 using MySql.Data.MySqlClient;
+using Enum = Genie.Models.Concrete.Enum;
+using Attribute = Genie.Models.Concrete.Attribute;
 
 namespace  Genie.Base.Reading.Concrete 
 {
@@ -10,19 +21,443 @@ namespace  Genie.Base.Reading.Concrete
 
         public IDatabaseSchema Read(IConfiguration configuration, IProcessOutput output)
         {
-            var  connection = GetConnection(configuration.ConnectionString);
+             output.WriteInformation("Reading database meta data.");
+
+            DatabaseSchema schema;
             try
             {
-
+                schema = ReadDatabase(configuration.ConnectionString, configuration);
+                schema.BaseNamespace = configuration.BaseNamespace;
             }
-            catch
+            catch (Exception e)
             {
-
+                throw new GenieException("Unable to read database meta data", e);
             }
-            finally 
+
+            output.WriteSuccess("Schema reading successful.");
+
+            ProcessRelationships(schema.Relations, output);
+
+            if (configuration.Enums != null && configuration.Enums.Count > 0)
             {
+                foreach (var e in configuration.Enums)
+                    if (schema.Relations.All(r => r.Name != e.Table))
+                        throw new GenieException($"{e.Table} is not a table. (Enums)");
+                schema.Enums = ReadEnums(configuration.ConnectionString, configuration.Enums, output);
+            }
+            else
+            {
+                schema.Enums = new List<IEnum>();
+            }
+
+            return schema;
+        }
+
+        private static void ProcessRelationships(IReadOnlyCollection<IRelation> relations, IProcessOutput output)
+        {
+            output.WriteInformation("Processing relationships.");
+
+            try
+            {
+                /*
+                 * for each r in relationship
+                 *      if r has a foreign key to any other table
+                 *          get the table from list
+                 *              add a list to that table
+                 * 
+                 */
+
+                foreach (var relation in relations)
+                    foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
+                    {
+                        var referencingRelation =
+                            relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
+                        referencingRelation?.ReferenceLists.Add(new ReferenceList
+                        {
+                            ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
+                            ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
+                            ReferencedRelationName = relation.Name
+                        });
+                    }
+            }
+            catch (Exception e)
+            {
+                throw new GenieException("Unable to process relationships of the tables", e);
+            }
+            output.WriteSuccess("Relationships processed.");
+        }
+
+        private static DatabaseSchema ReadDatabase(string connectionString, IConfiguration configuration)
+        {
+            var databaseSchemaColumns = new List<DatabaseSchemaColumn>();
+            var databaseParameters = new List<DatabaseParameter>();
+            var databaseExtendedProperties = new List<ExtendedPropertyInfo>();
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                var transaction = connection.BeginTransaction();
+
+                var commandToGetColumns = new MySqlCommand(
+                    $@"
+                 SELECT 
+                        c.COLUMN_NAME AS `Name`
+                    ,concat(t.TABLE_SCHEMA, '.', t.TABLE_NAME)  AS `TableFullName`
+                    ,t.TABLE_Name `TableName`
+                    ,t.TABLE_TYPE  AS TableType
+                    ,c.IS_NULLABLE AS `Nullable`
+                    ,c.DATA_TYPE AS `DataType`
+                    ,CASE WHEN pkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsPrimaryKey
+                    ,CASE WHEN fkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsForeignKey
+                    ,rct.TABLE_NAME AS ReferencedTableName
+                    ,rcuc.COLUMN_NAME AS ReferencedColumn
+                    FROM INFORMATION_SCHEMA.COLUMNS c
+                        INNER JOIN INFORMATION_SCHEMA.TABLES t
+                            ON c.TABLE_NAME = t.TABLE_NAME
+                        LEFT OUTER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE ccu
+                            ON c.TABLE_NAME = ccu.TABLE_NAME AND c.COLUMN_NAME = ccu.COLUMN_NAME
+                        LEFT OUTER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS pkc
+                            ON pkc.CONSTRAINT_TYPE = 'PRIMARY KEY' AND pkc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+                        LEFT OUTER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS fkc
+                            ON fkc.CONSTRAINT_TYPE = 'FOREIGN KEY' AND fkc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+                        LEFT OUTER JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc
+                            ON fkc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+                        LEFT OUTER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS rct
+                            ON rct.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME
+                        LEFT OUTER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE rcuc
+                            ON rc.UNIQUE_CONSTRAINT_NAME = rcuc.CONSTRAINT_NAME
+                    WHERE  c.`table_schema` = '{configuration.Schema}'
+                    ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION 
+            ", connection, transaction);
+
+                using (var reader = commandToGetColumns.ExecuteReader())
+                {
+                    while (reader.HasRows && reader.Read())
+                    {
+                        var column = new DatabaseSchemaColumn
+                        {
+                            Name = reader.GetString(0),
+                            TableFullName = reader.GetString(1),
+                            TableName = reader.GetString(2),
+                            Type = reader.GetString(3),
+                            Nullable = reader.GetString(4) == "YES",
+                            DataType = reader.GetString(5),
+                            IsPrimaryKey = reader.GetInt32(6) == 1,
+                            IsForeignKey = reader.GetInt32(7) == 1
+                        };
+
+                        if (column.IsForeignKey)
+                        {
+                            column.ReferencedTableName = reader.GetString(8);
+                            column.ReferencedColumnName = reader.GetString(9);
+                        }
+
+                        databaseSchemaColumns.Add(column);
+                    }
+
+                    var filtered = new List<DatabaseSchemaColumn>();
+                    foreach (var databaseSchemaColumn in databaseSchemaColumns.Where(
+                        databaseSchemaColumn => !filtered.Any(
+                            f =>
+                                f.TableName == databaseSchemaColumn.TableName && f.Name == databaseSchemaColumn.Name)))
+                        filtered.Add(databaseSchemaColumn);
+
+                    foreach (var databaseSchemaColumn in filtered)
+                    {
+                        var column = databaseSchemaColumn;
+                        var nonFiltered =
+                            databaseSchemaColumns.Where(
+                                d =>
+                                    d.TableName == column.TableName && d.Name == column.Name);
+
+                        foreach (var schemaColumn in nonFiltered)
+                        {
+                            if (schemaColumn.IsForeignKey)
+                            {
+                                databaseSchemaColumn.IsForeignKey = true;
+                                databaseSchemaColumn.ReferencedColumnName = schemaColumn.ReferencedColumnName;
+                                databaseSchemaColumn.ReferencedTableName = schemaColumn.ReferencedTableName;
+                            }
+
+                            if (schemaColumn.IsPrimaryKey)
+                                databaseSchemaColumn.IsPrimaryKey = true;
+                        }
+                    }
+
+                    databaseSchemaColumns = filtered;
+                }
+
+                var commandToGetParameters = new MySqlCommand(
+                    @"
+                    SELECT 
+	                        p.SPECIFIC_NAME AS SP
+	                    ,p.PARAMETER_NAME AS [Name]
+	                    ,p.DATA_TYPE AS DataType
+                    FROM INFORMATION_SCHEMA.PARAMETERS p
+	                    INNER JOIN INFORMATION_SCHEMA.ROUTINES r
+		                    ON p.SPECIFIC_NAME = r.SPECIFIC_NAME
+                    WHERE r.ROUTINE_TYPE = 'PROCEDURE'
+                    ORDER BY p.SCOPE_NAME , p.ORDINAL_POSITION", connection, transaction);
+
+                using (var reader = commandToGetParameters.ExecuteReader())
+                {
+                    while (reader.HasRows && reader.Read())
+                        databaseParameters.Add(new DatabaseParameter
+                        {
+                            Procedure = reader.GetString(0),
+                            Name = reader.GetString(1),
+                            DataType = reader.GetString(2)
+                        });
+                }
+
+                var commandToGetExtendedProperties = new MySqlCommand(
+                    @"SELECT
+	                     s.[name] AS SchemaName
+	                    ,oo.[name] AS ObjectName
+	                    ,col.[name] AS ColumnName
+	                    ,ep.[value] AS Property
+                        FROM sys.all_objects oo 
+                    INNER JOIN sys.extended_properties ep ON ep.major_id = oo.object_id 
+                    LEFT JOIN sys.schemas s on oo.schema_id = s.schema_id
+                    INNER JOIN sys.columns AS col ON ep.major_id = col.object_id AND ep.minor_id = col.column_id
+                    WHERE ep.[value] IS NOT NULL AND ep.[value] <> ''", connection, transaction);
+
+                using (var reader = commandToGetExtendedProperties.ExecuteReader())
+                {
+                    while (reader.HasRows && reader.Read())
+                        databaseExtendedProperties.Add(new ExtendedPropertyInfo
+                        {
+                            SchemaName = reader.GetString(0),
+                            ObjectName = reader.GetString(1),
+                            ColumnName = reader.GetString(2),
+                            Property = reader.GetString(3)
+                        });
+                }
+
+                transaction.Commit();
                 connection.Close();
-                connection.Dispose();
+            }
+
+            return Process(databaseSchemaColumns, databaseParameters, databaseExtendedProperties);
+        }
+
+
+          private static DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns,
+            IReadOnlyCollection<DatabaseParameter> parameters, IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties)
+        {
+            if (columns == null || columns.Count < 1)
+                return null;
+
+            var tables = new List<IRelation>();
+            var views = new List<IView>();
+            var storedProcedures = new List<IStoredProcedure>();
+
+            foreach (var databaseSchemaColumn in columns)
+            {
+                string dataType;
+                bool lit;
+                switch (databaseSchemaColumn.Type)
+                {
+                    case "BASE TABLE":
+                        var table = tables.FirstOrDefault(t => t.Name == databaseSchemaColumn.TableName);
+                        if (table == null)
+                        {
+                            table = new Relation
+                            {
+                                Name = databaseSchemaColumn.TableName,
+                                FieldName =
+                                    "_" + (databaseSchemaColumn.TableName.First() + "").ToLower() +
+                                    databaseSchemaColumn.TableName.Substring(1),
+                                Attributes = new List<IAttribute>(),
+                                ForeignKeyAttributes = new List<IForeignKeyAttribute>(),
+                                ReferenceLists = new List<IReferenceList>()
+                            };
+
+                            tables.Add(table);
+                        }
+                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
+                            databaseSchemaColumn.Nullable);
+                        lit = dataType == "string" || dataType.StartsWith("DateTime");
+
+                        var attribute = new Attribute
+                        {
+                            IsLiteralType = lit,
+                            IsKey = databaseSchemaColumn.IsPrimaryKey,
+                            Name = databaseSchemaColumn.Name,
+                            DataType = dataType,
+                            FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
+                                        databaseSchemaColumn.Name.Substring(1)
+                        };
+
+                        if (databaseSchemaColumn.IsForeignKey)
+                        {
+                            var fkAttribute = new ForeignKeyAttribute
+                            {
+                                ReferencingNonForeignKeyAttribute = attribute,
+                                ReferencingRelationName = databaseSchemaColumn.ReferencedTableName,
+                                ReferencingTableColumnName = databaseSchemaColumn.ReferencedColumnName
+                            };
+
+                            attribute.RefPropName = attribute.FieldName + "Obj";
+                            table.ForeignKeyAttributes.Add(fkAttribute);
+                        }
+
+                        var extendedProperty = extendedProperties.FirstOrDefault(e => e.ObjectName == table.Name && e.ColumnName == attribute.Name);
+                        if (extendedProperty != null)
+                        {
+                            attribute.Comment = extendedProperty.Property;
+                        }
+
+                        table.Attributes.Add(attribute);
+                        break;
+                    case "VIEW":
+                        var view = views.FirstOrDefault(t => t.Name == databaseSchemaColumn.TableName);
+                        if (view == null)
+                        {
+                            view = new View
+                            {
+                                FieldName =
+                                    "_" + (databaseSchemaColumn.TableName.First() + "").ToLower() +
+                                    databaseSchemaColumn.TableName.Substring(1),
+                                Name = databaseSchemaColumn.TableName,
+                                Attributes = new List<ISimpleAttribute>()
+                            };
+
+                            views.Add(view);
+                        }
+
+                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
+                            databaseSchemaColumn.Nullable);
+                        lit = dataType == "string" || dataType.StartsWith("DateTime");
+
+                     
+                        var attr = new SimpleAttribute
+                        {
+                            Name = databaseSchemaColumn.Name,
+                            IsLiteralType = lit,
+                            FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
+                                        databaseSchemaColumn.Name.Substring(1),
+                            DataType = dataType
+                        };
+
+                        var exproperty = extendedProperties.FirstOrDefault(e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
+                        if (exproperty != null)
+                        {
+                            attr.Comment = exproperty.Property;
+                        }
+
+                        view.Attributes.Add(attr);
+                        break;
+                }
+            }
+
+            if (parameters != null && parameters.Count > 0)
+            {
+                foreach (var parameter in parameters)
+                {
+                    var procedure = storedProcedures.FirstOrDefault(p => p.Name == parameter.Procedure);
+                    if (procedure == null)
+                    {
+                        procedure = new StoredProcedure
+                        {
+                            Name = parameter.Procedure,
+                            Parameters = new List<ProcedureParameter>()
+                        };
+                        storedProcedures.Add(procedure);
+                    }
+
+                    procedure.Parameters.Add(
+                        new ProcedureParameter { DataType = parameter.DataType, Name = parameter.Name });
+                }
+
+                foreach (var storedProcedure in storedProcedures)
+                {
+                    var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
+                                                                                                       $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
+                                                                                                       ",");
+                    var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
+                                                                                                           $"{param.Name} = \"+({param.Name.Replace("@", "")} == null ? \"NULL\" : \"'\" + {param.Name.Replace("@", "")} + \"'\")+\"" +
+                                                                                                           ",");
+
+                    storedProcedure.ParamString = parameterString.TrimEnd(',');
+                    storedProcedure.PassString = parameterPassString.TrimEnd(',');
+                }
+            }
+
+            return new DatabaseSchema { Procedures = storedProcedures, Relations = tables, Views = views };
+        }
+
+        private static List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,
+            IProcessOutput output)
+        {
+            output.WriteInformation("Reading enum tables.");
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                var enums = new List<IEnum>();
+                foreach (var configurationEnumTable in enumTables)
+                {
+                    var query = $"SELECT [{configurationEnumTable.NameColumn}] AS [Name]," +
+                                $"       [{configurationEnumTable.ValueColumn}] AS [Value]" +
+                                $" FROM [dbo].[{configurationEnumTable.Table}]";
+
+                    var type = configurationEnumTable.Type;
+                    var values = new List<IEnumValue>();
+
+                    using (var command = new MySqlCommand(query, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows && reader.Read())
+                            {
+                                string name;
+                                try
+                                {
+                                    name = reader.GetString(0);
+                                    if (string.IsNullOrWhiteSpace(name))
+                                        throw new GenieException("Name should not be empty of an enum");
+                                }
+                                catch (Exception)
+                                {
+                                    throw new GenieException(
+                                        $"Cannot read Name as string. in the enum table {configurationEnumTable.Table}");
+                                }
+
+                                object value = null;
+                                try
+                                {
+                                    switch (type)
+                                    {
+                                        case "string":
+                                            value = $"\"{reader.GetString(1)}\"";
+                                            break;
+                                        case "int":
+                                            value = reader.GetInt32(1);
+                                            break;
+                                        case "double":
+                                            value = reader.GetDouble(1);
+                                            break;
+                                        case "bool":
+                                            value = reader.GetBoolean(1);
+                                            break;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    throw new GenieException("Unable to read enum table using specified value type.", e);
+                                }
+                                name = name.Replace(" ", "_");
+                                values.Add(new EnumValue { Name = name, FieldName = name.ToFieldName(), Value = value });
+                            }
+
+                            enums.Add(new Enum { Name = configurationEnumTable.Table + "Enum", Values = values, Type = type });
+                        }
+                    }
+                }
+
+                connection.Close();
+
+                return enums;
             }
         }
 

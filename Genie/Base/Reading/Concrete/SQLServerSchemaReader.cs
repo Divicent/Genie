@@ -6,6 +6,7 @@ using Genie.Base.Configuration.Abstract;
 using Genie.Base.Exceptions;
 using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Reading.Abstract;
+using Genie.Base.Reading.Concrete.Models;
 using Genie.Extensions;
 using Genie.Models.Abstract;
 using Genie.Models.Concrete;
@@ -90,7 +91,7 @@ namespace Genie.Base.Reading.Concrete
         {
             var databaseSchemaColumns = new List<DatabaseSchemaColumn>();
             var databaseParameters = new List<DatabaseParameter>();
-            var databaseExtendedProperties = new List<ExtendedProperyInfo>();
+            var databaseExtendedProperties = new List<ExtendedPropertyInfo>();
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -223,7 +224,7 @@ namespace Genie.Base.Reading.Concrete
                 using (var reader = commandToGetExtendedProperties.ExecuteReader())
                 {
                     while (reader.HasRows && reader.Read())
-                        databaseExtendedProperties.Add(new ExtendedProperyInfo
+                        databaseExtendedProperties.Add(new ExtendedPropertyInfo
                         {
                             SchemaName = reader.GetString(0),
                             ObjectName = reader.GetString(1),
@@ -240,7 +241,7 @@ namespace Genie.Base.Reading.Concrete
         }
 
         private static DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns,
-            IReadOnlyCollection<DatabaseParameter> parameters, IReadOnlyCollection<ExtendedProperyInfo> extendedProperties)
+            IReadOnlyCollection<DatabaseParameter> parameters, IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties)
         {
             if (columns == null || columns.Count < 1)
                 return null;
@@ -456,35 +457,6 @@ namespace Genie.Base.Reading.Concrete
 
                 return enums;
             }
-        }
-
-        private class DatabaseSchemaColumn
-        {
-            public string Name { get; set; }
-            public string TableFullName { get; set; }
-            public string TableName { get; set; }
-            public string Type { get; set; }
-            public bool Nullable { get; set; }
-            public string DataType { get; set; }
-            public bool IsPrimaryKey { get; set; }
-            public bool IsForeignKey { get; set; }
-            public string ReferencedTableName { get; set; }
-            public string ReferencedColumnName { get; set; }
-        }
-
-        private class DatabaseParameter
-        {
-            public string Procedure { get; set; }
-            public string Name { get; set; }
-            public string DataType { get; set; }
-        }
-
-        private class ExtendedProperyInfo
-        {
-            public string SchemaName { get; set; }
-            public string ObjectName { get; set; }
-            public string ColumnName { get; set; }
-            public string Property { get; set;}
         }
     }
 
