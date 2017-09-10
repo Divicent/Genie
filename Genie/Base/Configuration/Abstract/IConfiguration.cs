@@ -8,10 +8,10 @@ namespace Genie.Base.Configuration.Abstract
     /// <summary>
     /// Set of supported Database Management Systems
     /// </summary>
-    internal enum DBMS 
+    public enum DBMS
     {
         MSSQL = 1,
-        MySQL =2
+        MySQL = 2
     }
 
     /// <summary>
@@ -60,5 +60,15 @@ namespace Genie.Base.Configuration.Abstract
         /// Name of the Database Management System
         /// </summary>
         string DBMS { get; }
+
+        /// <summary>
+        /// For Internal Use
+        /// </summary>
+        DBMS DBMSName { get; }
+
+        /// <summary>
+        /// Default database schema name
+        /// </summary>
+        string Schema { get; }
     }
 }

@@ -22,8 +22,9 @@ namespace Genie.Base.Configuration.Concrete
 
         public bool Core { get; set; }
         public List<ConfigurationEnumTable> Enums { get; set; }
-        internal DBMS DBMSName { get; set; }
+        public DBMS DBMSName { get; set; }
         public string DBMS { get; set; }
+        public string Schema { get; set; }
 
         public void Validate()
         {
@@ -40,14 +41,17 @@ namespace Genie.Base.Configuration.Concrete
             {
                 error.AppendLine("BaseNamespace (baseNamespace in JSON) not found in the configuration file");
             }
-                
-            if(string.IsNullOrWhiteSpace(DBMS))
+            if (string.IsNullOrWhiteSpace(DBMS))
             {
                 error.AppendLine("DBMS (dbms in JSON) not found in the configuration file");
             }
-            else 
+            if(string.IsNullOrWhiteSpace(Schema)) 
             {
-                switch(DBMS.ToLower()) 
+                error.AppendLine("Schema (schema in JSON) not found in the configuration file");                
+            }
+            else
+            {
+                switch (DBMS.ToLower())
                 {
                     case "mssql":
                         DBMSName = Abstract.DBMS.MSSQL;
