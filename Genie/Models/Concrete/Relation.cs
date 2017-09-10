@@ -10,5 +10,6 @@ namespace Genie.Models.Concrete
         public List<IForeignKeyAttribute> ForeignKeyAttributes { get; set; }
         public List<IReferenceList> ReferenceLists { get; set; }
         public string FieldName { get; set; }
+        public string Comment { get; set; }
     }
 }

@@ -20,9 +20,14 @@ namespace Genie.Tools
         {
             var csharpDatatype = ConvertDataType(dataType);
             if (!nullable)
+            {
                 return csharpDatatype;
+            }
+                
             if (NullableTypes.Contains(csharpDatatype))
+            {
                 return csharpDatatype + "?";
+            }
             return csharpDatatype;
         }
 
@@ -44,9 +49,16 @@ namespace Genie.Tools
                 case "nvarchar":
                 case "nchar":
                 case "char":
+                case "longtext":
+                case "enum":
+                case "set":
                     return "string";
                 case "bit":
                     return "bool";
+                case "bigint":
+                    return "long";
+                case "tinyint":
+                    return "short";
                 default:
                     return "";
             }

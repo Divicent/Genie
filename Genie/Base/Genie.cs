@@ -46,8 +46,8 @@ namespace Genie.Base
             {
                 output.WriteInformation("Checking configuration file.");
 
-                if(!File.Exists(pathToConfigurationJsonFile))
-                    throw new GenieException($"The configuration file ({pathToConfigurationJsonFile}) could not be found (File.Exists returned false).");
+                // if(!File.Exists(pathToConfigurationJsonFile))
+                //     throw new GenieException($"The configuration file ({pathToConfigurationJsonFile}) could not be found (File.Exists returned false).");
 
                 output.WriteSuccess("Configuration file found, ready to read.");
 
@@ -55,7 +55,16 @@ namespace Genie.Base
 
                 try
                 {
-                    config = JsonConvert.DeserializeObject<GenieConfiguration>(File.ReadAllText(pathToConfigurationJsonFile));
+                    config = JsonConvert.DeserializeObject<GenieConfiguration>(@"{
+    ""connectionString"": ""Server=localhost;Database=employees;Uid=root;Pwd=password;"",
+    ""projectPath"": ""/home/rusith/Documents/Sandbox/Genie/DALTest.DAL"",
+    ""baseNamespace"": ""DALTes.DAL"",
+    ""ProjectFile"": ""DALTest.DAL.csproj"",
+    ""noDapper"": false,
+    ""core"": true,
+    ""dbms"": ""mysql"",
+    ""schema"": ""employees""
+}");
                 }
                 catch (Exception exception)
                 {
