@@ -22,23 +22,36 @@ namespace Genie.Base.Configuration.Concrete
 
         public bool Core { get; set; }
         public List<ConfigurationEnumTable> Enums { get; set; }
-        internal DBMS DBMSName { get; set; }
+        public DBMS DBMSName { get; set; }
         public string DBMS { get; set; }
+        public string Schema { get; set; }
 
         public void Validate()
         {
             var error = new StringBuilder();
             if (string.IsNullOrWhiteSpace(ConnectionString))
-                error.AppendLine("ConnectionString (connectionString in JSON) not found in the configuration");
-            if (string.IsNullOrWhiteSpace(ProjectPath))
-                error.AppendLine("ProjectPath (projectPath in JSON) not found in the configuration");
-            if (string.IsNullOrWhiteSpace(BaseNamespace))
-                error.AppendLine("BaseNamespace (baseNamespace in JSON) not found in the configuration file");
-            if(string.IsNullOrWhiteSpace(DBMS))
-                error.AppendLine("DBMS (dbms in JSON) not found in the configuration file");
-            else 
             {
-                switch(DBMS.ToLower()) 
+                error.AppendLine("ConnectionString (connectionString in JSON) not found in the configuration");
+            }
+            if (string.IsNullOrWhiteSpace(ProjectPath))
+            {
+                error.AppendLine("ProjectPath (projectPath in JSON) not found in the configuration");
+            }
+            if (string.IsNullOrWhiteSpace(BaseNamespace))
+            {
+                error.AppendLine("BaseNamespace (baseNamespace in JSON) not found in the configuration file");
+            }
+            if (string.IsNullOrWhiteSpace(DBMS))
+            {
+                error.AppendLine("DBMS (dbms in JSON) not found in the configuration file");
+            }
+            if(string.IsNullOrWhiteSpace(Schema)) 
+            {
+                error.AppendLine("Schema (schema in JSON) not found in the configuration file");                
+            }
+            else
+            {
+                switch (DBMS.ToLower())
                 {
                     case "mssql":
                         DBMSName = Abstract.DBMS.MSSQL;
