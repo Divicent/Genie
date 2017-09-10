@@ -1,19 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using Genie.Base.Configuration.Abstract;
-using Genie.Base.Exceptions;
-using Genie.Base.ProcessOutput.Abstract;
 using Genie.Base.Reading.Abstract;
 using Genie.Base.Reading.Concrete.Models;
-using Genie.Extensions;
-using Genie.Models.Abstract;
-using Genie.Models.Concrete;
-using Genie.Tools;
 using MySql.Data.MySqlClient;
-using Enum = Genie.Models.Concrete.Enum;
-using Attribute = Genie.Models.Concrete.Attribute;
-using System.Data;
 
 namespace Genie.Base.Reading.Concrete
 {
