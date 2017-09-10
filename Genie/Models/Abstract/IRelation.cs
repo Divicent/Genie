@@ -31,5 +31,10 @@ namespace Genie.Models.Abstract
         /// The Field Name
         /// </summary>
         string FieldName { get; set; }
+
+        /// <summary>
+        /// Comment of the table if available
+        /// </summary>
+        string Comment { get; set; }
     }
 }

@@ -2,6 +2,8 @@ namespace Genie.Base.Reading.Concrete.Models
 {
     internal class DatabaseSchemaColumn
     {
+        public string TableComment { get; set; }
+        public string Comment { get; set; }
         public string Name { get; set; }
         public string TableFullName { get; set; }
         public string TableName { get; set; }
