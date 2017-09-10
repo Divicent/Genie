@@ -313,6 +313,9 @@ namespace Genie.Base.Reading.Concrete
 
                 foreach (var storedProcedure in storedProcedures)
                 {
+                    foreach(var p in storedProcedure.Parameters) {
+                        Console.WriteLine(p.DataType);
+                    }
                     var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
                                                                                                        $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
                                                                                                        ",");

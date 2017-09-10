@@ -110,8 +110,8 @@ namespace Genie.Base.Reading.Concrete
 
             _queryToGetParameters = @"
                     SELECT 
-	                        p.SPECIFIC_NAME AS SP
-	                    ,p.PARAMETER_NAME AS [Name]
+                        p.SPECIFIC_NAME AS `SP`
+	                    ,p.PARAMETER_NAME AS `Name`
 	                    ,p.DATA_TYPE AS DataType
                     FROM INFORMATION_SCHEMA.PARAMETERS p
 	                    INNER JOIN INFORMATION_SCHEMA.ROUTINES r
