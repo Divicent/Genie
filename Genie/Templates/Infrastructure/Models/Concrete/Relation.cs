@@ -79,7 +79,11 @@ public override string Generate()
 
         if(atd.IsKey)
         {
-            attrProperties.AppendLine($@"		[Key]");                
+            attrProperties.AppendLine($@"		[Key]");
+        }
+        if(atd.IsIdentity) 
+        {
+            attrProperties.AppendLine($@"		[Identity]");
         }
         var rpn = atd.RefPropName != null ? atd.RefPropName + " = null;" : "";
         attrProperties.AppendLine($@"		public {atd.DataType} {atd.Name} {{ get {{ return {atd.FieldName}; }} set {{ if({atd.FieldName} == value ) {{ return; }}  {atd.FieldName} = value; __Updated(""{atd.Name}""); {rpn} }} }}");

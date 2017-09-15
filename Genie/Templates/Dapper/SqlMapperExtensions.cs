@@ -44,6 +44,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         }}
 
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> KeyProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> IdentityProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> TypeProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, string> TypeTableName = new ConcurrentDictionary<RuntimeTypeHandle, string>();
 
@@ -64,17 +65,24 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             var allProperties = TypePropertiesCache(type).ToList();
             var keyProperties = allProperties.Where(p => p.GetCustomAttributes(true).Any(a => a is KeyAttribute)).ToList();
 
-            if (keyProperties.Count == 0)
-            {{
-                var idProp = allProperties.FirstOrDefault(p => p.Name.ToLower() == ""id"");
-                if (idProp != null)
-                {{
-                    keyProperties.Add(idProp);
-                }}
-            }}
-
             KeyProperties[type.TypeHandle] = keyProperties;
             return keyProperties;
+        }}
+
+        private static IEnumerable<PropertyInfo> IdentityPropertiesCache(Type type)
+        {{
+
+            IEnumerable<PropertyInfo> pi;
+            if (IdentityProperties.TryGetValue(type.TypeHandle, out pi))
+            {{
+                return pi;
+            }}
+
+            var allProperties = TypePropertiesCache(type).ToList();
+            var identityProperties = allProperties.Where(p => p.GetCustomAttributes(true).Any(a => a is IdentityAttribute)).ToList();
+
+            IdentityProperties[type.TypeHandle] = identityProperties;
+            return identityProperties;
         }}
 
         private static IEnumerable<PropertyInfo> TypePropertiesCache(Type type)
@@ -251,20 +259,21 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>Identity of inserted entity</returns>
 	    public static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
-        {{
+      {{
 
-            var type = entityToInsert.GetType();
+          var type = entityToInsert.GetType();
 
-            var name = GetTableName(type);
+          var name = GetTableName(type);
 
-            var sbColumnList = new StringBuilder(null);
+          var sbColumnList = new StringBuilder(null);
 
-            var allProperties = TypePropertiesCache(type).ToList();
-            var keyProperties = KeyPropertiesCache(type).ToList();
-            var allPropertiesExceptKey = allProperties.Except(keyProperties).ToList();
+          var allProperties = TypePropertiesCache(type).ToList();
+          var keyProperties = KeyPropertiesCache(type).ToList();
+          var identityProperties = IdentityPropertiesCache(type).ToList();
+          var allPropertiesExceptIndentity = allProperties.Except(identityProperties).ToList();
 
 	        var index = 0;
-	        var lst = allProperties.Count == keyProperties.Count ? keyProperties : allPropertiesExceptKey;
+	        var lst = allProperties.Count == keyProperties.Count ? keyProperties : allPropertiesExceptIndentity;
             foreach (var property in lst)
 	        {{
                 sbColumnList.AppendFormat(""[{{0}}]"", property.Name);

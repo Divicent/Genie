@@ -225,7 +225,8 @@ namespace Genie.Base.Reading.Concrete
                             DataType = dataType,
                             FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
                                         databaseSchemaColumn.Name.Substring(1),
-                            Comment = databaseSchemaColumn.Comment
+                            Comment = databaseSchemaColumn.Comment,
+                            IsIdentity = databaseSchemaColumn.IsIdentity
                         };
 
                         if (databaseSchemaColumn.IsForeignKey)
@@ -281,10 +282,10 @@ namespace Genie.Base.Reading.Concrete
                             Comment = databaseSchemaColumn.Comment
                         };
 
-                        var exproperty = extendedProperties.FirstOrDefault(e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
-                        if (exproperty != null)
+                        var extendedProp = extendedProperties.FirstOrDefault(e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
+                        if (extendedProp != null)
                         {
-                            attr.Comment = exproperty.Property;
+                            attr.Comment = extendedProp.Property;
                         }
 
                         view.Attributes.Add(attr);
@@ -313,9 +314,6 @@ namespace Genie.Base.Reading.Concrete
 
                 foreach (var storedProcedure in storedProcedures)
                 {
-                    foreach(var p in storedProcedure.Parameters) {
-                        Console.WriteLine(p.DataType);
-                    }
                     var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
                                                                                                        $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
                                                                                                        ",");

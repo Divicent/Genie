@@ -37,13 +37,14 @@ namespace Genie.Base.Reading.Concrete
                 DataType = reader.GetString(5),
                 IsPrimaryKey = reader.GetInt32(6) == 1,
                 IsForeignKey = reader.GetInt32(7) == 1,
+                IsIdentity = reader.GetInt32(8) == 1,
             };
 
             if (column.IsForeignKey)
             {
 
-                column.ReferencedTableName = reader.GetString(8);
-                column.ReferencedColumnName = reader.GetString(9);
+                column.ReferencedTableName = reader.GetString(9);
+                column.ReferencedColumnName = reader.GetString(10);
             }
             return column;
         }
@@ -81,6 +82,7 @@ namespace Genie.Base.Reading.Concrete
                ,c.DATA_TYPE AS [DataType]
                ,CASE WHEN pkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsPrimaryKey
                ,CASE WHEN fkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsForeignKey
+               ,COLUMNPROPERTY(object_id('[' + t.TABLE_SCHEMA + ']' + '.[' + t.TABLE_NAME + ']'), c.COLUMN_NAME, 'IsIdentity') AS IsIdentity
                ,rct.TABLE_NAME AS ReferencedTableName
                ,rcuc.COLUMN_NAME AS ReferencedColumn
             FROM INFORMATION_SCHEMA.COLUMNS c

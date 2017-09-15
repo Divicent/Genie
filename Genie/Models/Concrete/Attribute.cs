@@ -15,6 +15,6 @@ namespace Genie.Models.Concrete
         public string RefPropName { get; set; }
         public bool IsLiteralType { get; set; }
         public string Comment { get; set; }
-
-    }
+        public bool IsIdentity { get; set; }
+  }
 }
