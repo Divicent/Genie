@@ -26,6 +26,7 @@ Genie is written in C# for .Net core framework
 ## Configuration
 
 It should be something like this 
+
 ```JSON
 {
     "connectionString": "...",
