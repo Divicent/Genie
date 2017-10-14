@@ -1,6 +1,6 @@
-﻿namespace Genie.Base.Configuration.Abstract
+﻿namespace Genie.Core.Base.Configuration.Abstract
 {
-    public interface IConfigurationEnumTable: IValidatableConfiguration
+    public interface IConfigurationEnumTable : IValidatableConfiguration
     {
         string Table { get; set; }
         string ValueColumn { get; set; }

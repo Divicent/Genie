@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Collections.Abstract
+namespace Genie.Core.Templates.Infrastructure.Collections.Abstract
 {
-    internal class IReferencedEntityCollectionTemplate: GenieTemplate
+    internal class IReferencedEntityCollectionTemplate : GenieTemplate
     {
-        public IReferencedEntityCollectionTemplate(string path) : base(path){}
+        public IReferencedEntityCollectionTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System.Collections.Generic;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
@@ -24,8 +25,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Collections.Abstract
 
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

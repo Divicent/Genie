@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class SimpleMemberMapTemplate: GenieTemplate
+    internal class SimpleMemberMapTemplate : GenieTemplate
     {
-        public SimpleMemberMapTemplate(string path) : base(path){}
+        public SimpleMemberMapTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using System.Reflection;
@@ -99,8 +100,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
     }}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

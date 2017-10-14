@@ -1,25 +1,29 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure
+namespace Genie.Core.Templates.Infrastructure
 {
-    internal class DapperContextTemplate: GenieTemplate
+    internal class DapperContextTemplate : GenieTemplate
     {
-        public DapperContextTemplate(string path) : base(path){}
+        public DapperContextTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-    var usingConfiguration = GenerationContext.Core ? "using Microsoft.Extensions.Configuration;": "using System.Configuration;";
-    var constructor = GenerationContext.Core ? 
-    @"        public DapperContext(IConfiguration configuration)
+        public override string Generate()
+        {
+            var usingConfiguration = GenerationContext.Core
+                ? "using Microsoft.Extensions.Configuration;"
+                : "using System.Configuration;";
+            var constructor = GenerationContext.Core
+                ? @"        public DapperContext(IConfiguration configuration)
         {{
 			 _connectionString = configuration[""connectionString""];
-		}}" : @"		public DapperContext()
+		}}"
+                : @"		public DapperContext()
         {{
 			var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
 			_connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
 		}}";
-L($@"
+            L($@"
 
 
 {usingConfiguration}
@@ -55,8 +59,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

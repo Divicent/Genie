@@ -1,9 +1,9 @@
-﻿using Genie.Base.ProcessOutput.Abstract;
+﻿using Genie.Core.Base.ProcessOutput.Abstract;
 
-namespace Genie.Base.ProcessOutput
+namespace Genie.Core.Base.ProcessOutput.Concrete
 {
     /// <summary>
-    /// A process output implementation that does not do anything
+    ///     A process output implementation that does not do anything
     /// </summary>
     internal class NonFunctioningProcessOutput : IProcessOutput
     {

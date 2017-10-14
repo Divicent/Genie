@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class WrappedReaderTemplate: GenieTemplate
+    internal class WrappedReaderTemplate : GenieTemplate
     {
-        public WrappedReaderTemplate(string path) : base(path){}
+        public WrappedReaderTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using System.Data;
@@ -199,8 +200,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

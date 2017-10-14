@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class IdentityAttributeTemplate: GenieTemplate
+    internal class IdentityAttributeTemplate : GenieTemplate
     {
-        public IdentityAttributeTemplate(string path) : base(path){}
+        public IdentityAttributeTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 
@@ -21,8 +22,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
     }}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

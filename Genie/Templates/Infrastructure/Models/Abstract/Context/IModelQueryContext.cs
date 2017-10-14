@@ -1,19 +1,19 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Models.Abstract.Context
+namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 {
-    internal class IModelQueryContextTemplate: GenieTemplate
+    internal class IModelQueryContextTemplate : GenieTemplate
     {
-		private readonly string _name;
-        public IModelQueryContextTemplate(string path, string name) : base(path) 
-		{
-			_name = name;
-		}
+        private readonly string _name;
 
-public override string Generate()
-{
-L($@"
+        public IModelQueryContextTemplate(string path, string name) : base(path)
+        {
+            _name = name;
+        }
+
+        public override string Generate()
+        {
+            L($@"
 using System;
 using System.Data;
 using System.Collections.Generic;
@@ -38,8 +38,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
 	}}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

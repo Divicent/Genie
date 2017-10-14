@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class DefaultTypeMapTemplate: GenieTemplate
+    internal class DefaultTypeMapTemplate : GenieTemplate
     {
-        public DefaultTypeMapTemplate(string path) : base(path){}
+        public DefaultTypeMapTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using System.Collections.Generic;
@@ -215,8 +216,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
     }}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

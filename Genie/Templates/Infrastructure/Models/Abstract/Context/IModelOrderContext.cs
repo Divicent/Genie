@@ -1,39 +1,36 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
 using System.Collections.Generic;
-using Genie.Models.Abstract;
 using System.Text;
+using Genie.Core.Base.Generating.Concrete;
+using Genie.Core.Models.Abstract;
 
-namespace Genie.Templates.Infrastructure.Models.Abstract.Context
+namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 {
-    internal class IModelOrderContextTemplate: GenieTemplate
+    internal class IModelOrderContextTemplate : GenieTemplate
     {
         private readonly List<ISimpleAttribute> _attributes;
-		private readonly string _name;
-        public IModelOrderContextTemplate(string path, string name, List<ISimpleAttribute> attributes) : base(path) 
+        private readonly string _name;
+
+        public IModelOrderContextTemplate(string path, string name, List<ISimpleAttribute> attributes) : base(path)
         {
             _name = name;
-			_attributes = attributes;
+            _attributes = attributes;
         }
 
-public override string Generate()
-{
-
-    var props = new StringBuilder();
-
-    foreach(var atd in _attributes) 
-    {
-        if(!string.IsNullOrWhiteSpace(atd.Comment)) 
+        public override string Generate()
         {
-            props.AppendLine($@"		/// <summary>
+            var props = new StringBuilder();
+
+            foreach (var atd in _attributes)
+            {
+                if (!string.IsNullOrWhiteSpace(atd.Comment))
+                    props.AppendLine($@"		/// <summary>
 		/// {atd.Comment}
-		/// </summary>");            
-        }
+		/// </summary>");
 
-        props.AppendLine($@"		IOrderElement<I{_name}OrderContext,I{_name}QueryContext> {atd.Name} {{ get; }}");
-    }
+                props.AppendLine($@"		IOrderElement<I{_name}OrderContext,I{_name}QueryContext> {atd.Name} {{ get; }}");
+            }
 
-L($@"
+            L($@"
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
@@ -46,8 +43,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
     }}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

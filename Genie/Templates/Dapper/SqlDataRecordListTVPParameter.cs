@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlDataRecordListTVPParameterTemplate: GenieTemplate
+    internal class SqlDataRecordListTVPParameterTemplate : GenieTemplate
     {
-        public SqlDataRecordListTVPParameterTemplate(string path) : base(path){}
+        public SqlDataRecordListTVPParameterTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using System.Collections.Generic;
@@ -65,8 +66,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 }}
 #endif");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

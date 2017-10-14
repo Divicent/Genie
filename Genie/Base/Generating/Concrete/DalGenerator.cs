@@ -1,42 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Genie.Base.Configuration.Abstract;
-using Genie.Base.Generating.Absract;
-using Genie.Base.ProcessOutput.Abstract;
-using Genie.Base.Reading.Abstract;
-using Genie.Templates.Infrastructure.Filters.Abstract;
-using Genie.Templates.Infrastructure.Filters.Concrete;
-using Genie.Models.Abstract;
-using Genie.Models.Concrete;
-using Genie.Templates.Abstract;
-using Genie.Templates.Infrastructure.Repositories;
-using Genie.Templates.Infrastructure.Interfaces;
-using Genie.Templates.Infrastructure.Models.Abstract.Context;
-using Genie.Templates.Infrastructure.Models.Concrete;
-using Genie.Templates.Infrastructure.Models.Concrete.Context;
-using Genie.Templates.Dapper;
-using Genie.Templates.Infrastructure;
-using Genie.Templates.Infrastructure.Collections.Abstract;
-using Genie.Templates.Infrastructure.Collections.Concrete;
-using Genie.Templates.Infrastructure.Actions.Abstract;
-using Genie.Templates.Infrastructure.Actions.Concrete;
-using Genie.Templates.Infrastructure.Enum;
-using Genie.Base.Exceptions;
+using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Base.Exceptions;
+using Genie.Core.Base.Generating.Absract;
+using Genie.Core.Base.ProcessOutput.Abstract;
+using Genie.Core.Base.Reading.Abstract;
+using Genie.Core.Models.Abstract;
+using Genie.Core.Models.Concrete;
+using Genie.Core.Templates.Abstract;
+using Genie.Core.Templates.Dapper;
+using Genie.Core.Templates.Infrastructure;
+using Genie.Core.Templates.Infrastructure.Actions.Abstract;
+using Genie.Core.Templates.Infrastructure.Actions.Concrete;
+using Genie.Core.Templates.Infrastructure.Collections.Abstract;
+using Genie.Core.Templates.Infrastructure.Collections.Concrete;
+using Genie.Core.Templates.Infrastructure.Enum;
+using Genie.Core.Templates.Infrastructure.Filters.Abstract;
+using Genie.Core.Templates.Infrastructure.Filters.Concrete;
+using Genie.Core.Templates.Infrastructure.Interfaces;
+using Genie.Core.Templates.Infrastructure.Models.Abstract.Context;
+using Genie.Core.Templates.Infrastructure.Models.Concrete;
+using Genie.Core.Templates.Infrastructure.Models.Concrete.Context;
+using Genie.Core.Templates.Infrastructure.Repositories;
 
-namespace Genie.Base.Generating.Concrete
+namespace Genie.Core.Base.Generating.Concrete
 {
     internal class DalGenerator : IDalGenerator
     {
-        public IEnumerable<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration, IProcessOutput output)
+        public IEnumerable<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration,
+            IProcessOutput output)
         {
-
             output.WriteInformation("Generating files.");
             List<ITemplate> files;
             try
             {
                 files = new List<ITemplate>
-                 {
+                {
                     new ConditionExtensionTemplate(@"Infrastructure/Enum/ConditionExtension"),
                     new IBoolFilterTemplate(@"Infrastructure/Filters/Abstract/IBoolFilter"),
                     new IDateFilterTemplate(@"Infrastructure/Filters/Abstract/IDateFilter"),
@@ -78,18 +78,19 @@ namespace Genie.Base.Generating.Concrete
                     new ProcedureContainerTemplate(@"Infrastructure/ProcedureContainer", schema),
                     new OperationTemplate(@"Infrastructure/Operation"),
 
-                    new IReferencedEntityCollectionTemplate(@"Infrastructure/Collections/Abstract/IReferencedEntityCollection"),
-                    new ReferencedEntityCollectionTemplate(@"Infrastructure/Collections/Concrete/ReferencedEntityCollection"),
+                    new IReferencedEntityCollectionTemplate(
+                        @"Infrastructure/Collections/Abstract/IReferencedEntityCollection"),
+                    new ReferencedEntityCollectionTemplate(
+                        @"Infrastructure/Collections/Concrete/ReferencedEntityCollection"),
 
                     new IAddActionTemplate(@"Infrastructure/Actions/Abstract/IAddAction"),
                     new AddActionTemplate(@"Infrastructure/Actions/Concrete/AddAction"),
 
                     new BaseModelTemplate(@"Infrastructure/Models/Concrete/BaseModel"),
                     new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext")
-                 };
+                };
 
                 if (configuration.NoDapper)
-                {
                     files.AddRange(new List<ITemplate>
                     {
                         new ISqlAdapterTemplate(@"Dapper/ISqlAdapter"),
@@ -99,11 +100,9 @@ namespace Genie.Base.Generating.Concrete
                         new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions"),
                         new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
                         new TableAttributeTemplate(@"Dapper/TableAttribute"),
-                        new WriteAttributeTemplate(@"Dapper/WriteAttribute"),
+                        new WriteAttributeTemplate(@"Dapper/WriteAttribute")
                     });
-                }
                 else
-                {
                     files.AddRange(new List<ITemplate>
                     {
                         new XmlHandlersTemplate(@"Dapper/XmlHandlers"),
@@ -136,7 +135,8 @@ namespace Genie.Base.Generating.Concrete
                         new SqlDataRecordListTVPParameterTemplate(@"Dapper/SqlDataRecordListTVPParameter"),
                         new SqlDataRecordHandlerTemplate(@"Dapper/SqlDataRecordHandler"),
                         new ExplicitConstructorAttributeTemplate(@"Dapper/ExplicitConstructorAttribute"),
-                        new DynamicParameters_CachedOutputSettersTemplate(@"Dapper/DynamicParameters.CachedOutputSetters"),
+                        new DynamicParameters_CachedOutputSettersTemplate(
+                            @"Dapper/DynamicParameters.CachedOutputSetters"),
                         new DynamicParameters_ParamInfoTemplate(@"Dapper/DynamicParameters.ParamInfo"),
                         new CommandDefinitionTemplate(@"Dapper/CommandDefinition"),
                         new CommandFlagsTemplate(@"Dapper/CommandFlags"),
@@ -156,35 +156,57 @@ namespace Genie.Base.Generating.Concrete
                         new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions"),
                         new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
                         new TableAttributeTemplate(@"Dapper/TableAttribute"),
-                        new WriteAttributeTemplate(@"Dapper/WriteAttribute"),
+                        new WriteAttributeTemplate(@"Dapper/WriteAttribute")
                     });
-                }
 
 
                 foreach (var relation in schema.Relations)
                 {
-                    files.Add(new RelationTemplate(@"Infrastructure/Models/Concrete/" + relation.Name,relation, schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum")));
+                    files.Add(new RelationTemplate(@"Infrastructure/Models/Concrete/" + relation.Name, relation,
+                        schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum")));
 
-                    files.Add(new IModelQueryContextTemplate(@"Infrastructure/Models/Abstract/Context/I" + relation.Name + "QueryContext", relation.Name));
-                    files.Add(new IModelFilterContextTemplate( @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "FilterContext", relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    files.Add(new IModelOrderContextTemplate(@"Infrastructure/Models/Abstract/Context/I" + relation.Name + "OrderContext", relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+                    files.Add(new IModelQueryContextTemplate(
+                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "QueryContext", relation.Name));
+                    files.Add(new IModelFilterContextTemplate(
+                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "FilterContext", relation.Name,
+                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+                    files.Add(new IModelOrderContextTemplate(
+                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "OrderContext", relation.Name,
+                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
 
-                    files.Add(new ModelQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/" + relation.Name + "QueryContext", relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    files.Add(new ModelFilterContextTemplate(@"Infrastructure/Models/Concrete/Context/" + relation.Name + "FilterContext", relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    files.Add(new ModelOrderContextTemplate(@"Infrastructure/Models/Concrete/Context/" + relation.Name + "OrderContext", relation.Name, relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+                    files.Add(new ModelQueryContextTemplate(
+                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "QueryContext", relation.Name,
+                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+                    files.Add(new ModelFilterContextTemplate(
+                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "FilterContext", relation.Name,
+                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+                    files.Add(new ModelOrderContextTemplate(
+                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "OrderContext", relation.Name,
+                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
                 }
 
                 foreach (var view in schema.Views)
                 {
                     files.Add(new ViewTemplate(@"Infrastructure/Models/Concrete/" + view.Name, view));
 
-                    files.Add(new IModelQueryContextTemplate(@"Infrastructure/Models/Abstract/Context/I" + view.Name + "QueryContext", view.Name));
-                    files.Add(new IModelFilterContextTemplate(@"Infrastructure/Models/Abstract/Context/I" + view.Name + "FilterContext", view.Name, view.Attributes));
-                    files.Add(new IModelOrderContextTemplate(@"Infrastructure/Models/Abstract/Context/I" + view.Name + "OrderContext", view.Name, view.Attributes));
+                    files.Add(new IModelQueryContextTemplate(
+                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "QueryContext", view.Name));
+                    files.Add(new IModelFilterContextTemplate(
+                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "FilterContext", view.Name,
+                        view.Attributes));
+                    files.Add(new IModelOrderContextTemplate(
+                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "OrderContext", view.Name,
+                        view.Attributes));
 
-                    files.Add(new ModelQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/" + view.Name + "QueryContext", view.Name, view.Attributes));
-                    files.Add(new ModelFilterContextTemplate(@"Infrastructure/Models/Concrete/Context/" + view.Name + "FilterContext", view.Name, view.Attributes));
-                    files.Add(new ModelOrderContextTemplate(@"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name, view.Attributes));
+                    files.Add(new ModelQueryContextTemplate(
+                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "QueryContext", view.Name,
+                        view.Attributes));
+                    files.Add(new ModelFilterContextTemplate(
+                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "FilterContext", view.Name,
+                        view.Attributes));
+                    files.Add(new ModelOrderContextTemplate(
+                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name,
+                        view.Attributes));
                 }
 
                 output.WriteInformation($"{files.Count} file found.");
@@ -200,13 +222,17 @@ namespace Genie.Base.Generating.Concrete
                 GenerationContext.Core = configuration.Core;
                 GenerationContext.NoDapper = configuration.NoDapper;
                 output.WriteInformation("Generating File content.");
-                List<ContentFile> contentFiles =
-                    files.Select(templateFile =>  new ContentFile { Path = templateFile.Path, Content = templateFile.Generate() } ).ToList();
+                var contentFiles =
+                    files.Select(templateFile => new ContentFile
+                    {
+                        Path = templateFile.Path,
+                        Content = templateFile.Generate()
+                    }).ToList();
 
                 output.WriteSuccess($"Successfully generated {contentFiles.Count} files.");
 
                 const string comment =
-@"// ------------------------------------------------------------------------------
+                    @"// ------------------------------------------------------------------------------
 // <auto-generated>
 //     This code was generated by Genie (http://www.github.com/rusith/genie).
 //  
@@ -223,13 +249,11 @@ namespace Genie.Base.Generating.Concrete
                 }
 
                 return contentFiles;
-
             }
             catch (Exception e)
             {
                 throw new GenieException("Unable to generate file content", e);
             }
-
         }
     }
 }

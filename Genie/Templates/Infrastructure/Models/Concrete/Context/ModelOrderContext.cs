@@ -1,33 +1,41 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
 using System.Collections.Generic;
-using Genie.Models.Abstract;
 using System.Text;
+using Genie.Core.Base.Generating.Concrete;
+using Genie.Core.Models.Abstract;
 
-namespace Genie.Templates.Infrastructure.Models.Concrete.Context
+namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 {
-    internal class ModelOrderContextTemplate: GenieTemplate
+    internal class ModelOrderContextTemplate : GenieTemplate
     {
         private readonly List<ISimpleAttribute> _attributes;
-		private readonly string _name;
-        public ModelOrderContextTemplate(string path, string name, List<ISimpleAttribute> attributes) : base(path) 
+        private readonly string _name;
+
+        public ModelOrderContextTemplate(string path, string name, List<ISimpleAttribute> attributes) : base(path)
         {
             _name = name;
-			_attributes = attributes;
+            _attributes = attributes;
         }
 
-public override string Generate()
-{
-    var fields = new StringBuilder();
-    var props = new StringBuilder();
+        public override string Generate()
+        {
+            var fields = new StringBuilder();
+            var props = new StringBuilder();
 
-    foreach(var atd in _attributes) 
-    {
-        fields.AppendLine($@"        private IOrderElement<I{_name}OrderContext, I{_name}QueryContext> {atd.FieldName};");
-        props.AppendLine($@"	    public IOrderElement<I{_name}OrderContext, I{_name}QueryContext> {atd.Name} {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new OrderElement<I{_name}OrderContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");        
-    }
+            foreach (var atd in _attributes)
+            {
+                fields.AppendLine(
+                    $@"        private IOrderElement<I{_name}OrderContext, I{_name}QueryContext> {atd.FieldName};");
+                props.AppendLine(
+                    $@"	    public IOrderElement<I{_name}OrderContext, I{_name}QueryContext> {
+                            atd.Name
+                        } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new OrderElement<I{
+                            _name
+                        }OrderContext, I{
+                            _name
+                        }QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
+            }
 
-L($@"
+            L($@"
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete;
@@ -45,8 +53,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
     }}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

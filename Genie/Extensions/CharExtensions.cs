@@ -1,9 +1,9 @@
-﻿namespace Genie.Extensions
+﻿namespace Genie.Core.Extensions
 {
     public static class CharExtensions
     {
         /// <summary>
-        /// Char is a vowel ?
+        ///     Char is a vowel ?
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
@@ -28,4 +28,3 @@
         }
     }
 }
-

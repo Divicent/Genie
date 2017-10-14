@@ -1,32 +1,31 @@
-﻿
-namespace Genie.Base.ProcessOutput.Abstract
+﻿namespace Genie.Core.Base.ProcessOutput.Abstract
 {
     /// <summary>
-    /// Used to give output to the generator user
+    ///     Used to give output to the generator user
     /// </summary>
     public interface IProcessOutput
     {
         /// <summary>
-        /// Writes a warning message to the output
+        ///     Writes a warning message to the output
         /// </summary>
         /// <param name="content"></param>
         void WriteWarning(string content);
 
         /// <summary>
-        /// Writes a success message to the output
+        ///     Writes a success message to the output
         /// </summary>
         /// <param name="content">Content to write</param>
         void WriteSuccess(string content);
 
         /// <summary>
-        /// Writes an information message to the output
+        ///     Writes an information message to the output
         /// </summary>
         /// <param name="content">Content to write</param>
         void WriteInformation(string content);
-        ///// </summary>
-        ///// Start to write a progress to the output
 
         ///// <summary>
+        ///// Start to write a progress to the output
+        ///// </summary>
         ///// <returns></returns>
         //IProgressReporter WriteProgress();
     }

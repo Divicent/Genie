@@ -1,30 +1,31 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Genie.Base.Configuration.Abstract;
-using Genie.Base.Exceptions;
-using Genie.Base.ProcessOutput.Abstract;
-using Genie.Base.Reading.Abstract;
-using Genie.Base.Reading.Concrete.Models;
-using Genie.Extensions;
-using Genie.Models.Abstract;
-using Genie.Models.Concrete;
-using Genie.Tools;
-using Enum = Genie.Models.Concrete.Enum;
-using Attribute = Genie.Models.Concrete.Attribute;
 using System.Data;
+using System.Linq;
+using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Base.Exceptions;
+using Genie.Core.Base.ProcessOutput.Abstract;
+using Genie.Core.Base.Reading.Abstract;
+using Genie.Core.Base.Reading.Concrete.Models;
+using Genie.Core.Extensions;
+using Genie.Core.Models.Abstract;
+using Genie.Core.Models.Concrete;
+using Genie.Core.Tools;
+using Attribute = Genie.Core.Models.Concrete.Attribute;
+using Enum = Genie.Core.Models.Concrete.Enum;
 
-namespace Genie.Base.Reading.Concrete
+namespace Genie.Core.Base.Reading.Concrete
 {
     /// <summary>
-    /// Base class for Sql schema reader implementations
-    /// Written while listening to Kasun Kalhara and Indrachapa :)
+    ///     Base class for Sql schema reader implementations
+    ///     Written while listening to Kasun Kalhara and Indrachapa :)
     /// </summary>
     internal abstract class SqlSchemaReader
     {
-        protected string _queryToReadColumns = "";
-        protected string _queryToGetParameters = "";
         protected string _queryToGetExtendedProperties = "";
+        protected string _queryToGetParameters = "";
+        protected string _queryToReadColumns = "";
+
         public IDatabaseSchema Read(IConfiguration configuration, IProcessOutput output)
         {
             output.WriteInformation("Reading database meta data.");
@@ -75,9 +76,7 @@ namespace Genie.Base.Reading.Concrete
                 using (var reader = commandToGetColumns.ExecuteReader())
                 {
                     while (reader.Read())
-                    {
                         databaseSchemaColumns.Add(ReadColumn(reader));
-                    }
 
                     var filtered = new List<DatabaseSchemaColumn>();
                     foreach (var databaseSchemaColumn in databaseSchemaColumns.Where(
@@ -117,20 +116,17 @@ namespace Genie.Base.Reading.Concrete
                 using (var reader = commandToGetParameters.ExecuteReader())
                 {
                     while (reader.Read())
-                    {
                         databaseParameters.Add(ReadParameter(reader));
-                    }
                 }
 
                 if (!string.IsNullOrWhiteSpace(_queryToGetExtendedProperties))
                 {
-                    var commandToGetExtendedProperties = GetCommand(_queryToGetExtendedProperties, connection, transaction);
+                    var commandToGetExtendedProperties =
+                        GetCommand(_queryToGetExtendedProperties, connection, transaction);
                     using (var reader = commandToGetExtendedProperties.ExecuteReader())
                     {
                         while (reader.Read())
-                        {
                             databaseExtendedProperties.Add(ReadExtendedProperty(reader));
-                        }
                     }
                 }
 
@@ -140,7 +136,6 @@ namespace Genie.Base.Reading.Concrete
 
             return Process(databaseSchemaColumns, databaseParameters, databaseExtendedProperties);
         }
-
 
 
         private static void ProcessRelationships(IReadOnlyCollection<IRelation> relations, IProcessOutput output)
@@ -158,17 +153,17 @@ namespace Genie.Base.Reading.Concrete
                  */
 
                 foreach (var relation in relations)
-                    foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
+                foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
+                {
+                    var referencingRelation =
+                        relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
+                    referencingRelation?.ReferenceLists.Add(new ReferenceList
                     {
-                        var referencingRelation =
-                            relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
-                        referencingRelation?.ReferenceLists.Add(new ReferenceList
-                        {
-                            ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
-                            ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
-                            ReferencedRelationName = relation.Name
-                        });
-                    }
+                        ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
+                        ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
+                        ReferencedRelationName = relation.Name
+                    });
+                }
             }
             catch (Exception e)
             {
@@ -178,9 +173,9 @@ namespace Genie.Base.Reading.Concrete
         }
 
 
-
         private static DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns,
-          IReadOnlyCollection<DatabaseParameter> parameters, IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties)
+            IReadOnlyCollection<DatabaseParameter> parameters,
+            IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties)
         {
             if (columns == null || columns.Count < 1)
                 return null;
@@ -242,11 +237,11 @@ namespace Genie.Base.Reading.Concrete
                             table.ForeignKeyAttributes.Add(fkAttribute);
                         }
 
-                        var extendedProperty = extendedProperties.FirstOrDefault(e => e.ObjectName == table.Name && e.ColumnName == attribute.Name);
+                        var extendedProperty =
+                            extendedProperties.FirstOrDefault(
+                                e => e.ObjectName == table.Name && e.ColumnName == attribute.Name);
                         if (extendedProperty != null)
-                        {
                             attribute.Comment = extendedProperty.Property;
-                        }
 
                         table.Attributes.Add(attribute);
                         break;
@@ -282,11 +277,11 @@ namespace Genie.Base.Reading.Concrete
                             Comment = databaseSchemaColumn.Comment
                         };
 
-                        var extendedProp = extendedProperties.FirstOrDefault(e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
+                        var extendedProp =
+                            extendedProperties.FirstOrDefault(
+                                e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
                         if (extendedProp != null)
-                        {
                             attr.Comment = extendedProp.Property;
-                        }
 
                         view.Attributes.Add(attr);
                         break;
@@ -309,7 +304,7 @@ namespace Genie.Base.Reading.Concrete
                     }
 
                     procedure.Parameters.Add(
-                        new ProcedureParameter { DataType = parameter.DataType, Name = parameter.Name });
+                        new ProcedureParameter {DataType = parameter.DataType, Name = parameter.Name});
                 }
 
                 foreach (var storedProcedure in storedProcedures)
@@ -326,7 +321,7 @@ namespace Genie.Base.Reading.Concrete
                 }
             }
 
-            return new DatabaseSchema { Procedures = storedProcedures, Relations = tables, Views = views };
+            return new DatabaseSchema {Procedures = storedProcedures, Relations = tables, Views = views};
         }
 
         private List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,
@@ -384,13 +379,19 @@ namespace Genie.Base.Reading.Concrete
                                 }
                                 catch (Exception e)
                                 {
-                                    throw new GenieException("Unable to read enum table using specified value type.", e);
+                                    throw new GenieException("Unable to read enum table using specified value type.",
+                                        e);
                                 }
                                 name = name.Replace(" ", "_");
-                                values.Add(new EnumValue { Name = name, FieldName = name.ToFieldName(), Value = value });
+                                values.Add(new EnumValue {Name = name, FieldName = name.ToFieldName(), Value = value});
                             }
 
-                            enums.Add(new Enum { Name = configurationEnumTable.Table + "Enum", Values = values, Type = type });
+                            enums.Add(new Enum
+                            {
+                                Name = configurationEnumTable.Table + "Enum",
+                                Values = values,
+                                Type = type
+                            });
                         }
                     }
                 }
@@ -407,6 +408,6 @@ namespace Genie.Base.Reading.Concrete
         protected abstract DatabaseSchemaColumn ReadColumn(IDataReader reader);
         protected abstract DatabaseParameter ReadParameter(IDataReader reader);
         protected abstract ExtendedPropertyInfo ReadExtendedProperty(IDataReader reader);
-        protected abstract string GetEnumValueQuery(IConfiguration configuration, IConfigurationEnumTable  enumTable);
+        protected abstract string GetEnumValueQuery(IConfiguration configuration, IConfigurationEnumTable enumTable);
     }
 }

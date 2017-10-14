@@ -1,34 +1,34 @@
 using System.Text;
-using Genie.Templates.Abstract;
+using Genie.Core.Templates.Abstract;
 
-namespace Genie.Templates 
+namespace Genie.Core.Templates
 {
-    internal abstract class GenieTemplate :ITemplate
+    internal abstract class GenieTemplate : ITemplate
     {
-        private StringBuilder _stringBuilder = new StringBuilder();
+        private readonly StringBuilder _stringBuilder = new StringBuilder();
 
-        public string Path { get; }
-
-        public GenieTemplate(string path) 
+        public GenieTemplate(string path)
         {
             Path = path;
         }
-        
-        protected void R(string str) 
+
+        public string Path { get; }
+
+        public abstract string Generate();
+
+        protected void R(string str)
         {
             _stringBuilder.Append(str);
         }
 
-        protected void L(string str) 
+        protected void L(string str)
         {
             _stringBuilder.AppendLine(str);
         }
 
-        protected string E() 
+        protected string E()
         {
             return _stringBuilder.ToString();
         }
-
-        public abstract string Generate();
     }
 }

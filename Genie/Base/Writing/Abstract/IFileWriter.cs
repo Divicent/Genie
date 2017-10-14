@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using Genie.Base.ProcessOutput.Abstract;
-using Genie.Models.Abstract;
+using Genie.Core.Base.ProcessOutput.Abstract;
+using Genie.Core.Models.Abstract;
 
-namespace Genie.Base.Writing.Abstract
+namespace Genie.Core.Base.Writing.Abstract
 {
     /// <summary>
-    /// Writes list of content file to the disk
+    ///     Writes list of content file to the disk
     /// </summary>
     internal interface IFileWriter
     {
         /// <summary>
-        /// Write files to the disk
+        ///     Write files to the disk
         /// </summary>
         /// <param name="files">Files to write</param>
         /// <param name="basePath">Base path </param>

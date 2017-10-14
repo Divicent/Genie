@@ -1,10 +1,10 @@
 using System.Data;
-using Genie.Base.Configuration.Abstract;
-using Genie.Base.Reading.Abstract;
-using Genie.Base.Reading.Concrete.Models;
+using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Base.Reading.Abstract;
+using Genie.Core.Base.Reading.Concrete.Models;
 using MySql.Data.MySqlClient;
 
-namespace Genie.Base.Reading.Concrete
+namespace Genie.Core.Base.Reading.Concrete
 {
     internal class MySqlSchemaReader : SqlSchemaReader, IDatabaseSchemaReader
     {
@@ -18,11 +18,12 @@ namespace Genie.Base.Reading.Concrete
             return new MySqlConnection(connectionString);
         }
 
-        protected override string GetEnumValueQuery(IConfiguration configuration,IConfigurationEnumTable configurationEnumTable)
+        protected override string GetEnumValueQuery(IConfiguration configuration,
+            IConfigurationEnumTable configurationEnumTable)
         {
             return $"SELECT `{configurationEnumTable.NameColumn}` AS `Name`," +
-                $"       `{configurationEnumTable.ValueColumn}` AS `Value`" +
-                $" FROM `{configuration.Schema}`.`{configurationEnumTable.Table}`";
+                   $"       `{configurationEnumTable.ValueColumn}` AS `Value`" +
+                   $" FROM `{configuration.Schema}`.`{configurationEnumTable.Table}`";
         }
 
         protected override DatabaseSchemaColumn ReadColumn(IDataReader reader)
@@ -43,7 +44,6 @@ namespace Genie.Base.Reading.Concrete
 
             if (column.IsForeignKey)
             {
-
                 column.ReferencedTableName = reader.GetString(8);
                 column.ReferencedColumnName = reader.GetString(9);
             }

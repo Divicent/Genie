@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace GenieCLI
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var fileName = "genieSettings.json";
             var output = new ProcessOutput();
@@ -31,16 +31,19 @@ namespace GenieCLI
 
             var path = $"./{fileName}";
 
-            var result = Genie.Base.Genie.Generate(path, output);
+            var result = Genie.Core.Base.Genie.Generate(path, output);
             if (result.Success)
                 Console.ReadLine();
+            else
+            {
+                Console.Write(":> ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(result.Error);
+                Console.ResetColor();
+                Console.ReadKey();
+            }
 
-            Console.Write(":> ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(result.Error);
-            Console.ResetColor();
 
-            Console.ReadLine();
         }
     }
 }

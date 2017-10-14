@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Genie.Base.Exceptions;
-using Genie.Base.ProcessOutput.Abstract;
-using Genie.Base.Writing.Abstract;
-using Genie.Models.Abstract;
+using Genie.Core.Base.Exceptions;
+using Genie.Core.Base.ProcessOutput.Abstract;
+using Genie.Core.Base.Writing.Abstract;
+using Genie.Core.Models.Abstract;
 
-namespace Genie.Base.Writing.Concrete
+namespace Genie.Core.Base.Writing.Concrete
 {
     internal class DalWriter : IFileWriter
     {

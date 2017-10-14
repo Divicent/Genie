@@ -1,9 +1,8 @@
-﻿
-using Genie.Models.Abstract;
+﻿using Genie.Core.Models.Abstract;
 
-namespace Genie.Models.Concrete
+namespace Genie.Core.Models.Concrete
 {
-    internal class ContentFile: IContentFile
+    internal class ContentFile : IContentFile
     {
         public string Content { get; set; }
         public string Path { get; set; }

@@ -1,32 +1,43 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Base.Reading.Abstract;
-using Genie.Templates;
 using System.Text;
+using Genie.Core.Base.Generating.Concrete;
+using Genie.Core.Base.Reading.Abstract;
 
-namespace Genie.Templates.Infrastructure
+namespace Genie.Core.Templates.Infrastructure
 {
-    internal class ProcedureContainerTemplate: GenieTemplate
+    internal class ProcedureContainerTemplate : GenieTemplate
     {
-		private IDatabaseSchema _schema;
-        public ProcedureContainerTemplate(string path, IDatabaseSchema schema) : base(path) 
-		{
-			_schema = schema;
-		}
+        private readonly IDatabaseSchema _schema;
 
-public override string Generate()
-{
-	var spList = new StringBuilder();
-	var spSingle = new StringBuilder();
-	var spVoid = new StringBuilder();
+        public ProcedureContainerTemplate(string path, IDatabaseSchema schema) : base(path)
+        {
+            _schema = schema;
+        }
 
-	foreach(var sp  in _schema.Procedures) 
-	{
-		spList.AppendLine($@"		public IEnumerable<T> {sp.Name}_List<T>({sp.ParamString}) {{ return Context.Connection.Query<T>(""EXEC {sp.Name} {sp.PassString}""); }}");
-		spSingle.AppendLine($@"		public T {sp.Name}_Single<T>({sp.ParamString}) {{ return Context.Connection.QueryFirstOrDefault<T>(""EXEC {sp.Name} {sp.PassString}""); }}");		
-		spVoid.AppendLine($@"		public void {sp.Name}_Void({sp.ParamString}) {{ Context.Connection.Execute(""EXEC {sp.Name} {sp.PassString}""); }}");
-	}
+        public override string Generate()
+        {
+            var spList = new StringBuilder();
+            var spSingle = new StringBuilder();
+            var spVoid = new StringBuilder();
 
-L($@"
+            foreach (var sp in _schema.Procedures)
+            {
+                spList.AppendLine(
+                    $@"		public IEnumerable<T> {sp.Name}_List<T>({
+                            sp.ParamString
+                        }) {{ return Context.Connection.Query<T>(""EXEC {sp.Name} {sp.PassString}""); }}");
+                spSingle.AppendLine(
+                    $@"		public T {sp.Name}_Single<T>({
+                            sp.ParamString
+                        }) {{ return Context.Connection.QueryFirstOrDefault<T>(""EXEC {sp.Name} {
+                            sp.PassString
+                        }""); }}");
+                spVoid.AppendLine(
+                    $@"		public void {sp.Name}_Void({sp.ParamString}) {{ Context.Connection.Execute(""EXEC {sp.Name} {
+                            sp.PassString
+                        }""); }}");
+            }
+
+            L($@"
 
 using System;
 using System.Collections.Generic;
@@ -56,8 +67,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

@@ -1,16 +1,17 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlServerAdapterTemplate: GenieTemplate
+    internal class SqlServerAdapterTemplate : GenieTemplate
     {
-        public SqlServerAdapterTemplate(string path) : base(path){}
+        public SqlServerAdapterTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-  var dapperUsing = GenerationContext.NoDapper ? "using Dapper;": "";
-L($@"
+        public override string Generate()
+        {
+            var dapperUsing = GenerationContext.NoDapper ? "using Dapper;" : "";
+            L($@"
 
 using System;
 using System.Collections.Generic;
@@ -46,8 +47,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
     }}
 }} ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

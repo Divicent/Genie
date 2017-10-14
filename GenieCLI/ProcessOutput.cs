@@ -1,5 +1,5 @@
 ﻿using System;
-using Genie.Base.ProcessOutput.Abstract;
+using Genie.Core.Base.ProcessOutput.Abstract;
 
 namespace GenieCLI
 {

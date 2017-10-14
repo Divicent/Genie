@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Filters.Concrete
+namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class ExpressionJoinTemplate: GenieTemplate
+    internal class ExpressionJoinTemplate : GenieTemplate
     {
-        public ExpressionJoinTemplate(string path) : base(path){}
+        public ExpressionJoinTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 
@@ -44,6 +45,25 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete
             }}
         }}
 
+        public IExpressionJoin<T, TQ> Start
+        {{
+            get
+            {{
+
+                _t.StartScope();
+                return this;
+            }}
+        }}
+
+        public IExpressionJoin<T, TQ> End
+        {{
+            get
+            {{
+                _t.EndScope();
+                return this;
+            }}
+        }}
+
         public TQ Filter()
         {{
             return _q;
@@ -52,8 +72,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

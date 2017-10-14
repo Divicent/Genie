@@ -1,6 +1,6 @@
-﻿using Genie.Base.ProcessOutput.Abstract;
+﻿using Genie.Core.Base.ProcessOutput.Abstract;
 
-namespace Genie.Base.ProcessOutput.Concrete
+namespace Genie.Core.Base.ProcessOutput.Concrete
 {
     internal class NonFunctionningProgressReporter : IProgressReporter
     {

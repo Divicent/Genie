@@ -1,4 +1,4 @@
-namespace Genie.Base.Reading.Concrete.Models
+namespace Genie.Core.Base.Reading.Concrete.Models
 {
     internal class ExtendedPropertyInfo
     {

@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Enum
+namespace Genie.Core.Templates.Infrastructure.Enum
 {
-    internal class ConditionExtensionTemplate: GenieTemplate
+    internal class ConditionExtensionTemplate : GenieTemplate
     {
-        public ConditionExtensionTemplate(string path) : base(path){}
+        public ConditionExtensionTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 
@@ -72,8 +73,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Enum
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

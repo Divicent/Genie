@@ -1,8 +1,8 @@
-﻿using Genie.Models.Abstract;
+﻿using Genie.Core.Models.Abstract;
 
-namespace Genie.Models.Concrete
+namespace Genie.Core.Models.Concrete
 {
-    internal class ForeignKeyAttribute: IForeignKeyAttribute
+    internal class ForeignKeyAttribute : IForeignKeyAttribute
     {
         public IAttribute ReferencingNonForeignKeyAttribute { get; set; }
 

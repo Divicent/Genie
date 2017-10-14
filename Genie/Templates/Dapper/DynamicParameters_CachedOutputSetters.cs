@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class DynamicParameters_CachedOutputSettersTemplate: GenieTemplate
+    internal class DynamicParameters_CachedOutputSettersTemplate : GenieTemplate
     {
-        public DynamicParameters_CachedOutputSettersTemplate(string path) : base(path){}
+        public DynamicParameters_CachedOutputSettersTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System.Collections;
 
@@ -28,8 +29,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
     }}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

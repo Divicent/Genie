@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Filters.Concrete
+namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class DateFilterTemplate: GenieTemplate
+    internal class DateFilterTemplate : GenieTemplate
     {
-        public DateFilterTemplate(string path) : base(path){}
+        public DateFilterTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using System.Linq;
@@ -105,8 +106,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }
