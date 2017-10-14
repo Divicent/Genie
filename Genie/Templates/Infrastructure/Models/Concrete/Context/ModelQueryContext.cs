@@ -1,43 +1,38 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
 using System.Collections.Generic;
-using Genie.Models.Abstract;
-using System.Text;
 using System.Linq;
+using System.Text;
+using Genie.Core.Base.Generating.Concrete;
+using Genie.Core.Models.Abstract;
 
-namespace Genie.Templates.Infrastructure.Models.Concrete.Context
+namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 {
-    internal class ModelQueryContextTemplate: GenieTemplate
+    internal class ModelQueryContextTemplate : GenieTemplate
     {
-		private readonly List<ISimpleAttribute> _attributes;
-		private readonly string _name;
+        private readonly List<ISimpleAttribute> _attributes;
+        private readonly string _name;
+
         public ModelQueryContextTemplate(string path, string name, List<ISimpleAttribute> attributes) : base(path)
-		{
+        {
             _name = name;
-			_attributes = attributes;
+            _attributes = attributes;
         }
 
-public override string Generate()
-{
+        public override string Generate()
+        {
+            var lit = _attributes.Where(a => a.IsLiteralType).ToList();
+            var nonLit = _attributes.Where(a => !a.IsLiteralType).ToList();
 
-   var lit = _attributes.Where(a => a.IsLiteralType).ToList();
-   var nonLit = _attributes.Where(a => !a.IsLiteralType).ToList();
-
-   var cases = new StringBuilder();
-   foreach(var a in lit) 
-   {
-	   cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
+            var cases = new StringBuilder();
+            foreach (var a in lit)
+                cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
 				propertyName = ""{a.Name}"";
 				return true;");
-   }
-   foreach(var a in nonLit) 
-   {
-	   cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
+            foreach (var a in nonLit)
+                cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
 				propertyName = ""{a.Name}"";
 				return false;");
-   }
 
-L($@"
+            L($@"
 using System;
 using System.Data;
 using System.Collections.Generic;
@@ -149,8 +144,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 	}}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

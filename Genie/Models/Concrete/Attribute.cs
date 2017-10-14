@@ -1,10 +1,9 @@
-﻿
-using Genie.Models.Abstract;
+﻿using Genie.Core.Models.Abstract;
 
-namespace Genie.Models.Concrete
+namespace Genie.Core.Models.Concrete
 {
     /// <summary>
-    /// represents an attribute
+    ///     represents an attribute
     /// </summary>
     internal class Attribute : IAttribute
     {
@@ -16,5 +15,5 @@ namespace Genie.Models.Concrete
         public bool IsLiteralType { get; set; }
         public string Comment { get; set; }
         public bool IsIdentity { get; set; }
-  }
+    }
 }

@@ -1,13 +1,12 @@
-using Genie.Base.Reading.Abstract;
-using System.Globalization;
+using Genie.Core.Base.Reading.Abstract;
 
-namespace Genie.Base.Reading.Concrete 
+namespace Genie.Core.Base.Reading.Concrete
 {
     internal class DatabaseSchemaReaderFactory : IDatabaseSchemaReaderFactory
     {
         public IDatabaseSchemaReader GetReader(string databaseManagementSystemName)
         {
-            switch(databaseManagementSystemName.ToLower()) 
+            switch (databaseManagementSystemName.ToLower())
             {
                 case "mssql":
                     return new SqlServerSchemaReader();

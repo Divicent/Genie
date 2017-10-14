@@ -1,10 +1,10 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
-using Genie.Base.Configuration.Abstract;
-using Genie.Base.Reading.Abstract;
-using Genie.Base.Reading.Concrete.Models;
+using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Base.Reading.Abstract;
+using Genie.Core.Base.Reading.Concrete.Models;
 
-namespace Genie.Base.Reading.Concrete
+namespace Genie.Core.Base.Reading.Concrete
 {
     internal class SqlServerSchemaReader : SqlSchemaReader, IDatabaseSchemaReader
     {
@@ -18,11 +18,12 @@ namespace Genie.Base.Reading.Concrete
             return new SqlConnection(connectionString);
         }
 
-        protected override string GetEnumValueQuery(IConfiguration configuration,IConfigurationEnumTable configurationEnumTable)
+        protected override string GetEnumValueQuery(IConfiguration configuration,
+            IConfigurationEnumTable configurationEnumTable)
         {
             return $"SELECT [{configurationEnumTable.NameColumn}] AS [Name]," +
-            $"       [{configurationEnumTable.ValueColumn}] AS [Value]" +
-            $" FROM [dbo].[{configurationEnumTable.Table}]";
+                   $"       [{configurationEnumTable.ValueColumn}] AS [Value]" +
+                   $" FROM [dbo].[{configurationEnumTable.Table}]";
         }
 
         protected override DatabaseSchemaColumn ReadColumn(IDataReader reader)
@@ -37,12 +38,11 @@ namespace Genie.Base.Reading.Concrete
                 DataType = reader.GetString(5),
                 IsPrimaryKey = reader.GetInt32(6) == 1,
                 IsForeignKey = reader.GetInt32(7) == 1,
-                IsIdentity = reader.GetInt32(8) == 1,
+                IsIdentity = reader.GetInt32(8) == 1
             };
 
             if (column.IsForeignKey)
             {
-
                 column.ReferencedTableName = reader.GetString(9);
                 column.ReferencedColumnName = reader.GetString(10);
             }
@@ -103,7 +103,6 @@ namespace Genie.Base.Reading.Concrete
             ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION";
 
 
-
             _queryToGetParameters = @"
                     SELECT 
                         p.SPECIFIC_NAME AS SP
@@ -128,5 +127,4 @@ namespace Genie.Base.Reading.Concrete
                     WHERE ep.[value] IS NOT NULL AND ep.[value] <> ''";
         }
     }
-
 }

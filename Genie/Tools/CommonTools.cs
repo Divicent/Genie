@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Genie.Tools
+namespace Genie.Core.Tools
 {
     public static class CommonTools
     {
@@ -20,14 +20,10 @@ namespace Genie.Tools
         {
             var csharpDatatype = ConvertDataType(dataType);
             if (!nullable)
-            {
                 return csharpDatatype;
-            }
-                
+
             if (NullableTypes.Contains(csharpDatatype))
-            {
                 return csharpDatatype + "?";
-            }
             return csharpDatatype;
         }
 

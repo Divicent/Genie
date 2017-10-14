@@ -1,8 +1,8 @@
-namespace Genie.Templates.Abstract 
+namespace Genie.Core.Templates.Abstract
 {
-    internal interface ITemplate 
+    internal interface ITemplate
     {
-        string Generate();
         string Path { get; }
+        string Generate();
     }
 }

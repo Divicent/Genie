@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class XmlHandlersTemplate: GenieTemplate
+    internal class XmlHandlersTemplate : GenieTemplate
     {
-        public XmlHandlersTemplate(string path) : base(path){}
+        public XmlHandlersTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System.Data;
 using System.Xml;
@@ -49,8 +50,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenieCLI", "GenieCLI\GenieCLI.csproj", "{6BDA3A24-35DB-477C-9281-393AE3FC8417}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Genie.Core", "Genie\Genie.Core.csproj", "{F1AE1602-6367-45F8-BD31-739653877158}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BDA3A24-35DB-477C-9281-393AE3FC8417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BDA3A24-35DB-477C-9281-393AE3FC8417}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BDA3A24-35DB-477C-9281-393AE3FC8417}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BDA3A24-35DB-477C-9281-393AE3FC8417}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1AE1602-6367-45F8-BD31-739653877158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1AE1602-6367-45F8-BD31-739653877158}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1AE1602-6367-45F8-BD31-739653877158}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1AE1602-6367-45F8-BD31-739653877158}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9821AA92-3EFD-4AF1-9461-14CF85B2A011}
+	EndGlobalSection
+EndGlobal

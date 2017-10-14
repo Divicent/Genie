@@ -1,8 +1,8 @@
-﻿using Genie.Models.Abstract;
+﻿using Genie.Core.Models.Abstract;
 
-namespace Genie.Models.Concrete
+namespace Genie.Core.Models.Concrete
 {
-    internal class ReferenceList: IReferenceList
+    internal class ReferenceList : IReferenceList
     {
         public string ReferencedRelationName { get; set; }
         public string ReferencedPropertyName { get; set; }

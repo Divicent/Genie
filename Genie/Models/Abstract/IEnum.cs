@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace Genie.Models.Abstract
+namespace Genie.Core.Models.Abstract
 {
     /// <summary>
-    /// Represents an enum of a table
+    ///     Represents an enum of a table
     /// </summary>
     internal interface IEnum
     {

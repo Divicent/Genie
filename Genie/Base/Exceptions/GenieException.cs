@@ -1,8 +1,15 @@
-namespace Genie.Base.Exceptions 
+using System;
+
+namespace Genie.Core.Base.Exceptions
 {
-    public class GenieException: System.Exception
+    public class GenieException : Exception
     {
-        public GenieException(string message): base(message) {}
-        public GenieException(string message, System.Exception innerException): base(message, innerException) {}
+        public GenieException(string message) : base(message)
+        {
+        }
+
+        public GenieException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

@@ -1,14 +1,14 @@
-﻿using Genie.Base.ProcessOutput.Abstract;
+﻿using Genie.Core.Base.ProcessOutput.Abstract;
 
-namespace Genie.Base.ObstacleManaging.Abstract
+namespace Genie.Core.Base.ObstacleManaging.Abstract
 {
     /// <summary>
-    /// Helps to clear the target folder before generating 
+    ///     Helps to clear the target folder before generating
     /// </summary>
     internal interface IObstacleManager
     {
         /// <summary>
-        /// Clears the provided folder
+        ///     Clears the provided folder
         /// </summary>
         /// <param name="basePath">folder path</param>
         /// <param name="output">a process output to use</param>

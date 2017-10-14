@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlDataRecordHandlerTemplate: GenieTemplate
+    internal class SqlDataRecordHandlerTemplate : GenieTemplate
     {
-        public SqlDataRecordHandlerTemplate(string path) : base(path){}
+        public SqlDataRecordHandlerTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 }}
 #endif");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

@@ -1,12 +1,13 @@
-using Genie.Templates.Abstract;
+using Genie.Core.Templates.Abstract;
 
-namespace Genie.Base.Generating.Concrete 
+namespace Genie.Core.Base.Generating.Concrete
 {
-    internal  class TemplateFile 
+    internal class TemplateFile
     {
         internal string Path { get; set; }
-        internal ITemplate Template {get;set; } 
-        internal string Generate() 
+        internal ITemplate Template { get; set; }
+
+        internal string Generate()
         {
             return Template.Generate();
         }

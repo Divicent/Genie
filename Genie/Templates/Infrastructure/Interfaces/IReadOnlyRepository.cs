@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Interfaces
+namespace Genie.Core.Templates.Infrastructure.Interfaces
 {
-    internal class IReadOnlyRepositoryTemplate: GenieTemplate
+    internal class IReadOnlyRepositoryTemplate : GenieTemplate
     {
-        public IReadOnlyRepositoryTemplate(string path) : base(path){}
+        public IReadOnlyRepositoryTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System.Collections.Generic;
 using System.Data;
@@ -31,8 +32,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

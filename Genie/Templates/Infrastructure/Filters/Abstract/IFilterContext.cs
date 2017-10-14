@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Filters.Abstract
+namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 {
-    internal class IFilterContextTemplate: GenieTemplate
+    internal class IFilterContextTemplate : GenieTemplate
     {
-        public IFilterContextTemplate(string path) : base(path){}
+        public IFilterContextTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System.Collections.Generic;
 
@@ -27,8 +28,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
 
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

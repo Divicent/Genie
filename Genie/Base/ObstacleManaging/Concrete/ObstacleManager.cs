@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
-using Genie.Base.Exceptions;
-using Genie.Base.ObstacleManaging.Abstract;
-using Genie.Base.ProcessOutput.Abstract;
+using Genie.Core.Base.Exceptions;
+using Genie.Core.Base.ObstacleManaging.Abstract;
+using Genie.Core.Base.ProcessOutput.Abstract;
 
-namespace Genie.Base.ObstacleManaging.Concrete
+namespace Genie.Core.Base.ObstacleManaging.Concrete
 {
     internal class ObstacleManager : IObstacleManager
     {
@@ -21,7 +21,7 @@ namespace Genie.Base.ObstacleManaging.Concrete
             {
                 throw new GenieException("Unable to clear target folder", e);
             }
-            
+
 
             output.WriteSuccess("Folder cleared.");
         }
@@ -29,14 +29,12 @@ namespace Genie.Base.ObstacleManaging.Concrete
         private static void DeleteIfExists(string path)
         {
             if (Directory.Exists(path))
-            {
                 DeleteDirectory(path);
-            }
         }
 
         /// <summary>
-        /// Depth-first recursive delete, with handling for descendant 
-        /// directories open in Windows Explorer.
+        ///     Depth-first recursive delete, with handling for descendant
+        ///     directories open in Windows Explorer.
         /// </summary>
         public static void DeleteDirectory(string path)
         {

@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Filters.Abstract
+namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 {
-    internal class IStringFilterTemplate: GenieTemplate
+    internal class IStringFilterTemplate : GenieTemplate
     {
-        public IStringFilterTemplate(string path) : base(path){}
+        public IStringFilterTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
 {{
@@ -34,8 +35,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
 
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

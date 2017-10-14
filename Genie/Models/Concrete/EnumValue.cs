@@ -1,8 +1,8 @@
-﻿using Genie.Models.Abstract;
+﻿using Genie.Core.Models.Abstract;
 
-namespace Genie.Models.Concrete
+namespace Genie.Core.Models.Concrete
 {
-    internal class EnumValue: IEnumValue
+    internal class EnumValue : IEnumValue
     {
         public string Name { get; set; }
         public object Value { get; set; }

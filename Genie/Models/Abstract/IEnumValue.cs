@@ -1,5 +1,4 @@
-﻿
-namespace Genie.Models.Abstract
+﻿namespace Genie.Core.Models.Abstract
 {
     internal interface IEnumValue
     {

@@ -1,7 +1,7 @@
-namespace Genie.Base.Reading.Abstract 
+namespace Genie.Core.Base.Reading.Abstract
 {
-    internal interface IDatabaseSchemaReaderFactory 
+    internal interface IDatabaseSchemaReaderFactory
     {
-        IDatabaseSchemaReader GetReader(string  databaseManagementSystemName);
+        IDatabaseSchemaReader GetReader(string databaseManagementSystemName);
     }
 }

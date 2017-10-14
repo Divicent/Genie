@@ -1,18 +1,19 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapperExtensionsTemplate: GenieTemplate
+    internal class SqlMapperExtensionsTemplate : GenieTemplate
     {
-        public SqlMapperExtensionsTemplate(string path) : base(path){}
+        public SqlMapperExtensionsTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-  var dapperUsing = GenerationContext.NoDapper ? "using Dapper;": "";
-  var write = GenerationContext.Core ? ".First()" : "[0]";
-  var getTypeInfo = GenerationContext.Core ? "GetTypeInfo()." : "";
-L($@"
+        public override string Generate()
+        {
+            var dapperUsing = GenerationContext.NoDapper ? "using Dapper;" : "";
+            var write = GenerationContext.Core ? ".First()" : "[0]";
+            var getTypeInfo = GenerationContext.Core ? "GetTypeInfo()." : "";
+            L($@"
 
 using System;
 using System.Collections.Concurrent;
@@ -242,7 +243,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             if (type.{getTypeInfo}IsInterface && name.StartsWith(""I""))
                 name = name.Substring(1);
 
-            var tableattr = type.{getTypeInfo}GetCustomAttributes(false).SingleOrDefault(attr => attr.GetType().Name == ""TableAttribute"") as
+            var tableattr = type.{
+                    getTypeInfo
+                }GetCustomAttributes(false).SingleOrDefault(attr => attr.GetType().Name == ""TableAttribute"") as
                 dynamic;
             if (tableattr != null)
                 name = tableattr.Name;
@@ -408,8 +411,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
     }}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

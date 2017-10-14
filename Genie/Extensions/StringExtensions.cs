@@ -1,9 +1,9 @@
-﻿namespace Genie.Extensions
+﻿namespace Genie.Core.Extensions
 {
     public static class StringExtensions
     {
         /// <summary>
-        /// Returns the last letter of the string
+        ///     Returns the last letter of the string
         /// </summary>
         /// <param name="str">string to get the last letter</param>
         /// <returns></returns>
@@ -13,7 +13,7 @@
         }
 
         /// <summary>
-        /// Converts a noun from singular to plural
+        ///     Converts a noun from singular to plural
         /// </summary>
         /// <param name="str">string to convert</param>
         /// <returns></returns>
@@ -24,9 +24,7 @@
                 return str;
 
             if (s.EndsWith("ch") || s.EndsWith("x") || s.EndsWith("s") || s.EndsWith("z"))
-            {
                 return str + "es";
-            }
 
             if (s.Length > 1 && s.EndsWith("y"))
             {

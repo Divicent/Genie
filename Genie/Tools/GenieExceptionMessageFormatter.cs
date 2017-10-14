@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text;
 
-namespace Genie.Tools
+namespace Genie.Core.Tools
 {
     internal class GenieExceptionMessageFormatter : IMessageFormatter
     {
         /// <summary>
-        /// Includes base message, exception message , exception stack trace
+        ///     Includes base message, exception message , exception stack trace
         /// </summary>
         /// <param name="exception">exception to include</param>
         /// <param name="baseMessage">base message or the title of the result</param>
@@ -21,7 +21,8 @@ namespace Genie.Tools
             return new StringBuilder(messageTemplate)
                 .Replace("$baseMessage$", baseMessage ?? "")
                 .Replace("$exceptionMessage$", exception.Message ?? "")
-                .Replace("$exceptionTrace$", exception.Source.Replace(Environment.NewLine, "\t\t" + Environment.NewLine))
+                .Replace("$exceptionTrace$",
+                    exception.Source.Replace(Environment.NewLine, "\t\t" + Environment.NewLine))
                 .ToString();
         }
     }

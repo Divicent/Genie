@@ -1,4 +1,4 @@
-namespace Genie.Base.Reading.Concrete.Models
+namespace Genie.Core.Base.Reading.Concrete.Models
 {
     internal class DatabaseParameter
     {
@@ -6,6 +6,4 @@ namespace Genie.Base.Reading.Concrete.Models
         public string Name { get; set; }
         public string DataType { get; set; }
     }
-
-
 }

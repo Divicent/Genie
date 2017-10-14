@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class DataTableHandlerTemplate: GenieTemplate
+    internal class DataTableHandlerTemplate : GenieTemplate
     {
-        public DataTableHandlerTemplate(string path) : base(path){}
+        public DataTableHandlerTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using System.Data;
@@ -32,8 +33,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 }}
 #endif");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

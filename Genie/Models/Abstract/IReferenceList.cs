@@ -1,22 +1,22 @@
-﻿namespace Genie.Models.Abstract
+﻿namespace Genie.Core.Models.Abstract
 {
     /// <summary>
-    /// A reference from one relation to another (one to many)
+    ///     A reference from one relation to another (one to many)
     /// </summary>
     internal interface IReferenceList
     {
         /// <summary>
-        /// Referenced Relation Name
+        ///     Referenced Relation Name
         /// </summary>
         string ReferencedRelationName { get; set; }
 
         /// <summary>
-        /// Referenced property name
+        ///     Referenced property name
         /// </summary>
         string ReferencedPropertyName { get; set; }
 
         /// <summary>
-        /// Referenced Property on this relation
+        ///     Referenced Property on this relation
         /// </summary>
         string ReferencedPropertyOnThisRelation { get; set; }
     }

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
-using Genie.Base.Configuration.Abstract;
-using Genie.Base.Reading.Abstract;
-using Genie.Models.Abstract;
+using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Base.Reading.Abstract;
+using Genie.Core.Models.Abstract;
 
-namespace Genie.Base.Generating.Absract
+namespace Genie.Core.Base.Generating.Absract
 {
     /// <summary>
-    /// Helps to generate a DAL content from a database schema and settings
+    ///     Helps to generate a DAL content from a database schema and settings
     /// </summary>
     internal interface IContentGenerator
     {
         /// <summary>
-        /// Generates list of file content using given schema and configurations
+        ///     Generates list of file content using given schema and configurations
         /// </summary>
         /// <param name="schema">schema to use</param>
         /// <param name="configuration">basic configuration to use</param>

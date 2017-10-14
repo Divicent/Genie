@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Genie.Base.Reading.Abstract;
-using Genie.Models.Abstract;
+using Genie.Core.Base.Reading.Abstract;
+using Genie.Core.Models.Abstract;
 
-namespace Genie.Base.Reading.Concrete
+namespace Genie.Core.Base.Reading.Concrete
 {
     internal class DatabaseSchema : IDatabaseSchema
     {

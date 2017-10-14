@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Dapper
+namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapper_TypeDeserializerCacheTemplate: GenieTemplate
+    internal class SqlMapper_TypeDeserializerCacheTemplate : GenieTemplate
     {
-        public SqlMapper_TypeDeserializerCacheTemplate(string path) : base(path){}
+        public SqlMapper_TypeDeserializerCacheTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using System.Collections;
@@ -174,8 +175,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

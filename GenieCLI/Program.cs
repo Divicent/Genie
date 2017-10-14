@@ -31,7 +31,7 @@ namespace GenieCLI
 
             var path = $"./{fileName}";
 
-            var result = Genie.Base.Genie.Generate(path, output);
+            var result = Genie.Core.Base.Genie.Generate(path, output);
             if (result.Success)
                 Console.ReadLine();
 

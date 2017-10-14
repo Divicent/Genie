@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Actions.Concrete
+namespace Genie.Core.Templates.Infrastructure.Actions.Concrete
 {
-    internal class AddActionTemplate: GenieTemplate
+    internal class AddActionTemplate : GenieTemplate
     {
-        public AddActionTemplate(string path) : base(path){}
+        public AddActionTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System;
 using {GenerationContext.BaseNamespace}.Infrastructure.Actions.Abstract;
@@ -36,8 +37,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Actions.Concrete
     }}
 }}");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

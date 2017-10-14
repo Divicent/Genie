@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure
+namespace Genie.Core.Templates.Infrastructure
 {
-    internal class OperationTemplate: GenieTemplate
+    internal class OperationTemplate : GenieTemplate
     {
-        public OperationTemplate(string path) : base(path){}
+        public OperationTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
@@ -30,8 +31,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Interfaces
+namespace Genie.Core.Templates.Infrastructure.Interfaces
 {
-    internal class IDapperContextTemplate: GenieTemplate
+    internal class IDapperContextTemplate : GenieTemplate
     {
-        public IDapperContextTemplate(string path) : base(path){}
+        public IDapperContextTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System.Data;
 
@@ -29,8 +30,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

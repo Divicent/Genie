@@ -1,15 +1,16 @@
-using Genie.Base.Generating.Concrete;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
 
-namespace Genie.Templates.Infrastructure.Filters.Concrete
+namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class BaseOrderContextTemplate: GenieTemplate
+    internal class BaseOrderContextTemplate : GenieTemplate
     {
-        public BaseOrderContextTemplate(string path) : base(path){}
+        public BaseOrderContextTemplate(string path) : base(path)
+        {
+        }
 
-public override string Generate()
-{
-L($@"
+        public override string Generate()
+        {
+            L($@"
 
 using System.Collections.Generic;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
@@ -27,8 +28,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }

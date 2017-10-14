@@ -1,38 +1,47 @@
 using System.Text;
-using Genie.Base.Generating.Concrete;
-using Genie.Base.Reading.Abstract;
-using Genie.Templates;
+using Genie.Core.Base.Generating.Concrete;
+using Genie.Core.Base.Reading.Abstract;
 
-namespace Genie.Templates.Infrastructure
+namespace Genie.Core.Templates.Infrastructure
 {
-    internal class UnitOfWorkTemplate: GenieTemplate
+    internal class UnitOfWorkTemplate : GenieTemplate
     {
         private readonly IDatabaseSchema _schema;
-        public UnitOfWorkTemplate(string path, IDatabaseSchema schema) : base(path) 
+
+        public UnitOfWorkTemplate(string path, IDatabaseSchema schema) : base(path)
         {
             _schema = schema;
         }
 
-public override string Generate()
-{
-    var relationFields = new StringBuilder();
-    var viewFields = new StringBuilder();
-    var relationRepositories = new StringBuilder();
-    var viewRepositories = new StringBuilder();
+        public override string Generate()
+        {
+            var relationFields = new StringBuilder();
+            var viewFields = new StringBuilder();
+            var relationRepositories = new StringBuilder();
+            var viewRepositories = new StringBuilder();
 
-    foreach(var relation in _schema.Relations) 
-    {
-        relationFields.AppendLine($@"        private I{relation.Name}Repository {relation.FieldName}Repository;");
-        relationRepositories.AppendLine($@"        public I{relation.Name}Repository {relation.Name}Repository {{ get {{ return {relation.FieldName}Repository ?? ({relation.FieldName}Repository = new {relation.Name}Repository(Context, this)); }} }}");
-    }
+            foreach (var relation in _schema.Relations)
+            {
+                relationFields.AppendLine(
+                    $@"        private I{relation.Name}Repository {relation.FieldName}Repository;");
+                relationRepositories.AppendLine(
+                    $@"        public I{relation.Name}Repository {relation.Name}Repository {{ get {{ return {
+                            relation.FieldName
+                        }Repository ?? ({relation.FieldName}Repository = new {
+                            relation.Name
+                        }Repository(Context, this)); }} }}");
+            }
 
-    foreach(var view in _schema.Views) 
-    {
-        viewFields.AppendLine($@"        private I{view.Name}Repository {view.FieldName}Repository;");
-        viewRepositories.AppendLine($@"        public I{view.Name}Repository {view.Name}Repository {{ get {{ return {view.FieldName}Repository ?? ({view.FieldName}Repository = new {view.Name}Repository(Context)); }} }}");
-    }
+            foreach (var view in _schema.Views)
+            {
+                viewFields.AppendLine($@"        private I{view.Name}Repository {view.FieldName}Repository;");
+                viewRepositories.AppendLine(
+                    $@"        public I{view.Name}Repository {view.Name}Repository {{ get {{ return {
+                            view.FieldName
+                        }Repository ?? ({view.FieldName}Repository = new {view.Name}Repository(Context)); }} }}");
+            }
 
-L($@"
+            L($@"
 
 using System;
 using System.Collections.Generic;
@@ -168,8 +177,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 }}
 ");
 
-return E();
-    
-}
+            return E();
+        }
     }
 }
