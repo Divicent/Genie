@@ -100,79 +100,78 @@ namespace Genie.Core.Base.Generating
                     new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext")
                 };
 
-                if (configuration.NoDapper)
-                {
-                    files.AddRange(new List<ITemplate>
-                    {
-                        new ISqlAdapterTemplate(@"Dapper/ISqlAdapter"),
-                        new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
-                        new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
-                        new PostgresAdapterTemplate(@"Dapper/PostgresAdapter"),
-                        new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions"),
-                        new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
-                        new TableAttributeTemplate(@"Dapper/TableAttribute"),
-                        new WriteAttributeTemplate(@"Dapper/WriteAttribute")
-                    });
-                }
-                else
-                {
-                    files.AddRange(new List<ITemplate>
-                    {
-                        new XmlHandlersTemplate(@"Dapper/XmlHandlers"),
-                        new WrappedReaderTemplate(@"Dapper/WrappedReader"),
-                        new WrappedDataReaderTemplate(@"Dapper/WrappedDataReader"),
-                        new UdtTypeHandlerTemplate(@"Dapper/UdtTypeHandler"),
-                        new TypeExtensionsTemplate(@"Dapper/TypeExtensions"),
-                        new TableValuedParameterTemplate(@"Dapper/TableValuedParameter"),
-                        new SqlMapper_TypeHandlerCacheTemplate(@"Dapper/SqlMapper.TypeHandlerCache"),
-                        new SqlMapper_TypeHandlerTemplate(@"Dapper/SqlMapper.TypeHandler"),
-                        new SqlMapper_TypeDeserializerCacheTemplate(@"Dapper/SqlMapper.TypeDeserializerCache"),
-                        new SqlMapper_SettingsTemplate(@"Dapper/SqlMapper.Settings"),
-                        new SqlMapper_LiteralTokenTemplate(@"Dapper/SqlMapper.LiteralToken"),
-                        new SqlMapper_LinkTemplate(@"Dapper/SqlMapper.Link"),
-                        new SqlMapper_ITypeMapTemplate(@"Dapper/SqlMapper.ITypeMap"),
-                        new SqlMapper_ITypeHandlerTemplate(@"Dapper/SqlMapper.ITypeHandler"),
-                        new SqlMapper_IParameterLookupTemplate(@"Dapper/SqlMapper.IParameterLookup"),
-                        new SqlMapper_IParameterCallbacksTemplate(@"Dapper/SqlMapper.IParameterCallbacks"),
-                        new SqlMapper_IMemberMapTemplate(@"Dapper/SqlMapper.IMemberMap"),
-                        new SqlMapper_IDynamicParametersTemplate(@"Dapper/SqlMapper.IDynamicParameters"),
-                        new SqlMapper_IdentityTemplate(@"Dapper/SqlMapper.Identity"),
-                        new SqlMapper_IDataReaderTemplate(@"Dapper/SqlMapper.IDataReader"),
-                        new SqlMapper_ICustomQueryParameterTemplate(@"Dapper/SqlMapper.ICustomQueryParameter"),
-                        new SqlMapper_GridReaderTemplate(@"Dapper/SqlMapper.GridReader"),
-                        new SqlMapper_DontMapTemplate(@"Dapper/SqlMapper.DontMap"),
-                        new SqlMapper_DeserializerStateTemplate(@"Dapper/SqlMapper.DeserializerState"),
-                        new SqlMapper_DapperTableTemplate(@"Dapper/SqlMapper.DapperTable"),
-                        new SqlMapper_DapperRowMetaObjectTemplate(@"Dapper/SqlMapper.DapperRowMetaObject"),
-                        new SqlMapper_CacheInfoTemplate(@"Dapper/SqlMapper.CacheInfo"),
-                        new SqlDataRecordListTVPParameterTemplate(@"Dapper/SqlDataRecordListTVPParameter"),
-                        new SqlDataRecordHandlerTemplate(@"Dapper/SqlDataRecordHandler"),
-                        new ExplicitConstructorAttributeTemplate(@"Dapper/ExplicitConstructorAttribute"),
-                        new DynamicParameters_CachedOutputSettersTemplate(
-                            @"Dapper/DynamicParameters.CachedOutputSetters"),
-                        new DynamicParameters_ParamInfoTemplate(@"Dapper/DynamicParameters.ParamInfo"),
-                        new CommandDefinitionTemplate(@"Dapper/CommandDefinition"),
-                        new CommandFlagsTemplate(@"Dapper/CommandFlags"),
-                        new DapperRowTemplate(@"Dapper/DapperRow"),
-                        new DataTableHandlerTemplate(@"Dapper/DataTableHandler"),
-                        new SqlMapperTemplate(@"Dapper/SqlMapper"),
-                        new CustomPropertyTypeMapTemplate(@"Dapper/CustomPropertyTypeMap"),
-                        new DbStringTemplate(@"Dapper/DbString"),
-                        new DefaultTypeMapTemplate(@"Dapper/DefaultTypeMap"),
-                        new DynamicParametersTemplate(@"Dapper/DynamicParameters"),
-                        new FeatureSupportTemplate(@"Dapper/FeatureSupport"),
-                        new ISqlAdapterTemplate(@"Dapper/ISqlAdapter"),
-                        new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
-                        new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
-                        new PostgresAdapterTemplate(@"Dapper/PostgresAdapter"),
-                        new SimpleMemberMapTemplate(@"Dapper/SimpleMemberMap"),
-                        new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions"),
-                        new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
-                        new TableAttributeTemplate(@"Dapper/TableAttribute"),
-                        new WriteAttributeTemplate(@"Dapper/WriteAttribute")
-                    });
-                }
+                files.AddRange(
+                    
+                    configuration.NoDapper ?
+                        new List<ITemplate>
+                        {
+                            new ISqlAdapterTemplate(@"Dapper/ISqlAdapter"),
+                            new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
+                            new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
+                            new PostgresAdapterTemplate(@"Dapper/PostgresAdapter"),
+                            new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions"),
+                            new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
+                            new TableAttributeTemplate(@"Dapper/TableAttribute"),
+                            new WriteAttributeTemplate(@"Dapper/WriteAttribute")
+                        } :
 
+                        new List<ITemplate>
+                        {
+                            new XmlHandlersTemplate(@"Dapper/XmlHandlers"),
+                            new WrappedReaderTemplate(@"Dapper/WrappedReader"),
+                            new WrappedDataReaderTemplate(@"Dapper/WrappedDataReader"),
+                            new UdtTypeHandlerTemplate(@"Dapper/UdtTypeHandler"),
+                            new TypeExtensionsTemplate(@"Dapper/TypeExtensions"),
+                            new TableValuedParameterTemplate(@"Dapper/TableValuedParameter"),
+                            new SqlMapper_TypeHandlerCacheTemplate(@"Dapper/SqlMapper.TypeHandlerCache"),
+                            new SqlMapper_TypeHandlerTemplate(@"Dapper/SqlMapper.TypeHandler"),
+                            new SqlMapper_TypeDeserializerCacheTemplate(@"Dapper/SqlMapper.TypeDeserializerCache"),
+                            new SqlMapper_SettingsTemplate(@"Dapper/SqlMapper.Settings"),
+                            new SqlMapper_LiteralTokenTemplate(@"Dapper/SqlMapper.LiteralToken"),
+                            new SqlMapper_LinkTemplate(@"Dapper/SqlMapper.Link"),
+                            new SqlMapper_ITypeMapTemplate(@"Dapper/SqlMapper.ITypeMap"),
+                            new SqlMapper_ITypeHandlerTemplate(@"Dapper/SqlMapper.ITypeHandler"),
+                            new SqlMapper_IParameterLookupTemplate(@"Dapper/SqlMapper.IParameterLookup"),
+                            new SqlMapper_IParameterCallbacksTemplate(@"Dapper/SqlMapper.IParameterCallbacks"),
+                            new SqlMapper_IMemberMapTemplate(@"Dapper/SqlMapper.IMemberMap"),
+                            new SqlMapper_IDynamicParametersTemplate(@"Dapper/SqlMapper.IDynamicParameters"),
+                            new SqlMapper_IdentityTemplate(@"Dapper/SqlMapper.Identity"),
+                            new SqlMapper_IDataReaderTemplate(@"Dapper/SqlMapper.IDataReader"),
+                            new SqlMapper_ICustomQueryParameterTemplate(@"Dapper/SqlMapper.ICustomQueryParameter"),
+                            new SqlMapper_GridReaderTemplate(@"Dapper/SqlMapper.GridReader"),
+                            new SqlMapper_DontMapTemplate(@"Dapper/SqlMapper.DontMap"),
+                            new SqlMapper_DeserializerStateTemplate(@"Dapper/SqlMapper.DeserializerState"),
+                            new SqlMapper_DapperTableTemplate(@"Dapper/SqlMapper.DapperTable"),
+                            new SqlMapper_DapperRowMetaObjectTemplate(@"Dapper/SqlMapper.DapperRowMetaObject"),
+                            new SqlMapper_CacheInfoTemplate(@"Dapper/SqlMapper.CacheInfo"),
+                            new SqlDataRecordListTVPParameterTemplate(@"Dapper/SqlDataRecordListTVPParameter"),
+                            new SqlDataRecordHandlerTemplate(@"Dapper/SqlDataRecordHandler"),
+                            new ExplicitConstructorAttributeTemplate(@"Dapper/ExplicitConstructorAttribute"),
+                            new DynamicParameters_CachedOutputSettersTemplate(
+                                @"Dapper/DynamicParameters.CachedOutputSetters"),
+                            new DynamicParameters_ParamInfoTemplate(@"Dapper/DynamicParameters.ParamInfo"),
+                            new CommandDefinitionTemplate(@"Dapper/CommandDefinition"),
+                            new CommandFlagsTemplate(@"Dapper/CommandFlags"),
+                            new DapperRowTemplate(@"Dapper/DapperRow"),
+                            new DataTableHandlerTemplate(@"Dapper/DataTableHandler"),
+                            new SqlMapperTemplate(@"Dapper/SqlMapper"),
+                            new CustomPropertyTypeMapTemplate(@"Dapper/CustomPropertyTypeMap"),
+                            new DbStringTemplate(@"Dapper/DbString"),
+                            new DefaultTypeMapTemplate(@"Dapper/DefaultTypeMap"),
+                            new DynamicParametersTemplate(@"Dapper/DynamicParameters"),
+                            new FeatureSupportTemplate(@"Dapper/FeatureSupport"),
+                            new ISqlAdapterTemplate(@"Dapper/ISqlAdapter"),
+                            new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
+                            new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
+                            new PostgresAdapterTemplate(@"Dapper/PostgresAdapter"),
+                            new SimpleMemberMapTemplate(@"Dapper/SimpleMemberMap"),
+                            new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions"),
+                            new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
+                            new TableAttributeTemplate(@"Dapper/TableAttribute"),
+                            new WriteAttributeTemplate(@"Dapper/WriteAttribute")
+                        }
+                    );
+               
                 foreach (var relation in schema.Relations)
                 {
                     files.Add(new RelationTemplate(@"Infrastructure/Models/Concrete/" + relation.Name, relation,

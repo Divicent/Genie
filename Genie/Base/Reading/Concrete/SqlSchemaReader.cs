@@ -211,107 +211,106 @@ namespace Genie.Core.Base.Reading.Concrete
             {
                 string dataType;
                 bool lit;
-                switch (databaseSchemaColumn.Type)
+                if (databaseSchemaColumn.Type == "BASE TABLE")
                 {
-                    case "BASE TABLE":
-                        var table = tables.FirstOrDefault(t => t.Name == databaseSchemaColumn.TableName);
-                        if (table == null)
+                    var table = tables.FirstOrDefault(t => t.Name == databaseSchemaColumn.TableName);
+                    if (table == null)
+                    {
+                        table = new Relation
                         {
-                            table = new Relation
-                            {
-                                Name = databaseSchemaColumn.TableName,
-                                FieldName =
-                                    "_" + (databaseSchemaColumn.TableName.First() + "").ToLower() +
-                                    databaseSchemaColumn.TableName.Substring(1),
-                                Attributes = new List<IAttribute>(),
-                                ForeignKeyAttributes = new List<IForeignKeyAttribute>(),
-                                ReferenceLists = new List<IReferenceList>(),
-                                Comment = databaseSchemaColumn.TableComment
-                            };
-
-                            tables.Add(table);
-                        }
-                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
-                            databaseSchemaColumn.Nullable);
-                        lit = dataType == "string" || dataType.StartsWith("DateTime");
-
-                        var attribute = new Attribute
-                        {
-                            IsLiteralType = lit,
-                            IsKey = databaseSchemaColumn.IsPrimaryKey,
-                            Name = databaseSchemaColumn.Name,
-                            DataType = dataType,
-                            FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
-                                        databaseSchemaColumn.Name.Substring(1),
-                            Comment = databaseSchemaColumn.Comment,
-                            IsIdentity = databaseSchemaColumn.IsIdentity
+                            Name = databaseSchemaColumn.TableName,
+                            FieldName =
+                                "_" + (databaseSchemaColumn.TableName.First() + "").ToLower() +
+                                databaseSchemaColumn.TableName.Substring(1),
+                            Attributes = new List<IAttribute>(),
+                            ForeignKeyAttributes = new List<IForeignKeyAttribute>(),
+                            ReferenceLists = new List<IReferenceList>(),
+                            Comment = databaseSchemaColumn.TableComment
                         };
 
-                        if (databaseSchemaColumn.IsForeignKey)
+                        tables.Add(table);
+                    }
+                    dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
+                        databaseSchemaColumn.Nullable);
+                    lit = dataType == "string" || dataType.StartsWith("DateTime");
+
+                    var attribute = new Attribute
+                    {
+                        IsLiteralType = lit,
+                        IsKey = databaseSchemaColumn.IsPrimaryKey,
+                        Name = databaseSchemaColumn.Name,
+                        DataType = dataType,
+                        FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
+                                    databaseSchemaColumn.Name.Substring(1),
+                        Comment = databaseSchemaColumn.Comment,
+                        IsIdentity = databaseSchemaColumn.IsIdentity
+                    };
+
+                    if (databaseSchemaColumn.IsForeignKey)
+                    {
+                        var fkAttribute = new ForeignKeyAttribute
                         {
-                            var fkAttribute = new ForeignKeyAttribute
-                            {
-                                ReferencingNonForeignKeyAttribute = attribute,
-                                ReferencingRelationName = databaseSchemaColumn.ReferencedTableName,
-                                ReferencingTableColumnName = databaseSchemaColumn.ReferencedColumnName
-                            };
-
-                            attribute.RefPropName = attribute.FieldName + "Obj";
-                            table.ForeignKeyAttributes.Add(fkAttribute);
-                        }
-
-                        var extendedProperty =
-                            extendedProperties.FirstOrDefault(
-                                e => e.ObjectName == table.Name && e.ColumnName == attribute.Name);
-                        if (extendedProperty != null)
-                        {
-                            attribute.Comment = extendedProperty.Property;
-                        }
-
-                        table.Attributes.Add(attribute);
-                        break;
-                    case "VIEW":
-                        var view = views.FirstOrDefault(t => t.Name == databaseSchemaColumn.TableName);
-                        if (view == null)
-                        {
-                            view = new View
-                            {
-                                Comment = databaseSchemaColumn.TableComment,
-                                FieldName =
-                                    "_" + (databaseSchemaColumn.TableName.First() + "").ToLower() +
-                                    databaseSchemaColumn.TableName.Substring(1),
-                                Name = databaseSchemaColumn.TableName,
-                                Attributes = new List<ISimpleAttribute>()
-                            };
-
-                            views.Add(view);
-                        }
-
-                        dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
-                            databaseSchemaColumn.Nullable);
-                        lit = dataType == "string" || dataType.StartsWith("DateTime");
-
-
-                        var attr = new SimpleAttribute
-                        {
-                            Name = databaseSchemaColumn.Name,
-                            IsLiteralType = lit,
-                            FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
-                                        databaseSchemaColumn.Name.Substring(1),
-                            DataType = dataType,
-                            Comment = databaseSchemaColumn.Comment
+                            ReferencingNonForeignKeyAttribute = attribute,
+                            ReferencingRelationName = databaseSchemaColumn.ReferencedTableName,
+                            ReferencingTableColumnName = databaseSchemaColumn.ReferencedColumnName
                         };
 
-                        var extendedProp =
-                            extendedProperties.FirstOrDefault(
-                                e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
-                        if (extendedProp != null)
-                        {
-                            attr.Comment = extendedProp.Property;
-                        }
+                        attribute.RefPropName = attribute.FieldName + "Obj";
+                        table.ForeignKeyAttributes.Add(fkAttribute);
+                    }
 
-                        view.Attributes.Add(attr);
-                        break;
+                    var extendedProperty =
+                        extendedProperties.FirstOrDefault(
+                            e => e.ObjectName == table.Name && e.ColumnName == attribute.Name);
+                    if (extendedProperty != null)
+                    {
+                        attribute.Comment = extendedProperty.Property;
+                    }
+
+                    table.Attributes.Add(attribute);
+                }
+                else if (databaseSchemaColumn.Type == "VIEW")
+                {
+                    var view = views.FirstOrDefault(t => t.Name == databaseSchemaColumn.TableName);
+                    if (view == null)
+                    {
+                        view = new View
+                        {
+                            Comment = databaseSchemaColumn.TableComment,
+                            FieldName =
+                                "_" + (databaseSchemaColumn.TableName.First() + "").ToLower() +
+                                databaseSchemaColumn.TableName.Substring(1),
+                            Name = databaseSchemaColumn.TableName,
+                            Attributes = new List<ISimpleAttribute>()
+                        };
+
+                        views.Add(view);
+                    }
+
+                    dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
+                        databaseSchemaColumn.Nullable);
+                    lit = dataType == "string" || dataType.StartsWith("DateTime");
+
+
+                    var attr = new SimpleAttribute
+                    {
+                        Name = databaseSchemaColumn.Name,
+                        IsLiteralType = lit,
+                        FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
+                                    databaseSchemaColumn.Name.Substring(1),
+                        DataType = dataType,
+                        Comment = databaseSchemaColumn.Comment
+                    };
+
+                    var extendedProp =
+                        extendedProperties.FirstOrDefault(
+                            e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
+                    if (extendedProp != null)
+                    {
+                        attr.Comment = extendedProp.Property;
+                    }
+
+                    view.Attributes.Add(attr);
                 }
             }
 
