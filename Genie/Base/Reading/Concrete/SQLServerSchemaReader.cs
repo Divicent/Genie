@@ -76,7 +76,7 @@ namespace Genie.Core.Base.Reading.Concrete
 
         internal override void Setup(IConfiguration configuration)
         {
-            _queryToReadColumns = $@"
+            QueryToReadColumns = $@"
                        SELECT 
 	            c.COLUMN_NAME AS [Name]
                ,'[' + t.TABLE_SCHEMA + ']' + '.[' + t.TABLE_NAME + ']' AS [TableFullName]
@@ -107,7 +107,7 @@ namespace Genie.Core.Base.Reading.Concrete
             ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION";
 
 
-            _queryToGetParameters = @"
+            QueryToGetParameters = @"
                     SELECT 
                         p.SPECIFIC_NAME AS SP
 	                    ,p.PARAMETER_NAME AS [Name]
@@ -119,7 +119,7 @@ namespace Genie.Core.Base.Reading.Concrete
                     ORDER BY p.SCOPE_NAME , p.ORDINAL_POSITION";
 
 
-            _queryToGetExtendedProperties = @"SELECT
+            QueryToGetExtendedProperties = @"SELECT
 	                     s.[name] AS SchemaName
 	                    ,oo.[name] AS ObjectName
 	                    ,col.[name] AS ColumnName

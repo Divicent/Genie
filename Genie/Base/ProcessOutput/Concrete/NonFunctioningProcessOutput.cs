@@ -15,12 +15,7 @@ namespace Genie.Core.Base.ProcessOutput.Concrete
         {
             /*Does nothing*/
         }
-
-        //public IProgressReporter WriteProgress()
-        //{
-        //    return new NonFunctionningProgressReporter();
-        //}
-
+        
         public void WriteSuccess(string content)
         {
             /*Does nothing*/

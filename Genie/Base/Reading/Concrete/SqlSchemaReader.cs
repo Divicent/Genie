@@ -26,9 +26,9 @@ namespace Genie.Core.Base.Reading.Concrete
     /// </summary>
     internal abstract class SqlSchemaReader
     {
-        protected string _queryToGetExtendedProperties = "";
-        protected string _queryToGetParameters = "";
-        protected string _queryToReadColumns = "";
+        protected string QueryToGetExtendedProperties = "";
+        protected string QueryToGetParameters = "";
+        protected string QueryToReadColumns = "";
 
         public IDatabaseSchema Read(IConfiguration configuration, IProcessOutput output)
         {
@@ -37,7 +37,7 @@ namespace Genie.Core.Base.Reading.Concrete
             DatabaseSchema schema;
             try
             {
-                schema = ReadDatabase(configuration.ConnectionString, configuration);
+                schema = ReadDatabase(configuration.ConnectionString);
                 schema.BaseNamespace = configuration.BaseNamespace;
             }
             catch (Exception e)
@@ -69,7 +69,7 @@ namespace Genie.Core.Base.Reading.Concrete
             return schema;
         }
 
-        private DatabaseSchema ReadDatabase(string connectionString, IConfiguration configuration)
+        private DatabaseSchema ReadDatabase(string connectionString)
         {
             var databaseSchemaColumns = new List<DatabaseSchemaColumn>();
             var databaseParameters = new List<DatabaseParameter>();
@@ -80,7 +80,7 @@ namespace Genie.Core.Base.Reading.Concrete
                 connection.Open();
                 var transaction = connection.BeginTransaction();
 
-                var commandToGetColumns = GetCommand(_queryToReadColumns, connection, transaction);
+                var commandToGetColumns = GetCommand(QueryToReadColumns, connection, transaction);
 
                 using (var reader = commandToGetColumns.ExecuteReader())
                 {
@@ -126,7 +126,7 @@ namespace Genie.Core.Base.Reading.Concrete
                 }
 
                 var commandToGetParameters = GetCommand(
-                    _queryToGetParameters, connection, transaction);
+                    QueryToGetParameters, connection, transaction);
 
                 using (var reader = commandToGetParameters.ExecuteReader())
                 {
@@ -136,10 +136,10 @@ namespace Genie.Core.Base.Reading.Concrete
                     }
                 }
 
-                if (!string.IsNullOrWhiteSpace(_queryToGetExtendedProperties))
+                if (!string.IsNullOrWhiteSpace(QueryToGetExtendedProperties))
                 {
                     var commandToGetExtendedProperties =
-                        GetCommand(_queryToGetExtendedProperties, connection, transaction);
+                        GetCommand(QueryToGetExtendedProperties, connection, transaction);
                     using (var reader = commandToGetExtendedProperties.ExecuteReader())
                     {
                         while (reader.Read())
@@ -403,8 +403,6 @@ namespace Genie.Core.Base.Reading.Concrete
                                             break;
                                         case "bool":
                                             value = reader.GetBoolean(1);
-                                            break;
-                                        default:
                                             break;
                                     }
                                 }
