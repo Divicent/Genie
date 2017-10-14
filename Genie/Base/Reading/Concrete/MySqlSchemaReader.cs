@@ -81,7 +81,7 @@ namespace Genie.Core.Base.Reading.Concrete
                 Copied from  sql server reader and it just worked
              */
 
-            _queryToReadColumns = $@" SELECT 
+            QueryToReadColumns = $@" SELECT 
                 c.COLUMN_NAME AS `Name`
             ,concat(t.TABLE_SCHEMA, '.', t.TABLE_NAME)  AS `TableFullName`
             ,t.TABLE_Name `TableName`
@@ -112,7 +112,7 @@ namespace Genie.Core.Base.Reading.Concrete
             WHERE  c.`table_schema` = '{configuration.Schema}'
             ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION ";
 
-            _queryToGetParameters = @"
+            QueryToGetParameters = @"
                     SELECT 
                         p.SPECIFIC_NAME AS `SP`
 	                    ,p.PARAMETER_NAME AS `Name`
