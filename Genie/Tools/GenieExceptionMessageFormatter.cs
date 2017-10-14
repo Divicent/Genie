@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Genie.Core.Tools
 {
-    internal class GenieExceptionMessageFormatter
+    internal static class GenieExceptionMessageFormatter
     {
         /// <summary>
         ///     Includes base message, exception message , exception stack trace

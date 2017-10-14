@@ -11,7 +11,7 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Base.Writing
 {
-    internal class DalWriter
+    internal static class DalWriter
     {
         /// <summary>
         ///     Write files to the disk

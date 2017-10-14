@@ -6,7 +6,7 @@ using Genie.Core.Base.Reading.Abstract;
 
 namespace Genie.Core.Base.Reading.Concrete
 {
-    internal class DatabaseSchemaReaderFactory
+    internal static class DatabaseSchemaReaderFactory
     {
         public static IDatabaseSchemaReader GetReader(string databaseManagementSystemName)
         {

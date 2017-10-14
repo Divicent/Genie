@@ -12,7 +12,7 @@ namespace Genie.Core.Base.ObstacleManaging
     /// <summary>
     ///     Helps to clear the target folder before generating
     /// </summary>
-    internal class ObstacleManager
+    internal static class ObstacleManager
     {
 
         ///<summary>

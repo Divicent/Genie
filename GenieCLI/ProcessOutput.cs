@@ -11,7 +11,7 @@ namespace GenieCLI
         public void WriteInformation(string content)
         {
             if(Silent || NoInfo) { return; }
-            Console.WriteLine("-> " + content);
+            Console.WriteLine("-> " + content); // Noncompliant
         }
 
         public void WriteSuccess(string content)
@@ -19,7 +19,7 @@ namespace GenieCLI
             if (Silent) {  return; }
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.WriteLine(content);
+            Console.WriteLine(content); // Noncompliant
             Console.ResetColor();
         }
 
@@ -28,7 +28,7 @@ namespace GenieCLI
             if (Silent) { return; }
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine(content);
+            Console.WriteLine(content); // Noncompliant
             Console.ResetColor();
         }
     }

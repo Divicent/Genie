@@ -16,7 +16,7 @@ namespace Genie.Core.Base.ProjectFileManaging
     /// <summary>
     ///     Manages items of an existing project file
     /// </summary>
-    internal class CSharpProjectItemManager
+    internal static class CSharpProjectItemManager
     {
         /// <summary>
         ///     Process the project file using given items

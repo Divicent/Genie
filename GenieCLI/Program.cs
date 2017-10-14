@@ -44,9 +44,9 @@ namespace GenieCLI
             }
             else
             {
-                Console.Write(":> ");
+                Console.Write(":> "); // Noncompliant
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(result.Error);
+                Console.WriteLine(result.Error); // Noncompliant
                 Console.ResetColor();
                 Console.ReadKey();
             }

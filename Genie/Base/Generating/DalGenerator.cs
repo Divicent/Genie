@@ -29,7 +29,7 @@ using Genie.Core.Templates.Infrastructure.Repositories;
 
 namespace Genie.Core.Base.Generating
 {
-    internal class DalGenerator
+    internal static class DalGenerator
     {
         /// <summary>
         ///     Generate the DAL using schema and configuration
