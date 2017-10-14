@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace GenieCLI
 {
-    internal class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var fileName = "genieSettings.json";
             var output = new ProcessOutput();
