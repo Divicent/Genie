@@ -19,6 +19,15 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
         T And {{ get; }}
         T Or {{ get; }}
         TQ Filter();
+        /// <summary>
+        /// Start Parenthesizes
+        /// </summary>
+        IExpressionJoin<T, TQ> Start {{ get; }}
+
+        /// <summary>
+        /// End Parenthesizes
+        /// </summary>
+        IExpressionJoin<T, TQ> End {{ get; }}
     }}
 }}
 

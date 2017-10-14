@@ -185,10 +185,14 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	                    previous = current;
 	                    queryBuilder.Append($"" {{current}} "");
 	                }}
+                    else if (current == "")"" || current == ""("")
+	                {{
+	                    queryBuilder.Append($"" {{current}} "");
+                    }}
 	                else
 	                {{
-	                    if (!first && !AndOrOr(previous))
-	                    {{
+	                    if (!first && (previous != ""("" && previous != "")"") && !AndOrOr(previous))
+                        {{
 	                        queryBuilder.Append("" and "");
 	                    }}
 

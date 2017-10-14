@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Genie.Core.Base.Generating.Concrete;
 using Genie.Core.Models.Abstract;
@@ -42,6 +43,10 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
                     props.AppendLine(
                         $@"	    IBoolFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}");
             }
+
+            var startName = _attributes.Any(a => a.Name == "Start") ? "StartScope" : "Start";
+            var endName = _attributes.Any(a => a.Name == "End") ? "EndScope" : "End";
+
             L($@"
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 
@@ -51,6 +56,16 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
 	{{
 
 {props}
+
+        /// <summary>
+        /// Start Parenthesizes
+        /// </summary>
+        I{_name}FilterContext {startName} {{ get; }}
+
+        /// <summary>
+        /// Start Parenthesizes
+        /// </summary>
+        I{_name}FilterContext {endName} {{ get; }}
 
     }}
 }}");

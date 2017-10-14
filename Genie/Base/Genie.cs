@@ -46,9 +46,9 @@ namespace Genie.Core.Base
             {
                 output.WriteInformation("Checking configuration file.");
 
-                if (!File.Exists(pathToConfigurationJsonFile))
-                    throw new GenieException(
-                        $"The configuration file ({pathToConfigurationJsonFile}) could not be found (File.Exists returned false).");
+                //if (!File.Exists(pathToConfigurationJsonFile))
+                //    throw new GenieException(
+                //        $"The configuration file ({pathToConfigurationJsonFile}) could not be found (File.Exists returned false).");
 
                 output.WriteSuccess("Configuration file found, ready to read.");
 
@@ -57,7 +57,78 @@ namespace Genie.Core.Base
                 try
                 {
                     config = JsonConvert.DeserializeObject<GenieConfiguration>(
-                        File.ReadAllText(pathToConfigurationJsonFile));
+                        @"{
+    ""connectionString"": ""Data Source=SIMBA\\SQLEXPRESS12;initial catalog=JetSaver;integrated security=True;multipleactiveresultsets=True;application name=EntityFramework"",
+    ""projectPath"": ""C:\\Projects\\JetSaver\\API\\JetSaver.DAL"",
+    ""baseNamespace"": ""JetSaver.DAL"",
+    ""projectFile"": ""JetSaver.DAL.csproj"",
+  ""schema"": ""dbo"",
+  ""dbms"": ""mssql"",
+    ""enums"": [
+      {
+        ""table"" : ""UserStatus"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+      {
+        ""table"" : ""Role"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+      {
+        ""table"" : ""ActivityType"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+    {
+        ""table"" : ""OperatorStatus"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+    {
+        ""table"" : ""AssetType"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+    {
+        ""table"" : ""MessageType"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+    {
+        ""table"" : ""OperatorTripStatus"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+    {
+        ""table"" : ""TripStatus"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+    {
+        ""table"" : ""TripType"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      },
+    {
+        ""table"" : ""AirportType"",
+        ""valueColumn"": ""ID"",
+        ""nameColumn"": ""Name"",
+        ""type"": ""int""
+      }
+    ]
+}
+
+");
                 }
                 catch (Exception exception)
                 {

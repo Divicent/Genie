@@ -45,6 +45,25 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete
             }}
         }}
 
+        public IExpressionJoin<T, TQ> Start
+        {{
+            get
+            {{
+
+                _t.StartScope();
+                return this;
+            }}
+        }}
+
+        public IExpressionJoin<T, TQ> End
+        {{
+            get
+            {{
+                _t.EndScope();
+                return this;
+            }}
+        }}
+
         public TQ Filter()
         {{
             return _q;

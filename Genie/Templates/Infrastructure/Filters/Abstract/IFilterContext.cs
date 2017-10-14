@@ -23,6 +23,8 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
 		void Or();
 		void Add(string expression);
 		Queue<string> GetFilterExpressions();
+        void StartScope();
+        void EndScope();
 	}}
 }}
 

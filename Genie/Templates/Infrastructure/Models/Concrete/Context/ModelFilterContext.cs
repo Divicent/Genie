@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Genie.Core.Base.Generating.Concrete;
 using Genie.Core.Models.Abstract;
@@ -76,6 +77,10 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
                 }
             }
 
+            var startName = _attributes.Any(a => a.Name == "Start") ? "StartScope" : "Start";
+            var endName = _attributes.Any(a => a.Name == "End") ? "EndScope" : "End";
+
+
             L($@"
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
@@ -92,8 +97,25 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 
 {props}
 
+        public I{_name}FilterContext {startName}
+        {{
+            get
+            {{
+                StartScope();
+                return this;
+            }}
+        }}
+        public I{_name}FilterContext {endName}
+        {{
+            get
+            {{
+                EndScope();
+                return this;
+            }}
+        }}
 	}}
-}}");
+}}
+");
 
             return E();
         }

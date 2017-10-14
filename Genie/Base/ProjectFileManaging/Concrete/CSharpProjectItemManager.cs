@@ -44,7 +44,7 @@ namespace Genie.Core.Base.ProjectFileManaging.Concrete
                 {
                     var node = document.CreateElement("Compile", null);
                     var include = document.CreateAttribute("Include");
-                    include.Value = file;
+                    include.Value = file.Replace("/", "\\");
                     node.Attributes.Append(include);
                     root.AppendChild(node);
                 }
