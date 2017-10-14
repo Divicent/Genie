@@ -8,15 +8,23 @@ using System.Text;
 using System.Xml;
 using Genie.Core.Base.Exceptions;
 using Genie.Core.Base.ProcessOutput.Abstract;
-using Genie.Core.Base.ProjectFileManaging.Abstract;
 
 #endregion
 
-namespace Genie.Core.Base.ProjectFileManaging.Concrete
+namespace Genie.Core.Base.ProjectFileManaging
 {
-    internal class CSharpProjectItemManager : IProjectItemManager
+    /// <summary>
+    ///     Manages items of an existing project file
+    /// </summary>
+    internal class CSharpProjectItemManager
     {
-        public void Process(string projectFilePath, List<string> files, IProcessOutput output)
+        /// <summary>
+        ///     Process the project file using given items
+        /// </summary>
+        /// <param name="projectFilePath">Path to the project file</param>
+        /// <param name="files">Files to include</param>
+        /// <param name="output">A process output</param>
+        public static void Process(string projectFilePath, List<string> files, IProcessOutput output)
         {
             try
             {

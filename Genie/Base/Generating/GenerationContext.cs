@@ -1,4 +1,4 @@
-﻿namespace Genie.Core.Base.Generating.Concrete
+﻿namespace Genie.Core.Base.Generating
 {
     /// <summary>
     ///     Holds values that are needed for content generation

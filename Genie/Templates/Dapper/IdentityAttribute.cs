@@ -1,6 +1,6 @@
 #region Usings
 
-using Genie.Core.Base.Generating.Concrete;
+using Genie.Core.Base.Generating;
 
 #endregion
 

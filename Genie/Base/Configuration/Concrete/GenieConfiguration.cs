@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Exceptions;
@@ -59,7 +60,7 @@ namespace Genie.Core.Base.Configuration.Concrete
             }
             else
             {
-                switch (DBMS.ToLower())
+                switch (DBMS.ToLowerInvariant())
                 {
                     case "mssql":
                         DBMSName = Abstract.DBMS.MSSQL;

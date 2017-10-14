@@ -1,8 +1,10 @@
 #region Usings
 
-using Genie.Core.Base.Generating.Concrete;
+
 
 #endregion
+
+using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Collections.Concrete
 {

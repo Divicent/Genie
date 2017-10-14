@@ -5,16 +5,21 @@ using System.Collections.Generic;
 using System.IO;
 using Genie.Core.Base.Exceptions;
 using Genie.Core.Base.ProcessOutput.Abstract;
-using Genie.Core.Base.Writing.Abstract;
 using Genie.Core.Models.Abstract;
 
 #endregion
 
-namespace Genie.Core.Base.Writing.Concrete
+namespace Genie.Core.Base.Writing
 {
-    internal class DalWriter : IFileWriter
+    internal class DalWriter
     {
-        public void Write(List<IContentFile> files, string basePath, IProcessOutput output)
+        /// <summary>
+        ///     Write files to the disk
+        /// </summary>
+        /// <param name="files">Files to write</param>
+        /// <param name="basePath">Base path </param>
+        /// <param name="output">A Process output</param>
+        public static void Write(List<IContentFile> files, string basePath, IProcessOutput output)
         {
             output.WriteInformation("Writing files to the disk");
             output.WriteInformation("Base path = " + basePath);

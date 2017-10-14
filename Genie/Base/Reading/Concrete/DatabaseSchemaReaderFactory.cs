@@ -6,11 +6,11 @@ using Genie.Core.Base.Reading.Abstract;
 
 namespace Genie.Core.Base.Reading.Concrete
 {
-    internal class DatabaseSchemaReaderFactory : IDatabaseSchemaReaderFactory
+    internal class DatabaseSchemaReaderFactory
     {
-        public IDatabaseSchemaReader GetReader(string databaseManagementSystemName)
+        public static IDatabaseSchemaReader GetReader(string databaseManagementSystemName)
         {
-            switch (databaseManagementSystemName.ToLower())
+            switch (databaseManagementSystemName.ToLowerInvariant())
             {
                 case "mssql":
                     return new SqlServerSchemaReader();

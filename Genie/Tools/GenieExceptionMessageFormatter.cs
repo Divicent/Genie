@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Genie.Core.Tools
 {
-    internal class GenieExceptionMessageFormatter : IMessageFormatter
+    internal class GenieExceptionMessageFormatter
     {
         /// <summary>
         ///     Includes base message, exception message , exception stack trace
@@ -15,7 +15,7 @@ namespace Genie.Core.Tools
         /// <param name="exception">exception to include</param>
         /// <param name="baseMessage">base message or the title of the result</param>
         /// <returns>formatted string</returns>
-        public string FormatException(Exception exception, string baseMessage)
+        public static string FormatException(Exception exception, string baseMessage)
         {
             const string messageTemplate =
                 "$baseMessage$\n" +

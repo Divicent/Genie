@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Genie.Core.Base.Generating.Concrete;
+using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
 
 #endregion
@@ -35,51 +35,57 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 		/// </summary>");
                 }
 
-                if (atd.DataType == "string")
+                switch (atd.DataType)
                 {
-                    fields.AppendLine(
-                        $@"		private IStringFilter<I{_name}FilterContext, I{_name}QueryContext> {atd.FieldName};");
-                    props.AppendLine(
-                        $@"		public IStringFilter<I{_name}FilterContext, I{_name}QueryContext> {
-                                atd.Name
-                            } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new StringFilter<I{
-                                _name
-                            }FilterContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
-                }
-                else if (atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" ||
-                         atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" ||
-                         atd.DataType == "long" || atd.DataType == "long?")
-                {
-                    fields.AppendLine(
-                        $@"		private INumberFilter<I{_name}FilterContext, I{_name}QueryContext> {atd.FieldName};");
-                    props.AppendLine(
-                        $@"		public INumberFilter<I{_name}FilterContext, I{_name}QueryContext> {
-                                atd.Name
-                            } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new NumberFilter<I{
-                                _name
-                            }FilterContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
-                }
-                else if (atd.DataType == "DateTime" || atd.DataType == "DateTime?")
-                {
-                    fields.AppendLine(
-                        $@"    	private IDateFilter<I{_name}FilterContext, I{_name}QueryContext> {atd.FieldName};");
-                    props.AppendLine(
-                        $@"		public IDateFilter<I{_name}FilterContext, I{_name}QueryContext> {
-                                atd.Name
-                            } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new DateFilter<I{
-                                _name
-                            }FilterContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
-                }
-                else if (atd.DataType == "bool" || atd.DataType == "bool?")
-                {
-                    fields.AppendLine(
-                        $@"    	private IBoolFilter<I{_name}FilterContext, I{_name}QueryContext> {atd.FieldName};");
-                    props.AppendLine(
-                        $@"		public IBoolFilter<I{_name}FilterContext, I{_name}QueryContext> {
-                                atd.Name
-                            } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new BoolFilter<I{
-                                _name
-                            }FilterContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
+                    case "string":
+                        fields.AppendLine(
+                            $@"		private IStringFilter<I{_name}FilterContext, I{_name}QueryContext> {atd.FieldName};");
+                        props.AppendLine(
+                            $@"		public IStringFilter<I{_name}FilterContext, I{_name}QueryContext> {
+                                    atd.Name
+                                } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new StringFilter<I{
+                                    _name
+                                }FilterContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
+                        break;
+                    case "int":
+                    case "int?":
+                    case "double":
+                    case "double?":
+                    case "decimal":
+                    case "decimal?":
+                    case "long":
+                    case "long?":
+                        fields.AppendLine(
+                            $@"		private INumberFilter<I{_name}FilterContext, I{_name}QueryContext> {atd.FieldName};");
+                        props.AppendLine(
+                            $@"		public INumberFilter<I{_name}FilterContext, I{_name}QueryContext> {
+                                    atd.Name
+                                } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new NumberFilter<I{
+                                    _name
+                                }FilterContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
+                        break;
+                    case "DateTime":
+                    case "DateTime?":
+                        fields.AppendLine(
+                            $@"    	private IDateFilter<I{_name}FilterContext, I{_name}QueryContext> {atd.FieldName};");
+                        props.AppendLine(
+                            $@"		public IDateFilter<I{_name}FilterContext, I{_name}QueryContext> {
+                                    atd.Name
+                                } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new DateFilter<I{
+                                    _name
+                                }FilterContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
+                        break;
+                    case "bool":
+                    case "bool?":
+                        fields.AppendLine(
+                            $@"    	private IBoolFilter<I{_name}FilterContext, I{_name}QueryContext> {atd.FieldName};");
+                        props.AppendLine(
+                            $@"		public IBoolFilter<I{_name}FilterContext, I{_name}QueryContext> {
+                                    atd.Name
+                                } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new BoolFilter<I{
+                                    _name
+                                }FilterContext, I{_name}QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
+                        break;
                 }
             }
 

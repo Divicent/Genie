@@ -6,18 +6,13 @@ using System.Linq;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Configuration.Concrete;
 using Genie.Core.Base.Exceptions;
-using Genie.Core.Base.Generating.Absract;
-using Genie.Core.Base.Generating.Concrete;
-using Genie.Core.Base.ObstacleManaging.Abstract;
-using Genie.Core.Base.ObstacleManaging.Concrete;
+using Genie.Core.Base.Generating;
+using Genie.Core.Base.ObstacleManaging;
 using Genie.Core.Base.ProcessOutput.Abstract;
 using Genie.Core.Base.ProcessOutput.Concrete;
-using Genie.Core.Base.ProjectFileManaging.Abstract;
-using Genie.Core.Base.ProjectFileManaging.Concrete;
-using Genie.Core.Base.Reading.Abstract;
+using Genie.Core.Base.ProjectFileManaging;
 using Genie.Core.Base.Reading.Concrete;
-using Genie.Core.Base.Writing.Abstract;
-using Genie.Core.Base.Writing.Concrete;
+using Genie.Core.Base.Writing;
 using Genie.Core.Tools;
 using Newtonsoft.Json;
 
@@ -34,17 +29,26 @@ namespace Genie.Core.Base
         ///     Generates the Data Access Layer using given configuration file
         /// </summary>
         /// <param name="pathToConfigurationJsonFile">the full readable path to the configuration JSON file.</param>
-        /// <param name="output">Just implement your own one and pass it here or leave it null if you don't need a detailed output</param>
+        /// <param name="output">Just implement your own one and pass it here</param>
         /// <returns>the result of the generation process</returns>
-        public static GenieGenerationResult Generate(string pathToConfigurationJsonFile, IProcessOutput output = null)
+        public static GenieGenerationResult Generate(string pathToConfigurationJsonFile, IProcessOutput output)
         {
-            if (output == null)
-            {
-                output = new NonFunctioningProcessOutput();
-            }
+            return GenerateInternal(pathToConfigurationJsonFile, output);
+        }
 
-            IMessageFormatter exceptionFormatter = new GenieExceptionMessageFormatter();
+        /// <summary>
+        ///     Generates the Data Access Layer using given configuration file.
+        /// </summary>
+        /// <param name="pathToConfigurationJsonFile">the full readable path to the configuration JSON file.</param>
+        /// <returns>the result of the generation process</returns>
+        public static GenieGenerationResult Generate(string pathToConfigurationJsonFile)
+        {
+            return GenerateInternal(pathToConfigurationJsonFile, new NonFunctioningProcessOutput());
+        }
 
+
+        private static GenieGenerationResult GenerateInternal(string pathToConfigurationJsonFile, IProcessOutput output)
+        {
             var result = new GenieGenerationResult();
             IConfiguration config = null;
 
@@ -83,7 +87,7 @@ namespace Genie.Core.Base
             }
             catch (Exception exception)
             {
-                result.Error = exceptionFormatter.FormatException(exception,
+                result.Error = GenieExceptionMessageFormatter.FormatException(exception,
                     "En error occurred while trying to initialize generation process (probably a configuration error)");
             }
 
@@ -95,24 +99,18 @@ namespace Genie.Core.Base
 
             try
             {
-                IDatabaseSchemaReaderFactory databaseSchemaReaderFactory = new DatabaseSchemaReaderFactory();
-
-                var schemaReader = databaseSchemaReaderFactory.GetReader(config.DBMS);
+                var schemaReader = DatabaseSchemaReaderFactory.GetReader(config.DBMS);
                 var schema = schemaReader.Read(config, output);
 
-                IDalGenerator dalGenerator = new DalGenerator();
-                var contentFiles = dalGenerator.Generate(schema, config, output).ToList();
 
-                IObstacleManager obstacleManager = new ObstacleManager();
-                obstacleManager.Clear(config.ProjectPath, output);
+                var contentFiles = DalGenerator.Generate(schema, config, output).ToList();
+                ObstacleManager.Clear(config.ProjectPath, output);
 
-                IFileWriter writer = new DalWriter();
-                writer.Write(contentFiles, config.ProjectPath, output);
+                DalWriter.Write(contentFiles, config.ProjectPath, output);
 
                 if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
                 {
-                    IProjectItemManager projectItemManager = new CSharpProjectItemManager();
-                    projectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectFile),
+                    CSharpProjectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectFile),
                         contentFiles.Select(c => c.Path).ToList(), output);
                 }
 
@@ -120,7 +118,7 @@ namespace Genie.Core.Base
             }
             catch (Exception e)
             {
-                result.Error = exceptionFormatter.FormatException(e.InnerException, e.Message);
+                result.Error = GenieExceptionMessageFormatter.FormatException(e.InnerException, e.Message);
                 result.Success = false;
                 return result;
             }

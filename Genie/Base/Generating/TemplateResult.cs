@@ -4,7 +4,7 @@ using Genie.Core.Templates.Abstract;
 
 #endregion
 
-namespace Genie.Core.Base.Generating.Concrete
+namespace Genie.Core.Base.Generating
 {
     internal class TemplateFile
     {

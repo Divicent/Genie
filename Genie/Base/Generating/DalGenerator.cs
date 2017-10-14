@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Exceptions;
-using Genie.Core.Base.Generating.Absract;
 using Genie.Core.Base.ProcessOutput.Abstract;
 using Genie.Core.Base.Reading.Abstract;
 using Genie.Core.Models.Abstract;
@@ -28,11 +27,18 @@ using Genie.Core.Templates.Infrastructure.Repositories;
 
 #endregion
 
-namespace Genie.Core.Base.Generating.Concrete
+namespace Genie.Core.Base.Generating
 {
-    internal class DalGenerator : IDalGenerator
+    internal class DalGenerator
     {
-        public IEnumerable<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration,
+        /// <summary>
+        ///     Generate the DAL using schema and configuration
+        /// </summary>
+        /// <param name="schema">Schema to use</param>
+        /// <param name="configuration">Configuration to use</param>
+        /// <param name="output">Process output</param>
+        /// <returns>Collection of file contents</returns>
+        public static IEnumerable<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration,
             IProcessOutput output)
         {
             output.WriteInformation("Generating files.");

@@ -11,7 +11,7 @@ namespace Genie.Core.Templates
     {
         private readonly StringBuilder _stringBuilder = new StringBuilder();
 
-        public GenieTemplate(string path)
+        protected GenieTemplate(string path)
         {
             Path = path;
         }

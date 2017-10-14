@@ -3,16 +3,24 @@
 using System;
 using System.IO;
 using Genie.Core.Base.Exceptions;
-using Genie.Core.Base.ObstacleManaging.Abstract;
 using Genie.Core.Base.ProcessOutput.Abstract;
 
 #endregion
 
-namespace Genie.Core.Base.ObstacleManaging.Concrete
+namespace Genie.Core.Base.ObstacleManaging
 {
-    internal class ObstacleManager : IObstacleManager
+    /// <summary>
+    ///     Helps to clear the target folder before generating
+    /// </summary>
+    internal class ObstacleManager
     {
-        public void Clear(string basePath, IProcessOutput output)
+
+        ///<summary>
+        ///     Clears the provided folder
+        /// </summary>
+        /// <param name="basePath">folder path</param>
+        /// <param name="output">a process output to use</param>
+        public static void Clear(string basePath, IProcessOutput output)
         {
             output.WriteInformation("Cleaning existing files before creating new files.");
 

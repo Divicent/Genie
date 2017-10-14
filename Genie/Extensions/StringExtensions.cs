@@ -19,7 +19,7 @@
         /// <returns></returns>
         public static string ToPlural(this string str)
         {
-            var s = str.ToLower();
+            var s = str.ToLowerInvariant();
             if (string.IsNullOrWhiteSpace(str))
             {
                 return str;
@@ -99,10 +99,10 @@
             var first = str[0];
             if (str.Length > 1)
             {
-                return (first + "").ToLower() + str.Substring(1);
+                return (first + "").ToLowerInvariant() + str.Substring(1);
             }
 
-            return (first + "").ToLower();
+            return (first + "").ToLowerInvariant();
         }
 
         public static string ToFieldName(this string str)

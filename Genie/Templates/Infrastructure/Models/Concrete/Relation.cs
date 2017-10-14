@@ -2,7 +2,7 @@
 
 using System.Linq;
 using System.Text;
-using Genie.Core.Base.Generating.Concrete;
+using Genie.Core.Base.Generating;
 using Genie.Core.Extensions;
 using Genie.Core.Models.Abstract;
 

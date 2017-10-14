@@ -312,8 +312,6 @@ namespace Genie.Core.Base.Reading.Concrete
 
                         view.Attributes.Add(attr);
                         break;
-                    default:
-                        break;
                 }
             }
 

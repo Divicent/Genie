@@ -38,7 +38,7 @@ namespace Genie.Core.Tools
 
         private static string ConvertDataType(string dataType)
         {
-            var type = dataType.ToLower();
+            var type = dataType.ToLowerInvariant();
             switch (type)
             {
                 case "int":
