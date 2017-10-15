@@ -52,7 +52,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
         /// </summary>
 {constructor}
 
-		/// <summary>
+    		/// <summary>
         /// Get the connection to the database
         /// </summary>
         public IDbConnection Connection => _connection ?? (_connection = new SqlConnection(_connectionString));
