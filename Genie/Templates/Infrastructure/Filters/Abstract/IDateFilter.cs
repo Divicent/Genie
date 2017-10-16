@@ -26,7 +26,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
     /// Helps to apply filters on a boolean attribute to a query
     /// </summary>
     /// <typeparam name=""T"">Type of the filter context</typeparam>
-    /// <typeparam name=""TQ"">Type of the query context</typeparam>>
+    /// <typeparam name=""TQ"">Type of the query context</typeparam>
     public interface IDateFilter<out T, out TQ> where T : IFilterContext
     {{
         /// <summary>
