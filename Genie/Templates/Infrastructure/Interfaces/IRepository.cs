@@ -25,10 +25,10 @@ using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
 {{
-  /// <summary>
-  /// A repository is an interface which provides CRUD operations on a data source.
-  /// </summary>
-  /// <typeparam name=""T"">Object type of the repository</typeparam>
+    /// <summary>
+    /// A repository is an interface which provides CRUD operations on a data source.
+    /// </summary>
+    /// <typeparam name=""T"">Object type of the repository</typeparam>
 	public interface IRepository<T>
         where T : BaseModel
     {{
@@ -41,10 +41,36 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// Current context
         /// </summary>
         IDapperContext Context {{ get; }}
-
+        /// <summary>
+        /// Add an entity to the database . this will add an operation to unit and will be committed to the source when commit is called
+        /// </summary>
+        /// <param name=""entity"">Entity to add</param>
+        /// <param name=""transaction"">Transaction if available</param>
+        /// <param name=""commandTimeout"">Timeout</param>
         void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
+
+        /// <summary>
+        /// Add list of entities to the database . this will add an operation to unit and will be committed to the source when commit is called
+        /// </summary>
+        /// <param name=""entities"">Entities to add</param>
+        /// <param name=""transaction"">Transaction if available</param>
+        /// <param name=""commandTimeout"">Timeout</param>
         void Add(IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null);
+        
+        /// <summary>
+        ///  Remove an entity to the database . this will add an operation to unit and will be committed to the source when commit is called
+        /// </summary>
+        /// <param name=""entity"">Entity to remove</param>
+        /// <param name=""transaction"">Transaction if available</param>
+        /// <param name=""commandTimeout"">Timeout</param>
         void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
+        
+         /// <summary>
+        /// Remove a list entity to the database . this will add an operation to unit and will be committed to the source when commit is called
+        /// </summary>
+        /// <param name=""entity"">Entities to remove</param>
+        /// <param name=""transaction"">Transaction if available</param>
+        /// <param name=""commandTimeout"">Timeout</param>
         void Remove(IEnumerable<T> entity, IDbTransaction transaction = null, int? commandTimeout = null);
 
         /// <summary>
@@ -59,7 +85,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// </summary>
         /// <param name=""query"">Query to execute in the repository</param>
         /// <returns>an object with type <typeparamref name=""T""/></returns>
-		    T GetFirstOrDefault(IRepoQuery query);
+		T GetFirstOrDefault(IRepoQuery query);
 	      
         /// <summary>
         /// Executes given query on the repository and returns count of the result set

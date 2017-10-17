@@ -27,16 +27,16 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
     /// </summary>
 	public interface IDapperContext
 	{{
-	    /// <summary>
-      /// Connection to the database
-      /// </summary>
+	      /// <summary>
+          /// Connection to the database
+          /// </summary>
 		  IDbConnection Connection {{ get; }}
       
-      /// <summary>
-      /// Creates a new unit of work for this context
-      /// </summary>
-      /// <returns>A new unit of work</returns>
-      IUnitOfWork Unit();
+          /// <summary>
+          /// Creates a new unit of work for this context
+          /// </summary>
+          /// <returns>A new unit of work</returns>
+          IUnitOfWork Unit();
 	}}
 }}
 ");

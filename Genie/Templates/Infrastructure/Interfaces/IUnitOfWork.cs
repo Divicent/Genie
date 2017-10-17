@@ -52,9 +52,9 @@ using {GenerationContext.BaseNamespace}.Infrastructure.Repositories.Abstract;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
 {{
-  /// <summary>
-  /// A unit of work is a collection of operations on a data source. operations could be updates, deletes, inserts
-  /// </summary>
+    /// <summary>
+    /// A unit of work is a collection of operations on a data source. operations could be updates, deletes, inserts
+    /// </summary>
 	public interface IUnitOfWork : IDisposable
     {{
 
@@ -64,7 +64,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// <returns>A new transaction</returns>
         IDbTransaction BeginTransaction();
 
-	      void AddOp(IOperation operation);
+	    void AddOp(IOperation operation);
         void AddObj(BaseModel obj);
 
 {relations}
@@ -74,7 +74,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// <summary>
         /// The procedure container that belongs to this unit of work
         /// </summary>
-		    IProcedureContainer Procedures {{ get; }}
+		IProcedureContainer Procedures {{ get; }}
         
         /// <summary>
         /// This will commit all changes to the data source performed in this unit of work one by one. including all tracked changes of the objects retrieved from this unit of work
