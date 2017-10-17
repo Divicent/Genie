@@ -28,9 +28,9 @@ using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
 {{
 
-  /// <summary>
-  /// Helps to build retrieve queries on {_name}. the query can be built as one statement, and an object of this class can be used to add elements to the query. all the elements are persisted inside the object
-  /// </summary>
+    /// <summary>
+    /// Helps to build retrieve queries on {_name}. the query can be built as one statement, and an object of this class can be used to add elements to the query. all the elements are persisted inside the object
+    /// </summary>
 	public interface I{_name}QueryContext
 	{{
         /// <summary>
@@ -68,14 +68,14 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         /// <summary>
         /// The where clause of the query. this can be reused within this object
         /// </summary>
-		    I{_name}FilterContext Where {{ get; }}
+		I{_name}FilterContext Where {{ get; }}
 
         /// <summary>
         /// The order by clause of the query. this can be reused within this object
         /// </summary>
-		    I{_name}OrderContext OrderBy {{ get; }}
+		I{_name}OrderContext OrderBy {{ get; }}
 	      
-                /// <summary>
+        /// <summary>
         /// Start querying the data source, this will build the query for the specific DBMS ,
         /// pull data and map to a list of {_name},
         /// all returned objects are registered in the db context and change tracking is applied.
@@ -109,7 +109,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         /// <returns>The current context</returns>
         I{_name}QueryContext SortBy(Tuple<string, bool> sortInfo);
 	      
-                /// <summary>
+        /// <summary>
         /// This will build the query for specific DBMS, Query only the count of the results. this will perform an SLQ level count aggregate
         /// </summary>
         /// <param name=""transaction"">Transaction to use</param>
@@ -120,7 +120,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         /// Extract built where clause
         /// </summary>
         /// <returns></returns>
-		    string GetWhereClause();
+		string GetWhereClause();
 	}}
 }}");
 

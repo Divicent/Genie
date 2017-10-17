@@ -27,7 +27,8 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
             foreach (var atd in _attributes)
             {
                 var atdComment = !string.IsNullOrWhiteSpace(atd.Comment);
-                var commentStr = atdComment ? $"    /// <para>{atdComment}</para>": "";
+                var commentStr = atdComment ? $@"
+        /// <para>{atd.Comment}</para>": "";
                 props.AppendLine($@"		/// <summary>
 {commentStr}
 		///  Apply order by on {atd.Name} attribute . this order by expression will be preserved within entire query context

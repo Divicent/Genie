@@ -28,9 +28,9 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
             {
                 props.AppendLine();
                 var atdComment = !string.IsNullOrWhiteSpace(atd.Comment);
-                var commentStr = atdComment ? $"    /// <para>{atdComment}</para>": "";
-                props.AppendLine($@"		/// <summary>
-{commentStr}
+                var commentStr = atdComment ? $@"
+        /// <para>{atd.Comment}</para>": "";
+                props.AppendLine($@"		/// <summary>{commentStr}
 		///  Apply filters on {atd.Name} attribute . these filters will be preserved within entire query context
 		/// </summary>");
            

@@ -24,7 +24,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
     /// <summary>
     /// An order context is used to build the order by clause of the target query
     /// </summary>
-	  public interface IOrderContext
+	public interface IOrderContext
     {{
         /// <summary>
         /// Adds an and condition
