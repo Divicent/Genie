@@ -28,32 +28,46 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
 
             foreach (var relation in _schema.Relations)
             {
-                relations.AppendLine($@"	    public interface I{relation.Name}Repository : IRepository<{relation.Name}>
+                relations.AppendLine($@"
+      /// <summary>
+      /// An API to access data of the data source {relation.Name}
+      /// </summary>
+	    public interface I{relation.Name}Repository : IRepository<{relation.Name}>
 	    {{
-		    I{relation.Name}QueryContext Get();");
+          /// <summary>
+          /// Get a new query context to query the data source
+          /// </summary>
+          /// <returns>A query context</returns>
+		      I{relation.Name}QueryContext Get();");
                 var keys = relation.Attributes.Where(a => a.IsKey).ToList();
                 var keyString = "";
+                var keyCommentString = "";
                 if (keys.Count > 0)
                 {
                     keyString = keys.Aggregate("", (c, n) => c + ", " + n.DataType + " " + n.Name.ToLower())
                         .TrimStart(',').TrimStart(' ');
-                    relations.AppendLine($@"            {relation.Name} GetByKey({keyString});");
+                    keyCommentString = keys.Aggregate("", (c, n) => c + 
+                    $@"
+            /// <param name=""{n.Name.ToLower()}"">Value for primary key {n.Name}</param>");
+                    relations.AppendLine($@"
+            /// <summary>
+            /// Get an object of {relation.Name} using the values of its primary key(s)
+            /// </summary>
+{keyCommentString}
+            /// <returns>A registered {relation.Name} object</returns>
+            {relation.Name} GetByKey({keyString});");
                 }
                 relations.AppendLine("	    }");
 
 
                 relationsImpl.AppendLine(
-                    $@"	    internal class {relation.Name}Repository : Repository<{relation.Name}> , I{
-                            relation.Name
-                        }Repository
+                    $@"	    internal class {relation.Name}Repository : Repository<{relation.Name}> , I{relation.Name}Repository
 	    {{
-            internal {
-                            relation.Name
-                        }Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+            internal {relation.Name}Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
             {{
             }}
 
-		    public I{relation.Name}QueryContext Get() {{ return new {relation.Name}QueryContext(this); }}
+		        public I{relation.Name}QueryContext Get() {{ return new {relation.Name}QueryContext(this); }}
 
 ");
                 if (keys.Count > 0)
@@ -72,14 +86,20 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
 
             foreach (var view in _schema.Views)
             {
-                views.AppendLine($@"	    public interface I{view.Name}Repository : IReadOnlyRepository<{view.Name}>
+                views.AppendLine($@"
+      /// <summary>
+      /// A read only API to access data of the data source {view.Name}
+      /// </summary>
+	    public interface I{view.Name}Repository : IReadOnlyRepository<{view.Name}>
 	    {{
-		    I{view.Name}QueryContext Get();
+          /// <summary>
+          /// Get a new query context to query the data source
+          /// </summary>
+          /// <returns>A query context</returns>
+		      I{view.Name}QueryContext Get();
 	    }}");
 
-                viewImpl.AppendLine($@"	    internal class {view.Name}Repository : ReadOnlyRepository<{view.Name}>, I{
-                        view.Name
-                    }Repository
+                viewImpl.AppendLine($@"	    internal class {view.Name}Repository : ReadOnlyRepository<{view.Name}>, I{view.Name}Repository
 	    {{
             internal {view.Name}Repository(IDapperContext context) : base(context)
             {{
