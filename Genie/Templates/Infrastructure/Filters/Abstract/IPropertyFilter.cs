@@ -20,6 +20,10 @@ namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
 {{
+
+    /// <summary>
+    /// Holds a filter to be applied on an attribute
+    /// </summary>
     public interface IPropertyFilter
     {{
         /// <summary>
@@ -37,7 +41,8 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
         /// </summary>
         object Value {{ get; set; }}
     }}
-}}");
+}}
+");
 
             return E();
         }
