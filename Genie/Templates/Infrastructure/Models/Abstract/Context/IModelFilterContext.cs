@@ -27,34 +27,38 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
             foreach (var atd in _attributes)
             {
                 props.AppendLine();
-                if (!string.IsNullOrWhiteSpace(atd.Comment))
-                {
-                    props.AppendLine($@"		/// <summary>
-		/// {atd.Comment}
+                var atdComment = !string.IsNullOrWhiteSpace(atd.Comment);
+                var commentStr = atdComment ? $"    /// <para>{atdComment}</para>": "";
+                props.AppendLine($@"		/// <summary>
+{commentStr}
+		///  Apply filters on {atd.Name} attribute . these filters will be preserved within entire query context
 		/// </summary>");
-                }
-
+           
                 if (atd.DataType == "string")
                 {
                     props.AppendLine(
-                        $@"	    IStringFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}");
+                        $@"	    IStringFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
+");
                 }
                 else if (atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" ||
                          atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" ||
                          atd.DataType == "long" || atd.DataType == "long?")
                 {
                     props.AppendLine(
-                        $@"		INumberFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}");
+                        $@"		INumberFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
+");
                 }
                 else if (atd.DataType == "DateTime" || atd.DataType == "DateTime?")
                 {
                     props.AppendLine(
-                        $@"	    IDateFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}");
+                        $@"	    IDateFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
+");
                 }
                 else if (atd.DataType == "bool" || atd.DataType == "bool?")
                 {
                     props.AppendLine(
-                        $@"	    IBoolFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}");
+                        $@"	    IBoolFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
+");
                 }
             }
 
@@ -66,6 +70,10 @@ using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
 {{
+
+  /// <summary>
+  /// Helps to build filters for queries on the data source {_name}
+  /// </summary>
 	public interface I{_name}FilterContext : IFilterContext
 	{{
 
