@@ -41,6 +41,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// Current context
         /// </summary>
         IDapperContext Context {{ get; }}
+
         /// <summary>
         /// Add an entity to the database . this will add an operation to unit and will be committed to the source when commit is called
         /// </summary>
@@ -50,7 +51,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         void Add(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
 
         /// <summary>
-        /// Add list of entities to the database . this will add an operation to unit and will be committed to the source when commit is called
+        /// Add a list of entities to the database . this will add an operation to unit and will be committed to the source when commit is called
         /// </summary>
         /// <param name=""entities"">Entities to add</param>
         /// <param name=""transaction"">Transaction if available</param>
@@ -58,7 +59,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         void Add(IEnumerable<T> entities, IDbTransaction transaction = null, int? commandTimeout = null);
         
         /// <summary>
-        ///  Remove an entity to the database . this will add an operation to unit and will be committed to the source when commit is called
+        ///  Remove an entity from the database . this will add an operation to unit and will be committed to the source when commit is called
         /// </summary>
         /// <param name=""entity"">Entity to remove</param>
         /// <param name=""transaction"">Transaction if available</param>
@@ -66,7 +67,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         void Remove(T entity, IDbTransaction transaction = null, int? commandTimeout = null);
         
          /// <summary>
-        /// Remove a list entity to the database . this will add an operation to unit and will be committed to the source when commit is called
+        /// Remove a list entity from the database . this will add an operation to unit and will be committed to the source when commit is called
         /// </summary>
         /// <param name=""entity"">Entities to remove</param>
         /// <param name=""transaction"">Transaction if available</param>
@@ -74,7 +75,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         void Remove(IEnumerable<T> entity, IDbTransaction transaction = null, int? commandTimeout = null);
 
         /// <summary>
-        /// Get Executes given query on repository
+        /// Executes given query on repository
         /// </summary>
         /// <param name=""query"">Query to use</param>
         /// <returns>Collection of <typeparamref name=""T""/> </returns>
