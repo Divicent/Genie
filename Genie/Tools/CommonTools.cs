@@ -64,6 +64,8 @@ namespace Genie.Core.Tools
                     return "long";
                 case "tinyint":
                     return "short";
+                case "float":
+                    return "float";
                 default:
                     return "";
             }
