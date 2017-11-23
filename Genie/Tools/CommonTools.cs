@@ -48,6 +48,7 @@ namespace Genie.Core.Tools
                     return "decimal";
                 case "datetime2":
                 case "datetime":
+                case "smalldatetime":
                 case "date":
                     return "DateTime";
                 case "varchar":
