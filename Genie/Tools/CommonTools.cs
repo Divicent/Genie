@@ -32,7 +32,6 @@ namespace Genie.Core.Tools
             {
                 return csharpDatatype + "?";
             }
-
             return csharpDatatype;
         }
 
