@@ -49,6 +49,7 @@ namespace Genie.Core.Tools
                 case "datetime2":
                 case "datetime":
                 case "timestamp":
+                case "smalldatetime":
                 case "date":
                     return "DateTime";
                 case "varchar":
@@ -66,6 +67,8 @@ namespace Genie.Core.Tools
                 case "tinyint":
                 case "smallint":
                     return "short";
+                case "float":
+                    return "float";
                 default:
                     return "";
             }
