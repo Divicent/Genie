@@ -193,7 +193,11 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	                }}
                     else if (current == "")"" || current == ""("")
 	                {{
-	                    queryBuilder.Append($"" {{current}} "");
+	                    if (current == ""("" && !first && !AndOrOr(previous))
+	                        queryBuilder.Append("" and "");
+
+	                    previous = current;
+                        queryBuilder.Append($"" {{current}} "");
                     }}
 	                else
 	                {{
