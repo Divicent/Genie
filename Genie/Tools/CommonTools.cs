@@ -64,6 +64,8 @@ namespace Genie.Core.Tools
                     return "long";
                 case "tinyint":
                     return "short";
+                case "varbinary":
+                	return "byte[]";
                 default:
                     return "";
             }
