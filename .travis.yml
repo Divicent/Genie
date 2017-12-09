@@ -2,7 +2,6 @@ addons:
   apt:
     sources:
     - sourceline: deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main
-        trusty main
       key_url: https://packages.microsoft.com/keys/microsoft.asc
     packages:
     - dotnet-sdk-2.0.3
