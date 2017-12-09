@@ -31,7 +31,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
             var firstColumn = true;
             foreach (var a in lit)
             {
-                columnNames.Append($"{(!firstColumn? ", ": "")}{a.Name}");
+                columnNames.Append($"{(!firstColumn? ", ": "")}\"{a.Name}\"");
                 firstColumn = false;
                 cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
 				propertyName = ""{a.Name}"";
@@ -41,7 +41,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 
             foreach (var a in nonLit)
             {
-                columnNames.Append($"{(!firstColumn ? ", " : "")}{a.Name}");
+                columnNames.Append($"{(!firstColumn ? ", " : "")}\"{a.Name}\"");
                 firstColumn = false;
                 cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
 				propertyName = ""{a.Name}"";
