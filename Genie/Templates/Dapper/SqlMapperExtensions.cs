@@ -157,7 +157,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 
 	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false, bool whereOnly = false)
 	    {{
-            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : ""CreateSelectColumnList(query.Columns, query.Target)""));
+            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));
             
             var where = query.Where == null ? new Queue<string>() : new Queue<string>(query.Where);
             var order = query.Order == null ? new Queue<string>() : new Queue<string>(query.Order);
