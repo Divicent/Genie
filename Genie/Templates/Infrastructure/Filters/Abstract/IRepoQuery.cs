@@ -34,6 +34,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
         int? Skip {{ get; set; }}
         int? Take {{ get; set; }}
         IDbTransaction Transaction {{ get; set; }}
+        IEnumerable<string> Columns {{ get; set; }}
     }}
 }}
 

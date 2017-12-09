@@ -27,15 +27,22 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
             var nonLit = _attributes.Where(a => !a.IsLiteralType).ToList();
 
             var cases = new StringBuilder();
+            var columnNames = new StringBuilder();
+            var firstColumn = true;
             foreach (var a in lit)
             {
+                columnNames.Append($"{(!firstColumn? ", ": "")}{a.Name}");
+                firstColumn = false;
                 cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
 				propertyName = ""{a.Name}"";
 				return true;");
+                
             }
 
             foreach (var a in nonLit)
             {
+                columnNames.Append($"{(!firstColumn ? ", " : "")}{a.Name}");
+                firstColumn = false;
                 cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
 				propertyName = ""{a.Name}"";
 				return false;");
@@ -133,7 +140,8 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 	            Limit = _limit,
 	            Skip = _skip,
 	            Take = _take,
-	            Transaction = transaction
+	            Transaction = transaction,
+                Columns = new [] {{ {columnNames} }}
 	        }};
 	    }}
 

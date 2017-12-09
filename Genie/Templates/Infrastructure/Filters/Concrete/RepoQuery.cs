@@ -39,6 +39,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete
         public int? Skip {{ get; set; }}
         public int? Take {{ get; set; }}
         public IDbTransaction Transaction {{ get; set; }}
+        public IEnumerable<string> Columns {{ get; set; }}
     }}
 
 }}

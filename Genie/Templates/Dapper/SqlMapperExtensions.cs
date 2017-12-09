@@ -54,11 +54,11 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> IdentityProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> TypeProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, string> TypeTableName = new ConcurrentDictionary<RuntimeTypeHandle, string>();
-
         private static readonly Dictionary<string, ISqlAdapter> AdapterDictionary = new Dictionary<string, ISqlAdapter>() {{
                                                                                          {{""sqlconnection"", new SqlServerAdapter()}},
                                                                                         {{""npgsqlconnection"", new PostgresAdapter()}}
                                                                                     }};
+        private static readonly ConcurrentDictionary<string, string> SelectParts = new ConcurrentDictionary<string, string>();
 
         private static IEnumerable<PropertyInfo> KeyPropertiesCache(Type type)
         {{
@@ -157,7 +157,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 
 	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false, bool whereOnly = false)
 	    {{
-            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : ""*""));
+            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : ""CreateSelectColumnList(query.Columns, query.Target)""));
             
             var where = query.Where == null ? new Queue<string>() : new Queue<string>(query.Where);
             var order = query.Order == null ? new Queue<string>() : new Queue<string>(query.Order);
@@ -267,16 +267,44 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             return name;
         }}
 
-	    /// <summary>
-	    /// Inserts an entity into table ""Ts"" and returns identity id.
-	    /// </summary>
-	    /// <param name=""connection"">Open SqlConnection</param>
-	    /// <param name=""entityToInsert"">Entity to insert</param>
-	    /// <param name=""transaction""></param>
-	    /// <param name=""commandTimeout""></param>
-	    /// <returns>Identity of inserted entity</returns>
-	    public static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
-      {{
+
+        /// <summary>
+        /// Creates the select part of the query
+        /// </summary>
+        /// <param name=""columnNames"">columnNames</param>
+        /// <param name=""target"">Target source</param>
+        /// <returns>a string</returns>
+        private static string CreateSelectColumnList(IEnumerable<string> columnNames, string target)
+        {{
+            string[] columnNamesList;
+            if (string.IsNullOrWhiteSpace(target) || columnNames == null || (columnNamesList = columnNames.ToArray()).Length < 1)
+                return ""*"";
+
+            string result;
+            if (SelectParts.TryGetValue(target, out result))
+                return result;
+
+            var builder = new StringBuilder();
+            var first = true;
+            foreach (var columnName in columnNamesList)
+            {{
+                builder.Append($""{{(!first ? "", "" : """")}}[{{columnName}}]"");
+                first = false;
+            }}
+            return SelectParts[target] = builder.ToString();
+        }}
+
+
+        /// <summary>
+        /// Inserts an entity into table ""Ts"" and returns identity id.
+        /// </summary>
+        /// <param name=""connection"">Open SqlConnection</param>
+        /// <param name=""entityToInsert"">Entity to insert</param>
+        /// <param name=""transaction""></param>
+        /// <param name=""commandTimeout""></param>
+        /// <returns>Identity of inserted entity</returns>
+        public static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
+        {{
 
           var type = entityToInsert.GetType();
 
