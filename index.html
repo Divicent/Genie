@@ -190,24 +190,7 @@
 
         <p>a unit has the Commit method that can be used to commit changes to the database</p>
 
-        <pre><code class="CS language-CS">using(var unit = Context.Unit())
-            {
-                var userRepository = unit.UserRepository; // getting the repository
-                var users = userRepository.Get().Where.GivenName.Contains("John").Filter().Query().ToList(); // Getting objects
-                if (users.Count &lt; 1)
-                    return null;
-                var user = users.First();
-                user.GivenName = "Doe"; // Updating the object .will update when committing changes 
-                userRepository.Update(user); 
-                var rusith = userRepository.Get().Where.GivenName.Contains("Rusith").Filter().Top(1).Query().FirstOrDefault(); // Getting an object
-                userRepository.Remove(rusith); // deleting an object
-            
-                var newUser = new User {FamilyName = "Example", Username = "e@e.com", GivenName = "User"};
-                userRepository.Add(newUser); // adding an object
-            
-                unit.Commit();
-            }
-            </code></pre>
+        <script src="https://gist.github.com/rusith/5191cfa3274810215c0e98884643ca41.js"></script>
 
         <h2 id="procedures">Procedures</h2>
 
@@ -215,20 +198,12 @@
             all the parameters of the methods are nullable and null by default. A generic parameter should be provided in
             order to execute a procedure and the result will be mapped to the given class type.</p>
 
-        <pre><code class="CS language-CS">// Executing a procedure
-            unit.Procedures.SPC_GetOrders&lt;OrderDetailModel&gt;_List(100);
-            </code></pre>
+        <script src="https://gist.github.com/rusith/86cfaced58c9b9c1c5d93177818bd9a7.js"></script>
 
         <p>There are three functions for each procedure (List, Single and Void) List is for getting list of objects as the result
             Single is for getting single object as the result Void is for no result</p>
 
-        <pre><code class="CS language-CS">// List
-            IEnumarable&lt;&gt;unit.Procedures.SPC_GetOrders_List&lt;OrderDetailModel&gt;();
-            // Single
-            int deleted = unit.Procedures.SPC_DeleteOrder_Single&lt;bool&gt;(100);
-            // Void
-            unit.Procedures.SPC_DeleteOrder_Void(100);
-            </code></pre>
+        <script src="https://gist.github.com/rusith/2edd5166363692c6a9788ffe255419d9.js"></script>
 
         <h2 id="querying">Querying</h2>
 
@@ -246,18 +221,7 @@
             can be used to chain the complete filter expression. each two expressions should be connected using And || Or
             , however if you do not specify a boolean operator between two expressions it will be <code>and</code> by default.</p>
 
-        <pre><code class="CS language-CS">var repo = UnitOfWork.InvoicesViewRepository;
-            var filter = repo.Get();
-            
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                filter.
-                    Where.ShipTo.Contains(search).
-                    Or.FactoryInvoiceNo.Contains(search)
-                    .Or.No.Contains(search).Filter();
-            }
-            ...
-            </code></pre>
+        <script src="https://gist.github.com/rusith/4688571ad06209f5233fe3699c399d4c.js"></script>
 
         <p>there is a filter for every data type and every filter contains methods to filter the property. the <code>Filter()</code>            method returns the parent QueryContext.</p>
 
@@ -266,11 +230,7 @@
         <p>There is a OrderContext that can be used to order the query there is a property for each column and these properties
             can be used to chain the complete order expression. an order expression can be Descending or Ascending.</p>
 
-        <pre><code class="CS language-CS">var repo = UnitOfWork.InvoicesViewRepository;
-                    var filter = repo.Get()
-                        .OrderBy.ModifiedDate.Ascending().Order();
-            ...
-            </code></pre>
+        <script src="https://gist.github.com/rusith/6d6e9e26e9e3d88e851245398be45126.js"></script>
 
         <p>the <code>Order()</code> method returns the parent QueryContext.</p>
 
@@ -306,69 +266,7 @@
             and values(if necessary) . this method can be used to filter the result in a customizable way How the operations
             are filtered and what are the operations : </p>
 
-        <pre><code class="C# language-C#">  switch (type.ToLower())
-                {
-                    case "equals":
-                    case "eq":
-                        return QueryMaker.EqualsTo(propName, value, quoted);
-                    case "notequals":
-                    case "neq":
-                    case "ne":
-                        return QueryMaker.NotEquals(propName, value, quoted);
-                    case "contains":
-                    case "c":
-                        return QueryMaker.Contains(propName, value);
-                    case "notcontains":
-                    case "nc":
-                        return QueryMaker.NotContains(propName, value);
-                    case "startswith":
-                    case "sw":
-                        return QueryMaker.StartsWith(propName, value);
-                    case "notstartswith":
-                    case "nsw":
-                        return QueryMaker.NotStartsWith(propName, value);
-                    case "endswith":
-                    case "ew":
-                        return QueryMaker.EndsWith(propName, value);
-                    case "notendswith":
-                    case "new":
-                        return QueryMaker.NotEndsWith(propName, value);
-                    case "isempty":
-                    case "ie":
-                        return QueryMaker.IsEmpty(propName);
-                    case "isnotempty":
-                    case "ino":
-                        return QueryMaker.IsNotEmpty(propName);
-                    case "isnull":
-                    case "in":
-                        return QueryMaker.IsNull(propName);
-                    case "isnotnull":
-                    case "inn":
-                        return QueryMaker.IsNotNull(propName);
-                    case "greaterthan":
-                    case "gt":
-                        return QueryMaker.GreaterThan(propName, value, quoted);
-                    case "lessthan":
-                    case "lt":
-                        return QueryMaker.LessThan(propName, value, quoted);
-                    case "greaterthanorequals":
-                    case "gtoe":
-                    case "gte":
-                        return QueryMaker.GreaterThanOrEquals(propName, value, quoted);
-                    case "lessthanorequals":
-                    case "ltoe":
-                    case "lte":
-                        return QueryMaker.LessThanOrEquals(propName, value, quoted);
-                    case "istrue":
-                    case "it":
-                        return QueryMaker.IsTrue(propName);
-                    case "isfalse":
-                    case "if":
-                        return QueryMaker.IsFalse(propName);
-                    default:
-                        return "";
-                }
-            </code></pre>
+        <script src="https://gist.github.com/rusith/4f459cbf00dfea32886b55c2dede8933.js"></script>
 
         <h2 id="transactions">Transactions</h2>
 
