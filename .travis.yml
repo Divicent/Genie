@@ -1,16 +1,21 @@
-addons:
-  apt:
-    sources:
-    - sourceline: deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main
-      key_url: https://packages.microsoft.com/keys/microsoft.asc
-    packages:
-    - dotnet-runtime-2.0.3
-    - dotnet-sdk-2.0.3
+# addons:
+#   apt:
+#     sources:
+#     - sourceline: deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main
+#       key_url: https://packages.microsoft.com/keys/microsoft.asc
+#     packages:
+#     - dotnet-runtime-2.0.3
+#     - dotnet-sdk-2.0.3
 dist: trusty
 sudo: required
 mono: none
 dotnet: 2.0.3
 before_script:
+- curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+- sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+- sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
+- sudo apt-get update
+- sudo apt-get install dotnet-sdk-2.0.3
 - chmod a+x ./travis-build.sh
 - chmod a+x ./travis-beforedeploy.sh
 script:
