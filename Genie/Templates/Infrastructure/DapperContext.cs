@@ -21,14 +21,23 @@ namespace Genie.Core.Templates.Infrastructure
                 : "using System.Configuration;";
             var constructor = GenerationContext.Core
                 ? @"        public DapperContext(IConfiguration configuration)
-        {{
+        {
 			 _connectionString = configuration[""connectionString""];
-		}}"
+		}
+        
+        public DapperContext(string connectionString) 
+        {
+            if(string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new System.Exception(""ConnectionString is empty or null"");
+            }
+             _connectionString = connectionString;
+        }"
                 : @"		public DapperContext()
-        {{
+        {
 			var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
 			_connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
-		}}";
+		}";
             L($@"
 
 
