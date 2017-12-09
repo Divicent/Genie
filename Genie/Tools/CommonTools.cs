@@ -66,6 +66,8 @@ namespace Genie.Core.Tools
                 case "tinyint":
                 case "smallint":
                     return "short";
+                case "varbinary":
+                	return "byte[]";
                 case "float":
                     return "float";
                 default:
