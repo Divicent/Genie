@@ -81,36 +81,40 @@ namespace Genie.Core.Base.Reading.Concrete
                 Copied from  sql server reader and it just worked
              */
 
-            QueryToReadColumns = $@" SELECT 
+            QueryToReadColumns = $@"SELECT 
                 c.COLUMN_NAME AS `Name`
-            ,concat(t.TABLE_SCHEMA, '.', t.TABLE_NAME)  AS `TableFullName`
-            ,t.TABLE_Name `TableName`
-            ,t.TABLE_TYPE  AS TableType
-            ,c.IS_NULLABLE AS `Nullable`
-            ,c.DATA_TYPE AS `DataType`
-            ,CASE WHEN pkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsPrimaryKey
-            ,CASE WHEN fkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsForeignKey
-            ,rct.TABLE_NAME AS ReferencedTableName
-            ,rcuc.COLUMN_NAME AS ReferencedColumn
-            ,t.TABLE_COMMENT
-            ,c.COLUMN_COMMENT
+                ,concat(t.TABLE_SCHEMA, '.', t.TABLE_NAME)  AS `TableFullName`
+                ,t.TABLE_Name `TableName`
+                ,t.TABLE_TYPE  AS TableType
+                ,c.IS_NULLABLE AS `Nullable`
+                ,c.DATA_TYPE AS `DataType`
+                ,CASE WHEN pkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsPrimaryKey
+                ,CASE WHEN fkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsForeignKey
+                ,rcuc.REFERENCED_TABLE_NAME AS ReferencedTableName
+                ,rcuc.REFERENCED_COLUMN_NAME AS ReferencedColumn
+                ,t.TABLE_COMMENT
+                ,c.COLUMN_COMMENT
             FROM INFORMATION_SCHEMA.COLUMNS c
                 INNER JOIN INFORMATION_SCHEMA.TABLES t
-                    ON c.TABLE_NAME = t.TABLE_NAME
+                    ON c.`TABLE_NAME` = t.`TABLE_NAME` AND c.TABLE_SCHEMA = t.TABLE_SCHEMA
                 LEFT OUTER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE ccu
-                    ON c.TABLE_NAME = ccu.TABLE_NAME AND c.COLUMN_NAME = ccu.COLUMN_NAME
+                    ON c.TABLE_NAME = ccu.TABLE_NAME AND c.COLUMN_NAME = ccu.COLUMN_NAME AND c.TABLE_SCHEMA = ccu.TABLE_SCHEMA
                 LEFT OUTER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS pkc
-                    ON pkc.CONSTRAINT_TYPE = 'PRIMARY KEY' AND pkc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+                    ON pkc.CONSTRAINT_TYPE = 'PRIMARY KEY' AND pkc.TABLE_NAME = t.TABLE_NAME AND 
+                        pkc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME AND c.TABLE_SCHEMA = pkc.TABLE_SCHEMA
                 LEFT OUTER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS fkc
-                    ON fkc.CONSTRAINT_TYPE = 'FOREIGN KEY' AND fkc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+                    ON fkc.CONSTRAINT_TYPE = 'FOREIGN KEY' AND fkc.TABLE_NAME = t.TABLE_NAME AND 
+                        fkc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME  AND c.TABLE_SCHEMA = fkc.TABLE_SCHEMA
                 LEFT OUTER JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc
-                    ON fkc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+                    ON rc.TABLE_NAME = t.TABLE_NAME AND  fkc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME AND c.TABLE_SCHEMA = rc.CONSTRAINT_SCHEMA
                 LEFT OUTER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS rct
-                    ON rct.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME
+                    ON t.TABLE_NAME = rct.TABLE_NAME AND rct.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME AND c.TABLE_SCHEMA = rct.CONSTRAINT_SCHEMA
                 LEFT OUTER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE rcuc
-                    ON rc.UNIQUE_CONSTRAINT_NAME = rcuc.CONSTRAINT_NAME
-            WHERE  c.`table_schema` = '{configuration.Schema}'
-            ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION ";
+                    ON t.TABLE_NAME = rcuc.TABLE_NAME AND c.COLUMN_NAME = rcuc.COLUMN_NAME
+                    AND fkc.CONSTRAINT_NAME = rcuc.CONSTRAINT_NAME
+                    AND c.TABLE_SCHEMA = rcuc.TABLE_SCHEMA AND c.TABLE_SCHEMA = rcuc.REFERENCED_TABLE_SCHEMA
+            WHERE c.TABLE_SCHEMA = '{configuration.Schema}'
+            ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION";
 
             QueryToGetParameters = @"
                     SELECT 
