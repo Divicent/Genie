@@ -116,7 +116,7 @@ namespace Genie.Core.Base.Reading.Concrete
             WHERE c.TABLE_SCHEMA = '{configuration.Schema}'
             ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION";
 
-            QueryToGetParameters = @"
+            QueryToGetParameters = $@"
                     SELECT 
                         p.SPECIFIC_NAME AS `SP`
 	                    ,p.PARAMETER_NAME AS `Name`
@@ -125,7 +125,7 @@ namespace Genie.Core.Base.Reading.Concrete
 	                    INNER JOIN INFORMATION_SCHEMA.ROUTINES r
 		                    ON p.SPECIFIC_NAME = r.SPECIFIC_NAME
                     WHERE r.ROUTINE_TYPE = 'PROCEDURE'
-                    ORDER BY p.ORDINAL_POSITION";
+                    ORDER BY p.ORDINAL_POSITION  AND p.SPECIFIC_SCHEMA = '{configuration.Schema}'";
 
             /*
                 i lied; changed a bit ;|
