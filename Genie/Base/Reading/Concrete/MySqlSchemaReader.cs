@@ -124,8 +124,8 @@ namespace Genie.Core.Base.Reading.Concrete
                     FROM INFORMATION_SCHEMA.PARAMETERS p
 	                    INNER JOIN INFORMATION_SCHEMA.ROUTINES r
 		                    ON p.SPECIFIC_NAME = r.SPECIFIC_NAME
-                    WHERE r.ROUTINE_TYPE = 'PROCEDURE'
-                    ORDER BY p.ORDINAL_POSITION  AND p.SPECIFIC_SCHEMA = '{configuration.Schema}'";
+                    WHERE r.ROUTINE_TYPE = 'PROCEDURE' AND p.SPECIFIC_SCHEMA = '{configuration.Schema}'
+                    ORDER BY p.ORDINAL_POSITION";
 
             /*
                 i lied; changed a bit ;|
