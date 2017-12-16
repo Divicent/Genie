@@ -60,8 +60,6 @@ $@"	        if (query.Page != null && query.PageSize != null)
                 queryBuilder.Append($"" LIMIT {{query.Skip??0}},  {{query.Take??query.Limit??0}} "");
 	        }}";
                     break;
-                default:
-                    break;
 
             }
             L($@"

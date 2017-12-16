@@ -14,7 +14,7 @@ namespace Genie.Core.Tools
     /// </summary>
     internal static class FormatHelper 
     {
-        private static ITemplatePartsContainer _container = null;
+        private static ITemplatePartsContainer _container;
         
         /// <summary>
         /// Get a function which can be used to quote an attribute name
@@ -33,8 +33,6 @@ namespace Genie.Core.Tools
                 case "mssql":
                     Ql = "[";
                     Qr = "]";
-                    break;
-                default:
                     break;
             }
             return (text) => $"{Ql}{text}{Qr}";
