@@ -5,6 +5,8 @@ using System.Text;
 using Genie.Core.Base.Generating;
 using Genie.Core.Extensions;
 using Genie.Core.Models.Abstract;
+using Genie.Core.Tools;
+using Genie.Core.Base.Configuration.Abstract;
 
 #endregion
 
@@ -14,17 +16,20 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
     {
         private readonly IEnum _enum;
         private readonly IRelation _relation;
+        private readonly IConfiguration _configuration;
 
-        public RelationTemplate(string path, IRelation relation, IEnum @enum) : base(path)
+        public RelationTemplate(string path, IRelation relation, IEnum @enum,IConfiguration configuration ) : base(path)
         {
             _relation = relation;
             _enum = @enum;
+            _configuration = configuration;
         }
 
         public override string Generate()
         {
             var entity = _relation;
             var name = _relation.Name;
+            var quote = FormatHelper.GetDBMSSpecificQuoter(_configuration);
 
             var enm = new StringBuilder();
             if (_enum != null && _enum.Values.Count > 0)
@@ -189,7 +194,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
 
 {enm}
 
-    [Table(""[dbo].[{name}]"")]
+    [Table(""{quote(_configuration.Schema)}.{quote(name)}"")]
     public class {name} : BaseModel
     {{
 
