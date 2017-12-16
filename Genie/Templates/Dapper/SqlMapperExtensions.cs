@@ -49,7 +49,7 @@ $@"	        if (query.Page != null && query.PageSize != null)
 ";
                     break;
                 case "mysql":
-                    getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{1}} from "" + query.Target, isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
+                    getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} from "" + query.Target, isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
                     getRetriveQueryPaging = 
 $@"	        if (query.Page != null && query.PageSize != null)
 	        {{
