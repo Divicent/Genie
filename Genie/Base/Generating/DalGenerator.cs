@@ -85,7 +85,7 @@ namespace Genie.Core.Base.Generating
                     new RepositoryTemplate(@"Infrastructure/Repository"),
                     new UnitOfWorkTemplate(@"Infrastructure/UnitOfWork", schema),
                     new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository"),
-                    new ProcedureContainerTemplate(@"Infrastructure/ProcedureContainer", schema),
+                    new ProcedureContainerTemplate(@"Infrastructure/ProcedureContainer", schema, configuration),
                     new OperationTemplate(@"Infrastructure/Operation"),
 
                     new IReferencedEntityCollectionTemplate(

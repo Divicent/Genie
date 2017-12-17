@@ -37,7 +37,7 @@ namespace Genie.Core.Base.Reading.Concrete
             DatabaseSchema schema;
             try
             {
-                schema = ReadDatabase(configuration.ConnectionString);
+                schema = ReadDatabase(configuration.ConnectionString, configuration);
                 schema.BaseNamespace = configuration.BaseNamespace;
             }
             catch (Exception e)
@@ -69,7 +69,7 @@ namespace Genie.Core.Base.Reading.Concrete
             return schema;
         }
 
-        private DatabaseSchema ReadDatabase(string connectionString)
+        private DatabaseSchema ReadDatabase(string connectionString, IConfiguration configuration)
         {
             var databaseSchemaColumns = new List<DatabaseSchemaColumn>();
             var databaseParameters = new List<DatabaseParameter>();
@@ -153,7 +153,7 @@ namespace Genie.Core.Base.Reading.Concrete
                 connection.Close();
             }
 
-            return Process(databaseSchemaColumns, databaseParameters, databaseExtendedProperties);
+            return Process(databaseSchemaColumns, databaseParameters, databaseExtendedProperties, configuration);
         }
 
 
@@ -174,16 +174,16 @@ namespace Genie.Core.Base.Reading.Concrete
                 foreach (var relation in relations)
                 {
                     foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
-                {
-                    var referencingRelation =
-                        relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
-                    referencingRelation?.ReferenceLists.Add(new ReferenceList
                     {
-                        ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
-                        ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
-                        ReferencedRelationName = relation.Name
-                    });
-                }
+                        var referencingRelation =
+                            relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
+                        referencingRelation?.ReferenceLists.Add(new ReferenceList
+                        {
+                            ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
+                            ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
+                            ReferencedRelationName = relation.Name
+                        });
+                    }
                 }
             }
             catch (Exception e)
@@ -194,9 +194,10 @@ namespace Genie.Core.Base.Reading.Concrete
         }
 
 
-        private static DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns,
+        private DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns,
             IReadOnlyCollection<DatabaseParameter> parameters,
-            IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties)
+            IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties,
+            IConfiguration configuration)
         {
             if (columns == null || columns.Count < 1)
             {
@@ -330,24 +331,16 @@ namespace Genie.Core.Base.Reading.Concrete
                     }
 
                     procedure.Parameters.Add(
-                        new ProcedureParameter {DataType = parameter.DataType, Name = parameter.Name});
+                        new ProcedureParameter { DataType = parameter.DataType, Name = parameter.Name, Position = parameter.Position });
                 }
-
                 foreach (var storedProcedure in storedProcedures)
                 {
-                    var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
-                                                                                                       $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
-                                                                                                       ",");
-                    var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
-                                                                                                           $"{param.Name} = \"+({param.Name.Replace("@", "")} == null ? \"NULL\" : \"'\" + {param.Name.Replace("@", "")} + \"'\")+\"" +
-                                                                                                           ",");
-
-                    storedProcedure.ParamString = parameterString.TrimEnd(',');
-                    storedProcedure.PassString = parameterPassString.TrimEnd(',');
+                    ProcessProcedureParameters(storedProcedure);
                 }
+
             }
 
-            return new DatabaseSchema {Procedures = storedProcedures, Relations = tables, Views = views};
+            return new DatabaseSchema { Procedures = storedProcedures, Relations = tables, Views = views };
         }
 
         private List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,
@@ -411,7 +404,7 @@ namespace Genie.Core.Base.Reading.Concrete
                                         e);
                                 }
                                 name = name.Replace(" ", "_");
-                                values.Add(new EnumValue {Name = name, FieldName = name.ToFieldName(), Value = value});
+                                values.Add(new EnumValue { Name = name, FieldName = name.ToFieldName(), Value = value });
                             }
 
                             enums.Add(new Enum
@@ -437,5 +430,6 @@ namespace Genie.Core.Base.Reading.Concrete
         protected abstract DatabaseParameter ReadParameter(IDataReader reader);
         protected abstract ExtendedPropertyInfo ReadExtendedProperty(IDataReader reader);
         protected abstract string GetEnumValueQuery(IConfiguration configuration, IConfigurationEnumTable enumTable);
+        protected abstract void ProcessProcedureParameters(IStoredProcedure storedProcedure);
     }
 }

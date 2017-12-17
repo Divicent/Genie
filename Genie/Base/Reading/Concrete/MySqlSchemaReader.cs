@@ -1,9 +1,12 @@
 #region Usings
 
 using System.Data;
+using System.Linq;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Reading.Abstract;
 using Genie.Core.Base.Reading.Concrete.Models;
+using Genie.Core.Models.Abstract;
+using Genie.Core.Tools;
 using MySql.Data.MySqlClient;
 
 #endregion
@@ -28,6 +31,19 @@ namespace Genie.Core.Base.Reading.Concrete
             return $"SELECT `{configurationEnumTable.NameColumn}` AS `Name`," +
                    $"       `{configurationEnumTable.ValueColumn}` AS `Value`" +
                    $" FROM `{configuration.Schema}`.`{configurationEnumTable.Table}`";
+        }
+
+        protected override void ProcessProcedureParameters(IStoredProcedure storedProcedure)
+        {
+            var parameterString = storedProcedure.Parameters.OrderBy(c => c.Position).Aggregate("", (current, param) => current +
+                                                                                                         $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name} = null" +
+                                                                                                         ",");
+            var parameterPassString = storedProcedure.Parameters.OrderBy(c => c.Position).Aggregate("", (current, param) => current +
+                                                                                                   $"\"+({param.Name} == null ? \"NULL\" : \"'\" + {param.Name} + \"'\")+\"" +
+                                                                                                   ",");
+
+            storedProcedure.ParamString = parameterString.TrimEnd(',');
+            storedProcedure.PassString = $"({parameterPassString.TrimEnd(',')})";
         }
 
         protected override DatabaseSchemaColumn ReadColumn(IDataReader reader)
@@ -71,7 +87,8 @@ namespace Genie.Core.Base.Reading.Concrete
             {
                 Procedure = reader.GetString(0),
                 Name = reader.GetString(1),
-                DataType = reader.GetString(2)
+                DataType = reader.GetString(2),
+                Position = reader.GetInt32(3)
             };
         }
 
@@ -121,6 +138,7 @@ namespace Genie.Core.Base.Reading.Concrete
                         p.SPECIFIC_NAME AS `SP`
 	                    ,p.PARAMETER_NAME AS `Name`
 	                    ,p.DATA_TYPE AS DataType
+                        ,p.ORDINAL_POSITION AS `Position`
                     FROM INFORMATION_SCHEMA.PARAMETERS p
 	                    INNER JOIN INFORMATION_SCHEMA.ROUTINES r
 		                    ON p.SPECIFIC_NAME = r.SPECIFIC_NAME

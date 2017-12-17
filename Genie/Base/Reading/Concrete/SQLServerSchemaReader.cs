@@ -2,9 +2,12 @@
 
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Reading.Abstract;
 using Genie.Core.Base.Reading.Concrete.Models;
+using Genie.Core.Models.Abstract;
+using Genie.Core.Tools;
 
 #endregion
 
@@ -28,6 +31,19 @@ namespace Genie.Core.Base.Reading.Concrete
             return $"SELECT [{configurationEnumTable.NameColumn}] AS [Name]," +
                    $"       [{configurationEnumTable.ValueColumn}] AS [Value]" +
                    $" FROM [dbo].[{configurationEnumTable.Table}]";
+        }
+
+        protected override void ProcessProcedureParameters(IStoredProcedure storedProcedure)
+        {
+            var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
+                                                                                                            $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
+                                                                                                            ",");
+            var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
+                                                                                                   $"{param.Name} = \"+({param.Name.Replace("@", "")} == null ? \"NULL\" : \"'\" + {param.Name.Replace("@", "")} + \"'\")+\"" +
+                                                                                                   ",");
+
+            storedProcedure.ParamString = parameterString.TrimEnd(',');
+            storedProcedure.PassString = parameterPassString.TrimEnd(',');
         }
 
         protected override DatabaseSchemaColumn ReadColumn(IDataReader reader)
