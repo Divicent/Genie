@@ -10,6 +10,7 @@ namespace Genie.Core.Models.Abstract
     {
         public string Name { get; set; }
         public string DataType { get; set; }
+        public int Position { get; set; }
     }
 
     /// <summary>

@@ -5,5 +5,6 @@ namespace Genie.Core.Base.Reading.Concrete.Models
         public string Procedure { get; set; }
         public string Name { get; set; }
         public string DataType { get; set; }
+        public int Position { get; set; }
     }
 }
