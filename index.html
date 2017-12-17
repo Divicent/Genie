@@ -33,7 +33,7 @@
     <section class="page-header">
         <img src="imgs/genie_log.png" width="250px">
         <h1 class="project-name">Genie</h1>
-        <h2 class="project-tagline">Lightweight, High speed DAL Generator for .Net</h2>
+        <h2 class="project-tagline">Lightweight, Cross Platform, Open Source High speed Data Access Layer Generator for .Net and .Net Core</h2>
         <a class="btn" href="https://github.com/rusith/genie">View on GitHub</a>
         <a class="btn" href="https://github.com/rusith/Genie/releases">Download for Windows | Linux | Mac OSX</a>
         <h3 class="project-tagline" id="downloadcountdisplay"></h3>
@@ -89,52 +89,34 @@
 
         <h3 id="dataaccesslayergenerator">Data Access Layer Generator</h3>
 
-        <p>Genie is a cross platform .Net library that can generate a data access layer for any .Net or .Net Core system using
+        <p>Genie is a cross platform .Net library that can generate a data access layer for any .Net or .Net Core application using
             a relational database.</p>
 
-        <p>Genie is written in C# for .Net core framework</p>
+        <p>Genie has written in C# for .Net core framework</p>
 
         <h2 id="gettingstarted">Getting Started</h2>
 
         <ul>
             <li>Download latest release or build the project</li>
-
-            <li>run GenieCLI executable from the genieSetting.json file's location </li>
+            <li>run GenieCLI executable from the genieSetting.json file's location. you can place the download somewhere and add an environment variable to that folder then you can run genie just by typing  'geniecli' </li>
         </ul>
 
+        <iframe width="854" height="480" src="https://www.youtube.com/embed/0Jl1XI7XSSI" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+        
         <h2 id="howitworks">How It Works</h2>
 
         <ul>
             <li>Takes the given configuration file (JSON) and validates the file.</li>
-
             <li>Reads the database schema and creates internal modal from it.</li>
-
-            <li>Process the model and generates file content using T4 templates</li>
-
-            <li>Writes the file content to the disk</li>
+            <li>Process the model and generates file content using templates</li>
+            <li>Writes the file contents to the disk</li>
         </ul>
 
         <h2 id="configuration">Configuration</h2>
 
         <p>It should be something like this </p>
 
-        <pre><code class="JSON language-JSON">{
-                "connectionString": "...",
-                "projectPath": "...",
-                "baseNamespace": "...",
-                "ProjectFile": "...",
-                "noDapper": false,
-                "core": false,
-                "enums": [
-                    {
-                        "table": "",
-                        "valueColumn": "",
-                        "nameColumn": "",
-                        "type": ""
-                    },
-                ]
-            }
-            </code></pre>
+        <script src="https://gist.github.com/rusith/acdb1d9dcd1b1091ace946d32d39461d.js"></script>
 
         <h3 id="connectionstring">connectionString</h3>
 
@@ -151,8 +133,8 @@
 
         <h3 id="nodapper">noDapper</h3>
 
-        <p>Include the dapper source code in the generated code (/Dapper) Dapper will not be included if set to true . will
-            need to reference dapper externally.</p>
+        <p> Include the dapper source code in the generated code (/Dapper) Dapper will not be included if set to true . will
+            need to reference dapper externally. <b>This must be true if core is true.</b></p>
 
         <h3 id="core">core</h3>
 
@@ -174,13 +156,7 @@
         <p>the OrderType table (ID, Name) has 3 rows and these rows do not change. we can use this table as an enum table and
             can be defined in the configuration file as </p>
 
-        <pre><code>{
-                "table": "OrderType",
-                "valueColumn": "ID",
-                "nameColumn": "Name",
-                "type": "int"
-            }
-            </code></pre>
+        <script src="https://gist.github.com/rusith/3d9ee937f363cf31606a95bf79fc90cf.js"></script>
 
         <ul>
             <li>type can be string / int / bool or double</li>
@@ -191,30 +167,7 @@
 
         <p>the resulting class will be something like this.</p>
 
-        <pre><code class="CS language-CS">public sealed class OrderTypeEnum
-            {
-                private readonly int _value;
-                private OrderTypeEnum(int value)
-                {
-                    _value = value;
-                }
-            
-                public static implicit operator int(OrderTypeEnum @enum)
-                {
-                    return @enum._value;
-                }
-            
-                private static OrderTypeEnum _shipped;
-                private static OrderTypeEnum _preShipped;
-                private static OrderTypeEnum _pending;
-            
-                public static OrderTypeEnum Shipped =&gt; _shipped ?? ( _shipped = new OrderTypeEnum(1));
-            
-                public static OrderTypeEnum PreShipped =&gt; _preShipped ?? ( _preShipped = new OrderTypeEnum(2));
-            
-                public static OrderTypeEnum Pending =&gt; _pending ?? ( _pending = new OrderTypeEnum(3));
-            }
-            </code></pre>
+        <script src="https://gist.github.com/rusith/fea959acd37268c2ba521e9ae7cb5f52.js"></script>
 
         <h1 id="generateddal">Generated DAL</h1>
 
@@ -225,27 +178,11 @@
 
         <p>All repositories can be accessed through a unit of work.</p>
 
-        <p>the DapperContext,should be singleton. UnitOfWork, DapperContext can be implemented using a DI Container in an upper
+        <p>the DapperContext,should be a singleton. UnitOfWork, DapperContext can be implemented using a DI Container in an upper
             layer.
         </p>
 
-        <pre><code class="CS language-CS">// An example using Ninject
-            using Example.DataAccess.Infrastructure;
-            using Example.DataAccess.Infrastructure.Interfaces;
-            using Ninject.Modules;
-            
-            namespace Example.Business.Base.Concrete.Modules
-            {
-                internal class DataAccessModule : NinjectModule
-                {
-                    public override void Load()
-                    {
-                        Bind&lt;IUnitOfWork&gt;().To&lt;UnitOfWork&gt;();
-                        Bind&lt;IDapperContext&gt;().To&lt;DapperContext&gt;().InSingletonScope();
-                    }
-                }
-            }
-            </code></pre>
+        <script src="https://gist.github.com/rusith/00745a21bd2e86d1df6c86dd7f3b3e0a.js"></script>
 
         <h2 id="repositories">Repositories</h2>
 
@@ -255,24 +192,7 @@
 
         <p>a unit has the Commit method that can be used to commit changes to the database</p>
 
-        <pre><code class="CS language-CS">using(var unit = Context.Unit())
-            {
-                var userRepository = unit.UserRepository; // getting the repository
-                var users = userRepository.Get().Where.GivenName.Contains("John").Filter().Query().ToList(); // Getting objects
-                if (users.Count &lt; 1)
-                    return null;
-                var user = users.First();
-                user.GivenName = "Doe"; // Updating the object .will update when committing changes 
-                userRepository.Update(user); 
-                var rusith = userRepository.Get().Where.GivenName.Contains("Rusith").Filter().Top(1).Query().FirstOrDefault(); // Getting an object
-                userRepository.Remove(rusith); // deleting an object
-            
-                var newUser = new User {FamilyName = "Example", Username = "e@e.com", GivenName = "User"};
-                userRepository.Add(newUser); // adding an object
-            
-                unit.Commit();
-            }
-            </code></pre>
+        <script src="https://gist.github.com/rusith/5191cfa3274810215c0e98884643ca41.js"></script>
 
         <h2 id="procedures">Procedures</h2>
 
@@ -280,20 +200,12 @@
             all the parameters of the methods are nullable and null by default. A generic parameter should be provided in
             order to execute a procedure and the result will be mapped to the given class type.</p>
 
-        <pre><code class="CS language-CS">// Executing a procedure
-            unit.Procedures.SPC_GetOrders&lt;OrderDetailModel&gt;_List(100);
-            </code></pre>
+        <script src="https://gist.github.com/rusith/86cfaced58c9b9c1c5d93177818bd9a7.js"></script>
 
         <p>There are three functions for each procedure (List, Single and Void) List is for getting list of objects as the result
             Single is for getting single object as the result Void is for no result</p>
 
-        <pre><code class="CS language-CS">// List
-            IEnumarable&lt;&gt;unit.Procedures.SPC_GetOrders_List&lt;OrderDetailModel&gt;();
-            // Single
-            int deleted = unit.Procedures.SPC_DeleteOrder_Single&lt;bool&gt;(100);
-            // Void
-            unit.Procedures.SPC_DeleteOrder_Void(100);
-            </code></pre>
+        <script src="https://gist.github.com/rusith/2edd5166363692c6a9788ffe255419d9.js"></script>
 
         <h2 id="querying">Querying</h2>
 
@@ -311,18 +223,7 @@
             can be used to chain the complete filter expression. each two expressions should be connected using And || Or
             , however if you do not specify a boolean operator between two expressions it will be <code>and</code> by default.</p>
 
-        <pre><code class="CS language-CS">var repo = UnitOfWork.InvoicesViewRepository;
-            var filter = repo.Get();
-            
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                filter.
-                    Where.ShipTo.Contains(search).
-                    Or.FactoryInvoiceNo.Contains(search)
-                    .Or.No.Contains(search).Filter();
-            }
-            ...
-            </code></pre>
+        <script src="https://gist.github.com/rusith/4688571ad06209f5233fe3699c399d4c.js"></script>
 
         <p>there is a filter for every data type and every filter contains methods to filter the property. the <code>Filter()</code>            method returns the parent QueryContext.</p>
 
@@ -331,11 +232,7 @@
         <p>There is a OrderContext that can be used to order the query there is a property for each column and these properties
             can be used to chain the complete order expression. an order expression can be Descending or Ascending.</p>
 
-        <pre><code class="CS language-CS">var repo = UnitOfWork.InvoicesViewRepository;
-                    var filter = repo.Get()
-                        .OrderBy.ModifiedDate.Ascending().Order();
-            ...
-            </code></pre>
+        <script src="https://gist.github.com/rusith/6d6e9e26e9e3d88e851245398be45126.js"></script>
 
         <p>the <code>Order()</code> method returns the parent QueryContext.</p>
 
@@ -371,69 +268,7 @@
             and values(if necessary) . this method can be used to filter the result in a customizable way How the operations
             are filtered and what are the operations : </p>
 
-        <pre><code class="C# language-C#">  switch (type.ToLower())
-                {
-                    case "equals":
-                    case "eq":
-                        return QueryMaker.EqualsTo(propName, value, quoted);
-                    case "notequals":
-                    case "neq":
-                    case "ne":
-                        return QueryMaker.NotEquals(propName, value, quoted);
-                    case "contains":
-                    case "c":
-                        return QueryMaker.Contains(propName, value);
-                    case "notcontains":
-                    case "nc":
-                        return QueryMaker.NotContains(propName, value);
-                    case "startswith":
-                    case "sw":
-                        return QueryMaker.StartsWith(propName, value);
-                    case "notstartswith":
-                    case "nsw":
-                        return QueryMaker.NotStartsWith(propName, value);
-                    case "endswith":
-                    case "ew":
-                        return QueryMaker.EndsWith(propName, value);
-                    case "notendswith":
-                    case "new":
-                        return QueryMaker.NotEndsWith(propName, value);
-                    case "isempty":
-                    case "ie":
-                        return QueryMaker.IsEmpty(propName);
-                    case "isnotempty":
-                    case "ino":
-                        return QueryMaker.IsNotEmpty(propName);
-                    case "isnull":
-                    case "in":
-                        return QueryMaker.IsNull(propName);
-                    case "isnotnull":
-                    case "inn":
-                        return QueryMaker.IsNotNull(propName);
-                    case "greaterthan":
-                    case "gt":
-                        return QueryMaker.GreaterThan(propName, value, quoted);
-                    case "lessthan":
-                    case "lt":
-                        return QueryMaker.LessThan(propName, value, quoted);
-                    case "greaterthanorequals":
-                    case "gtoe":
-                    case "gte":
-                        return QueryMaker.GreaterThanOrEquals(propName, value, quoted);
-                    case "lessthanorequals":
-                    case "ltoe":
-                    case "lte":
-                        return QueryMaker.LessThanOrEquals(propName, value, quoted);
-                    case "istrue":
-                    case "it":
-                        return QueryMaker.IsTrue(propName);
-                    case "isfalse":
-                    case "if":
-                        return QueryMaker.IsFalse(propName);
-                    default:
-                        return "";
-                }
-            </code></pre>
+        <script src="https://gist.github.com/rusith/4f459cbf00dfea32886b55c2dede8933.js"></script>
 
         <h2 id="transactions">Transactions</h2>
 
