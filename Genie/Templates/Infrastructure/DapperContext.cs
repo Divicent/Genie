@@ -42,7 +42,7 @@ namespace Genie.Core.Templates.Infrastructure
 			_connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
 		}";
 
-        var container = FormatHelper.GetDBMSSpecificTemplatePartsContainer(_configuration);
+        var container = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);
 
             L($@"
 {usingConfiguration}

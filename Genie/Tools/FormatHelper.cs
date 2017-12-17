@@ -21,22 +21,21 @@ namespace Genie.Core.Tools
         /// </summary>
         /// <param name="configuration">Configuration</param>
         /// <returns>A function</returns>
-        internal static System.Func<string, string> GetDBMSSpecificQuoter(IConfiguration configuration)
+        internal static System.Func<string, string> GetDbmsSpecificQuoter(IConfiguration configuration)
         {
-            var Ql = "";
-            var Qr = "";
-            switch (configuration.DBMS)
+            var ql = "";
+            var qr = "";
+            if (configuration.DBMS == "mysql")
             {
-                case "mysql":
-                    Ql = "`";
-                    Qr = "`";
-                    break;
-                case "mssql":
-                    Ql = "[";
-                    Qr = "]";
-                    break;
+                ql = "`";
+                qr = "`";
             }
-            return (text) => $"{Ql}{text}{Qr}";
+            else if (configuration.DBMS == "mssql")
+            {
+                ql = "[";
+                qr = "]";
+            }
+            return (text) => $"{ql}{text}{qr}";
         }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace Genie.Core.Tools
         /// </summary>
         /// <param name="configuration">Configuration</param>
         /// <returns>ITemplatePartsContainer</returns>
-        internal static ITemplatePartsContainer GetDBMSSpecificTemplatePartsContainer(IConfiguration configuration)
+        internal static ITemplatePartsContainer GetDbmsSpecificTemplatePartsContainer(IConfiguration configuration)
         {
             if (_container != null)
             {

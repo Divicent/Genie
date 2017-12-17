@@ -26,8 +26,8 @@ namespace Genie.Core.Templates.Infrastructure
             var spList = new StringBuilder();
             var spSingle = new StringBuilder();
             var spVoid = new StringBuilder();
-            var quote = FormatHelper.GetDBMSSpecificQuoter(_configuration);
-            var parts = FormatHelper.GetDBMSSpecificTemplatePartsContainer(_configuration);
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
+            var parts = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);
 
 
             foreach (var sp in _schema.Procedures)

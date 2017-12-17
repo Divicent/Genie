@@ -29,7 +29,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
         {
             var entity = _relation;
             var name = _relation.Name;
-            var quote = FormatHelper.GetDBMSSpecificQuoter(_configuration);
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
 
             var enm = new StringBuilder();
             if (_enum != null && _enum.Values.Count > 0)

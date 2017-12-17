@@ -27,7 +27,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 
         public override string Generate()
         {
-            var quote = FormatHelper.GetDBMSSpecificQuoter(_configuration);
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
             var lit = _attributes.Where(a => a.IsLiteralType).ToList();
             var nonLit = _attributes.Where(a => !a.IsLiteralType).ToList();
 

@@ -26,7 +26,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             var entity = _view;
             var name = _view.Name;
 
-            var quote = FormatHelper.GetDBMSSpecificQuoter(_configuration);
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
 
             var attributes = new StringBuilder();
 

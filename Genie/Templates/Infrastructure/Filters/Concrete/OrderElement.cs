@@ -20,7 +20,7 @@ namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 
         public override string Generate()
         {
-            var quote = FormatHelper.GetDBMSSpecificQuoter(_configuration);
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
             L($@"
 
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;

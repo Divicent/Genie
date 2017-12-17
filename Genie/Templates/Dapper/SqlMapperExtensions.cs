@@ -23,8 +23,8 @@ namespace Genie.Core.Templates.Dapper
             var write = GenerationContext.Core ? ".First()" : "[0]";
             var getTypeInfo = GenerationContext.Core ? "GetTypeInfo()." : "";
 
-            var quote = FormatHelper.GetDBMSSpecificQuoter(_configuration);
-            var container = FormatHelper.GetDBMSSpecificTemplatePartsContainer(_configuration);
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
+            var container = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);
 
             var getRetriveQueryNewQueryBuilder = "";
             var getRetriveQueryPaging = "";
