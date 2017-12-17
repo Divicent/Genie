@@ -50,8 +50,6 @@ namespace GenieCLI
                 Console.ResetColor();
                 Console.ReadKey();
             }
-
-
         }
     }
 }
