@@ -29,11 +29,10 @@ namespace Genie.Core.Templates.Dapper
             var getRetriveQueryNewQueryBuilder = "";
             var getRetriveQueryPaging = "";
 
-            switch(_configuration.DBMS) 
+            if (_configuration.DBMS == "mssql")
             {
-                case "mssql":
-                    getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
-                    getRetriveQueryPaging = 
+                getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
+                getRetriveQueryPaging =
 $@"	        if (query.Page != null && query.PageSize != null)
 	        {{
 	            queryBuilder.Append($"" OFFSET ({{query.Page * query.PageSize}}) ROWS "" + $"" FETCH NEXT {{query.PageSize}} ROWS ONLY "");
@@ -47,10 +46,11 @@ $@"	        if (query.Page != null && query.PageSize != null)
 	                queryBuilder.Append($"" FETCH NEXT {{query.Take}} ROWS ONLY "");
 	        }}
 ";
-                    break;
-                case "mysql":
-                    getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} from "" + query.Target, isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
-                    getRetriveQueryPaging = 
+            }
+            else if (_configuration.DBMS == "mysql")
+            {
+                getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} from "" + query.Target, isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
+                getRetriveQueryPaging =
 $@"	        if (query.Page != null && query.PageSize != null)
 	        {{
 	            queryBuilder.Append($"" LIMIT {{query.Page * query.PageSize}}, {{query.PageSize}} "");
@@ -59,9 +59,8 @@ $@"	        if (query.Page != null && query.PageSize != null)
 	        {{
                 queryBuilder.Append($"" LIMIT {{query.Skip??0}},  {{query.Take??query.Limit??0}} "");
 	        }}";
-                    break;
-
             }
+
             L($@"
 
 using System;

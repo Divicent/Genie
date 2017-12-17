@@ -12,10 +12,10 @@ namespace Genie.Core.Tools
     /// <summary>
     /// Helps to format templates
     /// </summary>
-    internal static class FormatHelper 
+    internal static class FormatHelper
     {
         private static ITemplatePartsContainer _container;
-        
+
         /// <summary>
         /// Get a function which can be used to quote an attribute name
         /// </summary>
@@ -25,10 +25,11 @@ namespace Genie.Core.Tools
         {
             var Ql = "";
             var Qr = "";
-            switch(configuration.DBMS)
+            switch (configuration.DBMS)
             {
                 case "mysql":
-                    Ql = Qr = "`";
+                    Ql = "`";
+                    Qr = "`";
                     break;
                 case "mssql":
                     Ql = "[";
@@ -45,23 +46,25 @@ namespace Genie.Core.Tools
         /// <returns>ITemplatePartsContainer</returns>
         internal static ITemplatePartsContainer GetDBMSSpecificTemplatePartsContainer(IConfiguration configuration)
         {
-            if(_container != null) return _container;
+            if (_container != null)
+            {
+                return _container;
+            }
 
             var container = new TemplatePartsContainer();
-            switch(configuration.DBMS)
+
+            if (configuration.DBMS == "mysql")
             {
-                case "mysql":
-                    container.SqlClientNamespace = "MySql.Data.MySqlClient";
-                    container.SqlConnectionClassName = "MySqlConnection";
-                    container.StoredProcedureCallString = "CALL";
-                    break;
-                case "mssql":
-                    container.SqlClientNamespace = "System.Data.SqlClient";
-                    container.SqlConnectionClassName = "SqlConnection";
-                    container.StoredProcedureCallString = "EXEC";
-                    break;
-                default:
-                    return container;
+                container.SqlClientNamespace = "MySql.Data.MySqlClient";
+                container.SqlConnectionClassName = "MySqlConnection";
+                container.StoredProcedureCallString = "CALL";
+
+            }
+            else if (configuration.DBMS == "mssql")
+            {
+                container.SqlClientNamespace = "System.Data.SqlClient";
+                container.SqlConnectionClassName = "SqlConnection";
+                container.StoredProcedureCallString = "EXEC";
             }
 
             return _container = container;

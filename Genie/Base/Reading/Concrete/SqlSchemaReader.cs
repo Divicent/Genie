@@ -37,7 +37,7 @@ namespace Genie.Core.Base.Reading.Concrete
             DatabaseSchema schema;
             try
             {
-                schema = ReadDatabase(configuration.ConnectionString, configuration);
+                schema = ReadDatabase(configuration.ConnectionString);
                 schema.BaseNamespace = configuration.BaseNamespace;
             }
             catch (Exception e)
@@ -69,7 +69,7 @@ namespace Genie.Core.Base.Reading.Concrete
             return schema;
         }
 
-        private DatabaseSchema ReadDatabase(string connectionString, IConfiguration configuration)
+        private DatabaseSchema ReadDatabase(string connectionString)
         {
             var databaseSchemaColumns = new List<DatabaseSchemaColumn>();
             var databaseParameters = new List<DatabaseParameter>();
@@ -153,7 +153,7 @@ namespace Genie.Core.Base.Reading.Concrete
                 connection.Close();
             }
 
-            return Process(databaseSchemaColumns, databaseParameters, databaseExtendedProperties, configuration);
+            return Process(databaseSchemaColumns, databaseParameters, databaseExtendedProperties);
         }
 
 
@@ -196,8 +196,7 @@ namespace Genie.Core.Base.Reading.Concrete
 
         private DatabaseSchema Process(IReadOnlyCollection<DatabaseSchemaColumn> columns,
             IReadOnlyCollection<DatabaseParameter> parameters,
-            IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties,
-            IConfiguration configuration)
+            IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties)
         {
             if (columns == null || columns.Count < 1)
             {
