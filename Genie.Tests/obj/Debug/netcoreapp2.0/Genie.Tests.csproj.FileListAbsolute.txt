@@ -1,0 +1,15 @@
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/xunit.runner.visualstudio.dotnetcore.testadapter.dll
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/xunit.runner.utility.netstandard15.dll
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/xunit.runner.reporters.netstandard15.dll
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/Genie.Tests.deps.json
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/Genie.Tests.runtimeconfig.json
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/Genie.Tests.runtimeconfig.dev.json
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/Genie.Tests.dll
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/Genie.Tests.pdb
+/home/rusith/Documents/Projects/Genie/Genie.Tests/obj/Debug/netcoreapp2.0/Genie.Tests.csproj.CoreCompileInputs.cache
+/home/rusith/Documents/Projects/Genie/Genie.Tests/obj/Debug/netcoreapp2.0/Genie.Tests.AssemblyInfoInputs.cache
+/home/rusith/Documents/Projects/Genie/Genie.Tests/obj/Debug/netcoreapp2.0/Genie.Tests.AssemblyInfo.cs
+/home/rusith/Documents/Projects/Genie/Genie.Tests/obj/Debug/netcoreapp2.0/Genie.Tests.dll
+/home/rusith/Documents/Projects/Genie/Genie.Tests/obj/Debug/netcoreapp2.0/Genie.Tests.pdb
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/Genie.Core.dll
+/home/rusith/Documents/Projects/Genie/Genie.Tests/bin/Debug/netcoreapp2.0/Genie.Core.pdb

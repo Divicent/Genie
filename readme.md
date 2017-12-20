@@ -1,5 +1,5 @@
 <h1>
-<img src="https://raw.githubusercontent.com/rusith/genie/core/icon/genie.png" alt="Icon" style="width: 200px;"/> Genie
+<img src="https://raw.githubusercontent.com/rusith/genie/core/icon/genie_logo.png" alt="Icon" width="200px"/>
 </h1>
 
 [![Build Status](https://travis-ci.org/rusith/Genie.svg?branch=core)](https://travis-ci.org/rusith/Genie)
@@ -359,4 +359,3 @@ This function needs an `IEnumerable<IPropertyFilter>` which is a collection of p
 ## Transactions
 
 You can start a transaction by calling `BeginTransaction` method in the UnitOfWork then you should pass the transaction to all methods you use in repositories. you can use the `Commit` method in the UnitOfWork to commit the transaction.
-

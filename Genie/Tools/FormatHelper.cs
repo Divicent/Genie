@@ -1,5 +1,6 @@
 #region Usings
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Models.Abstract;
@@ -12,16 +13,16 @@ namespace Genie.Core.Tools
     /// <summary>
     /// Helps to format templates
     /// </summary>
-    internal static class FormatHelper
+    public static class FormatHelper
     {
-        private static ITemplatePartsContainer _container;
+        private static readonly Dictionary<string, ITemplatePartsContainer> _containers = new Dictionary<string, ITemplatePartsContainer>();
 
         /// <summary>
         /// Get a function which can be used to quote an attribute name
         /// </summary>
         /// <param name="configuration">Configuration</param>
         /// <returns>A function</returns>
-        internal static System.Func<string, string> GetDbmsSpecificQuoter(IConfiguration configuration)
+        public static System.Func<string, string> GetDbmsSpecificQuoter(IConfiguration configuration)
         {
             var ql = "";
             var qr = "";
@@ -43,11 +44,17 @@ namespace Genie.Core.Tools
         /// </summary>
         /// <param name="configuration">Configuration</param>
         /// <returns>ITemplatePartsContainer</returns>
-        internal static ITemplatePartsContainer GetDbmsSpecificTemplatePartsContainer(IConfiguration configuration)
+        public static ITemplatePartsContainer GetDbmsSpecificTemplatePartsContainer(IConfiguration configuration)
+
         {
-            if (_container != null)
+            if(string.IsNullOrWhiteSpace(configuration.DBMS)) 
             {
-                return _container;
+                return new TemplatePartsContainer { SqlConnectionClassName = "", SqlClientNamespace = "", StoredProcedureCallString = "" };
+            }
+
+            if (_containers.TryGetValue(configuration.DBMS, out _))
+            {
+                return _containers[configuration.DBMS];
             }
 
             var container = new TemplatePartsContainer();
@@ -66,7 +73,7 @@ namespace Genie.Core.Tools
                 container.StoredProcedureCallString = "EXEC";
             }
 
-            return _container = container;
+            return _containers[configuration.DBMS] = container;
         }
     }
 }

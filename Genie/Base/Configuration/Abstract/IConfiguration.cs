@@ -19,7 +19,7 @@ namespace Genie.Core.Base.Configuration.Abstract
     /// <summary>
     ///     Basic configuration for genie
     /// </summary>
-    internal interface IConfiguration : IValidatableConfiguration
+    public interface IConfiguration : IValidatableConfiguration
     {
         /// <summary>
         ///     Open able , accessible connection string to the target database
