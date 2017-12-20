@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenieCLI", "GenieCLI\GenieC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Genie.Core", "Genie\Genie.Core.csproj", "{F1AE1602-6367-45F8-BD31-739653877158}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Genie.Tests", "Genie.Tests\Genie.Tests.csproj", "{A3DCD4B9-F10C-48AD-ABEF-9DCE35AB337A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F1AE1602-6367-45F8-BD31-739653877158}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1AE1602-6367-45F8-BD31-739653877158}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1AE1602-6367-45F8-BD31-739653877158}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3DCD4B9-F10C-48AD-ABEF-9DCE35AB337A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3DCD4B9-F10C-48AD-ABEF-9DCE35AB337A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3DCD4B9-F10C-48AD-ABEF-9DCE35AB337A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3DCD4B9-F10C-48AD-ABEF-9DCE35AB337A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-using Xunit;GetDbmsSpecificTemplatePartsContainer
+using Xunit;
 using Genie.Core.Tools;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Configuration.Concrete;
