@@ -66,10 +66,10 @@ namespace Genie.Core.Base.Generating
                     new DateFilterTemplate(@"Infrastructure/Filters/Concrete/DateFilter"),
                     new ExpressionJoinTemplate(@"Infrastructure/Filters/Concrete/ExpressionJoin"),
                     new NumberFilterTemplate(@"Infrastructure/Filters/Concrete/NumberFilter"),
-                    new OrderElementTemplate(@"Infrastructure/Filters/Concrete/OrderElement"),
+                    new OrderElementTemplate(@"Infrastructure/Filters/Concrete/OrderElement", configuration),
                     new OrderJoinTemplate(@"Infrastructure/Filters/Concrete/OrderJoin"),
                     new PropertyFilterTemplate(@"Infrastructure/Filters/Concrete/PropertyFilter"),
-                    new QueryMakerTemplate(@"Infrastructure/Filters/Concrete/QueryMaker"),
+                    new QueryMakerTemplate(@"Infrastructure/Filters/Concrete/QueryMaker", configuration),
                     new RepoQueryTemplate(@"Infrastructure/Filters/Concrete/RepoQuery"),
                     new StringFilterTemplate(@"Infrastructure/Filters/Concrete/StringFilter"),
 
@@ -81,11 +81,11 @@ namespace Genie.Core.Base.Generating
                     new IProcedureContainerTemplate(@"Infrastructure/Interfaces/IProcedureContainer", schema),
                     new IOperationTemplate(@"Infrastructure/Interfaces/IOperation"),
 
-                    new DapperContextTemplate(@"Infrastructure/DapperContext"),
+                    new DapperContextTemplate(@"Infrastructure/DapperContext", configuration),
                     new RepositoryTemplate(@"Infrastructure/Repository"),
                     new UnitOfWorkTemplate(@"Infrastructure/UnitOfWork", schema),
                     new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository"),
-                    new ProcedureContainerTemplate(@"Infrastructure/ProcedureContainer", schema),
+                    new ProcedureContainerTemplate(@"Infrastructure/ProcedureContainer", schema, configuration),
                     new OperationTemplate(@"Infrastructure/Operation"),
 
                     new IReferencedEntityCollectionTemplate(
@@ -97,11 +97,11 @@ namespace Genie.Core.Base.Generating
                     new AddActionTemplate(@"Infrastructure/Actions/Concrete/AddAction"),
 
                     new BaseModelTemplate(@"Infrastructure/Models/Concrete/BaseModel"),
-                    new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext")
+                    new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext", configuration)
                 };
 
                 files.AddRange(
-                    
+
                     configuration.NoDapper ?
                         new List<ITemplate>
                         {
@@ -109,7 +109,7 @@ namespace Genie.Core.Base.Generating
                             new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
                             new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
                             new PostgresAdapterTemplate(@"Dapper/PostgresAdapter"),
-                            new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions"),
+                            new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
                             new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
                             new TableAttributeTemplate(@"Dapper/TableAttribute"),
                             new WriteAttributeTemplate(@"Dapper/WriteAttribute")
@@ -165,17 +165,17 @@ namespace Genie.Core.Base.Generating
                             new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
                             new PostgresAdapterTemplate(@"Dapper/PostgresAdapter"),
                             new SimpleMemberMapTemplate(@"Dapper/SimpleMemberMap"),
-                            new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions"),
+                            new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
                             new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
                             new TableAttributeTemplate(@"Dapper/TableAttribute"),
                             new WriteAttributeTemplate(@"Dapper/WriteAttribute")
                         }
                     );
-               
+
                 foreach (var relation in schema.Relations)
                 {
                     files.Add(new RelationTemplate(@"Infrastructure/Models/Concrete/" + relation.Name, relation,
-                        schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum")));
+                        schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum"), configuration));
 
                     files.Add(new IModelQueryContextTemplate(
                         @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "QueryContext", relation.Name));
@@ -188,7 +188,7 @@ namespace Genie.Core.Base.Generating
 
                     files.Add(new ModelQueryContextTemplate(
                         @"Infrastructure/Models/Concrete/Context/" + relation.Name + "QueryContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+                        relation.Attributes.Cast<ISimpleAttribute>().ToList(), configuration));
                     files.Add(new ModelFilterContextTemplate(
                         @"Infrastructure/Models/Concrete/Context/" + relation.Name + "FilterContext", relation.Name,
                         relation.Attributes.Cast<ISimpleAttribute>().ToList()));
@@ -199,7 +199,7 @@ namespace Genie.Core.Base.Generating
 
                 foreach (var view in schema.Views)
                 {
-                    files.Add(new ViewTemplate(@"Infrastructure/Models/Concrete/" + view.Name, view));
+                    files.Add(new ViewTemplate(@"Infrastructure/Models/Concrete/" + view.Name, view, configuration));
 
                     files.Add(new IModelQueryContextTemplate(
                         @"Infrastructure/Models/Abstract/Context/I" + view.Name + "QueryContext", view.Name));
@@ -212,7 +212,7 @@ namespace Genie.Core.Base.Generating
 
                     files.Add(new ModelQueryContextTemplate(
                         @"Infrastructure/Models/Concrete/Context/" + view.Name + "QueryContext", view.Name,
-                        view.Attributes));
+                        view.Attributes, configuration));
                     files.Add(new ModelFilterContextTemplate(
                         @"Infrastructure/Models/Concrete/Context/" + view.Name + "FilterContext", view.Name,
                         view.Attributes));

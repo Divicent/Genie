@@ -1,6 +1,6 @@
 #region Usings
 
-
+using Genie.Core.Tools;
 
 #endregion
 
@@ -10,8 +10,11 @@ namespace Genie.Core.Templates.Infrastructure
 {
     internal class DapperContextTemplate : GenieTemplate
     {
-        public DapperContextTemplate(string path) : base(path)
+        private readonly Base.Configuration.Abstract.IConfiguration _configuration;
+
+        public DapperContextTemplate(string path, Base.Configuration.Abstract.IConfiguration configuration) : base(path)
         {
+            this._configuration = configuration;
         }
 
         public override string Generate()
@@ -38,18 +41,19 @@ namespace Genie.Core.Templates.Infrastructure
 			var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
 			_connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
 		}";
+
+        var container = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);
+
             L($@"
-
-
 {usingConfiguration}
 using System.Data;
-using System.Data.SqlClient;
+using {container.SqlClientNamespace};
 using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure
 {{
 	/// <summary>
-    /// An Implementation that uses SqlConnection
+    /// An Implementation that uses {container.SqlConnectionClassName}
     /// </summary>
 	public class DapperContext : IDapperContext
     {{
@@ -61,10 +65,10 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
         /// </summary>
 {constructor}
 
-    		/// <summary>
+    	/// <summary>
         /// Get the connection to the database
         /// </summary>
-        public IDbConnection Connection => _connection ?? (_connection = new SqlConnection(_connectionString));
+        public IDbConnection Connection => _connection ?? (_connection = new {container.SqlConnectionClassName}(_connectionString));
 
         public IUnitOfWork Unit() 
         {{

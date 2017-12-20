@@ -1,6 +1,7 @@
 #region Usings
 
-
+using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Tools;
 
 #endregion
 
@@ -10,8 +11,10 @@ namespace Genie.Core.Templates.Dapper
 {
     internal class SqlMapperExtensionsTemplate : GenieTemplate
     {
-        public SqlMapperExtensionsTemplate(string path) : base(path)
+        private readonly IConfiguration _configuration;
+        public SqlMapperExtensionsTemplate(string path, IConfiguration configuration) : base(path)
         {
+            _configuration = configuration;
         }
 
         public override string Generate()
@@ -19,13 +22,52 @@ namespace Genie.Core.Templates.Dapper
             var dapperUsing = GenerationContext.NoDapper ? "using Dapper;" : "";
             var write = GenerationContext.Core ? ".First()" : "[0]";
             var getTypeInfo = GenerationContext.Core ? "GetTypeInfo()." : "";
+
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
+            var container = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);
+
+            var getRetriveQueryNewQueryBuilder = "";
+            var getRetriveQueryPaging = "";
+
+            if (_configuration.DBMS == "mssql")
+            {
+                getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
+                getRetriveQueryPaging =
+$@"	        if (query.Page != null && query.PageSize != null)
+	        {{
+	            queryBuilder.Append($"" OFFSET ({{query.Page * query.PageSize}}) ROWS "" + $"" FETCH NEXT {{query.PageSize}} ROWS ONLY "");
+	        }}
+	        else
+	        {{
+	            if (query.Skip != null)
+	                queryBuilder.Append($"" OFFSET ({{query.Skip}}) ROWS "");
+
+	            if (query.Take != null)
+	                queryBuilder.Append($"" FETCH NEXT {{query.Take}} ROWS ONLY "");
+	        }}
+";
+            }
+            else if (_configuration.DBMS == "mysql")
+            {
+                getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} from "" + query.Target, isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
+                getRetriveQueryPaging =
+$@"	        if (query.Page != null && query.PageSize != null)
+	        {{
+	            queryBuilder.Append($"" LIMIT {{query.Page * query.PageSize}}, {{query.PageSize}} "");
+	        }}
+	        else if(query.Skip != null || query.Take != null || query.Limit != null)
+	        {{
+                queryBuilder.Append($"" LIMIT {{query.Skip??0}},  {{query.Take??query.Limit??0}} "");
+	        }}";
+            }
+
             L($@"
 
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using {container.SqlClientNamespace};
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -118,12 +160,12 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// Return all  
 	    /// </summary>
 	    /// <typeparam name=""T"">Interface type to create and populate</typeparam>
-	    /// <param name=""connection"">Open SqlConnection</param>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
 	    public static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
         {{
-			using(connection = new SqlConnection(connection.ConnectionString))
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
 				return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
@@ -133,12 +175,12 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <summary>
 	    /// Returns count of rows
 	    /// </summary>
-	    /// <param name=""connection"">Open SqlConnection</param>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
 	    public static int Count(this IDbConnection connection, IRepoQuery query)
         {{
-			using(connection = new SqlConnection(connection.ConnectionString))
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				return connection.ExecuteScalar<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
 			}}
@@ -147,7 +189,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 		/// <summary>
 	    /// Returns the where clause of the resulting query
 	    /// </summary>
-	    /// <param name=""connection"">Open SqlConnection</param>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
 	    public static string GetWhereClause(this IDbConnection connection, IRepoQuery query)
@@ -157,7 +199,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 
 	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false, bool whereOnly = false)
 	    {{
-            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));
+{getRetriveQueryNewQueryBuilder}
             
             var where = query.Where == null ? new Queue<string>() : new Queue<string>(query.Where);
             var order = query.Order == null ? new Queue<string>() : new Queue<string>(query.Order);
@@ -227,18 +269,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	            }}
 	        }}
 
-	        if (query.Page != null && query.PageSize != null)
-	        {{
-	            queryBuilder.Append($"" OFFSET ({{query.Page * query.PageSize}}) ROWS "" + $"" FETCH NEXT {{query.PageSize}} ROWS ONLY "");
-	        }}
-	        else
-	        {{
-	            if (query.Skip != null)
-	                queryBuilder.Append($"" OFFSET ({{query.Skip}}) ROWS "");
-
-	            if (query.Take != null)
-	                queryBuilder.Append($"" FETCH NEXT {{query.Take}} ROWS ONLY "");
-	        }}
+{getRetriveQueryPaging}
 
 	        return queryBuilder.ToString();
         }}
@@ -288,7 +319,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             var first = true;
             foreach (var columnName in columnNamesList)
             {{
-                builder.Append($""{{(!first ? "", "" : """")}}[{{columnName}}]"");
+                builder.Append($""{{(!first ? "", "" : """")}}{quote("{columnName}")}"");
                 first = false;
             }}
             return SelectParts[target] = builder.ToString();
@@ -298,7 +329,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <summary>
         /// Inserts an entity into table ""Ts"" and returns identity id.
         /// </summary>
-        /// <param name=""connection"">Open SqlConnection</param>
+        /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
         /// <param name=""entityToInsert"">Entity to insert</param>
         /// <param name=""transaction""></param>
         /// <param name=""commandTimeout""></param>
@@ -321,7 +352,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	        var lst = allProperties.Count == keyProperties.Count ? keyProperties : allPropertiesExceptIndentity;
             foreach (var property in lst)
 	        {{
-                sbColumnList.AppendFormat(""[{{0}}]"", property.Name);
+                sbColumnList.AppendFormat(""{quote("{0}")}"", property.Name);
                 if (index < lst.Count - 1)
                     sbColumnList.Append("", "");
 	            index ++;
@@ -339,7 +370,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             }}
             
             var adapter = GetFormatter(connection);
-			using(connection = new SqlConnection(connection.ConnectionString))
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
 				var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
@@ -350,7 +381,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <summary>
 	    /// Updates entity in table ""Ts"", checks if the entity is modified if the entity is tracked by the Get() extension.
 	    /// </summary>
-	    /// <param name=""connection"">Open SqlConnection</param>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""entityToUpdate"">Entity to be updated</param>
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
@@ -381,7 +412,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             for (var i = 0; i < nonIdProps.Count; i++)
             {{
                 var property = nonIdProps.ElementAt(i);
-                sb.AppendFormat(""[{{0}}] = @{{1}}"", property.Name, property.Name);
+                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
                 if (i < nonIdProps.Count - 1)
                     sb.AppendFormat("", "");
             }}
@@ -390,12 +421,12 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             for (var i = 0; i < keyProperties.Count; i++)
             {{
                 var property = keyProperties.ElementAt(i);
-                sb.AppendFormat(""[{{0}}] = @{{1}}"", property.Name, property.Name);
+                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
                 if (i < keyProperties.Count - 1)
                     sb.AppendFormat("" and "");
             }}
 
-			using(connection = new SqlConnection(connection.ConnectionString))
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
 				var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
@@ -406,7 +437,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <summary>
 	    /// Delete entity in table ""Ts"".
 	    /// </summary>
-	    /// <param name=""connection"">Open SqlConnection</param>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""entity""></param>
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
@@ -432,12 +463,12 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             for (var i = 0; i < keyProperties.Count; i++)
             {{
                 var property = keyProperties.ElementAt(i);
-                sb.AppendFormat(""[{{0}}] = @{{1}}"", property.Name, property.Name);
+                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
                 if (i < keyProperties.Count - 1)
                     sb.AppendFormat("" and "");
             }}
 
-			using(connection = new SqlConnection(connection.ConnectionString))
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
 				var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;

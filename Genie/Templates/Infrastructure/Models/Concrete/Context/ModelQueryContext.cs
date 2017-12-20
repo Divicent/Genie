@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
+using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Tools;
 
 #endregion
 
@@ -14,15 +16,18 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
     {
         private readonly List<ISimpleAttribute> _attributes;
         private readonly string _name;
+        private readonly IConfiguration _configuration;
 
-        public ModelQueryContextTemplate(string path, string name, List<ISimpleAttribute> attributes) : base(path)
+        public ModelQueryContextTemplate(string path, string name, List<ISimpleAttribute> attributes, IConfiguration configuration) : base(path)
         {
             _name = name;
             _attributes = attributes;
+            _configuration = configuration;
         }
 
         public override string Generate()
         {
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
             var lit = _attributes.Where(a => a.IsLiteralType).ToList();
             var nonLit = _attributes.Where(a => !a.IsLiteralType).ToList();
 
@@ -132,7 +137,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 	    {{
 	        return new RepoQuery
 	        {{
-	            Target = ""[dbo].[{_name}]"",
+	            Target = ""{quote(_configuration.Schema)}.{quote(_name)}"",
 	            Where = _where?.GetFilterExpressions(),
 	            Order = _order?.GetOrderExpressions(),
 	            PageSize = _pageSize,

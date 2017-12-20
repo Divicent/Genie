@@ -1,6 +1,7 @@
 #region Usings
 
-
+using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Tools;
 
 #endregion
 
@@ -10,12 +11,17 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 {
     internal class BaseQueryContextTemplate : GenieTemplate
     {
-        public BaseQueryContextTemplate(string path) : base(path)
+
+        private readonly IConfiguration _configuration;
+
+        public BaseQueryContextTemplate(string path, IConfiguration configuration) : base(path)
         {
+            _configuration = configuration;
         }
 
         public override string Generate()
         {
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
             L($@"
 
 using System.Collections.Generic;
@@ -41,7 +47,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
             if(qotd == null)
                 return;
             var type = asc ? ""ASC"" : ""DESC"";
-            queue.Enqueue($"" [{{property}}] {{type}} "");
+            queue.Enqueue($"" {quote("{property}")} {{type}} "");
         }}
 		
 		protected void ProcessFilter(Queue<string> queue, IEnumerable<IPropertyFilter> f)  
