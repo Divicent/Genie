@@ -1,7 +1,5 @@
-/Genie/bin
-/Genie/obj
-/GenieCLI/bin
-/GenieCLI/obj
+bin
+obj
 .vscode
 /packages
 /.vs
