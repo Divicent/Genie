@@ -21,6 +21,7 @@ namespace Genie.Core.Templates.Infrastructure
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using System.Linq;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 using {GenerationContext.BaseNamespace}.Dapper;
@@ -90,6 +91,16 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
         }}
 
         public virtual IEnumerable<T> Get(IRepoQuery query)
+        {{
+            var items = Conn.Get<T>(query).ToList();
+
+            foreach (var item in items)
+				AddItemToUnit(item);
+            
+			return items;
+        }}
+
+        public virtual async Task<IEnumerable<T>> GetAsync(IRepoQuery query)
         {{
             var items = Conn.Get<T>(query).ToList();
 

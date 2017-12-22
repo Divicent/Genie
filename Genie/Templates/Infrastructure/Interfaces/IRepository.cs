@@ -20,6 +20,7 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
 
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 
@@ -80,6 +81,13 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// <param name=""query"">Query to use</param>
         /// <returns>Collection of <typeparamref name=""T""/> </returns>
         IEnumerable<T> Get(IRepoQuery query);
+
+        /// <summary>
+        /// Asynchrously Executes given query on repository
+        /// </summary>
+        /// <param name=""query"">Query to use</param>
+        /// <returns>Collection of <typeparamref name=""T""/> </returns>
+        Task<IEnumerable<T>> GetAsync(IRepoQuery query);
         
         /// <summary>
         /// Get the first occurrence or null if the result is empty from the query

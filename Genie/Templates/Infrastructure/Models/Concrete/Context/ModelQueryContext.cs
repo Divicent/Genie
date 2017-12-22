@@ -56,6 +56,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
             L($@"
 using System;
 using System.Data;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
@@ -103,6 +104,11 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 		public I{_name}OrderContext OrderBy {{ get {{ return _order ?? (_order = new {_name}OrderContext(this)); }} }}
 
         public IEnumerable<{_name}> Query(IDbTransaction transaction = null)
+	    {{
+	        return _repo.Get(GetQuery(transaction));
+	    }}
+
+        public async Task<IEnumerable<{_name}>> QueryAsync(IDbTransaction transaction = null)
 	    {{
 	        return _repo.Get(GetQuery(transaction));
 	    }}

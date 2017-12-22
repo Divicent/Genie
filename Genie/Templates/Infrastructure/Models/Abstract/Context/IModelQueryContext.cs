@@ -22,6 +22,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
             L($@"
 using System;
 using System.Data;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 
@@ -84,6 +85,16 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         /// <param name=""transaction"">Transaction to use</param>
         /// <returns>Collection of {_name}</returns>
         IEnumerable<Concrete.{_name}> Query(IDbTransaction transaction = null);
+
+        /// <summary>
+	    /// Asynchronously Start querying the data source, this will build the query for the specific DBMS ,
+	    /// pull data and map to a list of {_name},
+	    /// all returned objects are registered in the db context and change tracking is applied.
+	    /// All the items in the query can be reused
+	    /// </summary>
+	    /// <param name=""transaction"">Transaction to use</param>
+	    /// <returns>Collection of {_name}</returns>
+	    Task<IEnumerable<Concrete.{_name}>> QueryAsync(IDbTransaction transaction = null);
 		    
         /// <summary>
         /// Apply top(1) and start querying the data source, this will build the query for the specific DBMS ,
