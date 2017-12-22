@@ -8,9 +8,9 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapper_Async : GenieTemplate
+    internal class SqlMapper_AsyncTemplate : GenieTemplate
     {
-        public SqlMapper_Async(string path) : base(path)
+        public SqlMapper_AsyncTemplate(string path) : base(path)
         {
         }
 
@@ -1212,7 +1212,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             return Parse<T>(result);
         }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

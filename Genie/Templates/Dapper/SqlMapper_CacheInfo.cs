@@ -17,16 +17,15 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 using System.Data;
 using System.Threading;
 
-namespace {GenerationContext.BaseNamespace}.Dapper 
+namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class SqlMapper
+    public static partial class SqlMapper
     {{
-        class CacheInfo
+        private class CacheInfo
         {{
             public DeserializerState Deserializer {{ get; set; }}
             public Func<IDataReader, object>[] OtherDeserializers {{ get; set; }}
@@ -36,7 +35,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             public void RecordHit() {{ Interlocked.Increment(ref hitCount); }}
         }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

@@ -17,19 +17,17 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-namespace {GenerationContext.BaseNamespace}.Dapper 
+namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class SqlMapper
+    public static partial class SqlMapper
     {{
-        sealed class DapperRowMetaObject : System.Dynamic.DynamicMetaObject
+        private sealed class DapperRowMetaObject : System.Dynamic.DynamicMetaObject
         {{
-            static readonly MethodInfo getValueMethod = typeof(IDictionary<string, object>).GetProperty(""Item"").GetGetMethod();
-            static readonly MethodInfo setValueMethod = typeof(DapperRow).GetMethod(""SetValue"", new Type[] {{ typeof(string), typeof(object) }});
+            private static readonly MethodInfo getValueMethod = typeof(IDictionary<string, object>).GetProperty(""Item"").GetGetMethod();
+            private static readonly MethodInfo setValueMethod = typeof(DapperRow).GetMethod(""SetValue"", new Type[] {{ typeof(string), typeof(object) }});
 
             public DapperRowMetaObject(
                 System.Linq.Expressions.Expression expression,
@@ -48,7 +46,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             {{
             }}
 
-            System.Dynamic.DynamicMetaObject CallMethod(
+            private System.Dynamic.DynamicMetaObject CallMethod(
                 MethodInfo method,
                 System.Linq.Expressions.Expression[] parameters
                 )
@@ -103,6 +101,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         }}
     }}
 }}
+
 ");
 
             return E();

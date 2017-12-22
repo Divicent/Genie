@@ -17,12 +17,10 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-
     /// <summary>
     /// Additional state flags that control command behaviour
     /// </summary>
@@ -47,6 +45,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         NoCache = 4,
     }}
 }}
+
 ");
 
             return E();

@@ -17,13 +17,12 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 using System.Reflection;
 
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class SqlMapper
+    public static partial class SqlMapper
     {{
         /// <summary>
         /// Implement this interface to change default mapping of reader columns to type members
@@ -63,7 +62,8 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             IMemberMap GetMember(string columnName);
         }}
     }}
-}} 
+}}
+
 ");
 
             return E();

@@ -202,6 +202,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         }}
     }}
 }}
+
 ");
 
             return E();

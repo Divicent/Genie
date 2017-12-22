@@ -16,8 +16,7 @@ namespace Genie.Core.Templates.Dapper
 
         public override string Generate()
         {
-            L(
-$@"
+            L($@"
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -265,10 +264,10 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         }}
     }}
 }}
+
 ");
 
             return E();
         }
     }
 }
-

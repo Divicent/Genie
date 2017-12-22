@@ -114,7 +114,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             public static int InListStringSplitCount {{ get; set; }} = -1;
         }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

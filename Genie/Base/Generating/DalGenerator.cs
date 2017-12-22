@@ -117,7 +117,7 @@ namespace Genie.Core.Base.Generating
 
                         new List<ITemplate>
                         {
-                            new SqlMapper_Async(@"Dapper/SqlMapper.Async"),
+                            new SqlMapper_AsyncTemplate(@"Dapper/SqlMapper.Async"),
                             new XmlHandlersTemplate(@"Dapper/XmlHandlers"),
                             new WrappedReaderTemplate(@"Dapper/WrappedReader"),
                             new WrappedDataReaderTemplate(@"Dapper/WrappedDataReader"),

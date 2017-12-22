@@ -17,17 +17,18 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
-namespace {GenerationContext.BaseNamespace}.Dapper 
+namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class SqlMapper
+    public static partial class SqlMapper
     {{
         /// <summary>
         /// Dummy type for excluding from multi-map
         /// </summary>
-        class DontMap {{ }}
+        private class DontMap {{ /* hiding constructor */ }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

@@ -17,7 +17,6 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 using System.Reflection;
 
@@ -38,14 +37,8 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <param name=""propertySelector"">Property selector based on target type and DataReader column name</param>
         public CustomPropertyTypeMap(Type type, Func<Type, string, PropertyInfo> propertySelector)
         {{
-            if (type == null)
-                throw new ArgumentNullException(""type"");
-
-            if (propertySelector == null)
-                throw new ArgumentNullException(""propertySelector"");
-
-            _type = type;
-            _propertySelector = propertySelector;
+            _type = type ?? throw new ArgumentNullException(nameof(type));
+            _propertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
         }}
 
         /// <summary>
@@ -54,19 +47,14 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <param name=""names"">DataReader column names</param>
         /// <param name=""types"">DataReader column types</param>
         /// <returns>Default constructor</returns>
-        public ConstructorInfo FindConstructor(string[] names, Type[] types)
-        {{
-            return _type.GetConstructor(new Type[0]);
-        }}
+        public ConstructorInfo FindConstructor(string[] names, Type[] types) =>
+            _type.GetConstructor(new Type[0]);
 
         /// <summary>
         /// Always returns null
         /// </summary>
         /// <returns></returns>
-        public ConstructorInfo FindExplicitConstructor()
-        {{
-            return null;
-        }}
+        public ConstructorInfo FindExplicitConstructor() => null;
 
         /// <summary>
         /// Not implemented as far as default constructor used for all cases
@@ -90,7 +78,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             return prop != null ? new SimpleMemberMap(columnName, prop) : null;
         }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

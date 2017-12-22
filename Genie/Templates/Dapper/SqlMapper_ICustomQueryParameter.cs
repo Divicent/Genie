@@ -17,12 +17,11 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System.Data;
 
-namespace {GenerationContext.BaseNamespace}.Dapper 
+namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class SqlMapper
+    public static partial class SqlMapper
     {{
         /// <summary>
         /// Implement this interface to pass an arbitrary db specific parameter to Dapper
@@ -37,7 +36,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             void AddParameter(IDbCommand command, string name);
         }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

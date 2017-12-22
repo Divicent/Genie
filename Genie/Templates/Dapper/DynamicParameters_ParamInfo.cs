@@ -17,15 +17,14 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 using System.Data;
 
-namespace {GenerationContext.BaseNamespace}.Dapper 
+namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class DynamicParameters
+    public partial class DynamicParameters
     {{
-        sealed class ParamInfo
+        private sealed class ParamInfo
         {{
             public string Name {{ get; set; }}
             public object Value {{ get; set; }}
@@ -41,7 +40,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             public byte? Scale {{ get; set; }}
         }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

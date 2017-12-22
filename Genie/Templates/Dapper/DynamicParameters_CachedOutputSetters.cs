@@ -17,12 +17,11 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System.Collections;
 
-namespace {GenerationContext.BaseNamespace}.Dapper 
+namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class DynamicParameters
+    public partial class DynamicParameters
     {{
         // The type here is used to differentiate the cache by type via generics
         // ReSharper disable once UnusedTypeParameter
@@ -33,7 +32,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             public static readonly Hashtable Cache = new Hashtable();
         }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

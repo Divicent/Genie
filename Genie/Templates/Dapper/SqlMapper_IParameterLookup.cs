@@ -17,11 +17,9 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
-
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class SqlMapper
+    public static partial class SqlMapper
     {{
         /// <summary>
         /// Extends IDynamicParameters providing by-name lookup of parameter values
@@ -31,11 +29,13 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             /// <summary>
             /// Get the value of the specified parameter (return null if not found)
             /// </summary>
+            /// <param name=""name"">The name of the parameter to get.</param>
             object this[string name] {{ get; }}
         }}
     }}
 }}
- ");
+
+");
 
             return E();
         }
