@@ -117,6 +117,7 @@ namespace Genie.Core.Base.Generating
 
                         new List<ITemplate>
                         {
+                            new SqlMapper_Async(@"Dapper/SqlMapper.Async"),
                             new XmlHandlersTemplate(@"Dapper/XmlHandlers"),
                             new WrappedReaderTemplate(@"Dapper/WrappedReader"),
                             new WrappedDataReaderTemplate(@"Dapper/WrappedDataReader"),
@@ -138,6 +139,7 @@ namespace Genie.Core.Base.Generating
                             new SqlMapper_IdentityTemplate(@"Dapper/SqlMapper.Identity"),
                             new SqlMapper_IDataReaderTemplate(@"Dapper/SqlMapper.IDataReader"),
                             new SqlMapper_ICustomQueryParameterTemplate(@"Dapper/SqlMapper.ICustomQueryParameter"),
+                            new SqlMapper_GridReader_AsyncTemplate(@"Dapper/SqlMapper.GridReader.Async"),
                             new SqlMapper_GridReaderTemplate(@"Dapper/SqlMapper.GridReader"),
                             new SqlMapper_DontMapTemplate(@"Dapper/SqlMapper.DontMap"),
                             new SqlMapper_DeserializerStateTemplate(@"Dapper/SqlMapper.DeserializerState"),
