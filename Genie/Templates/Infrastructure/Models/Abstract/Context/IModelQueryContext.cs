@@ -105,6 +105,16 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         /// <param name=""transaction"">Transaction to use</param>
         /// <returns>An object of {_name} or null</returns>
         Concrete.{_name} FirstOrDefault(IDbTransaction transaction = null);
+
+        /// <summary>
+        /// Apply top(1) and start asynchronously querying the data source, this will build the query for the specific DBMS ,
+        /// pull data and take the first object,
+        /// returned object is registered in the db context and change tracking is applied.
+        /// All the items in the query can be reused
+        /// </summary>
+        /// <param name=""transaction"">Transaction to use</param>
+        /// <returns>An object of {_name} or null</returns>
+        Task<Concrete.{_name}> FirstOrDefaultAsync(IDbTransaction transaction = null);
 		    
         /// <summary>
         /// Applies given filters to the where object, this can be used to apply filters in a customized way.
@@ -126,6 +136,13 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         /// <param name=""transaction"">Transaction to use</param>
         /// <returns>Count to the results</returns>
         int Count(IDbTransaction transaction = null);
+
+        /// <summary>
+        /// This will build the query for specific DBMS, Query only the count of the results. this will perform an SLQ level count aggregate asynchronously
+        /// </summary>
+        /// <param name=""transaction"">Transaction to use</param>
+        /// <returns>Count to the results</returns>
+        Task<int> CountAsync(IDbTransaction transaction = null);
 
         /// <summary>
         /// Extract built where clause

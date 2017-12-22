@@ -119,7 +119,22 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 			return item;
         }}
 
+
+        public virtual async Task<T> GetFirstOrDefaultAsync(IRepoQuery query)
+        {{
+            var item = Conn.Get<T>(query).FirstOrDefault();
+			if(item == null)
+				return null;
+			AddItemToUnit(item);
+			return item;
+        }}
+
         public virtual int Count(IRepoQuery query)
+        {{
+            return Conn.Count(query);
+        }}
+
+        public virtual async Task<int> CountAsync(IRepoQuery query)
         {{
             return Conn.Count(query);
         }}

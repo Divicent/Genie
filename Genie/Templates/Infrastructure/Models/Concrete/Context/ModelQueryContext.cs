@@ -119,7 +119,19 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 	        return _repo.GetFirstOrDefault(GetQuery(transaction));
 	    }}
 
+
+        public async Task<{_name}> FirstOrDefaultAsync(IDbTransaction transaction = null)
+	    {{
+			Top(1);
+	        return _repo.GetFirstOrDefault(GetQuery(transaction));
+	    }}
+
 	    public int Count(IDbTransaction transaction = null)
+	    {{
+            return _repo.Count(GetQuery(transaction));
+	    }}
+
+        public async Task<int> CountAsync(IDbTransaction transaction = null)
 	    {{
             return _repo.Count(GetQuery(transaction));
 	    }}
