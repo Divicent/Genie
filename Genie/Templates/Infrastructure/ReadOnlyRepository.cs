@@ -48,7 +48,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 
         public virtual async Task<T> GetFirstOrDefaultAsync(IRepoQuery query)
         {{
-            return Conn.Get<T>(query).FirstOrDefault();
+            return (await Conn.GetAsync<T>(query)).FirstOrDefault();
         }}
 
         public virtual IEnumerable<T> Get(IRepoQuery query)
@@ -58,7 +58,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 
         public virtual async Task<IEnumerable<T>> GetAsync(IRepoQuery query)
         {{
-            return Conn.Get<T>(query).ToList();
+            return (await Conn.GetAsync<T>(query)).ToList();
         }}
 
         public virtual int Count(IRepoQuery query)
@@ -68,7 +68,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 
         public virtual async Task<int> CountAsync(IRepoQuery query)
         {{
-            return Conn.Count(query);
+            return await Conn.CountAsync(query);
         }}
 
 		public string GetWhereClause(IRepoQuery query) 

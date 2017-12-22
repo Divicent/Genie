@@ -110,7 +110,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 
         public async Task<IEnumerable<{_name}>> QueryAsync(IDbTransaction transaction = null)
 	    {{
-	        return _repo.Get(GetQuery(transaction));
+	        return await _repo.GetAsync(GetQuery(transaction));
 	    }}
 
 		public {_name} FirstOrDefault(IDbTransaction transaction = null)
@@ -123,7 +123,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
         public async Task<{_name}> FirstOrDefaultAsync(IDbTransaction transaction = null)
 	    {{
 			Top(1);
-	        return _repo.GetFirstOrDefault(GetQuery(transaction));
+	        return await _repo.GetFirstOrDefaultAsync(GetQuery(transaction));
 	    }}
 
 	    public int Count(IDbTransaction transaction = null)
@@ -133,7 +133,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 
         public async Task<int> CountAsync(IDbTransaction transaction = null)
 	    {{
-            return _repo.Count(GetQuery(transaction));
+            return await _repo.CountAsync(GetQuery(transaction));
 	    }}
 
 		public I{_name}QueryContext Filter(IEnumerable<IPropertyFilter> filters) 

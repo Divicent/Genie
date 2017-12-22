@@ -67,6 +67,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using {container.SqlClientNamespace};
 using System.Linq;
 using System.Reflection;
@@ -172,17 +173,48 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 			}}
         }}
 
+
+        /// <summary>
+	    /// Return all  asynchronously
+	    /// </summary>
+	    /// <typeparam name=""T"">Interface type to create and populate</typeparam>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""query""></param>
+	    /// <returns>Entity of T</returns>
+	    public static async Task<IEnumerable<T>> GetAsync<T>(this IDbConnection connection, IRepoQuery query)
+        {{
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				connection.Open();
+				return await connection.QueryAsync<T>(GetRetriveQuery(query), transaction: query.Transaction);
+			}}
+        }}
+
 	    /// <summary>
 	    /// Returns count of rows
 	    /// </summary>
 	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
-	    public static int Count(this IDbConnection connection, IRepoQuery query)
+	    public static int  Count(this IDbConnection connection, IRepoQuery query)
         {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				return connection.ExecuteScalar<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
+			}}
+        }}
+        
+	    /// <summary>
+	    /// Returns count of rows asynchronously
+	    /// </summary>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""query""></param>
+	    /// <returns>Entity of T</returns>
+	    public static async Task<int> CountAsync(this IDbConnection connection, IRepoQuery query)
+        {{
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				return await connection.ExecuteScalarAsync<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
 			}}
         }}
 

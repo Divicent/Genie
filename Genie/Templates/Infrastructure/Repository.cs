@@ -102,7 +102,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 
         public virtual async Task<IEnumerable<T>> GetAsync(IRepoQuery query)
         {{
-            var items = Conn.Get<T>(query).ToList();
+            var items = (await Conn.GetAsync<T>(query)).ToList();
 
             foreach (var item in items)
 				AddItemToUnit(item);
@@ -122,7 +122,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 
         public virtual async Task<T> GetFirstOrDefaultAsync(IRepoQuery query)
         {{
-            var item = Conn.Get<T>(query).FirstOrDefault();
+            var item = (await Conn.GetAsync<T>(query)).FirstOrDefault();
 			if(item == null)
 				return null;
 			AddItemToUnit(item);
@@ -136,7 +136,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 
         public virtual async Task<int> CountAsync(IRepoQuery query)
         {{
-            return Conn.Count(query);
+            return await Conn.CountAsync(query);
         }}
 
 		public string GetWhereClause(IRepoQuery query) 
