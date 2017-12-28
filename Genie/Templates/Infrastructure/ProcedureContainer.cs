@@ -38,6 +38,13 @@ namespace Genie.Core.Templates.Infrastructure
                     $@"		public T {sp.Name}_Single<T>({sp.ParamString}) {{ return QuerySingle<T>(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
                 spVoid.AppendLine(
                     $@"		public void {sp.Name}_Void({sp.ParamString}) {{ Execute(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} { sp.PassString };""); }}");
+
+                spList.AppendLine(
+                    $@"		public async Task<IEnumerable<T>> {sp.Name}_ListAsync<T>({sp.ParamString}) {{ return await QueryListAsync<T>(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                spSingle.AppendLine(
+                    $@"		public async Task<T> {sp.Name}_SingleAsync<T>({sp.ParamString}) {{ return await QuerySingleAsync<T>(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                spVoid.AppendLine(
+                    $@"		public async Task {sp.Name}_VoidAsync({sp.ParamString}) {{ await ExecuteAsync(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} { sp.PassString };""); }}");
             }
 
             var usingDapper = (_configuration.Core ? "using Dapper;\n" : "");
@@ -47,6 +54,7 @@ namespace Genie.Core.Templates.Infrastructure
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using {GenerationContext.BaseNamespace}.Dapper;
 using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
 using {parts.SqlClientNamespace};
@@ -88,6 +96,36 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 			{{
 				connection.Open();
 				return connection.Query<T>(query);
+			}}
+		}}
+
+		private async Task ExecuteAsync(string query) 
+		{{
+			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
+			{{
+				connection.Open();
+				await connection.ExecuteAsync(query);
+				connection.Close();
+			}}
+		}}
+
+		private async Task<T> QuerySingleAsync<T>(string query) 
+		{{
+			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
+			{{
+				connection.Open();
+				return await connection.QueryFirstOrDefaultAsync<T>(query);
+                connection.Close();
+			}}
+		}}
+
+		private async Task<IEnumerable<T>> QueryListAsync<T>(string query) 
+		{{
+			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
+			{{
+				connection.Open();
+				return await connection.QueryAsync<T>(query);
+                connection.Close();
 			}}
 		}}
 
