@@ -97,10 +97,6 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> IdentityProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> TypeProperties = new ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, string> TypeTableName = new ConcurrentDictionary<RuntimeTypeHandle, string>();
-        private static readonly Dictionary<string, ISqlAdapter> AdapterDictionary = new Dictionary<string, ISqlAdapter>() {{
-                                                                                         {{""sqlconnection"", new SqlServerAdapter()}},
-                                                                                        {{""npgsqlconnection"", new PostgresAdapter()}}
-                                                                                    }};
         private static readonly ConcurrentDictionary<string, string> SelectParts = new ConcurrentDictionary<string, string>();
 
         private static IEnumerable<PropertyInfo> KeyPropertiesCache(Type type)
@@ -401,12 +397,23 @@ namespace {GenerationContext.BaseNamespace}.Dapper
                 index++;
             }}
             
-            var adapter = GetFormatter(connection);
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
-				var id = adapter.Insert(connection, transaction, commandTimeout, name, sbColumnList.ToString(), sbParameterList.ToString(), keyProperties, entityToInsert);
-				return id;
+				var cmd = string.Format(""insert into {{0}} ({{1}}) values ({{2}})"", name, sbColumnList.ToString(), sbParameterList.ToString());
+                connection.Execute(cmd, entityToInsert, transaction, commandTimeout);
+                var r = connection.Query(""select @@IDENTITY id"", transaction: transaction, commandTimeout: commandTimeout).ToList();
+                long id = 0;
+                if (r.Any())
+                {{
+                    try
+                    {{
+                        id = (long)r.First().id;
+                    }}
+                    catch (Exception)
+                    {{ /*Ignored*/ }}
+                }}
+                return id;
 			}}
         }}
 
@@ -506,12 +513,6 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 				var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
 				return deleted;
 			}}
-        }}
-
-        public static ISqlAdapter GetFormatter(IDbConnection connection)
-        {{
-            var name = connection.GetType().Name.ToLower();
-            return !AdapterDictionary.ContainsKey(name) ? new SqlServerAdapter() : AdapterDictionary[name];
         }}
     }}
 }}");
