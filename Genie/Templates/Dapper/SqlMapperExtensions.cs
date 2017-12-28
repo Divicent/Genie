@@ -394,7 +394,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 
 
         /// <summary>
-        /// Inserts an entity into table ""Ts"" and returns identity id.
+        /// Inserts an entity into table ""T"" and returns identity id.
         /// </summary>
         /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
         /// <param name=""entityToInsert"">Entity to insert</param>
@@ -410,6 +410,38 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 				var cmd = string.Format(""insert into {{0}} ({{1}}) values ({{2}})"", parameters.Item1, parameters.Item2, parameters.Item3);
                 connection.Execute(cmd, entityToInsert, transaction, commandTimeout);
                 var r = connection.Query(""select @@IDENTITY id"", transaction: transaction, commandTimeout: commandTimeout).ToList();
+                long id = 0;
+                if (r.Any())
+                {{
+                    try
+                    {{
+                        id = (long)r.First().id;
+                    }}
+                    catch (Exception)
+                    {{ /*Ignored*/ }}
+                }}
+                return id;
+			}}
+        }}
+
+
+        /// <summary>
+        /// Inserts an entity into table ""T"" and returns identity id asynchronously.
+        /// </summary>
+        /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+        /// <param name=""entityToInsert"">Entity to insert</param>
+        /// <param name=""transaction""></param>
+        /// <param name=""commandTimeout""></param>
+        /// <returns>Identity of inserted entity</returns>
+        public static async Task<long?> InsertAsync(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
+        {{
+            var parameters = GetInsertParameters(entityToInsert);
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				connection.Open();
+				var cmd = string.Format(""insert into {{0}} ({{1}}) values ({{2}})"", parameters.Item1, parameters.Item2, parameters.Item3);
+                await connection.ExecuteAsync(cmd, entityToInsert, transaction, commandTimeout);
+                var r = (await connection.QueryAsync(""select @@IDENTITY id"", transaction: transaction, commandTimeout: commandTimeout)).ToList();
                 long id = 0;
                 if (r.Any())
                 {{
