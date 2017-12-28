@@ -20,6 +20,7 @@ namespace Genie.Core.Templates.Infrastructure
 
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using System.Linq;
 using {GenerationContext.BaseNamespace}.Dapper;
 using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
@@ -44,14 +45,30 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
             return Conn.Get<T>(query).FirstOrDefault();
         }}
 
+
+        public virtual async Task<T> GetFirstOrDefaultAsync(IRepoQuery query)
+        {{
+            return (await Conn.GetAsync<T>(query)).FirstOrDefault();
+        }}
+
         public virtual IEnumerable<T> Get(IRepoQuery query)
         {{
             return Conn.Get<T>(query).ToList();
         }}
 
+        public virtual async Task<IEnumerable<T>> GetAsync(IRepoQuery query)
+        {{
+            return (await Conn.GetAsync<T>(query)).ToList();
+        }}
+
         public virtual int Count(IRepoQuery query)
         {{
             return Conn.Count(query);
+        }}
+
+        public virtual async Task<int> CountAsync(IRepoQuery query)
+        {{
+            return await Conn.CountAsync(query);
         }}
 
 		public string GetWhereClause(IRepoQuery query) 

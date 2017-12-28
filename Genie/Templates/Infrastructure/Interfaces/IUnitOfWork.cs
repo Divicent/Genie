@@ -46,6 +46,7 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
 
 using System;
 using System.Data;
+using System.Threading.Tasks;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
 using System.Collections.Generic;
 using {GenerationContext.BaseNamespace}.Infrastructure.Repositories.Abstract;
@@ -80,6 +81,11 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// This will commit all changes to the data source performed in this unit of work one by one. including all tracked changes of the objects retrieved from this unit of work
         /// </summary>
         void Commit();
+
+        /// <summary>
+        /// This will commit all changes to the data source asynchronously performed in this unit of work one by one. including all tracked changes of the objects retrieved from this unit of work
+        /// </summary>
+        Task CommitAsync();
     }}
 }}
 ");

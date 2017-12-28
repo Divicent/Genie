@@ -55,7 +55,14 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             /// </summary>
 {keyCommentString}
             /// <returns>A registered {relation.Name} object</returns>
-            {relation.Name} GetByKey({keyString});");
+            {relation.Name} GetByKey({keyString});
+            
+            /// <summary>
+            /// Get an object of {relation.Name} asynchronously using the values of its primary key(s)
+            /// </summary>
+{keyCommentString}
+            /// <returns>A registered {relation.Name} object</returns>
+            Task<{relation.Name}> GetByKeyAsync({keyString});");
                 }
                 relations.AppendLine("	    }");
 
@@ -77,7 +84,15 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
                     relationsImpl.AppendLine($@"            public {relation.Name} GetByKey({keyString})
             {{
                 return Get().Where
-                    {str}.Filter().Query().FirstOrDefault();
+                    {str}.Filter().FirstOrDefault();
+            }}");
+
+
+                
+                    relationsImpl.AppendLine($@"            public async Task<{relation.Name}> GetByKeyAsync({keyString})
+            {{
+                return await Get().Where
+                    {str}.Filter().FirstOrDefaultAsync();
             }}");
                 }
 
@@ -111,6 +126,7 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             L($@"
 
 using System.Linq;
+using System.Threading.Tasks;
 using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;

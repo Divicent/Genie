@@ -17,12 +17,11 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System.Collections.Generic;
 
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class SqlMapper
+    public static partial class SqlMapper
     {{
         /// <summary>
         /// Represents a placeholder for a value that should be replaced as a literal value in the resulting sql
@@ -42,13 +41,14 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             internal LiteralToken(string token, string member)
             {{
                 Token = token;
-                Member = member; 
+                Member = member;
             }}
 
             internal static readonly IList<LiteralToken> None = new LiteralToken[0];
         }}
     }}
 }}
+
 ");
 
             return E();

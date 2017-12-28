@@ -17,13 +17,12 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 using System.Reflection;
- 
+
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    partial class SqlMapper
+    public static partial class SqlMapper
     {{
         /// <summary>
         /// Implements this interface to provide custom member mapping
@@ -57,6 +56,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         }}
     }}
 }}
+
 ");
 
             return E();

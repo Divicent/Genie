@@ -105,18 +105,16 @@ namespace Genie.Core.Base.Generating
                     configuration.NoDapper ?
                         new List<ITemplate>
                         {
-                            new ISqlAdapterTemplate(@"Dapper/ISqlAdapter"),
                             new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
                             new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
-                            new PostgresAdapterTemplate(@"Dapper/PostgresAdapter"),
                             new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
-                            new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
                             new TableAttributeTemplate(@"Dapper/TableAttribute"),
                             new WriteAttributeTemplate(@"Dapper/WriteAttribute")
                         } :
 
                         new List<ITemplate>
                         {
+                            new SqlMapper_AsyncTemplate(@"Dapper/SqlMapper.Async"),
                             new XmlHandlersTemplate(@"Dapper/XmlHandlers"),
                             new WrappedReaderTemplate(@"Dapper/WrappedReader"),
                             new WrappedDataReaderTemplate(@"Dapper/WrappedDataReader"),
@@ -138,6 +136,7 @@ namespace Genie.Core.Base.Generating
                             new SqlMapper_IdentityTemplate(@"Dapper/SqlMapper.Identity"),
                             new SqlMapper_IDataReaderTemplate(@"Dapper/SqlMapper.IDataReader"),
                             new SqlMapper_ICustomQueryParameterTemplate(@"Dapper/SqlMapper.ICustomQueryParameter"),
+                            new SqlMapper_GridReader_AsyncTemplate(@"Dapper/SqlMapper.GridReader.Async"),
                             new SqlMapper_GridReaderTemplate(@"Dapper/SqlMapper.GridReader"),
                             new SqlMapper_DontMapTemplate(@"Dapper/SqlMapper.DontMap"),
                             new SqlMapper_DeserializerStateTemplate(@"Dapper/SqlMapper.DeserializerState"),
@@ -160,13 +159,10 @@ namespace Genie.Core.Base.Generating
                             new DefaultTypeMapTemplate(@"Dapper/DefaultTypeMap"),
                             new DynamicParametersTemplate(@"Dapper/DynamicParameters"),
                             new FeatureSupportTemplate(@"Dapper/FeatureSupport"),
-                            new ISqlAdapterTemplate(@"Dapper/ISqlAdapter"),
                             new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
                             new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
-                            new PostgresAdapterTemplate(@"Dapper/PostgresAdapter"),
                             new SimpleMemberMapTemplate(@"Dapper/SimpleMemberMap"),
                             new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
-                            new SqlServerAdapterTemplate(@"Dapper/SqlServerAdapter"),
                             new TableAttributeTemplate(@"Dapper/TableAttribute"),
                             new WriteAttributeTemplate(@"Dapper/WriteAttribute")
                         }

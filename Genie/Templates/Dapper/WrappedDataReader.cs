@@ -17,7 +17,6 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System.Data;
 
 namespace {GenerationContext.BaseNamespace}.Dapper
@@ -38,7 +37,8 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         IDbCommand Command {{ get; }}
     }}
 }}
- ");
+
+");
 
             return E();
         }

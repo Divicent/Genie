@@ -17,7 +17,6 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,8 +45,8 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             Properties = GetSettableProps(type);
             _type = type;
         }}
-#if COREFX
-        static bool IsParameterMatch(ParameterInfo[] x, ParameterInfo[] y)
+#if NETSTANDARD1_3
+        private static bool IsParameterMatch(ParameterInfo[] x, ParameterInfo[] y)
         {{
             if (ReferenceEquals(x, y)) return true;
             if (x == null || y == null) return false;
@@ -60,7 +59,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         internal static MethodInfo GetPropertySetter(PropertyInfo propertyInfo, Type type)
         {{
             if (propertyInfo.DeclaringType == type) return propertyInfo.GetSetMethod(true);
-#if COREFX
+#if NETSTANDARD1_3
             return propertyInfo.DeclaringType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                     .Single(x => x.Name == propertyInfo.Name
                         && x.PropertyType == propertyInfo.PropertyType
@@ -111,7 +110,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
                 int i = 0;
                 for (; i < ctorParameters.Length; i++)
                 {{
-                    if (!String.Equals(ctorParameters[i].Name, names[i], StringComparison.OrdinalIgnoreCase))
+                    if (!string.Equals(ctorParameters[i].Name, names[i], StringComparison.OrdinalIgnoreCase))
                         break;
                     if (types[i] == typeof(byte[]) && ctorParameters[i].ParameterType.FullName == SqlMapper.LinqBinary)
                         continue;
@@ -138,13 +137,13 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         public ConstructorInfo FindExplicitConstructor()
         {{
             var constructors = _type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-#if COREFX
+#if NETSTANDARD1_3
             var withAttr = constructors.Where(c => c.CustomAttributes.Any(x => x.AttributeType == typeof(ExplicitConstructorAttribute))).ToList();
 #else
             var withAttr = constructors.Where(c => c.GetCustomAttributes(typeof(ExplicitConstructorAttribute), true).Length > 0).ToList();
 #endif
 
-            if (withAttr.Count() == 1)
+            if (withAttr.Count == 1)
             {{
                 return withAttr[0];
             }}
@@ -172,13 +171,13 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <returns>Mapping implementation</returns>
         public SqlMapper.IMemberMap GetMember(string columnName)
         {{
-            var property = Properties.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.Ordinal))
-               ?? Properties.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase));
+            var property = Properties.Find(p => string.Equals(p.Name, columnName, StringComparison.Ordinal))
+               ?? Properties.Find(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase));
 
             if (property == null && MatchNamesWithUnderscores)
             {{
-                property = Properties.FirstOrDefault(p => string.Equals(p.Name, columnName.Replace(""_"", """"), StringComparison.Ordinal))
-                    ?? Properties.FirstOrDefault(p => string.Equals(p.Name, columnName.Replace(""_"", """"), StringComparison.OrdinalIgnoreCase));
+                property = Properties.Find(p => string.Equals(p.Name, columnName.Replace(""_"", """"), StringComparison.Ordinal))
+                    ?? Properties.Find(p => string.Equals(p.Name, columnName.Replace(""_"", """"), StringComparison.OrdinalIgnoreCase));
             }}
 
             if (property != null)
@@ -189,20 +188,20 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 
             // preference order is:
             // exact match over underscre match, exact case over wrong case, backing fields over regular fields, match-inc-underscores over match-exc-underscores
-            var field = _fields.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.Ordinal))
-                ?? _fields.FirstOrDefault(p => string.Equals(p.Name, backingFieldName, StringComparison.Ordinal))
-                ?? _fields.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase))
-                ?? _fields.FirstOrDefault(p => string.Equals(p.Name, backingFieldName, StringComparison.OrdinalIgnoreCase));
+            var field = _fields.Find(p => string.Equals(p.Name, columnName, StringComparison.Ordinal))
+                ?? _fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.Ordinal))
+                ?? _fields.Find(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase))
+                ?? _fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.OrdinalIgnoreCase));
 
             if (field == null && MatchNamesWithUnderscores)
             {{
                 var effectiveColumnName = columnName.Replace(""_"", """");
                 backingFieldName = ""<"" + effectiveColumnName + "">k__BackingField"";
 
-                field = _fields.FirstOrDefault(p => string.Equals(p.Name, effectiveColumnName, StringComparison.Ordinal))
-                    ?? _fields.FirstOrDefault(p => string.Equals(p.Name, backingFieldName, StringComparison.Ordinal))
-                    ?? _fields.FirstOrDefault(p => string.Equals(p.Name, effectiveColumnName, StringComparison.OrdinalIgnoreCase))
-                    ?? _fields.FirstOrDefault(p => string.Equals(p.Name, backingFieldName, StringComparison.OrdinalIgnoreCase));
+                field = _fields.Find(p => string.Equals(p.Name, effectiveColumnName, StringComparison.Ordinal))
+                    ?? _fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.Ordinal))
+                    ?? _fields.Find(p => string.Equals(p.Name, effectiveColumnName, StringComparison.OrdinalIgnoreCase))
+                    ?? _fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.OrdinalIgnoreCase));
             }}
 
             if (field != null)
@@ -220,7 +219,9 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// </summary>
         public List<PropertyInfo> Properties {{ get; }}
     }}
-}}");
+}}
+
+");
 
             return E();
         }

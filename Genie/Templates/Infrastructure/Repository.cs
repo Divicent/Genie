@@ -21,6 +21,7 @@ namespace Genie.Core.Templates.Infrastructure
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using System.Linq;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
 using {GenerationContext.BaseNamespace}.Dapper;
@@ -99,6 +100,16 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 			return items;
         }}
 
+        public virtual async Task<IEnumerable<T>> GetAsync(IRepoQuery query)
+        {{
+            var items = (await Conn.GetAsync<T>(query)).ToList();
+
+            foreach (var item in items)
+				AddItemToUnit(item);
+            
+			return items;
+        }}
+
 		public virtual T GetFirstOrDefault(IRepoQuery query)
         {{
             var item = Conn.Get<T>(query).FirstOrDefault();
@@ -108,9 +119,24 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 			return item;
         }}
 
+
+        public virtual async Task<T> GetFirstOrDefaultAsync(IRepoQuery query)
+        {{
+            var item = (await Conn.GetAsync<T>(query)).FirstOrDefault();
+			if(item == null)
+				return null;
+			AddItemToUnit(item);
+			return item;
+        }}
+
         public virtual int Count(IRepoQuery query)
         {{
             return Conn.Count(query);
+        }}
+
+        public virtual async Task<int> CountAsync(IRepoQuery query)
+        {{
+            return await Conn.CountAsync(query);
         }}
 
 		public string GetWhereClause(IRepoQuery query) 

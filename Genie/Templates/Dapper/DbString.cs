@@ -17,7 +17,6 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 using System;
 using System.Data;
 
@@ -75,8 +74,17 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             {{
                 throw new InvalidOperationException(""If specifying IsFixedLength,  a Length must also be specified"");
             }}
-            var param = command.CreateParameter();
-            param.ParameterName = name;
+            bool add = !command.Parameters.Contains(name);
+            IDbDataParameter param;
+            if (add)
+            {{
+                param = command.CreateParameter();
+                param.ParameterName = name;
+            }}
+            else
+            {{
+                param = (IDbDataParameter)command.Parameters[name];
+            }}
 #pragma warning disable 0618
             param.Value = SqlMapper.SanitizeParameterValue(Value);
 #pragma warning restore 0618
@@ -89,10 +97,14 @@ namespace {GenerationContext.BaseNamespace}.Dapper
                 param.Size = Length;
             }}
             param.DbType = IsAnsi ? (IsFixedLength ? DbType.AnsiStringFixedLength : DbType.AnsiString) : (IsFixedLength ? DbType.StringFixedLength : DbType.String);
-            command.Parameters.Add(param);
+            if (add)
+            {{
+                command.Parameters.Add(param);
+            }}
         }}
     }}
 }}
+
 ");
 
             return E();

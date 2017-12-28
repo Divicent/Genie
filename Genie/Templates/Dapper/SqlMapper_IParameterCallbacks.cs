@@ -17,10 +17,9 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             L($@"
-
 namespace {GenerationContext.BaseNamespace}.Dapper
-{{ 
-    partial class SqlMapper
+{{
+    public static partial class SqlMapper
     {{
         /// <summary>
         /// Extends IDynamicParameters with facilities for executing callbacks after commands have completed
@@ -34,6 +33,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         }}
     }}
 }}
+
 ");
 
             return E();
