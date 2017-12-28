@@ -115,7 +115,6 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 			{{
 				connection.Open();
 				return await connection.QueryFirstOrDefaultAsync<T>(query);
-                connection.Close();
 			}}
 		}}
 
@@ -125,7 +124,6 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 			{{
 				connection.Open();
 				return await connection.QueryAsync<T>(query);
-                connection.Close();
 			}}
 		}}
 
