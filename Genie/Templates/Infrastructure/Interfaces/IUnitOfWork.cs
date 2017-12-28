@@ -83,7 +83,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         void Commit();
 
         /// <summary>
-        /// This will commit all changes to the data source asynchrously performed in this unit of work one by one. including all tracked changes of the objects retrieved from this unit of work
+        /// This will commit all changes to the data source asynchronously performed in this unit of work one by one. including all tracked changes of the objects retrieved from this unit of work
         /// </summary>
         Task CommitAsync();
     }}

@@ -83,7 +83,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         IEnumerable<T> Get(IRepoQuery query);
 
         /// <summary>
-        /// Asynchrously Executes given query on repository
+        /// Asynchronously Executes given query on repository
         /// </summary>
         /// <param name=""query"">Query to use</param>
         /// <returns>Collection of <typeparamref name=""T""/> </returns>
@@ -97,7 +97,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
 		T GetFirstOrDefault(IRepoQuery query);
 
         /// <summary>
-        /// Asynchrously get the first occurrence or null if the result is empty from the query
+        /// Asynchronously get the first occurrence or null if the result is empty from the query
         /// </summary>
         /// <param name=""query"">Query to execute in the repository</param>
         /// <returns>an object with type <typeparamref name=""T""/></returns>
@@ -111,7 +111,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         int Count(IRepoQuery query);
 
         /// <summary>
-        /// Asynchrously executes given query on the repository and returns count of the result set
+        /// Asynchronously executes given query on the repository and returns count of the result set
         /// </summary>
         /// <param name=""query"">Query to execute in the repository</param>
         /// <returns>an integer</returns>
