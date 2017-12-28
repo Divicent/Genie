@@ -535,17 +535,10 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 			}}
         }}
 
-	    /// <summary>
-	    /// Delete entity in table ""Ts"".
-	    /// </summary>
-	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
-	    /// <param name=""entity""></param>
-	    /// <param name=""transaction""></param>
-	    /// <param name=""commandTimeout""></param>
-	    /// <returns>true if deleted, false if not found</returns>
-	    public static bool Delete(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
+
+        private static string GetDeleteQuery(BaseModel entity) 
         {{
-	        if (entity == null)
+             if (entity == null)
 	        {{
                 throw new ArgumentException(""The entity is null, cannot delete a null entity"", nameof(entity));
             }}
@@ -569,10 +562,43 @@ namespace {GenerationContext.BaseNamespace}.Dapper
                     sb.AppendFormat("" and "");
             }}
 
+            sb.ToString()
+
+        }}
+
+	    /// <summary>
+	    /// Delete entity in table ""Ts"".
+	    /// </summary>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""entity""></param>
+	    /// <param name=""transaction""></param>
+	    /// <param name=""commandTimeout""></param>
+	    /// <returns>true if deleted, false if not found</returns>
+	    public static bool Delete(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
+        {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
-				var deleted = connection.Execute(sb.ToString(), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
+				var deleted = connection.Execute(GetDeleteQuery(entity), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
+				return deleted;
+			}}
+        }}
+
+
+        /// <summary>
+	    /// Delete entity in table ""Ts"" asynchronously.
+	    /// </summary>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""entity""></param>
+	    /// <param name=""transaction""></param>
+	    /// <param name=""commandTimeout""></param>
+	    /// <returns>true if deleted, false if not found</returns>
+	    public static async Task<bool> DeleteAsync(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
+        {{
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				connection.Open();
+				var deleted = await connection.ExecuteAsync(GetDeleteQuery(entity), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
 				return deleted;
 			}}
         }}
