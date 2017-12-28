@@ -459,10 +459,10 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         private static string BuildUpdateQuery(BaseModel entityToUpdate) 
         {{
             if (entityToUpdate.DatabaseModelStatus != ModelStatus.Retrieved)
-                return false;
+                return null;
 
             if (entityToUpdate.UpdatedProperties == null || entityToUpdate.UpdatedProperties.Count < 1)
-                return false;
+                return null;
 
             var type = entityToUpdate.GetType();
 
@@ -509,10 +509,15 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
 	    public static bool Update(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
+            var query = BuildUpdateQuery(entityToUpdate);
+            if(query == null)
+            {{
+                return false;
+            }}
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
-				var updated = connection.Execute(BuildUpdateQuery(entityToUpdate), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
+				var updated = connection.Execute(query, entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
 				return updated > 0;
 			}}
         }}
@@ -527,10 +532,15 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
 	    public static async Task<bool> UpdateAsync(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
+            var query = BuildUpdateQuery(entityToUpdate);
+            if(query == null)
+            {{
+                return false;
+            }}
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
-				var updated = await connection.ExecuteAsync(BuildUpdateQuery(entityToUpdate), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
+				var updated = await connection.ExecuteAsync(query, entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
 				return updated > 0;
 			}}
         }}
@@ -562,8 +572,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
                     sb.AppendFormat("" and "");
             }}
 
-            sb.ToString()
-
+            return sb.ToString();
         }}
 
 	    /// <summary>
