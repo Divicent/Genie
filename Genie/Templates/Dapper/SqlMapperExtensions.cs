@@ -144,163 +144,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             return properties;
         }}
 
-        public static bool IsWriteable(PropertyInfo pi)
-        {{
-            var attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false).ToList();
-            if (attributes.Count != 1)
-                return true;
-            var write = (WriteAttribute)attributes{write};
-            return write.Write;
-        }}
 
-	    /// <summary>
-	    /// Return all  
-	    /// </summary>
-	    /// <typeparam name=""T"">Interface type to create and populate</typeparam>
-	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
-	    /// <param name=""query""></param>
-	    /// <returns>Entity of T</returns>
-	    public static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
-        {{
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
-			{{
-				connection.Open();
-				return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
-			}}
-        }}
-
-
-        /// <summary>
-	    /// Return all  asynchronously
-	    /// </summary>
-	    /// <typeparam name=""T"">Interface type to create and populate</typeparam>
-	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
-	    /// <param name=""query""></param>
-	    /// <returns>Entity of T</returns>
-	    public static async Task<IEnumerable<T>> GetAsync<T>(this IDbConnection connection, IRepoQuery query)
-        {{
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
-			{{
-				connection.Open();
-				return await connection.QueryAsync<T>(GetRetriveQuery(query), transaction: query.Transaction);
-			}}
-        }}
-
-	    /// <summary>
-	    /// Returns count of rows
-	    /// </summary>
-	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
-	    /// <param name=""query""></param>
-	    /// <returns>Entity of T</returns>
-	    public static int  Count(this IDbConnection connection, IRepoQuery query)
-        {{
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
-			{{
-				return connection.ExecuteScalar<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
-			}}
-        }}
-        
-	    /// <summary>
-	    /// Returns count of rows asynchronously
-	    /// </summary>
-	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
-	    /// <param name=""query""></param>
-	    /// <returns>Entity of T</returns>
-	    public static async Task<int> CountAsync(this IDbConnection connection, IRepoQuery query)
-        {{
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
-			{{
-				return await connection.ExecuteScalarAsync<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
-			}}
-        }}
-
-		/// <summary>
-	    /// Returns the where clause of the resulting query
-	    /// </summary>
-	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
-	    /// <param name=""query""></param>
-	    /// <returns>Entity of T</returns>
-	    public static string GetWhereClause(this IDbConnection connection, IRepoQuery query)
-	    {{
-	        return GetRetriveQuery(query, false, true);
-	    }}
-
-	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false, bool whereOnly = false)
-	    {{
-{getRetriveQueryNewQueryBuilder}
-            
-            var where = query.Where == null ? new Queue<string>() : new Queue<string>(query.Where);
-            var order = query.Order == null ? new Queue<string>() : new Queue<string>(query.Order);
-
-	        if (where.Count > 0)
-	        {{
-	            queryBuilder.Append("" where "");
-
-	            var first = true;
-	            var previous = """";
-
-	            while (where.Count > 0)
-	            {{
-	                var current = where.Dequeue();
-
-	                if (AndOrOr(current))
-	                {{
-	                    if (first)
-	                    {{
-	                        first = false;
-	                        previous = current;
-	                        continue;
-	                    }}
-
-	                    if (AndOrOr(previous))
-	                    {{
-	                        previous = current;
-	                        continue;
-	                    }}
-
-	                    previous = current;
-	                    queryBuilder.Append($"" {{current}} "");
-	                }}
-                    else if (current == "")"" || current == ""("")
-	                {{
-	                    if (current == ""("" && !first && !AndOrOr(previous))
-	                        queryBuilder.Append("" and "");
-
-	                    previous = current;
-                        queryBuilder.Append($"" {{current}} "");
-                    }}
-	                else
-	                {{
-	                    if (!first && (previous != ""("" && previous != "")"") && !AndOrOr(previous))
-                        {{
-	                        queryBuilder.Append("" and "");
-	                    }}
-
-	                    previous = current;
-	                    queryBuilder.Append($"" {{current}} "");
-	                }}
-
-	                first = false;
-	            }}
-	        }}
-
-	        if (whereOnly)
-	            return queryBuilder.ToString();
-
-	        if (order.Count > 0)
-	        {{
-	            queryBuilder.Append("" order by "");
-	            while (order.Count > 0)
-	            {{
-	                var item = order.Dequeue();
-	                queryBuilder.Append($"" {{item}} "");
-	            }}
-	        }}
-
-{getRetriveQueryPaging}
-
-	        return queryBuilder.ToString();
-        }}
 
         private static bool AndOrOr(string str)
 	    {{
@@ -391,6 +235,238 @@ namespace {GenerationContext.BaseNamespace}.Dapper
             return new Tuple<string, string, string>(name, sbColumnList.ToString(), sbParameterList.ToString());
         }}
 
+        private static string BuildUpdateQuery(BaseModel entityToUpdate) 
+        {{
+            if (entityToUpdate.DatabaseModelStatus != ModelStatus.Retrieved)
+                return null;
+
+            if (entityToUpdate.UpdatedProperties == null || entityToUpdate.UpdatedProperties.Count < 1)
+                return null;
+
+            var type = entityToUpdate.GetType();
+
+            var keyProperties = KeyPropertiesCache(type).ToList();
+            if (!keyProperties.Any())
+                throw new ArgumentException(""Entity must have at least one [Key] property"");
+
+            var name = GetTableName(type);
+
+            var sb = new StringBuilder();
+            sb.AppendFormat(""update {{0}} set "", name);
+
+            var allProperties = TypePropertiesCache(type);
+            var nonIdProps = allProperties.Where(a => !keyProperties.Contains(a) && entityToUpdate.UpdatedProperties.Contains(a.Name)).ToList(); // Only updated properties
+
+
+            for (var i = 0; i < nonIdProps.Count; i++)
+            {{
+                var property = nonIdProps.ElementAt(i);
+                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
+                if (i < nonIdProps.Count - 1)
+                    sb.AppendFormat("", "");
+            }}
+
+            sb.Append("" where "");
+            for (var i = 0; i < keyProperties.Count; i++)
+            {{
+                var property = keyProperties.ElementAt(i);
+                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
+                if (i < keyProperties.Count - 1)
+                    sb.AppendFormat("" and "");
+            }}
+
+            return sb.ToString();
+        }}
+
+
+        private static string GetDeleteQuery(BaseModel entity) 
+        {{
+             if (entity == null)
+	        {{
+                throw new ArgumentException(""The entity is null, cannot delete a null entity"", nameof(entity));
+            }}
+
+            var type = entity.GetType();
+            var keyProperties = KeyPropertiesCache(type).ToList();
+
+            if (!keyProperties.Any())
+                throw new ArgumentException(""Entity must have at least one [Key] property"");
+
+            var name = GetTableName(type);
+
+            var sb = new StringBuilder();
+            sb.AppendFormat(""delete from {{0}} where "", name);
+
+            for (var i = 0; i < keyProperties.Count; i++)
+            {{
+                var property = keyProperties.ElementAt(i);
+                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
+                if (i < keyProperties.Count - 1)
+                    sb.AppendFormat("" and "");
+            }}
+
+            return sb.ToString();
+        }}
+
+	    private static string GetRetriveQuery(IRepoQuery query, bool isCount = false, bool whereOnly = false)
+	    {{
+{getRetriveQueryNewQueryBuilder}
+            
+            var where = query.Where == null ? new Queue<string>() : new Queue<string>(query.Where);
+            var order = query.Order == null ? new Queue<string>() : new Queue<string>(query.Order);
+
+	        if (where.Count > 0)
+	        {{
+	            queryBuilder.Append("" where "");
+
+	            var first = true;
+	            var previous = """";
+
+	            while (where.Count > 0)
+	            {{
+	                var current = where.Dequeue();
+
+	                if (AndOrOr(current))
+	                {{
+	                    if (first)
+	                    {{
+	                        first = false;
+	                        previous = current;
+	                        continue;
+	                    }}
+
+	                    if (AndOrOr(previous))
+	                    {{
+	                        previous = current;
+	                        continue;
+	                    }}
+
+	                    previous = current;
+	                    queryBuilder.Append($"" {{current}} "");
+	                }}
+                    else if (current == "")"" || current == ""("")
+	                {{
+	                    if (current == ""("" && !first && !AndOrOr(previous))
+	                        queryBuilder.Append("" and "");
+
+	                    previous = current;
+                        queryBuilder.Append($"" {{current}} "");
+                    }}
+	                else
+	                {{
+	                    if (!first && (previous != ""("" && previous != "")"") && !AndOrOr(previous))
+                        {{
+	                        queryBuilder.Append("" and "");
+	                    }}
+
+	                    previous = current;
+	                    queryBuilder.Append($"" {{current}} "");
+	                }}
+
+	                first = false;
+	            }}
+	        }}
+
+	        if (whereOnly)
+	            return queryBuilder.ToString();
+
+	        if (order.Count > 0)
+	        {{
+	            queryBuilder.Append("" order by "");
+	            while (order.Count > 0)
+	            {{
+	                var item = order.Dequeue();
+	                queryBuilder.Append($"" {{item}} "");
+	            }}
+	        }}
+
+{getRetriveQueryPaging}
+
+	        return queryBuilder.ToString();
+        }}
+
+
+
+        public static bool IsWriteable(PropertyInfo pi)
+        {{
+            var attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false).ToList();
+            if (attributes.Count != 1)
+                return true;
+            var write = (WriteAttribute)attributes{write};
+            return write.Write;
+        }}
+
+	    /// <summary>
+	    /// Return all  
+	    /// </summary>
+	    /// <typeparam name=""T"">Interface type to create and populate</typeparam>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""query""></param>
+	    /// <returns>Entity of T</returns>
+	    public static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
+        {{
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				connection.Open();
+				return connection.Query<T>(GetRetriveQuery(query), transaction: query.Transaction);
+			}}
+        }}
+
+
+        /// <summary>
+	    /// Return all  asynchronously
+	    /// </summary>
+	    /// <typeparam name=""T"">Interface type to create and populate</typeparam>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""query""></param>
+	    /// <returns>Entity of T</returns>
+	    public static async Task<IEnumerable<T>> GetAsync<T>(this IDbConnection connection, IRepoQuery query)
+        {{
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				connection.Open();
+				return await connection.QueryAsync<T>(GetRetriveQuery(query), transaction: query.Transaction);
+			}}
+        }}
+
+	    /// <summary>
+	    /// Returns count of rows
+	    /// </summary>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""query""></param>
+	    /// <returns>Entity of T</returns>
+	    public static int  Count(this IDbConnection connection, IRepoQuery query)
+        {{
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				return connection.ExecuteScalar<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
+			}}
+        }}
+        
+	    /// <summary>
+	    /// Returns count of rows asynchronously
+	    /// </summary>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""query""></param>
+	    /// <returns>Entity of T</returns>
+	    public static async Task<int> CountAsync(this IDbConnection connection, IRepoQuery query)
+        {{
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				return await connection.ExecuteScalarAsync<int>(GetRetriveQuery(query, true), transaction: query.Transaction);
+			}}
+        }}
+
+		/// <summary>
+	    /// Returns the where clause of the resulting query
+	    /// </summary>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""query""></param>
+	    /// <returns>Entity of T</returns>
+	    public static string GetWhereClause(this IDbConnection connection, IRepoQuery query)
+	    {{
+	        return GetRetriveQuery(query, false, true);
+	    }}
 
 
         /// <summary>
@@ -456,49 +532,6 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 			}}
         }}
 
-        private static string BuildUpdateQuery(BaseModel entityToUpdate) 
-        {{
-            if (entityToUpdate.DatabaseModelStatus != ModelStatus.Retrieved)
-                return null;
-
-            if (entityToUpdate.UpdatedProperties == null || entityToUpdate.UpdatedProperties.Count < 1)
-                return null;
-
-            var type = entityToUpdate.GetType();
-
-            var keyProperties = KeyPropertiesCache(type).ToList();
-            if (!keyProperties.Any())
-                throw new ArgumentException(""Entity must have at least one [Key] property"");
-
-            var name = GetTableName(type);
-
-            var sb = new StringBuilder();
-            sb.AppendFormat(""update {{0}} set "", name);
-
-            var allProperties = TypePropertiesCache(type);
-            var nonIdProps = allProperties.Where(a => !keyProperties.Contains(a) && entityToUpdate.UpdatedProperties.Contains(a.Name)).ToList(); // Only updated properties
-
-
-            for (var i = 0; i < nonIdProps.Count; i++)
-            {{
-                var property = nonIdProps.ElementAt(i);
-                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
-                if (i < nonIdProps.Count - 1)
-                    sb.AppendFormat("", "");
-            }}
-
-            sb.Append("" where "");
-            for (var i = 0; i < keyProperties.Count; i++)
-            {{
-                var property = keyProperties.ElementAt(i);
-                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
-                if (i < keyProperties.Count - 1)
-                    sb.AppendFormat("" and "");
-            }}
-
-            return sb.ToString();
-        }}
-
 	    /// <summary>
 	    /// Updates entity in table ""Ts"", checks if the entity is modified if the entity is tracked by the Get() extension.
 	    /// </summary>
@@ -543,36 +576,6 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 				var updated = await connection.ExecuteAsync(query, entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
 				return updated > 0;
 			}}
-        }}
-
-
-        private static string GetDeleteQuery(BaseModel entity) 
-        {{
-             if (entity == null)
-	        {{
-                throw new ArgumentException(""The entity is null, cannot delete a null entity"", nameof(entity));
-            }}
-
-            var type = entity.GetType();
-            var keyProperties = KeyPropertiesCache(type).ToList();
-
-            if (!keyProperties.Any())
-                throw new ArgumentException(""Entity must have at least one [Key] property"");
-
-            var name = GetTableName(type);
-
-            var sb = new StringBuilder();
-            sb.AppendFormat(""delete from {{0}} where "", name);
-
-            for (var i = 0; i < keyProperties.Count; i++)
-            {{
-                var property = keyProperties.ElementAt(i);
-                sb.AppendFormat(""{quote("{0}")} = @{{1}}"", property.Name, property.Name);
-                if (i < keyProperties.Count - 1)
-                    sb.AppendFormat("" and "");
-            }}
-
-            return sb.ToString();
         }}
 
 	    /// <summary>
