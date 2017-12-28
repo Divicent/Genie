@@ -456,15 +456,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 			}}
         }}
 
-	    /// <summary>
-	    /// Updates entity in table ""Ts"", checks if the entity is modified if the entity is tracked by the Get() extension.
-	    /// </summary>
-	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
-	    /// <param name=""entityToUpdate"">Entity to be updated</param>
-	    /// <param name=""transaction""></param>
-	    /// <param name=""commandTimeout""></param>
-	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
-	    public static bool Update(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
+        private static string BuildUpdateQuery(BaseModel entityToUpdate) 
         {{
             if (entityToUpdate.DatabaseModelStatus != ModelStatus.Retrieved)
                 return false;
@@ -504,10 +496,41 @@ namespace {GenerationContext.BaseNamespace}.Dapper
                     sb.AppendFormat("" and "");
             }}
 
+            return sb.ToString();
+        }}
+
+	    /// <summary>
+	    /// Updates entity in table ""Ts"", checks if the entity is modified if the entity is tracked by the Get() extension.
+	    /// </summary>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""entityToUpdate"">Entity to be updated</param>
+	    /// <param name=""transaction""></param>
+	    /// <param name=""commandTimeout""></param>
+	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
+	    public static bool Update(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
+        {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
-				var updated = connection.Execute(sb.ToString(), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
+				var updated = connection.Execute(BuildUpdateQuery(entityToUpdate), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
+				return updated > 0;
+			}}
+        }}
+
+	    /// <summary>
+	    /// Updates entity in table ""Ts"", checks if the entity is modified if the entity is tracked by the Get() extension asynchronously.
+	    /// </summary>
+	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
+	    /// <param name=""entityToUpdate"">Entity to be updated</param>
+	    /// <param name=""transaction""></param>
+	    /// <param name=""commandTimeout""></param>
+	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
+	    public static async Task<bool> UpdateAsync(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
+        {{
+			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			{{
+				connection.Open();
+				var updated = await connection.ExecuteAsync(BuildUpdateQuery(entityToUpdate), entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
 				return updated > 0;
 			}}
         }}
