@@ -40,15 +40,20 @@ namespace GenieCLI
             var result = Genie.Core.Base.Genie.Generate(path, output);
             if (result.Success)
             {
-                Console.ReadLine();
+                if(!args.Contains("-y")) {
+                    Console.ReadKey();
+                }                
             }
             else
             {
-                Console.Write(":> "); // Noncompliant
+                Console.Write(":> ");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(result.Error); // Noncompliant
+                Console.WriteLine(result.Error);
                 Console.ResetColor();
-                Console.ReadKey();
+
+                if(!args.Contains("-y")) {
+                    Console.ReadKey();
+                }
             }
         }
     }
