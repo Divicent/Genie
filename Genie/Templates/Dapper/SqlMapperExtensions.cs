@@ -354,6 +354,45 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         }}
 
 
+        private static Tuple<string, string, string> GetInsertParameters(BaseModel entityToInsert)
+        {{
+            var type = entityToInsert.GetType();
+
+            var name = GetTableName(type);
+
+            var sbColumnList = new StringBuilder(null);
+
+            var allProperties = TypePropertiesCache(type).ToList();
+            var keyProperties = KeyPropertiesCache(type).ToList();
+            var identityProperties = IdentityPropertiesCache(type).ToList();
+            var allPropertiesExceptIndentity = allProperties.Except(identityProperties).ToList();
+
+            var index = 0;
+            var lst = allProperties.Count == keyProperties.Count ? keyProperties : allPropertiesExceptIndentity;
+            foreach (var property in lst)
+            {{
+                sbColumnList.AppendFormat(""{quote("{0}")}"", property.Name);
+                if (index < lst.Count - 1)
+                sbColumnList.Append("", "");
+                index++;
+            }}
+
+            index = 0;
+            var sbParameterList = new StringBuilder(null);
+
+            foreach (var property in lst)
+            {{
+                sbParameterList.AppendFormat(""@{{0}}"", property.Name);
+                if (index < lst.Count - 1)
+                sbParameterList.Append("", "");
+                index++;
+            }}
+
+            return new Tuple<string, string, string>(name, sbColumnList.ToString(), sbParameterList.ToString());
+        }}
+
+
+
         /// <summary>
         /// Inserts an entity into table ""Ts"" and returns identity id.
         /// </summary>
@@ -364,43 +403,11 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <returns>Identity of inserted entity</returns>
         public static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
-
-          var type = entityToInsert.GetType();
-
-          var name = GetTableName(type);
-
-          var sbColumnList = new StringBuilder(null);
-
-          var allProperties = TypePropertiesCache(type).ToList();
-          var keyProperties = KeyPropertiesCache(type).ToList();
-          var identityProperties = IdentityPropertiesCache(type).ToList();
-          var allPropertiesExceptIndentity = allProperties.Except(identityProperties).ToList();
-
-	        var index = 0;
-	        var lst = allProperties.Count == keyProperties.Count ? keyProperties : allPropertiesExceptIndentity;
-            foreach (var property in lst)
-	        {{
-                sbColumnList.AppendFormat(""{quote("{0}")}"", property.Name);
-                if (index < lst.Count - 1)
-                    sbColumnList.Append("", "");
-	            index ++;
-	        }}
-
-	        index = 0;
-            var sbParameterList = new StringBuilder(null);
-
-            foreach (var property in lst)
-            {{
-                sbParameterList.AppendFormat(""@{{0}}"", property.Name);
-                if (index < lst.Count - 1)
-                    sbParameterList.Append("", "");
-                index++;
-            }}
-            
+            var parameters = GetInsertParameters(entityToInsert);
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
 				connection.Open();
-				var cmd = string.Format(""insert into {{0}} ({{1}}) values ({{2}})"", name, sbColumnList.ToString(), sbParameterList.ToString());
+				var cmd = string.Format(""insert into {{0}} ({{1}}) values ({{2}})"", parameters.Item1, parameters.Item2, parameters.Item3);
                 connection.Execute(cmd, entityToInsert, transaction, commandTimeout);
                 var r = connection.Query(""select @@IDENTITY id"", transaction: transaction, commandTimeout: commandTimeout).ToList();
                 long id = 0;
