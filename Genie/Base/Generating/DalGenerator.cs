@@ -20,6 +20,7 @@ using Genie.Core.Templates.Infrastructure.Enum;
 using Genie.Core.Templates.Infrastructure.Filters.Abstract;
 using Genie.Core.Templates.Infrastructure.Filters.Concrete;
 using Genie.Core.Templates.Infrastructure.Interfaces;
+using Genie.Core.Templates.Infrastructure.Models.Abstract;
 using Genie.Core.Templates.Infrastructure.Models.Abstract.Context;
 using Genie.Core.Templates.Infrastructure.Models.Concrete;
 using Genie.Core.Templates.Infrastructure.Models.Concrete.Context;
@@ -29,23 +30,23 @@ using Genie.Core.Templates.Infrastructure.Repositories;
 
 namespace Genie.Core.Base.Generating
 {
-    internal static class DalGenerator
+  internal static class DalGenerator
+  {
+    /// <summary>
+    ///     Generate the DAL using schema and configuration
+    /// </summary>
+    /// <param name="schema">Schema to use</param>
+    /// <param name="configuration">Configuration to use</param>
+    /// <param name="output">Process output</param>
+    /// <returns>Collection of file contents</returns>
+    public static IEnumerable<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration,
+        IProcessOutput output)
     {
-        /// <summary>
-        ///     Generate the DAL using schema and configuration
-        /// </summary>
-        /// <param name="schema">Schema to use</param>
-        /// <param name="configuration">Configuration to use</param>
-        /// <param name="output">Process output</param>
-        /// <returns>Collection of file contents</returns>
-        public static IEnumerable<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration,
-            IProcessOutput output)
-        {
-            output.WriteInformation("Generating files.");
-            List<ITemplate> files;
-            try
-            {
-                files = new List<ITemplate>
+      output.WriteInformation("Generating files.");
+      List<ITemplate> files;
+      try
+      {
+        files = new List<ITemplate>
                 {
                     new ConditionExtensionTemplate(@"Infrastructure/Enum/ConditionExtension"),
                     new IBoolFilterTemplate(@"Infrastructure/Filters/Abstract/IBoolFilter"),
@@ -100,20 +101,20 @@ namespace Genie.Core.Base.Generating
                     new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext", configuration)
                 };
 
-                files.AddRange(
+        files.AddRange(
 
-                    configuration.NoDapper ?
-                        new List<ITemplate>
-                        {
+            configuration.NoDapper ?
+                new List<ITemplate>
+                {
                             new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
                             new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
                             new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
                             new TableAttributeTemplate(@"Dapper/TableAttribute"),
                             new WriteAttributeTemplate(@"Dapper/WriteAttribute")
-                        } :
+                } :
 
-                        new List<ITemplate>
-                        {
+                new List<ITemplate>
+                {
                             new SqlMapper_AsyncTemplate(@"Dapper/SqlMapper.Async"),
                             new XmlHandlersTemplate(@"Dapper/XmlHandlers"),
                             new WrappedReaderTemplate(@"Dapper/WrappedReader"),
@@ -165,82 +166,118 @@ namespace Genie.Core.Base.Generating
                             new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
                             new TableAttributeTemplate(@"Dapper/TableAttribute"),
                             new WriteAttributeTemplate(@"Dapper/WriteAttribute")
-                        }
-                    );
-
-                foreach (var relation in schema.Relations)
-                {
-                    files.Add(new RelationTemplate(@"Infrastructure/Models/Concrete/" + relation.Name, relation,
-                        schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum"), configuration));
-
-                    files.Add(new IModelQueryContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "QueryContext", relation.Name));
-                    files.Add(new IModelFilterContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "FilterContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    files.Add(new IModelOrderContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "OrderContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-
-                    files.Add(new ModelQueryContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "QueryContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList(), configuration));
-                    files.Add(new ModelFilterContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "FilterContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    files.Add(new ModelOrderContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "OrderContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
                 }
+            );
 
-                foreach (var view in schema.Views)
-                {
-                    files.Add(new ViewTemplate(@"Infrastructure/Models/Concrete/" + view.Name, view, configuration));
+        foreach (var relation in schema.Relations)
+        {
+          files.Add(new RelationTemplate(@"Infrastructure/Models/Concrete/" + relation.Name, relation,
+              schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum"), configuration));
 
-                    files.Add(new IModelQueryContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "QueryContext", view.Name));
-                    files.Add(new IModelFilterContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "FilterContext", view.Name,
-                        view.Attributes));
-                    files.Add(new IModelOrderContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "OrderContext", view.Name,
-                        view.Attributes));
+          files.Add(new IModelQueryContextTemplate(
+              @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "QueryContext", relation.Name));
+          files.Add(new IModelFilterContextTemplate(
+              @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "FilterContext", relation.Name,
+              relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+          files.Add(new IModelOrderContextTemplate(
+              @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "OrderContext", relation.Name,
+              relation.Attributes.Cast<ISimpleAttribute>().ToList()));
 
-                    files.Add(new ModelQueryContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "QueryContext", view.Name,
-                        view.Attributes, configuration));
-                    files.Add(new ModelFilterContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "FilterContext", view.Name,
-                        view.Attributes));
-                    files.Add(new ModelOrderContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name,
-                        view.Attributes));
-                }
+          files.Add(new ModelQueryContextTemplate(
+              @"Infrastructure/Models/Concrete/Context/" + relation.Name + "QueryContext", relation.Name,
+              relation.Attributes.Cast<ISimpleAttribute>().ToList(), configuration));
+          files.Add(new ModelFilterContextTemplate(
+              @"Infrastructure/Models/Concrete/Context/" + relation.Name + "FilterContext", relation.Name,
+              relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+          files.Add(new ModelOrderContextTemplate(
+              @"Infrastructure/Models/Concrete/Context/" + relation.Name + "OrderContext", relation.Name,
+              relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+        }
 
-                output.WriteInformation($"{files.Count} file found.");
-            }
-            catch (Exception e)
-            {
-                throw new GenieException("Unable to create list of template files.", e);
-            }
+        foreach (var view in schema.Views)
+        {
+          files.Add(new ViewTemplate(@"Infrastructure/Models/Concrete/" + view.Name, view, configuration));
 
+          files.Add(new IModelQueryContextTemplate(
+              @"Infrastructure/Models/Abstract/Context/I" + view.Name + "QueryContext", view.Name));
+          files.Add(new IModelFilterContextTemplate(
+              @"Infrastructure/Models/Abstract/Context/I" + view.Name + "FilterContext", view.Name,
+              view.Attributes));
+          files.Add(new IModelOrderContextTemplate(
+              @"Infrastructure/Models/Abstract/Context/I" + view.Name + "OrderContext", view.Name,
+              view.Attributes));
+
+          files.Add(new ModelQueryContextTemplate(
+              @"Infrastructure/Models/Concrete/Context/" + view.Name + "QueryContext", view.Name,
+              view.Attributes, configuration));
+          files.Add(new ModelFilterContextTemplate(
+              @"Infrastructure/Models/Concrete/Context/" + view.Name + "FilterContext", view.Name,
+              view.Attributes));
+          files.Add(new ModelOrderContextTemplate(
+              @"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name,
+              view.Attributes));
+        }
+
+        var canWriteAbstractModels = false;
+
+        if (configuration.AbstractModelsEnabled)
+        {
+          if (!System.IO.Directory.Exists(configuration.AbstractModelsLocation))
+          {
             try
             {
-                GenerationContext.BaseNamespace = configuration.BaseNamespace;
-                GenerationContext.Core = configuration.Core;
-                GenerationContext.NoDapper = configuration.NoDapper;
-                output.WriteInformation("Generating File content.");
-                var contentFiles =
-                    files.Select(templateFile => new ContentFile
-                    {
-                        Path = templateFile.Path,
-                        Content = templateFile.Generate()
-                    }).ToList();
+              System.IO.Directory.CreateDirectory(configuration.AbstractModelsLocation);
+              canWriteAbstractModels = true;
+            }
+            catch
+            {
+              output.WriteWarning($"Abstract models folder ({configuration.AbstractModelsLocation} and could not create it)");
+              canWriteAbstractModels = false;
+            }
+          }
+          else
+          {
+            canWriteAbstractModels = true;
+          }
+        }
 
-                output.WriteSuccess($"Successfully generated {contentFiles.Count} files.");
+        if (canWriteAbstractModels)
+        {
+          foreach (var relation in schema.Relations)
+          {
+            files.Add(new IModelTemplate(System.IO.Path.Combine(configuration.AbstractModelsLocation, $"I{relation.Name}"), relation, configuration));
+          }
 
-                const string comment =
-                    @"// ------------------------------------------------------------------------------
+          foreach (var view in schema.Views)
+          {
+            files.Add(new IModelTemplate(System.IO.Path.Combine(configuration.AbstractModelsLocation, $"I{view.Name}"), view, configuration));
+          }
+        }
+
+        output.WriteInformation($"{files.Count} file found.");
+      }
+      catch (Exception e)
+      {
+        throw new GenieException("Unable to create list of template files.", e);
+      }
+
+      try
+      {
+        GenerationContext.BaseNamespace = configuration.BaseNamespace;
+        GenerationContext.Core = configuration.Core;
+        GenerationContext.NoDapper = configuration.NoDapper;
+        output.WriteInformation("Generating File content.");
+        var contentFiles =
+            files.Select(templateFile => new ContentFile
+            {
+              Path = templateFile.Path,
+              Content = templateFile.Generate()
+            }).ToList();
+
+        output.WriteSuccess($"Successfully generated {contentFiles.Count} files.");
+
+        const string comment =
+            @"// ------------------------------------------------------------------------------
 // <auto-generated>
 //     This code was generated by Genie (http://www.github.com/rusith/genie).
 //  
@@ -250,18 +287,18 @@ namespace Genie.Core.Base.Generating
 // ------------------------------------------------------------------------------
 ";
 
-                foreach (var contentFile in contentFiles)
-                {
-                    contentFile.Path = contentFile.Path + "." + "cs";
-                    contentFile.Content = comment + contentFile.Content;
-                }
-
-                return contentFiles;
-            }
-            catch (Exception e)
-            {
-                throw new GenieException("Unable to generate file content", e);
-            }
+        foreach (var contentFile in contentFiles)
+        {
+          contentFile.Path = contentFile.Path + "." + "cs";
+          contentFile.Content = comment + contentFile.Content;
         }
+
+        return contentFiles;
+      }
+      catch (Exception e)
+      {
+        throw new GenieException("Unable to generate file content", e);
+      }
     }
+  }
 }
