@@ -1,3 +1,8 @@
+
+
+<iframe src="https://rusith.github.io/Genie/" frameborder="0" allowfullscreen></iframe>
+
+
 <h1>
 <img src="https://raw.githubusercontent.com/rusith/genie/core/icon/genie_logo.png" alt="Icon" width="200px"/>
 </h1>
