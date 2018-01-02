@@ -47,7 +47,7 @@ namespace Genie.Core.Templates.Infrastructure
                     $@"		public async Task {sp.Name}_VoidAsync({sp.ParamString}) {{ await ExecuteAsync(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} { sp.PassString };""); }}");
             }
 
-            var usingDapper = (_configuration.Core ? "using Dapper;\n" : "");
+            var usingDapper = (_configuration.NoDapper ? "using Dapper;\n" : $"{GenerationContext.BaseNamespace}.Dapper");
 
             L($@"
 
@@ -55,7 +55,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using {GenerationContext.BaseNamespace}.Dapper;
 using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
 using {parts.SqlClientNamespace};
 {usingDapper}
