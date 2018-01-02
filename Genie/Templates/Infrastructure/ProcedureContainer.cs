@@ -126,7 +126,6 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 			}}
 		}}
 
-
 {spList}
 
 {spSingle}
