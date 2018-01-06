@@ -30,9 +30,8 @@ namespace Genie.Core.Base.Reading.Concrete
         protected string QueryToGetParameters = "";
         protected string QueryToReadColumns = "";
 
-        public IDatabaseSchema Read(IConfiguration configuration, IProcessOutput output)
+        public IDatabaseSchema Read(IConfiguration configuration)
         {
-            output.WriteInformation("Reading database meta data.");
             Setup(configuration);
             DatabaseSchema schema;
             try
@@ -42,12 +41,10 @@ namespace Genie.Core.Base.Reading.Concrete
             }
             catch (Exception e)
             {
-                throw new GenieException("Unable to read database meta data", e);
+                throw new GenieException("Unable to fetch database schema", e);
             }
 
-            output.WriteSuccess("Schema reading successful.");
-
-            ProcessRelationships(schema.Relations, output);
+            ProcessRelationships(schema.Relations);
 
             if (configuration.Enums != null && configuration.Enums.Count > 0)
             {
@@ -59,7 +56,7 @@ namespace Genie.Core.Base.Reading.Concrete
                     }
                 }
 
-                schema.Enums = ReadEnums(configuration.ConnectionString, configuration.Enums, output, configuration);
+                schema.Enums = ReadEnums(configuration.ConnectionString, configuration.Enums, configuration);
             }
             else
             {
@@ -157,10 +154,8 @@ namespace Genie.Core.Base.Reading.Concrete
         }
 
 
-        private static void ProcessRelationships(IReadOnlyCollection<IRelation> relations, IProcessOutput output)
+        private static void ProcessRelationships(IReadOnlyCollection<IRelation> relations)
         {
-            output.WriteInformation("Processing relationships.");
-
             try
             {
                 /*
@@ -190,7 +185,6 @@ namespace Genie.Core.Base.Reading.Concrete
             {
                 throw new GenieException("Unable to process relationships of the tables", e);
             }
-            output.WriteSuccess("Relationships processed.");
         }
 
 
@@ -342,10 +336,8 @@ namespace Genie.Core.Base.Reading.Concrete
             return new DatabaseSchema { Procedures = storedProcedures, Relations = tables, Views = views };
         }
 
-        private List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,
-            IProcessOutput output, IConfiguration configuration)
+        private List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,  IConfiguration configuration)
         {
-            output.WriteInformation("Reading enum tables.");
             using (var connection = GetConnection(connectionString))
             {
                 connection.Open();

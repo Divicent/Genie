@@ -22,5 +22,11 @@
         /// </summary>
         /// <param name="content">Content to write</param>
         void WriteInformation(string content);
+
+        /// <summary>
+        /// Get a progress reporter
+        /// </summary>
+        /// <returns></returns>
+        IProgressReporter Progress(int total, string initalMessage);
     }
 }

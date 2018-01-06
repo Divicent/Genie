@@ -23,8 +23,7 @@ namespace Genie.Core.Base.ProjectFileManaging
         /// </summary>
         /// <param name="projectFilePath">Path to the project file</param>
         /// <param name="files">Files to include</param>
-        /// <param name="output">A process output</param>
-        public static void Process(string projectFilePath, List<string> files, IProcessOutput output)
+        public static void Process(string projectFilePath, IEnumerable<string> files)
         {
             try
             {
@@ -33,7 +32,6 @@ namespace Genie.Core.Base.ProjectFileManaging
                     return;
                 }
 
-                output.WriteInformation("Processing project file.");
                 var document = new XmlDocument();
                 document.LoadXml(File.ReadAllText(projectFilePath));
                 var compiles = document.GetElementsByTagName("Compile");
@@ -44,7 +42,7 @@ namespace Genie.Core.Base.ProjectFileManaging
                     where !string.IsNullOrWhiteSpace(include) &&
                           (include.StartsWith("Dapper") || include.StartsWith("Infrastructure"))
                     select compile).ToList();
-
+                
                 foreach (var tr in torRemove)
                 {
                     var parent = tr.ParentNode;
@@ -79,7 +77,6 @@ namespace Genie.Core.Base.ProjectFileManaging
             {
                 throw new GenieException("Unable to process file.", e);
             }
-            output.WriteSuccess("Project file processed.");
         }
     }
 }

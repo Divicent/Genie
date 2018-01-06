@@ -18,19 +18,16 @@ namespace Genie.Core.Base.Writing
         /// </summary>
         /// <param name="files">Files to write</param>
         /// <param name="basePath">Base path </param>
-        /// <param name="output">A Process output</param>
-        public static void Write(List<IContentFile> files, string basePath, IProcessOutput output)
+        /// <param name="progress">A Progress output</param>
+        public static void Write(IEnumerable<IContentFile> files, string basePath, IProgressReporter progress)
         {
-            output.WriteInformation("Writing files to the disk");
-            output.WriteInformation("Base path = " + basePath);
-
             try
             {
                 var createdDirectories = new HashSet<string>();
 
                 foreach (var contentFile in files)
                 {
-                    output.WriteInformation(string.Format("Writing {0}.", contentFile.Path));
+                    progress.Tick(contentFile.Path);
                     var file = new FileInfo(Path.Combine(basePath, contentFile.Path));
                     var directory = file.Directory?.FullName;
 
@@ -46,8 +43,6 @@ namespace Genie.Core.Base.Writing
             {
                 throw new GenieException("Unable to write files to the disc", e);
             }
-
-            output.WriteSuccess(string.Format("Successfully written {0} file to the disk.", files.Count));
         }
     }
 }

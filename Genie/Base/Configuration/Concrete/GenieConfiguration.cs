@@ -16,7 +16,6 @@ namespace Genie.Core.Base.Configuration.Concrete
   /// </summary>
   public class GenieConfiguration : IConfiguration
   {
-    public List<string> IgnoreFiles { get; set; }
     public string ConnectionString { get; set; }
 
     public string ProjectPath { get; set; }

@@ -11,7 +11,12 @@ namespace GenieCLI
         public void WriteInformation(string content)
         {
             if(Silent || NoInfo) { return; }
-            Console.WriteLine("-> " + content); // Noncompliant
+            Console.WriteLine("-> " + content);
+        }
+
+        public IProgressReporter Progress(int total, string initialMessage)
+        {
+            return new ProgressReporter(total, initialMessage);
         }
 
         public void WriteSuccess(string content)
@@ -19,7 +24,7 @@ namespace GenieCLI
             if (Silent) {  return; }
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.WriteLine(content); // Noncompliant
+            Console.WriteLine(content);
             Console.ResetColor();
         }
 
@@ -28,7 +33,7 @@ namespace GenieCLI
             if (Silent) { return; }
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine(content); // Noncompliant
+            Console.WriteLine(content);
             Console.ResetColor();
         }
     }
