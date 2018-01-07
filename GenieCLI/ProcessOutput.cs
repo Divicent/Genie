@@ -14,9 +14,9 @@ namespace GenieCLI
             Console.WriteLine("-> " + content);
         }
 
-        public IProgressReporter Progress(int total, string initialMessage)
+        public IProgressReporter Progress(int total, string initialMessage, string endMessage)
         {
-            return new ProgressReporter(total, initialMessage);
+            return new ProgressReporter(total, initialMessage, endMessage);
         }
 
         public void WriteSuccess(string content)

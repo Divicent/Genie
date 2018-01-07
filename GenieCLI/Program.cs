@@ -38,22 +38,12 @@ namespace GenieCLI
             var path = $"./{fileName}";
 
             var result = Genie.Core.Base.Genie.Generate(path, output);
-            if (result.Success)
-            {
-                if(!args.Contains("-y")) {
-                    Console.ReadKey();
-                }                
-            }
-            else
+            if (!result.Success)
             {
                 Console.Write(":> ");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(result.Error);
-                Console.ResetColor();
-
-                if(!args.Contains("-y")) {
-                    Console.ReadKey();
-                }
+                Console.ResetColor();            
             }
         }
     }

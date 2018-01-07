@@ -16,7 +16,7 @@ namespace Genie.Core.Base.ProcessOutput.Concrete
             /*Does nothing*/
         }
 
-        public IProgressReporter Progress(int total, string initalMessage)
+        public IProgressReporter Progress(int total, string initalMessage, string endMessage)
         {
             return new NonFunctioningProgressReporter();
         }

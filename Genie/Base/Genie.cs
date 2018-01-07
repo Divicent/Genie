@@ -52,7 +52,7 @@ namespace Genie.Core.Base
             var result = new GenieGenerationResult();
             IConfiguration config = null;
 
-            using (var progress = output.Progress(6, "Generating"))
+            using (var progress = output.Progress(7, "Generating", "Done!"))
             {
                 try
                 {
@@ -102,16 +102,20 @@ namespace Genie.Core.Base
                     ObstacleManager.Clear(config.ProjectPath, output, config);
 
                     progress.Tick("Writing Content to Files");
-                    using (var writeProgress = progress.Child(contentFiles.Count, "Writing Content"))
+                    using (var writeProgress = progress.Child(contentFiles.Count, "Writing Content", "Done writing content"))
                     {
                         DalWriter.Write(contentFiles, config.ProjectPath, writeProgress);
+                        writeProgress.Tick();
                     }
 
+                    progress.Tick("Processing project files");
                     if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
                     {
                         CSharpProjectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectFile),
                             contentFiles.Select(c => c.Path).ToList());
                     }
+
+                    progress.Tick();
                 }
                 catch (Exception e)
                 {

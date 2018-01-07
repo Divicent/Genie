@@ -27,6 +27,6 @@
         /// Get a progress reporter
         /// </summary>
         /// <returns></returns>
-        IProgressReporter Progress(int total, string initalMessage);
+        IProgressReporter Progress(int total, string initalMessage, string endMessage);
     }
 }

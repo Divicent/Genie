@@ -10,6 +10,6 @@ namespace Genie.Core.Base.ProcessOutput.Abstract
     {
         void Tick();
         void Tick(string message);
-        IProgressReporter Child(int total, string initalMessage);
+        IProgressReporter Child(int total, string initalMessage, string endMessage);
     }
 }

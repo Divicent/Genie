@@ -19,7 +19,7 @@ namespace Genie.Core.Base.ProcessOutput.Concrete
             /*Does nothing*/
         }
 
-        public IProgressReporter Child(int total, string initalMessage)
+        public IProgressReporter Child(int total, string initalMessage, string endMessage)
         {
             return this;
         }
