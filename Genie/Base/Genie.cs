@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Configuration.Concrete;
 using Genie.Core.Base.Exceptions;

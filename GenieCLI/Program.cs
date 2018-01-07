@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Genie.Core.Base.Generating;
 
 namespace GenieCLI
 {
@@ -37,7 +38,13 @@ namespace GenieCLI
 
             var path = $"./{fileName}";
 
-            var result = Genie.Core.Base.Genie.Generate(path, output);
+            GenieGenerationResult result = null;
+            if(args.Contains("-s")) {
+              result = Genie.Core.Base.Genie.Generate(path);
+            } else {
+              result = Genie.Core.Base.Genie.Generate(path, output);
+            }
+            
             if (!result.Success)
             {
                 Console.Write(":> ");
