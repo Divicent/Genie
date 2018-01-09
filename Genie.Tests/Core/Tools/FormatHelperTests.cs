@@ -1,6 +1,8 @@
 using Genie.Core.Base.Configuration.Concrete;
+using Genie.Core.Base.Versioning.Abstract;
 using Genie.Core.Models.Abstract;
 using Genie.Core.Tools;
+using Moq;
 using Xunit;
 
 namespace Genie.Tests.Core.Tools
@@ -9,20 +11,23 @@ namespace Genie.Tests.Core.Tools
     {
         private ITemplatePartsContainer GetContainer(string dbms)
         {
-            return FormatHelper.GetDbmsSpecificTemplatePartsContainer(new GenieConfiguration {DBMS = dbms});
+            return FormatHelper.GetDbmsSpecificTemplatePartsContainer(
+                new GenieConfiguration(new Mock<IVersionManager>().Object) {DBMS = dbms});
         }
 
         [Fact]
         public void Tools_FormatHelper_Quoter_MSSQL()
         {
-            var quoter = FormatHelper.GetDbmsSpecificQuoter(new GenieConfiguration {DBMS = "mssql"});
+            var quoter = FormatHelper.GetDbmsSpecificQuoter(
+                new GenieConfiguration(new Mock<IVersionManager>().Object) {DBMS = "mssql"});
             Assert.Equal(quoter("a"), "[a]");
         }
 
         [Fact]
         public void Tools_FormatHelper_Quoter_MySQL()
         {
-            var quoter = FormatHelper.GetDbmsSpecificQuoter(new GenieConfiguration {DBMS = "mysql"});
+            var quoter = FormatHelper.GetDbmsSpecificQuoter(
+                new GenieConfiguration(new Mock<IVersionManager>().Object) {DBMS = "mysql"});
             Assert.Equal(quoter("a"), "`a`");
         }
 

@@ -1,8 +1,13 @@
-﻿using System.Dynamic;
+﻿using System;
+using System.Dynamic;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Files.Abstract;
 using Genie.Core.Base.Reading.Abstract;
 using Genie.Core.Base.SchemaCaching.Abstract;
+using Genie.Core.Models.Abstract;
+using Genie.Core.Models.Abstract.SchemaCaching;
+using Genie.Core.Models.Concrete.SchemaCaching;
+using Genie.Core.Tools;
 using Newtonsoft.Json;
 
 namespace Genie.Core.Base.SchemaCaching.Concrete
@@ -44,8 +49,29 @@ namespace Genie.Core.Base.SchemaCaching.Concrete
 
         public object ConvertSchemaToSchemaCache(IDatabaseSchema schema)
         {
+            string CreateHash(object obj) => CommonTools.CalculateMd5Hash(JsonConvert.SerializeObject(obj));
+            
             dynamic result = new ExpandoObject();
-            return result;
+            result.root = CreateHash(CreateRootObject());
+            return null;
+        }
+        
+
+        public ISchemaCacheRootObject CreateRootObject()
+        {
+            return new SchemaCacheRootObject
+            {
+                BaseNamespace = _configuration.BaseNamespace,
+                GenieVersion = _configuration.GenieVersion,
+                IsCore = _configuration.Core,
+                NoDapper = _configuration.NoDapper,
+                Schema = _configuration.Schema
+            };
+        }
+
+        public IModelCacheObject CreateModelCacheObject(IModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

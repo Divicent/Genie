@@ -2,34 +2,35 @@
 
 using System.Collections.Generic;
 using Genie.Core.Models.Abstract;
+using Genie.Core.Models.Concrete.SchemaCaching;
 
 #endregion
 
 namespace Genie.Core.Models.Concrete
 {
-    internal class View : IView
+    internal class View : Model, IView
     {
         public string Comment { get; set; }
         public string FieldName { get; set; }
         public string Name { get; set; }
         public List<ISimpleAttribute> Attributes { get; set; }
 
-        public IEnumerable<ISimpleAttribute> GetAttributes()
+        public override IEnumerable<ISimpleAttribute> GetAttributes()
         {
             return Attributes;
         }
 
-        public IEnumerable<IForeignKeyAttribute> GetForeignKeyAttributes()
+        public override IEnumerable<IForeignKeyAttribute> GetForeignKeyAttributes()
         {
             return new List<IForeignKeyAttribute>();
         }
 
-        public string GetName()
+        public override string GetName()
         {
             return Name;
         }
 
-        public IEnumerable<IReferenceList> GetReferenceLists()
+        public override IEnumerable<IReferenceList> GetReferenceLists()
         {
             return new List<IReferenceList>();
         }

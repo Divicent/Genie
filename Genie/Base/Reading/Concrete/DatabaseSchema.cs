@@ -15,7 +15,5 @@ namespace Genie.Core.Base.Reading.Concrete
         public List<IView> Views { get; set; }
         public List<IStoredProcedure> Procedures { get; set; }
         public List<IEnum> Enums { get; set; }
-        public string GenieVersion { get; set; }
-        public string Schema { get; set; }
     }
 }

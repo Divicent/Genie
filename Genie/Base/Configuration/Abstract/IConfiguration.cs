@@ -16,6 +16,7 @@ namespace Genie.Core.Base.Configuration.Abstract
         MySQL = 2
     }
 
+  /// <inheritdoc />
   /// <summary>
   ///     Basic configuration for genie
   /// </summary>
@@ -65,11 +66,6 @@ namespace Genie.Core.Base.Configuration.Abstract
       string DBMS { get; }
 
       /// <summary>
-      ///     For Internal Use
-      /// </summary>
-      DBMS DBMSName { get; }
-
-      /// <summary>
       ///     Default database schema name
       /// </summary>
       string Schema { get; }
@@ -91,5 +87,16 @@ namespace Genie.Core.Base.Configuration.Abstract
       /// </summary>
       /// <returns></returns>
       bool AbstractModelsEnabled { get; }
+      
+      /// <summary>
+      /// Current version of genie
+      /// </summary>
+      string GenieVersion { get; set; }
+
+      /// <summary>
+      /// Setup the configuration
+      /// </summary>
+      void Setup();
+
     }
 }

@@ -1,6 +1,9 @@
 ﻿#region Usings
 
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -67,6 +70,17 @@ namespace Genie.Core.Tools
                 default:
                     return "";
             }
+        }
+
+        public static string CalculateMd5Hash(object input)
+        {
+            var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(input)));
+            var sb = new StringBuilder();
+            
+            for (var i = 0; i < hash.Length; i++)
+                sb.Append(hash[i].ToString("X2"));
+            
+            return sb.ToString();
         }
     }
 }

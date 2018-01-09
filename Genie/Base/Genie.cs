@@ -70,6 +70,12 @@ namespace Genie.Core.Base
                     {
                         config = JsonConvert.DeserializeObject<GenieConfiguration>(
                             fileSystem.ReadText(pathToConfigurationJsonFile));
+
+                        config.Setup();
+                    }
+                    catch (GenieException exception)
+                    {
+                        throw;
                     }
                     catch (Exception exception)
                     {
@@ -97,9 +103,6 @@ namespace Genie.Core.Base
                     progress.Tick("Reading Database Schema");
                     var schemaReader = DatabaseSchemaReaderFactory.GetReader(config.DBMS);
                     var schema = schemaReader.Read(config);
-
-                    schema.GenieVersion = versionManager.GetCurrentVersion();
-                    schema.Schema = config.Schema;
 
                     progress.Tick("Generating File Contents");
                     var contentFiles = DalGenerator.Generate(schema, config, progress).ToList();
