@@ -29,11 +29,5 @@
         ///     Additional Comment for the attribute
         /// </summary>
         string Comment { get; set; }
-
-        /// <summary>
-        /// Get the content hash of the attribute
-        /// </summary>
-        /// <returns></returns>
-        string GetHash();
     }
 }

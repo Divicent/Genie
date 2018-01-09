@@ -20,7 +20,8 @@ namespace Genie.Core.Base.Writing
         /// <param name="basePath">Base path </param>
         /// <param name="progress">A Progress output</param>
         /// <param name="fileSystem"></param>
-        public static void Write(IEnumerable<IContentFile> files, string basePath, IProgressReporter progress, IFileSystem fileSystem)
+        public static void Write(IEnumerable<IContentFile> files, string basePath, IProgressReporter progress,
+            IFileSystem fileSystem)
         {
             try
             {
@@ -32,7 +33,8 @@ namespace Genie.Core.Base.Writing
                     var file = fileSystem.CombinePaths(basePath, contentFile.Path);
                     var directory = fileSystem.GetDirectoryOfAFile(file);
 
-                    if (!createdDirectories.Contains(directory) && directory != null && !fileSystem.DirectoryExists(directory))
+                    if (!createdDirectories.Contains(directory) && directory != null &&
+                        !fileSystem.DirectoryExists(directory))
                     {
                         fileSystem.CreateDirectory(directory);
                         createdDirectories.Add(directory);

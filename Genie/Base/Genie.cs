@@ -54,7 +54,7 @@ namespace Genie.Core.Base
         {
             var result = new GenieGenerationResult();
             IConfiguration config = null;
-            IFileSystem fileSystem  = new GenieFileSystem();
+            IFileSystem fileSystem = new GenieFileSystem();
             IVersionManager versionManager = new GenieVersionManager(fileSystem);
 
             using (var progress = output.Progress(7, "Generating", "Done!"))
@@ -120,7 +120,8 @@ namespace Genie.Core.Base
 
                     progress.Tick("Processing project files");
                     if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
-                        CSharpProjectItemManager.Process(fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile),
+                        CSharpProjectItemManager.Process(
+                            fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile),
                             contentFiles.Select(c => c.Path).ToList());
 
                     progress.Tick();

@@ -11,7 +11,7 @@ namespace Genie.Core.Models.Abstract
         IEnumerable<ISimpleAttribute> GetAttributes();
 
         /// <summary>
-        /// Get name of the model
+        ///     Get name of the model
         /// </summary>
         /// <returns></returns>
         string GetName();
@@ -27,11 +27,5 @@ namespace Genie.Core.Models.Abstract
         /// </summary>
         /// <returns></returns>
         IEnumerable<IReferenceList> GetReferenceLists();
-
-        /// <summary>
-        /// Can be used to get hash of the content
-        /// </summary>
-        /// <returns></returns>
-        string GetHash();
     }
 }

@@ -2,13 +2,12 @@
 
 using System.Collections.Generic;
 using Genie.Core.Models.Abstract;
-using Genie.Core.Models.Concrete.SchemaCaching;
 
 #endregion
 
 namespace Genie.Core.Models.Concrete
 {
-    public class Relation : Model, IRelation
+    public class Relation : IRelation
     {
         public string Name { get; set; }
         public List<IAttribute> Attributes { get; set; }
@@ -17,22 +16,22 @@ namespace Genie.Core.Models.Concrete
         public string FieldName { get; set; }
         public string Comment { get; set; }
 
-        public override IEnumerable<ISimpleAttribute> GetAttributes()
+        public IEnumerable<ISimpleAttribute> GetAttributes()
         {
             return Attributes;
         }
 
-        public override string GetName()
+        public string GetName()
         {
             return Name;
         }
 
-        public override IEnumerable<IForeignKeyAttribute> GetForeignKeyAttributes()
+        public IEnumerable<IForeignKeyAttribute> GetForeignKeyAttributes()
         {
             return ForeignKeyAttributes;
         }
 
-        public override IEnumerable<IReferenceList> GetReferenceLists()
+        public IEnumerable<IReferenceList> GetReferenceLists()
         {
             return ReferenceLists;
         }

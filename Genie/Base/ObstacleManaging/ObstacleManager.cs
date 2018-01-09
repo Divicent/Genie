@@ -10,10 +10,10 @@ using Genie.Core.Base.ProcessOutput.Abstract;
 
 namespace Genie.Core.Base.ObstacleManaging
 {
-  /// <summary>
-  ///     Helps to clear the target folder before generating
-  /// </summary>
-  internal static class ObstacleManager
+    /// <summary>
+    ///     Helps to clear the target folder before generating
+    /// </summary>
+    internal static class ObstacleManager
     {
         /// <summary>
         ///     Clears the provided folder
@@ -22,7 +22,8 @@ namespace Genie.Core.Base.ObstacleManaging
         /// <param name="output">a process output to use</param>
         /// <param name="configuration">Configuration</param>
         /// <param name="fileSystem">File system to be used</param>
-        public static void Clear(string basePath, IProcessOutput output, IConfiguration configuration, IFileSystem fileSystem)
+        public static void Clear(string basePath, IProcessOutput output, IConfiguration configuration,
+            IFileSystem fileSystem)
         {
             output.WriteInformation("Cleaning existing files before creating new files.");
 
@@ -30,7 +31,8 @@ namespace Genie.Core.Base.ObstacleManaging
             {
                 DeleteIfExists(fileSystem.CombinePaths(basePath, "Dapper"), fileSystem);
                 DeleteIfExists(fileSystem.CombinePaths(basePath, "Infrastructure"), fileSystem);
-                if (configuration.AbstractModelsEnabled) DeleteDirectory(configuration.AbstractModelsLocation, fileSystem);
+                if (configuration.AbstractModelsEnabled)
+                    DeleteDirectory(configuration.AbstractModelsLocation, fileSystem);
             }
             catch (Exception e)
             {
@@ -46,11 +48,11 @@ namespace Genie.Core.Base.ObstacleManaging
             if (fileSystem.Exists(path)) DeleteDirectory(path, fileSystem);
         }
 
-      /// <summary>
-      ///     Depth-first recursive delete, with handling for descendant
-      ///     directories open in Windows Explorer.
-      /// </summary>
-      public static void DeleteDirectory(string path, IFileSystem fileSystem)
+        /// <summary>
+        ///     Depth-first recursive delete, with handling for descendant
+        ///     directories open in Windows Explorer.
+        /// </summary>
+        public static void DeleteDirectory(string path, IFileSystem fileSystem)
         {
             foreach (var directory in fileSystem.GetDirectories(path)) DeleteDirectory(directory, fileSystem);
 

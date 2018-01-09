@@ -16,13 +16,13 @@ namespace Genie.Tests.Core.Versioning
             var fileSystemMock = new Mock<IFileSystem>();
             fileSystemMock.Setup(fs => fs.Exists(It.IsAny<string>()))
                 .Returns(false);
-            
+
             IVersionManager varsionManager = new GenieVersionManager(fileSystemMock.Object);
-            var exception =  Throws<GenieException>(() => { varsionManager.GetCurrentVersion(); });
+            var exception = Throws<GenieException>(() => { varsionManager.GetCurrentVersion(); });
             NotNull(exception);
             NotEmpty(exception.Message);
         }
-        
+
         [Fact]
         public void TestReadingCurrentVersionWithExistingVersionFile()
         {
@@ -33,12 +33,10 @@ namespace Genie.Tests.Core.Versioning
             const string version = "v0.0.1";
             fileSystemMock.Setup(fs => fs.ReadText(It.IsAny<string>()))
                 .Returns(version);
-            
+
             IVersionManager versionManager = new GenieVersionManager(fileSystemMock.Object);
             var currentVersion = versionManager.GetCurrentVersion();
             Equal(version, currentVersion);
         }
-        
-        
     }
 }

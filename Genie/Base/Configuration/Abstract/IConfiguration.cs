@@ -87,16 +87,15 @@ namespace Genie.Core.Base.Configuration.Abstract
       /// </summary>
       /// <returns></returns>
       bool AbstractModelsEnabled { get; }
-      
+
       /// <summary>
-      /// Current version of genie
+      ///     Current version of genie
       /// </summary>
       string GenieVersion { get; set; }
 
       /// <summary>
-      /// Setup the configuration
+      ///     Setup the configuration
       /// </summary>
       void Setup();
-
     }
 }

@@ -1,7 +1,6 @@
 ﻿#region Usings
 
 using Genie.Core.Models.Abstract;
-using Genie.Core.Tools;
 
 #endregion
 
@@ -14,16 +13,5 @@ namespace Genie.Core.Models.Concrete
         public string FieldName { get; set; }
         public bool IsLiteralType { get; set; }
         public string Comment { get; set; }
-        public bool IsKey { get; set; }
-        
-        public string GetHash()
-        {
-            return CommonTools.CalculateMd5Hash(new
-            {
-                Name,
-                DataType,
-                Comment
-            });
-        }
     }
 }

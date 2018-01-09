@@ -13,7 +13,7 @@ namespace Genie.Core.Base.Configuration.Concrete
 {
     /// <inheritdoc />
     /// <summary>
-    ///  Contains configurations that are need to do the data access layer generation
+    ///     Contains configurations that are need to do the data access layer generation
     /// </summary>
     public class GenieConfiguration : IConfiguration
     {
@@ -35,10 +35,12 @@ namespace Genie.Core.Base.Configuration.Concrete
         public string ProjectFile { get; set; }
         public string AbstractModelsLocation { get; set; }
         public string AbstractModelsNamespace { get; set; }
+
         public bool AbstractModelsEnabled => !string.IsNullOrWhiteSpace(AbstractModelsLocation) &&
                                              !string.IsNullOrWhiteSpace(AbstractModelsNamespace);
+
         public string GenieVersion { get; set; }
-        
+
         public void Validate()
         {
             var error = new StringBuilder();

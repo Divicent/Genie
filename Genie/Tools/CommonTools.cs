@@ -76,10 +76,10 @@ namespace Genie.Core.Tools
         {
             var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(input)));
             var sb = new StringBuilder();
-            
+
             for (var i = 0; i < hash.Length; i++)
                 sb.Append(hash[i].ToString("X2"));
-            
+
             return sb.ToString();
         }
     }
