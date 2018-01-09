@@ -31,4 +31,5 @@ deploy:
     repo: rusith/Genie
     branch: core
     tags: true
-
+env:
+  - GENIE_VERSION="${TRAVIS_TAG}"
