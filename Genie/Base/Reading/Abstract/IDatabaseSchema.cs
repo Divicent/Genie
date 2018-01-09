@@ -10,7 +10,7 @@ namespace Genie.Core.Base.Reading.Abstract
     /// <summary>
     ///     Schema of a database
     /// </summary>
-    internal interface IDatabaseSchema
+    public interface IDatabaseSchema
     {
         /// <summary>
         ///     Base namespace of the DAL

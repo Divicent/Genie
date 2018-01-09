@@ -3,7 +3,7 @@
     /// <summary>
     ///     A reference from one relation to another (one to many)
     /// </summary>
-    internal interface IReferenceList
+    public interface IReferenceList
     {
         /// <summary>
         ///     Referenced Relation Name

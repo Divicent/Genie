@@ -3,7 +3,7 @@
     /// <summary>
     ///     Represents a foreign key attribute of a relation
     /// </summary>
-    internal interface IForeignKeyAttribute
+    public interface IForeignKeyAttribute
     {
         /// <summary>
         ///     Non foreign key attribute related to this

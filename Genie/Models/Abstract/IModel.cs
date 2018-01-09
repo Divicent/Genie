@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Genie.Core.Models.Abstract
 {
-    internal interface IModel
+    public interface IModel
     {
       /// <summary>
       ///     Get all attributes

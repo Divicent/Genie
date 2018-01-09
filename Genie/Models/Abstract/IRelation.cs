@@ -9,7 +9,7 @@ namespace Genie.Core.Models.Abstract
   /// <summary>
   ///     Represents a relation (Table) of a database
   /// </summary>
-  internal interface IRelation : IModel
+  public interface IRelation : IModel
     {
       /// <summary>
       ///     Name of the relation

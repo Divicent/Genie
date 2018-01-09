@@ -9,7 +9,7 @@ namespace Genie.Core.Models.Abstract
   /// <summary>
   ///     Represents a view in a database
   /// </summary>
-  internal interface IView : IModel
+  public interface IView : IModel
     {
       /// <summary>
       ///     Name of the view

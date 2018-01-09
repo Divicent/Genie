@@ -1,9 +1,9 @@
 ﻿#region Usings
 
 using System;
-using System.IO;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Exceptions;
+using Genie.Core.Base.Files.Abstract;
 using Genie.Core.Base.ProcessOutput.Abstract;
 
 #endregion
@@ -15,20 +15,22 @@ namespace Genie.Core.Base.ObstacleManaging
   /// </summary>
   internal static class ObstacleManager
     {
-      /// <summary>
-      ///     Clears the provided folder
-      /// </summary>
-      /// <param name="basePath">folder path</param>
-      /// <param name="output">a process output to use</param>
-      public static void Clear(string basePath, IProcessOutput output, IConfiguration configuration)
+        /// <summary>
+        ///     Clears the provided folder
+        /// </summary>
+        /// <param name="basePath">folder path</param>
+        /// <param name="output">a process output to use</param>
+        /// <param name="configuration">Configuration</param>
+        /// <param name="fileSystem">File system to be used</param>
+        public static void Clear(string basePath, IProcessOutput output, IConfiguration configuration, IFileSystem fileSystem)
         {
             output.WriteInformation("Cleaning existing files before creating new files.");
 
             try
             {
-                DeleteIfExists(Path.Combine(basePath, "Dapper"));
-                DeleteIfExists(Path.Combine(basePath, "Infrastructure"));
-                if (configuration.AbstractModelsEnabled) DeleteDirectory(configuration.AbstractModelsLocation);
+                DeleteIfExists(fileSystem.CombinePaths(basePath, "Dapper"), fileSystem);
+                DeleteIfExists(fileSystem.CombinePaths(basePath, "Infrastructure"), fileSystem);
+                if (configuration.AbstractModelsEnabled) DeleteDirectory(configuration.AbstractModelsLocation, fileSystem);
             }
             catch (Exception e)
             {
@@ -39,30 +41,30 @@ namespace Genie.Core.Base.ObstacleManaging
             output.WriteSuccess("Folder cleared.");
         }
 
-        private static void DeleteIfExists(string path)
+        private static void DeleteIfExists(string path, IFileSystem fileSystem)
         {
-            if (Directory.Exists(path)) DeleteDirectory(path);
+            if (fileSystem.Exists(path)) DeleteDirectory(path, fileSystem);
         }
 
       /// <summary>
       ///     Depth-first recursive delete, with handling for descendant
       ///     directories open in Windows Explorer.
       /// </summary>
-      public static void DeleteDirectory(string path)
+      public static void DeleteDirectory(string path, IFileSystem fileSystem)
         {
-            foreach (var directory in Directory.GetDirectories(path)) DeleteDirectory(directory);
+            foreach (var directory in fileSystem.GetDirectories(path)) DeleteDirectory(directory, fileSystem);
 
             try
             {
-                Directory.Delete(path, true);
-            }
-            catch (IOException)
-            {
-                Directory.Delete(path, true);
+                fileSystem.DeleteDirectory(path, true);
             }
             catch (UnauthorizedAccessException)
             {
-                Directory.Delete(path, true);
+                fileSystem.DeleteDirectory(path, true);
+            }
+            catch
+            {
+                fileSystem.DeleteDirectory(path, true);
             }
         }
     }

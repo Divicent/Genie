@@ -1,6 +1,6 @@
 ﻿namespace Genie.Core.Models.Abstract
 {
-    internal interface IEnumValue
+    public interface IEnumValue
     {
         string Name { get; }
         object Value { get; }

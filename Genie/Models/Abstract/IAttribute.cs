@@ -3,7 +3,7 @@
     /// <summary>
     ///     Represents an attribute (column) of a relation
     /// </summary>
-    internal interface IAttribute : ISimpleAttribute
+    public interface IAttribute : ISimpleAttribute
     {
         /// <summary>
         ///     Is this a primary key of the relation
