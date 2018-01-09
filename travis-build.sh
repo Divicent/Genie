@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-dotnet restore GenieCLI
 cd Genie.Tests
+dotnet restore
 dotnet xunit --fx-version 2.0.3
 cd ..
 
 if [ ! -z "$GENIE_VERSION" -a "$GENIE_VERSION" != " " ]; then
   cd GenieCLI
+  dotnet restore
   printf "$GENIE_VERSION" > .version
   cd ..
   dotnet publish GenieCLI -c release -r win10-x64
