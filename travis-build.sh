@@ -2,8 +2,12 @@
 cd Genie.Tests
 dotnet restore
 dotnet xunit --fx-version 2.0.3
-cd ..
 
+if [ $? -ne 0 ]; then
+    exit 3
+fi
+
+cd ..
 if [ ! -z "$GENIE_VERSION" -a "$GENIE_VERSION" != " " ]; then
   cd GenieCLI
   dotnet restore
