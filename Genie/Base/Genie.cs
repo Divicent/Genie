@@ -103,7 +103,7 @@ namespace Genie.Core.Base
                     ObstacleManager.Clear(config.ProjectPath, output, config);
 
                     progress.Tick("Writing Content to Files");
-                    using (var writeProgress = progress.Child(contentFiles.Count, "Writing Content", "Done writing content"))
+                    using (var writeProgress = progress.Child(contentFiles.Count, "Writing Content", $"Done writing content to {contentFiles.Count}"))
                     {
                         DalWriter.Write(contentFiles, config.ProjectPath, writeProgress);
                         writeProgress.Tick();

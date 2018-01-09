@@ -275,7 +275,7 @@ namespace Genie.Core.Base.Generating
 // ------------------------------------------------------------------------------
 ";
           
-          using (var progress = output.Child( files.Count, "Generating Content", "Done generating files"))
+          using (var progress = output.Child( files.Count, "Generating Content", $"Done generating content for {files.Count} files"))
           {
               var contentFiles =
                   files.Select(templateFile =>

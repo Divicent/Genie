@@ -41,7 +41,10 @@ namespace GenieCLI
 
       if (currentTick == maxTicks)
       {
-        _progressbar.Message = _endMessage;
+        if(_progressbar != null)
+          _progressbar.Message = _endMessage;
+        else if(_progressBarChild != null)
+          _progressBarChild.Message = _endMessage;
       }
       _progressbar?.Tick();
       _progressBarChild?.Tick();
@@ -68,7 +71,7 @@ namespace GenieCLI
         BackgroundColor = ConsoleColor.DarkYellow,
       };
 
-      var pb = new ProgressReporter(_progressbar.Spawn(ticks, message, options));
+      var pb = new ProgressReporter(_progressbar.Spawn(ticks + 1, message, options));
       pb._endMessage = endMessage;
       return pb;
     }
