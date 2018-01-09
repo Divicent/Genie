@@ -8,7 +8,7 @@ using Genie.Core.Models.Concrete.SchemaCaching;
 
 namespace Genie.Core.Models.Concrete
 {
-    internal class View : Model, IView
+    public class View : Model, IView
     {
         public string Comment { get; set; }
         public string FieldName { get; set; }

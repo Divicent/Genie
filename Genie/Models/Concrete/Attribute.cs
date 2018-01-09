@@ -9,7 +9,7 @@ namespace Genie.Core.Models.Concrete
     /// <summary>
     ///     represents an attribute
     /// </summary>
-    internal class Attribute : SimpleAttribute, IAttribute
+    public class Attribute : SimpleAttribute, IAttribute
     {
         public bool IsKey { get; set; }
         public string RefPropName { get; set; }

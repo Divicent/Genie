@@ -8,7 +8,7 @@ using Genie.Core.Models.Concrete.SchemaCaching;
 
 namespace Genie.Core.Models.Concrete
 {
-    internal class Relation : Model, IRelation
+    public class Relation : Model, IRelation
     {
         public string Name { get; set; }
         public List<IAttribute> Attributes { get; set; }
