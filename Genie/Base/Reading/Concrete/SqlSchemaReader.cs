@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Exceptions;
-using Genie.Core.Base.ProcessOutput.Abstract;
 using Genie.Core.Base.Reading.Abstract;
 using Genie.Core.Base.Reading.Concrete.Models;
 using Genie.Core.Extensions;
@@ -49,12 +48,8 @@ namespace Genie.Core.Base.Reading.Concrete
             if (configuration.Enums != null && configuration.Enums.Count > 0)
             {
                 foreach (var e in configuration.Enums)
-                {
                     if (schema.Relations.All(r => r.Name != e.Table))
-                    {
                         throw new GenieException($"{e.Table} is not a table. (Enums)");
-                    }
-                }
 
                 schema.Enums = ReadEnums(configuration.ConnectionString, configuration.Enums, configuration);
             }
@@ -81,19 +76,14 @@ namespace Genie.Core.Base.Reading.Concrete
 
                 using (var reader = commandToGetColumns.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        databaseSchemaColumns.Add(ReadColumn(reader));
-                    }
+                    while (reader.Read()) databaseSchemaColumns.Add(ReadColumn(reader));
 
                     var filtered = new List<DatabaseSchemaColumn>();
                     foreach (var databaseSchemaColumn in databaseSchemaColumns.Where(
                         databaseSchemaColumn => !filtered.Any(
                             f =>
                                 f.TableName == databaseSchemaColumn.TableName && f.Name == databaseSchemaColumn.Name)))
-                    {
                         filtered.Add(databaseSchemaColumn);
-                    }
 
                     foreach (var databaseSchemaColumn in filtered)
                     {
@@ -112,10 +102,7 @@ namespace Genie.Core.Base.Reading.Concrete
                                 databaseSchemaColumn.ReferencedTableName = schemaColumn.ReferencedTableName;
                             }
 
-                            if (schemaColumn.IsPrimaryKey)
-                            {
-                                databaseSchemaColumn.IsPrimaryKey = true;
-                            }
+                            if (schemaColumn.IsPrimaryKey) databaseSchemaColumn.IsPrimaryKey = true;
                         }
                     }
 
@@ -127,10 +114,7 @@ namespace Genie.Core.Base.Reading.Concrete
 
                 using (var reader = commandToGetParameters.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        databaseParameters.Add(ReadParameter(reader));
-                    }
+                    while (reader.Read()) databaseParameters.Add(ReadParameter(reader));
                 }
 
                 if (!string.IsNullOrWhiteSpace(QueryToGetExtendedProperties))
@@ -139,10 +123,7 @@ namespace Genie.Core.Base.Reading.Concrete
                         GetCommand(QueryToGetExtendedProperties, connection, transaction);
                     using (var reader = commandToGetExtendedProperties.ExecuteReader())
                     {
-                        while (reader.Read())
-                        {
-                            databaseExtendedProperties.Add(ReadExtendedProperty(reader));
-                        }
+                        while (reader.Read()) databaseExtendedProperties.Add(ReadExtendedProperty(reader));
                     }
                 }
 
@@ -167,18 +148,16 @@ namespace Genie.Core.Base.Reading.Concrete
                  */
 
                 foreach (var relation in relations)
+                foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
                 {
-                    foreach (var foreignKeyAttribute in relation.ForeignKeyAttributes)
+                    var referencingRelation =
+                        relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
+                    referencingRelation?.ReferenceLists.Add(new ReferenceList
                     {
-                        var referencingRelation =
-                            relations.FirstOrDefault(r => r.Name == foreignKeyAttribute.ReferencingRelationName);
-                        referencingRelation?.ReferenceLists.Add(new ReferenceList
-                        {
-                            ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
-                            ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
-                            ReferencedRelationName = relation.Name
-                        });
-                    }
+                        ReferencedPropertyName = foreignKeyAttribute.ReferencingNonForeignKeyAttribute.Name,
+                        ReferencedPropertyOnThisRelation = foreignKeyAttribute.ReferencingTableColumnName,
+                        ReferencedRelationName = relation.Name
+                    });
                 }
             }
             catch (Exception e)
@@ -192,10 +171,7 @@ namespace Genie.Core.Base.Reading.Concrete
             IReadOnlyCollection<DatabaseParameter> parameters,
             IReadOnlyCollection<ExtendedPropertyInfo> extendedProperties)
         {
-            if (columns == null || columns.Count < 1)
-            {
-                return null;
-            }
+            if (columns == null || columns.Count < 1) return null;
 
             var tables = new List<IRelation>();
             var views = new List<IView>();
@@ -224,6 +200,7 @@ namespace Genie.Core.Base.Reading.Concrete
 
                         tables.Add(table);
                     }
+
                     dataType = CommonTools.GetCSharpDataType(databaseSchemaColumn.DataType,
                         databaseSchemaColumn.Nullable);
                     lit = dataType == "string" || dataType.StartsWith("DateTime");
@@ -256,10 +233,7 @@ namespace Genie.Core.Base.Reading.Concrete
                     var extendedProperty =
                         extendedProperties.FirstOrDefault(
                             e => e.ObjectName == table.Name && e.ColumnName == attribute.Name);
-                    if (extendedProperty != null)
-                    {
-                        attribute.Comment = extendedProperty.Property;
-                    }
+                    if (extendedProperty != null) attribute.Comment = extendedProperty.Property;
 
                     table.Attributes.Add(attribute);
                 }
@@ -299,10 +273,7 @@ namespace Genie.Core.Base.Reading.Concrete
                     var extendedProp =
                         extendedProperties.FirstOrDefault(
                             e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
-                    if (extendedProp != null)
-                    {
-                        attr.Comment = extendedProp.Property;
-                    }
+                    if (extendedProp != null) attr.Comment = extendedProp.Property;
 
                     view.Attributes.Add(attr);
                 }
@@ -324,19 +295,22 @@ namespace Genie.Core.Base.Reading.Concrete
                     }
 
                     procedure.Parameters.Add(
-                        new ProcedureParameter { DataType = parameter.DataType, Name = parameter.Name, Position = parameter.Position });
-                }
-                foreach (var storedProcedure in storedProcedures)
-                {
-                    ProcessProcedureParameters(storedProcedure);
+                        new ProcedureParameter
+                        {
+                            DataType = parameter.DataType,
+                            Name = parameter.Name,
+                            Position = parameter.Position
+                        });
                 }
 
+                foreach (var storedProcedure in storedProcedures) ProcessProcedureParameters(storedProcedure);
             }
 
-            return new DatabaseSchema { Procedures = storedProcedures, Relations = tables, Views = views };
+            return new DatabaseSchema {Procedures = storedProcedures, Relations = tables, Views = views};
         }
 
-        private List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,  IConfiguration configuration)
+        private List<IEnum> ReadEnums(string connectionString, IEnumerable<IConfigurationEnumTable> enumTables,
+            IConfiguration configuration)
         {
             using (var connection = GetConnection(connectionString))
             {
@@ -360,9 +334,7 @@ namespace Genie.Core.Base.Reading.Concrete
                                 {
                                     name = reader.GetString(0);
                                     if (string.IsNullOrWhiteSpace(name))
-                                    {
                                         throw new GenieException("Name should not be empty of an enum");
-                                    }
                                 }
                                 catch (Exception)
                                 {
@@ -394,8 +366,9 @@ namespace Genie.Core.Base.Reading.Concrete
                                     throw new GenieException("Unable to read enum table using specified value type.",
                                         e);
                                 }
+
                                 name = name.Replace(" ", "_");
-                                values.Add(new EnumValue { Name = name, FieldName = name.ToFieldName(), Value = value });
+                                values.Add(new EnumValue {Name = name, FieldName = name.ToFieldName(), Value = value});
                             }
 
                             enums.Add(new Enum

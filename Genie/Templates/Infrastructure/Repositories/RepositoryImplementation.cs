@@ -46,8 +46,8 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
                 {
                     keyString = keys.Aggregate("", (c, n) => c + ", " + n.DataType + " " + n.Name.ToLower())
                         .TrimStart(',').TrimStart(' ');
-                    keyCommentString = keys.Aggregate("", (c, n) => c + 
-                    $@"
+                    keyCommentString = keys.Aggregate("", (c, n) => c +
+                                                                    $@"
             /// <param name=""{n.Name.ToLower()}"">Value for primary key {n.Name}</param>");
                     relations.AppendLine($@"
             /// <summary>
@@ -64,13 +64,18 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             /// <returns>A registered {relation.Name} object</returns>
             Task<{relation.Name}> GetByKeyAsync({keyString});");
                 }
+
                 relations.AppendLine("	    }");
 
 
                 relationsImpl.AppendLine(
-                    $@"	    internal class {relation.Name}Repository : Repository<{relation.Name}> , I{relation.Name}Repository
+                    $@"	    internal class {relation.Name}Repository : Repository<{relation.Name}> , I{
+                            relation.Name
+                        }Repository
 	    {{
-            internal {relation.Name}Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+            internal {
+                            relation.Name
+                        }Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
             {{
             }}
 
@@ -88,8 +93,8 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             }}");
 
 
-                
-                    relationsImpl.AppendLine($@"            public async Task<{relation.Name}> GetByKeyAsync({keyString})
+                    relationsImpl.AppendLine(
+                        $@"            public async Task<{relation.Name}> GetByKeyAsync({keyString})
             {{
                 return await Get().Where
                     {str}.Filter().FirstOrDefaultAsync();
@@ -114,7 +119,10 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
 		      I{view.Name}QueryContext Get();
 	    }}");
 
-                viewImpl.AppendLine($@"	    internal class {view.Name}Repository : ReadOnlyRepository<{view.Name}>, I{view.Name}Repository
+                viewImpl.AppendLine(
+                    $@"	    internal class {view.Name}Repository : ReadOnlyRepository<{view.Name}>, I{
+                            view.Name
+                        }Repository
 	    {{
             internal {view.Name}Repository(IDapperContext context) : base(context)
             {{
@@ -123,6 +131,7 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
 		    public I{view.Name}QueryContext Get() {{ return new {view.Name}QueryContext(this); }}
 	    }}");
             }
+
             L($@"
 
 using System.Linq;

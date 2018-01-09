@@ -1,7 +1,5 @@
 #region Usings
 
-
-
 #endregion
 
 using Genie.Core.Base.Generating;

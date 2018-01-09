@@ -7,31 +7,31 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Models.Concrete
 {
-  internal class View : IView
-  {
-    public string Comment { get; set; }
-    public string FieldName { get; set; }
-    public string Name { get; set; }
-    public List<ISimpleAttribute> Attributes { get; set; }
-
-    public IEnumerable<ISimpleAttribute> GetAttributes()
+    internal class View : IView
     {
-      return Attributes;
-    }
+        public string Comment { get; set; }
+        public string FieldName { get; set; }
+        public string Name { get; set; }
+        public List<ISimpleAttribute> Attributes { get; set; }
 
-    public IEnumerable<IForeignKeyAttribute> GetForeignKeyAttributes()
-    {
-      return new List<IForeignKeyAttribute>();
-    }
+        public IEnumerable<ISimpleAttribute> GetAttributes()
+        {
+            return Attributes;
+        }
 
-    public string GetName()
-    {
-      return Name;
-    }
+        public IEnumerable<IForeignKeyAttribute> GetForeignKeyAttributes()
+        {
+            return new List<IForeignKeyAttribute>();
+        }
 
-    public IEnumerable<IReferenceList> GetReferenceLists()
-    {
-      return new List<IReferenceList>();
+        public string GetName()
+        {
+            return Name;
+        }
+
+        public IEnumerable<IReferenceList> GetReferenceLists()
+        {
+            return new List<IReferenceList>();
+        }
     }
-  }
 }

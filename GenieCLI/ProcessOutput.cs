@@ -5,12 +5,12 @@ namespace GenieCLI
 {
     public class ProcessOutput : IProcessOutput
     {
-        public  bool NoInfo { get; set; }
+        public bool NoInfo { get; set; }
         public bool Silent { get; set; }
 
         public void WriteInformation(string content)
         {
-            if(Silent || NoInfo) { return; }
+            if (Silent || NoInfo) return;
             Console.WriteLine("-> " + content);
         }
 
@@ -21,7 +21,7 @@ namespace GenieCLI
 
         public void WriteSuccess(string content)
         {
-            if (Silent) {  return; }
+            if (Silent) return;
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine(content);
@@ -30,7 +30,7 @@ namespace GenieCLI
 
         public void WriteWarning(string content)
         {
-            if (Silent) { return; }
+            if (Silent) return;
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(content);

@@ -28,38 +28,32 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
             {
                 props.AppendLine();
                 var atdComment = !string.IsNullOrWhiteSpace(atd.Comment);
-                var commentStr = atdComment ? $@"
-        /// <para>{atd.Comment}</para>": "";
+                var commentStr = atdComment
+                    ? $@"
+        /// <para>{atd.Comment}</para>"
+                    : "";
                 props.AppendLine($@"		/// <summary>{commentStr}
 		///  Apply filters on {atd.Name} attribute . these filters will be preserved within entire query context
 		/// </summary>");
-           
+
                 if (atd.DataType == "string")
-                {
                     props.AppendLine(
                         $@"	    IStringFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
 ");
-                }
                 else if (atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" ||
                          atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" ||
                          atd.DataType == "long" || atd.DataType == "long?")
-                {
                     props.AppendLine(
                         $@"		INumberFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
 ");
-                }
                 else if (atd.DataType == "DateTime" || atd.DataType == "DateTime?")
-                {
                     props.AppendLine(
                         $@"	    IDateFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
 ");
-                }
                 else if (atd.DataType == "bool" || atd.DataType == "bool?")
-                {
                     props.AppendLine(
                         $@"	    IBoolFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
 ");
-                }
             }
 
             var startName = _attributes.Any(a => a.Name == "Start") ? "StartScope" : "Start";

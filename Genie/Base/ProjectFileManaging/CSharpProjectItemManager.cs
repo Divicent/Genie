@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Genie.Core.Base.Exceptions;
-using Genie.Core.Base.ProcessOutput.Abstract;
 
 #endregion
 
@@ -27,30 +26,24 @@ namespace Genie.Core.Base.ProjectFileManaging
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(projectFilePath) || !File.Exists(projectFilePath))
-                {
-                    return;
-                }
+                if (string.IsNullOrWhiteSpace(projectFilePath) || !File.Exists(projectFilePath)) return;
 
                 var document = new XmlDocument();
                 document.LoadXml(File.ReadAllText(projectFilePath));
                 var compiles = document.GetElementsByTagName("Compile");
                 var torRemove = (from XmlNode compile in compiles
                     where
-                    compile?.Attributes != null
+                        compile?.Attributes != null
                     let include = compile.Attributes["Include"]?.Value
                     where !string.IsNullOrWhiteSpace(include) &&
                           (include.StartsWith("Dapper") || include.StartsWith("Infrastructure"))
                     select compile).ToList();
-                
+
                 foreach (var tr in torRemove)
                 {
                     var parent = tr.ParentNode;
                     parent.RemoveChild(tr);
-                    if (parent.ChildNodes.Count < 1)
-                    {
-                        parent.ParentNode.RemoveChild(parent);
-                    }
+                    if (parent.ChildNodes.Count < 1) parent.ParentNode.RemoveChild(parent);
                 }
 
                 var root = document.CreateElement("ItemGroup", null);
@@ -71,6 +64,7 @@ namespace Genie.Core.Base.ProjectFileManaging
                 {
                     document.WriteContentTo(xw);
                 }
+
                 File.WriteAllText(projectFilePath, sb.Replace("xmlns=\"\"", "").ToString());
             }
             catch (Exception e)

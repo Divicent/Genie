@@ -1,17 +1,15 @@
 #region Usings
 
+using Genie.Core.Base.Generating;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Tools;
 
 #endregion
 
-using Genie.Core.Base.Generating;
-
 namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 {
     internal class BaseQueryContextTemplate : GenieTemplate
     {
-
         private readonly IConfiguration _configuration;
 
         public BaseQueryContextTemplate(string path, IConfiguration configuration) : base(path)

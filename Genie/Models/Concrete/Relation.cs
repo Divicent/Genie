@@ -7,33 +7,33 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Models.Concrete
 {
-  internal class Relation : IRelation
-  {
-    public string Name { get; set; }
-    public List<IAttribute> Attributes { get; set; }
-    public List<IForeignKeyAttribute> ForeignKeyAttributes { get; set; }
-    public List<IReferenceList> ReferenceLists { get; set; }
-    public string FieldName { get; set; }
-    public string Comment { get; set; }
-
-    public IEnumerable<ISimpleAttribute> GetAttributes()
+    internal class Relation : IRelation
     {
-      return Attributes;
-    }
+        public string Name { get; set; }
+        public List<IAttribute> Attributes { get; set; }
+        public List<IForeignKeyAttribute> ForeignKeyAttributes { get; set; }
+        public List<IReferenceList> ReferenceLists { get; set; }
+        public string FieldName { get; set; }
+        public string Comment { get; set; }
 
-    public string GetName()
-    {
-      return Name;
-    }
+        public IEnumerable<ISimpleAttribute> GetAttributes()
+        {
+            return Attributes;
+        }
 
-    public IEnumerable<IForeignKeyAttribute> GetForeignKeyAttributes()
-    {
-      return ForeignKeyAttributes;
-    }
+        public string GetName()
+        {
+            return Name;
+        }
 
-    public IEnumerable<IReferenceList> GetReferenceLists()
-    {
-      return ReferenceLists;
+        public IEnumerable<IForeignKeyAttribute> GetForeignKeyAttributes()
+        {
+            return ForeignKeyAttributes;
+        }
+
+        public IEnumerable<IReferenceList> GetReferenceLists()
+        {
+            return ReferenceLists;
+        }
     }
-  }
 }

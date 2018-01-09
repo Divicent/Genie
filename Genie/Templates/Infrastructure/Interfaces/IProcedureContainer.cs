@@ -23,11 +23,13 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
             foreach (var sp in _schema.Procedures)
             {
                 var parametersCommentBuilder = new StringBuilder();
-                foreach(var parameter in sp.Parameters) 
-                {
+                foreach (var parameter in sp.Parameters)
                     parametersCommentBuilder.AppendLine(
-    $@"        /// <param name=""{parameter.Name.Replace("@", "")}"">Value to pass to the procedure's parameter '{parameter.Name.Replace("@", "")}'</param>");
-                }
+                        $@"        /// <param name=""{
+                                parameter.Name.Replace("@", "")
+                            }"">Value to pass to the procedure's parameter '{
+                                parameter.Name.Replace("@", "")
+                            }'</param>");
                 sps.AppendLine($@"
         /// <summary>
         /// This will execute {sp.Name} and try to map the result to a <typeparamref name=""T""/> collection
@@ -54,7 +56,9 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
 
                 sps.AppendLine($@"
         /// <summary>
-        /// This will execute {sp.Name} asynchronously and try to map the result to a <typeparamref name=""T""/> collection
+        /// This will execute {
+                        sp.Name
+                    } asynchronously and try to map the result to a <typeparamref name=""T""/> collection
 {parametersCommentBuilder}
         /// <returns>Collection of <typeparamref name=""T""/> </returns>
 		Task<IEnumerable<T>> {sp.Name}_ListAsync<T>({sp.ParamString});
@@ -76,6 +80,7 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
 		Task {sp.Name}_VoidAsync({sp.ParamString});
 ");
             }
+
             L($@"
 using System;
 using System.Collections.Generic;

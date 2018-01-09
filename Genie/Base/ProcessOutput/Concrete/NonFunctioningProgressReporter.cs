@@ -2,7 +2,7 @@
 
 namespace Genie.Core.Base.ProcessOutput.Concrete
 {
-    public class NonFunctioningProgressReporter: IProgressReporter
+    public class NonFunctioningProgressReporter : IProgressReporter
     {
         public void Dispose()
         {

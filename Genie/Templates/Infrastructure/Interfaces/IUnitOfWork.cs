@@ -23,24 +23,20 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
             var views = new StringBuilder();
 
             foreach (var relation in _schema.Relations)
-            {
                 relations.AppendLine($@"
       /// <summary>
       /// The {relation.Name} repository that belongs to this unit of work.
       /// </summary>
       I{relation.Name}Repository {relation.Name}Repository {{ get; }}
 ");
-            }
 
             foreach (var view in _schema.Views)
-            {
                 views.AppendLine($@"
       /// <summary>
       /// The {view.Name} repository (read only) that belongs to this unit of work.
       /// </summary>
       I{view.Name}Repository {view.Name}Repository {{ get; }}
 ");
-            }
 
             L($@"
 

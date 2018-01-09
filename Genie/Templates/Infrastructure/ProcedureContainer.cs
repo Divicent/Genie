@@ -1,9 +1,9 @@
 #region Usings
 
 using System.Text;
+using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Generating;
 using Genie.Core.Base.Reading.Abstract;
-using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Tools;
 
 #endregion
@@ -12,10 +12,11 @@ namespace Genie.Core.Templates.Infrastructure
 {
     internal class ProcedureContainerTemplate : GenieTemplate
     {
-        private readonly IDatabaseSchema _schema;
         private readonly IConfiguration _configuration;
+        private readonly IDatabaseSchema _schema;
 
-        public ProcedureContainerTemplate(string path, IDatabaseSchema schema, IConfiguration configuration) : base(path)
+        public ProcedureContainerTemplate(string path, IDatabaseSchema schema, IConfiguration configuration) :
+            base(path)
         {
             _schema = schema;
             _configuration = configuration;
@@ -33,21 +34,37 @@ namespace Genie.Core.Templates.Infrastructure
             foreach (var sp in _schema.Procedures)
             {
                 spList.AppendLine(
-                    $@"		public IEnumerable<T> {sp.Name}_List<T>({sp.ParamString}) {{ return QueryList<T>(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public IEnumerable<T> {sp.Name}_List<T>({sp.ParamString}) {{ return QueryList<T>(""{
+                            parts.StoredProcedureCallString
+                        } {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
                 spSingle.AppendLine(
-                    $@"		public T {sp.Name}_Single<T>({sp.ParamString}) {{ return QuerySingle<T>(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public T {sp.Name}_Single<T>({sp.ParamString}) {{ return QuerySingle<T>(""{
+                            parts.StoredProcedureCallString
+                        } {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
                 spVoid.AppendLine(
-                    $@"		public void {sp.Name}_Void({sp.ParamString}) {{ Execute(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} { sp.PassString };""); }}");
+                    $@"		public void {sp.Name}_Void({sp.ParamString}) {{ Execute(""{parts.StoredProcedureCallString} {
+                            quote(_configuration.Schema)
+                        }.{quote(sp.Name)} {sp.PassString};""); }}");
 
                 spList.AppendLine(
-                    $@"		public async Task<IEnumerable<T>> {sp.Name}_ListAsync<T>({sp.ParamString}) {{ return await QueryListAsync<T>(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public async Task<IEnumerable<T>> {sp.Name}_ListAsync<T>({
+                            sp.ParamString
+                        }) {{ return await QueryListAsync<T>(""{parts.StoredProcedureCallString} {
+                            quote(_configuration.Schema)
+                        }.{quote(sp.Name)} {sp.PassString};""); }}");
                 spSingle.AppendLine(
-                    $@"		public async Task<T> {sp.Name}_SingleAsync<T>({sp.ParamString}) {{ return await QuerySingleAsync<T>(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public async Task<T> {sp.Name}_SingleAsync<T>({
+                            sp.ParamString
+                        }) {{ return await QuerySingleAsync<T>(""{parts.StoredProcedureCallString} {
+                            quote(_configuration.Schema)
+                        }.{quote(sp.Name)} {sp.PassString};""); }}");
                 spVoid.AppendLine(
-                    $@"		public async Task {sp.Name}_VoidAsync({sp.ParamString}) {{ await ExecuteAsync(""{parts.StoredProcedureCallString} {quote(_configuration.Schema)}.{quote(sp.Name)} { sp.PassString };""); }}");
+                    $@"		public async Task {sp.Name}_VoidAsync({sp.ParamString}) {{ await ExecuteAsync(""{
+                            parts.StoredProcedureCallString
+                        } {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
             }
 
-            var usingDapper = (_configuration.NoDapper ? "using Dapper;\n" : $"{GenerationContext.BaseNamespace}.Dapper");
+            var usingDapper = _configuration.NoDapper ? "using Dapper;\n" : $"{GenerationContext.BaseNamespace}.Dapper";
 
             L($@"
 

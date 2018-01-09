@@ -3,9 +3,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
-using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Tools;
 
 #endregion
@@ -15,10 +15,11 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
     internal class ModelQueryContextTemplate : GenieTemplate
     {
         private readonly List<ISimpleAttribute> _attributes;
-        private readonly string _name;
         private readonly IConfiguration _configuration;
+        private readonly string _name;
 
-        public ModelQueryContextTemplate(string path, string name, List<ISimpleAttribute> attributes, IConfiguration configuration) : base(path)
+        public ModelQueryContextTemplate(string path, string name, List<ISimpleAttribute> attributes,
+            IConfiguration configuration) : base(path)
         {
             _name = name;
             _attributes = attributes;
@@ -36,12 +37,11 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
             var firstColumn = true;
             foreach (var a in lit)
             {
-                columnNames.Append($"{(!firstColumn? ", ": "")}\"{a.Name}\"");
+                columnNames.Append($"{(!firstColumn ? ", " : "")}\"{a.Name}\"");
                 firstColumn = false;
                 cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
 				propertyName = ""{a.Name}"";
 				return true;");
-                
             }
 
             foreach (var a in nonLit)

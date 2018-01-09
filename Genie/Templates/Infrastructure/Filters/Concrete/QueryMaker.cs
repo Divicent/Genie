@@ -1,6 +1,5 @@
 #region Usings
 
-
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Generating;
 using Genie.Core.Tools;
@@ -12,6 +11,7 @@ namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
     internal class QueryMakerTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
+
         public QueryMakerTemplate(string path, IConfiguration configuration) : base(path)
         {
             _configuration = configuration;
@@ -19,7 +19,7 @@ namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 
         public override string Generate()
         {
-           var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
 
             L($@"
 
@@ -111,7 +111,9 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete
 
         internal static string Between(string propertyName, object from, object to, bool quoted)
         {{
-            return string.Format(""({quote("{0}")} >= {{2}}{{1}}{{2}} AND {quote("{0}")} <= {{2}}{{3}}{{2}})"", propertyName, from, quoted ? ""'"" : """", to);
+            return string.Format(""({quote("{0}")} >= {{2}}{{1}}{{2}} AND {
+                    quote("{0}")
+                } <= {{2}}{{3}}{{2}})"", propertyName, from, quoted ? ""'"" : """", to);
         }}
 
         internal static string IsTrue(string propertyName)
@@ -126,12 +128,16 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete
 
         internal static string In(string propertyName, object[] values, bool quoted)
         {{
-            return string.Format(""{quote("{0}")} IN({{1}})"", propertyName, values.Aggregate("""", (c, n) => c + string.Format("",{{1}}{{0}}{{1}}"", n, quoted ? ""'"" : """")).TrimStart(','));
+            return string.Format(""{
+                    quote("{0}")
+                } IN({{1}})"", propertyName, values.Aggregate("""", (c, n) => c + string.Format("",{{1}}{{0}}{{1}}"", n, quoted ? ""'"" : """")).TrimStart(','));
         }}
 
         internal static string NotIn(string propertyName, object[] values, bool quoted)
         {{
-            return string.Format(""{quote("{0}")} NOT IN({{1}})"", propertyName, values.Aggregate("""", (c, n) => c + string.Format("",{{1}}{{0}}{{1}}"", n, quoted ? ""'"" : """")).TrimStart(','));
+            return string.Format(""{
+                    quote("{0}")
+                } NOT IN({{1}})"", propertyName, values.Aggregate("""", (c, n) => c + string.Format("",{{1}}{{0}}{{1}}"", n, quoted ? ""'"" : """")).TrimStart(','));
         }}
     }}
 }}

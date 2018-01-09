@@ -1,17 +1,17 @@
 #region Usings
 
+using Genie.Core.Base.Generating;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Tools;
 
 #endregion
-
-using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
     internal class SqlMapperExtensionsTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
+
         public SqlMapperExtensionsTemplate(string path, IConfiguration configuration) : base(path)
         {
             _configuration = configuration;
@@ -31,9 +31,10 @@ namespace Genie.Core.Templates.Dapper
 
             if (_configuration.DBMS == "mssql")
             {
-                getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
+                getRetriveQueryNewQueryBuilder =
+                    $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} {{1}} from "" + query.Target, query.Limit != null ? "" top "" + query.Limit : """", isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
                 getRetriveQueryPaging =
-$@"	        if (query.Page != null && query.PageSize != null)
+                    $@"	        if (query.Page != null && query.PageSize != null)
 	        {{
 	            queryBuilder.Append($"" OFFSET ({{query.Page * query.PageSize}}) ROWS "" + $"" FETCH NEXT {{query.PageSize}} ROWS ONLY "");
 	        }}
@@ -49,9 +50,10 @@ $@"	        if (query.Page != null && query.PageSize != null)
             }
             else if (_configuration.DBMS == "mysql")
             {
-                getRetriveQueryNewQueryBuilder = $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} from "" + query.Target, isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
+                getRetriveQueryNewQueryBuilder =
+                    $@"            var queryBuilder = new StringBuilder(whereOnly ? """" : string.Format(""select {{0}} from "" + query.Target, isCount ? ""count(*)"" : CreateSelectColumnList(query.Columns, query.Target)));";
                 getRetriveQueryPaging =
-$@"	        if (query.Page != null && query.PageSize != null)
+                    $@"	        if (query.Page != null && query.PageSize != null)
 	        {{
 	            queryBuilder.Append($"" LIMIT {{query.Page * query.PageSize}}, {{query.PageSize}} "");
 	        }}

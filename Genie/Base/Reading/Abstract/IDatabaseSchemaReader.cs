@@ -1,7 +1,6 @@
 ﻿#region Usings
 
 using Genie.Core.Base.Configuration.Abstract;
-using Genie.Core.Base.ProcessOutput.Abstract;
 
 #endregion
 

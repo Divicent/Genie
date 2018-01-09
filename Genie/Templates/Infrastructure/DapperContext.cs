@@ -1,20 +1,22 @@
 #region Usings
 
+using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Tools;
+using Genie.Core.Base.Generating;
 
 #endregion
 
-using Genie.Core.Base.Generating;
+
 
 namespace Genie.Core.Templates.Infrastructure
 {
     internal class DapperContextTemplate : GenieTemplate
     {
-        private readonly Base.Configuration.Abstract.IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
-        public DapperContextTemplate(string path, Base.Configuration.Abstract.IConfiguration configuration) : base(path)
+        public DapperContextTemplate(string path, IConfiguration configuration) : base(path)
         {
-            this._configuration = configuration;
+            _configuration = configuration;
         }
 
         public override string Generate()
@@ -42,7 +44,7 @@ namespace Genie.Core.Templates.Infrastructure
 			_connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
 		}";
 
-        var container = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);
+            var container = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);
 
             L($@"
 {usingConfiguration}
@@ -68,7 +70,9 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
     	/// <summary>
         /// Get the connection to the database
         /// </summary>
-        public IDbConnection Connection => _connection ?? (_connection = new {container.SqlConnectionClassName}(_connectionString));
+        public IDbConnection Connection => _connection ?? (_connection = new {
+                    container.SqlConnectionClassName
+                }(_connectionString));
 
         public IUnitOfWork Unit() 
         {{

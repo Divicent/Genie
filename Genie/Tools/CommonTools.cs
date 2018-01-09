@@ -23,15 +23,9 @@ namespace Genie.Core.Tools
         public static string GetCSharpDataType(string dataType, bool nullable)
         {
             var csharpDatatype = ConvertDataType(dataType);
-            if (!nullable)
-            {
-                return csharpDatatype;
-            }
+            if (!nullable) return csharpDatatype;
 
-            if (NullableTypes.Contains(csharpDatatype))
-            {
-                return csharpDatatype + "?";
-            }
+            if (NullableTypes.Contains(csharpDatatype)) return csharpDatatype + "?";
             return csharpDatatype;
         }
 
@@ -67,7 +61,7 @@ namespace Genie.Core.Tools
                 case "smallint":
                     return "short";
                 case "varbinary":
-                	return "byte[]";
+                    return "byte[]";
                 case "float":
                     return "float";
                 default:

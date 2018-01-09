@@ -4,7 +4,7 @@ using Genie.Core.Base.Generating;
 
 namespace GenieCLI
 {
-    public static  class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -12,15 +12,9 @@ namespace GenieCLI
             var output = new ProcessOutput();
             if (args.Length > 0)
             {
-                if (args.Contains("-ni"))
-                {
-                    output.NoInfo = true;
-                }
+                if (args.Contains("-ni")) output.NoInfo = true;
 
-                if (args.Contains("-s"))
-                {
-                    output.Silent = true;
-                }
+                if (args.Contains("-s")) output.Silent = true;
 
                 if (args.Contains("-f"))
                 {
@@ -28,10 +22,7 @@ namespace GenieCLI
                     if (args.Length > index + 1)
                     {
                         var fn = args[index + 1];
-                        if (!string.IsNullOrWhiteSpace(fn))
-                        {
-                            fileName = fn;
-                        }
+                        if (!string.IsNullOrWhiteSpace(fn)) fileName = fn;
                     }
                 }
             }
@@ -39,18 +30,17 @@ namespace GenieCLI
             var path = $"./{fileName}";
 
             GenieGenerationResult result = null;
-            if(args.Contains("-s")) {
-              result = Genie.Core.Base.Genie.Generate(path);
-            } else {
-              result = Genie.Core.Base.Genie.Generate(path, output);
-            }
-            
+            if (args.Contains("-s"))
+                result = Genie.Core.Base.Genie.Generate(path);
+            else
+                result = Genie.Core.Base.Genie.Generate(path, output);
+
             if (!result.Success)
             {
                 Console.Write(":> ");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(result.Error);
-                Console.ResetColor();            
+                Console.ResetColor();
             }
         }
     }

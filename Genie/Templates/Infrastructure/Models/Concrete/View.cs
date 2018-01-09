@@ -1,50 +1,50 @@
 #region Usings
 
 using System.Text;
+using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
-using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Tools;
 
 #endregion
 
 namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 {
-  internal class ViewTemplate : GenieTemplate
-  {
-    private readonly IView _view;
-    private readonly IConfiguration _configuration;
-
-    public ViewTemplate(string path, IView view, IConfiguration configuration) : base(path)
+    internal class ViewTemplate : GenieTemplate
     {
-      _view = view;
-      _configuration = configuration;
-    }
+        private readonly IConfiguration _configuration;
+        private readonly IView _view;
 
-    public override string Generate()
-    {
-      var entity = _view;
-      var name = _view.Name;
-
-      var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
-
-      var attributes = new StringBuilder();
-
-      foreach (var atd in entity.Attributes)
-      {
-        if (!string.IsNullOrWhiteSpace(atd.Comment))
+        public ViewTemplate(string path, IView view, IConfiguration configuration) : base(path)
         {
-          attributes.AppendLine($@"		/// <summary>
-		/// {atd.Comment}
-		/// </summary>");
+            _view = view;
+            _configuration = configuration;
         }
 
-        attributes.AppendLine($@"		public {atd.DataType} {atd.Name} {{ get; set; }} ");
-      }
+        public override string Generate()
+        {
+            var entity = _view;
+            var name = _view.Name;
 
-      var abstractModelsNamespace = _configuration.AbstractModelsEnabled ? $"using {_configuration.AbstractModelsNamespace};\n" : "";
-      var absImplement = _configuration.AbstractModelsEnabled ? $": I{name}" : "";
-      L($@"
+            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
+
+            var attributes = new StringBuilder();
+
+            foreach (var atd in entity.Attributes)
+            {
+                if (!string.IsNullOrWhiteSpace(atd.Comment))
+                    attributes.AppendLine($@"		/// <summary>
+		/// {atd.Comment}
+		/// </summary>");
+
+                attributes.AppendLine($@"		public {atd.DataType} {atd.Name} {{ get; set; }} ");
+            }
+
+            var abstractModelsNamespace = _configuration.AbstractModelsEnabled
+                ? $"using {_configuration.AbstractModelsNamespace};\n"
+                : "";
+            var absImplement = _configuration.AbstractModelsEnabled ? $": I{name}" : "";
+            L($@"
 
 using System;
 using {GenerationContext.BaseNamespace}.Dapper;
@@ -61,7 +61,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
 }}
 ");
 
-      return E();
+            return E();
+        }
     }
-  }
 }

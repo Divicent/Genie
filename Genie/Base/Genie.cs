@@ -3,7 +3,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Configuration.Concrete;
 using Genie.Core.Base.Exceptions;
@@ -58,10 +57,8 @@ namespace Genie.Core.Base
                 try
                 {
                     if (!File.Exists(pathToConfigurationJsonFile))
-                    {
                         throw new GenieException(
                             $"The configuration file ({pathToConfigurationJsonFile}) could not be found.\nPlease make sure that the genieSettings.json file exists in the location.");
-                    }
 
                     progress.Tick("Reading Configuration File");
                     try
@@ -98,12 +95,13 @@ namespace Genie.Core.Base
 
                     progress.Tick("Generating File Contents");
                     var contentFiles = DalGenerator.Generate(schema, config, progress).ToList();
-                    
+
                     progress.Tick("Removing Leftovers");
                     ObstacleManager.Clear(config.ProjectPath, output, config);
 
                     progress.Tick("Writing Content to Files");
-                    using (var writeProgress = progress.Child(contentFiles.Count, "Writing Content", $"Done writing content to {contentFiles.Count}"))
+                    using (var writeProgress = progress.Child(contentFiles.Count, "Writing Content",
+                        $"Done writing content to {contentFiles.Count}"))
                     {
                         DalWriter.Write(contentFiles, config.ProjectPath, writeProgress);
                         writeProgress.Tick();
@@ -111,10 +109,8 @@ namespace Genie.Core.Base
 
                     progress.Tick("Processing project files");
                     if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
-                    {
                         CSharpProjectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectFile),
                             contentFiles.Select(c => c.Path).ToList());
-                    }
 
                     progress.Tick();
                 }

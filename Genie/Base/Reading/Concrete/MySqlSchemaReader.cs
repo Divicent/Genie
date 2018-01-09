@@ -35,12 +35,14 @@ namespace Genie.Core.Base.Reading.Concrete
 
         protected override void ProcessProcedureParameters(IStoredProcedure storedProcedure)
         {
-            var parameterString = storedProcedure.Parameters.OrderBy(c => c.Position).Aggregate("", (current, param) => current +
-                                                                                                         $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name} = null" +
-                                                                                                         ",");
-            var parameterPassString = storedProcedure.Parameters.OrderBy(c => c.Position).Aggregate("", (current, param) => current +
-                                                                                                   $"\"+({param.Name} == null ? \"NULL\" : \"'\" + {param.Name} + \"'\")+\"" +
-                                                                                                   ",");
+            var parameterString = storedProcedure.Parameters.OrderBy(c => c.Position).Aggregate("", (current, param) =>
+                current +
+                $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name} = null" +
+                ",");
+            var parameterPassString = storedProcedure.Parameters.OrderBy(c => c.Position).Aggregate("",
+                (current, param) => current +
+                                    $"\"+({param.Name} == null ? \"NULL\" : \"'\" + {param.Name} + \"'\")+\"" +
+                                    ",");
 
             storedProcedure.ParamString = parameterString.TrimEnd(',');
             storedProcedure.PassString = $"({parameterPassString.TrimEnd(',')})";
@@ -67,6 +69,7 @@ namespace Genie.Core.Base.Reading.Concrete
                 column.ReferencedTableName = reader.GetString(8);
                 column.ReferencedColumnName = reader.GetString(9);
             }
+
             return column;
         }
 

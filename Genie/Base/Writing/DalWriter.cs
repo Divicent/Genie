@@ -36,6 +36,7 @@ namespace Genie.Core.Base.Writing
                         Directory.CreateDirectory(directory);
                         createdDirectories.Add(directory);
                     }
+
                     File.WriteAllText(file.FullName, contentFile.Content);
                 }
             }

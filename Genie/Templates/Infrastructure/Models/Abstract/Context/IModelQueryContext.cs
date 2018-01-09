@@ -1,7 +1,5 @@
 #region Usings
 
-
-
 #endregion
 
 using Genie.Core.Base.Generating;
@@ -30,7 +28,9 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
 {{
 
     /// <summary>
-    /// Helps to build retrieve queries on {_name}. the query can be built as one statement, and an object of this class can be used to add elements to the query. all the elements are persisted inside the object
+    /// Helps to build retrieve queries on {
+                    _name
+                }. the query can be built as one statement, and an object of this class can be used to add elements to the query. all the elements are persisted inside the object
     /// </summary>
 	public interface I{_name}QueryContext
 	{{

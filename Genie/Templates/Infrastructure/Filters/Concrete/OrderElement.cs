@@ -1,11 +1,10 @@
 #region Usings
 
-using Genie.Core.Tools;
-using Genie.Core.Base.Generating;
 using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Base.Generating;
+using Genie.Core.Tools;
 
 #endregion
-
 
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
@@ -13,6 +12,7 @@ namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
     internal class OrderElementTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
+
         public OrderElementTemplate(string path, IConfiguration configuration) : base(path)
         {
             _configuration = configuration;

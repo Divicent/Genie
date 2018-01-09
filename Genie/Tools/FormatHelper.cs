@@ -1,7 +1,7 @@
 #region Usings
 
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Models.Abstract;
 using Genie.Core.Models.Concrete;
@@ -11,18 +11,19 @@ using Genie.Core.Models.Concrete;
 namespace Genie.Core.Tools
 {
     /// <summary>
-    /// Helps to format templates
+    ///     Helps to format templates
     /// </summary>
     public static class FormatHelper
     {
-        private static readonly Dictionary<string, ITemplatePartsContainer> _containers = new Dictionary<string, ITemplatePartsContainer>();
+        private static readonly Dictionary<string, ITemplatePartsContainer> _containers =
+            new Dictionary<string, ITemplatePartsContainer>();
 
         /// <summary>
-        /// Get a function which can be used to quote an attribute name
+        ///     Get a function which can be used to quote an attribute name
         /// </summary>
         /// <param name="configuration">Configuration</param>
         /// <returns>A function</returns>
-        public static System.Func<string, string> GetDbmsSpecificQuoter(IConfiguration configuration)
+        public static Func<string, string> GetDbmsSpecificQuoter(IConfiguration configuration)
         {
             var ql = "";
             var qr = "";
@@ -36,26 +37,27 @@ namespace Genie.Core.Tools
                 ql = "[";
                 qr = "]";
             }
-            return (text) => $"{ql}{text}{qr}";
+
+            return text => $"{ql}{text}{qr}";
         }
 
         /// <summary>
-        /// Returns a container which contains string which can be used in templates 
+        ///     Returns a container which contains string which can be used in templates
         /// </summary>
         /// <param name="configuration">Configuration</param>
         /// <returns>ITemplatePartsContainer</returns>
         public static ITemplatePartsContainer GetDbmsSpecificTemplatePartsContainer(IConfiguration configuration)
 
         {
-            if(string.IsNullOrWhiteSpace(configuration.DBMS)) 
-            {
-                return new TemplatePartsContainer { SqlConnectionClassName = "", SqlClientNamespace = "", StoredProcedureCallString = "" };
-            }
+            if (string.IsNullOrWhiteSpace(configuration.DBMS))
+                return new TemplatePartsContainer
+                {
+                    SqlConnectionClassName = "",
+                    SqlClientNamespace = "",
+                    StoredProcedureCallString = ""
+                };
 
-            if (_containers.TryGetValue(configuration.DBMS, out _))
-            {
-                return _containers[configuration.DBMS];
-            }
+            if (_containers.TryGetValue(configuration.DBMS, out _)) return _containers[configuration.DBMS];
 
             var container = new TemplatePartsContainer();
 
@@ -64,7 +66,6 @@ namespace Genie.Core.Tools
                 container.SqlClientNamespace = "MySql.Data.MySqlClient";
                 container.SqlConnectionClassName = "MySqlConnection";
                 container.StoredProcedureCallString = "CALL";
-
             }
             else if (configuration.DBMS == "mssql")
             {

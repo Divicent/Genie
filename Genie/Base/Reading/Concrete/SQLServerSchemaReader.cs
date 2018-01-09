@@ -36,8 +36,8 @@ namespace Genie.Core.Base.Reading.Concrete
         protected override void ProcessProcedureParameters(IStoredProcedure storedProcedure)
         {
             var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
-                                                                                                            $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
-                                                                                                            ",");
+                                                                                               $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
+                                                                                               ",");
             var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
                                                                                                    $"{param.Name} = \"+({param.Name.Replace("@", "")} == null ? \"NULL\" : \"'\" + {param.Name.Replace("@", "")} + \"'\")+\"" +
                                                                                                    ",");
@@ -66,6 +66,7 @@ namespace Genie.Core.Base.Reading.Concrete
                 column.ReferencedTableName = reader.GetString(9);
                 column.ReferencedColumnName = reader.GetString(10);
             }
+
             return column;
         }
 
