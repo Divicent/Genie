@@ -13,6 +13,8 @@ using Genie.Core.Base.ProcessOutput.Abstract;
 using Genie.Core.Base.ProcessOutput.Concrete;
 using Genie.Core.Base.ProjectFileManaging;
 using Genie.Core.Base.Reading.Concrete;
+using Genie.Core.Base.Versioning.Abstract;
+using Genie.Core.Base.Versioning.Concrete;
 using Genie.Core.Base.Writing;
 using Genie.Core.Tools;
 using Newtonsoft.Json;
@@ -53,6 +55,7 @@ namespace Genie.Core.Base
             var result = new GenieGenerationResult();
             IConfiguration config = null;
             IFileSystem fileSystem  = new GenieFileSystem();
+            IVersionManager versionManager = new GenieVersionManager(fileSystem);
 
             using (var progress = output.Progress(7, "Generating", "Done!"))
             {
@@ -94,6 +97,9 @@ namespace Genie.Core.Base
                     progress.Tick("Reading Database Schema");
                     var schemaReader = DatabaseSchemaReaderFactory.GetReader(config.DBMS);
                     var schema = schemaReader.Read(config);
+
+                    schema.GenieVersion = versionManager.GetCurrentVersion();
+                    schema.Schema = config.Schema;
 
                     progress.Tick("Generating File Contents");
                     var contentFiles = DalGenerator.Generate(schema, config, progress).ToList();

@@ -12,5 +12,12 @@ namespace Genie.Core.Base.SchemaCaching.Abstract
         /// </summary>
         /// <param name="schema">Schema to write</param>
         void SetupCache(IDatabaseSchema schema);
+
+        /// <summary>
+        /// This will convert the given schema to a cache object
+        /// </summary>
+        /// <param name="schema">Schema to use</param>
+        /// <returns>a cache object</returns>
+        object ConvertSchemaToSchemaCache(IDatabaseSchema schema);
     }
 }

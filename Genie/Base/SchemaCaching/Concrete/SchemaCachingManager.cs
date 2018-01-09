@@ -42,7 +42,7 @@ namespace Genie.Core.Base.SchemaCaching.Concrete
             }
         }
 
-        private static object ConvertSchemaToSchemaCache(IDatabaseSchema schema)
+        public object ConvertSchemaToSchemaCache(IDatabaseSchema schema)
         {
             dynamic result = new ExpandoObject();
             return result;

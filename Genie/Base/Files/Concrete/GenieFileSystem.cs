@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Genie.Core.Base.Files.Abstract;
 using System.IO;
+using System.Reflection;
 
 namespace Genie.Core.Base.Files.Concrete
 {
@@ -16,5 +17,6 @@ namespace Genie.Core.Base.Files.Concrete
         public string GetDirectoryOfAFile(string filePath) => new FileInfo(filePath).Directory.FullName;
         public IEnumerable<string> GetDirectories(string directoryPath) => Directory.GetDirectories(directoryPath);
         public void DeleteDirectory(string path, bool recursive) => Directory.Delete(path, recursive);
+        public string GetCurrentAssemblyLocation() => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
     }
 }

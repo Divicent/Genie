@@ -36,5 +36,15 @@ namespace Genie.Core.Base.Reading.Abstract
         ///     List of table enums
         /// </summary>
         List<IEnum> Enums { get; set; }
+        
+        /// <summary>
+        /// Current version of the generator
+        /// </summary>
+        string GenieVersion { get; set; }
+        
+        /// <summary>
+        /// Schema that used to read the schema
+        /// </summary>
+        string Schema { get; set; }
     }
 }

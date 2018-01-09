@@ -20,8 +20,8 @@ using Enum = Genie.Core.Models.Concrete.Enum;
 namespace Genie.Core.Base.Reading.Concrete
 {
     /// <summary>
-    ///     Base class for Sql schema reader implementations
-    ///     Written while listening to Kasun Kalhara and Indrachapa :)
+    ///  Base class for Sql schema reader implementations
+    ///  Written while listening to Kasun Kalhara and Indrachapa :)
     /// </summary>
     internal abstract class SqlSchemaReader
     {
@@ -57,7 +57,6 @@ namespace Genie.Core.Base.Reading.Concrete
             {
                 schema.Enums = new List<IEnum>();
             }
-
             return schema;
         }
 

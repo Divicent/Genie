@@ -69,5 +69,10 @@ namespace Genie.Core.Base.Files.Abstract
         /// <param name="path">Path to directory</param>
         /// <param name="recursive">Is recursive delete</param>
         void DeleteDirectory(string path, bool recursive);
+
+        /// <summary>
+        /// Get current location of the application
+        /// </summary>
+        string GetCurrentAssemblyLocation();
     }
 }
