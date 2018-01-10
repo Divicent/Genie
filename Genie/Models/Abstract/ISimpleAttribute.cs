@@ -3,7 +3,7 @@
     /// <summary>
     ///     Represents an attribute that does not need to track changes (must be a simple property)
     /// </summary>
-    internal interface ISimpleAttribute
+    public interface ISimpleAttribute
     {
         /// <summary>
         ///     Data type of the attribute

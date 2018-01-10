@@ -5,29 +5,41 @@ using System.Collections.Generic;
 using System.Text;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Exceptions;
+using Genie.Core.Base.Versioning.Abstract;
 
 #endregion
 
 namespace Genie.Core.Base.Configuration.Concrete
 {
-  /// <summary>
-  ///     Contains configurations that are need to do the data access layer generation
-  /// </summary>
-  public class GenieConfiguration : IConfiguration
+    /// <inheritdoc />
+    /// <summary>
+    ///     Contains configurations that are need to do the data access layer generation
+    /// </summary>
+    public class GenieConfiguration : IConfiguration
     {
+        private readonly IVersionManager _versionManager;
+
+        public GenieConfiguration(IVersionManager versionManager)
+        {
+            _versionManager = versionManager;
+        }
+
         public string ConnectionString { get; set; }
-
         public string ProjectPath { get; set; }
-
         public string BaseNamespace { get; set; }
-
         public bool NoDapper { get; set; }
-
         public bool Core { get; set; }
         public List<ConfigurationEnumTable> Enums { get; set; }
-        public DBMS DBMSName { get; set; }
         public string DBMS { get; set; }
         public string Schema { get; set; }
+        public string ProjectFile { get; set; }
+        public string AbstractModelsLocation { get; set; }
+        public string AbstractModelsNamespace { get; set; }
+
+        public bool AbstractModelsEnabled => !string.IsNullOrWhiteSpace(AbstractModelsLocation) &&
+                                             !string.IsNullOrWhiteSpace(AbstractModelsNamespace);
+
+        public string GenieVersion { get; set; }
 
         public void Validate()
         {
@@ -50,10 +62,7 @@ namespace Genie.Core.Base.Configuration.Concrete
                 switch (DBMS.ToLowerInvariant())
                 {
                     case "mssql":
-                        DBMSName = Abstract.DBMS.MSSQL;
-                        break;
                     case "mysql":
-                        DBMSName = Abstract.DBMS.MySQL;
                         break;
                     default:
                         error.AppendLine(
@@ -77,11 +86,9 @@ namespace Genie.Core.Base.Configuration.Concrete
             if (Core) NoDapper = true;
         }
 
-        public string ProjectFile { get; set; }
-        public string AbstractModelsLocation { get; set; }
-        public string AbstractModelsNamespace { get; set; }
-
-        public bool AbstractModelsEnabled => !string.IsNullOrWhiteSpace(AbstractModelsLocation) &&
-                                             !string.IsNullOrWhiteSpace(AbstractModelsNamespace);
+        public void Setup()
+        {
+            GenieVersion = _versionManager.GetCurrentVersion();
+        }
     }
 }

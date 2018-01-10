@@ -1,7 +1,7 @@
 #region Usings
 
-using Genie.Core.Base.Generating;
 using Genie.Core.Base.Configuration.Abstract;
+using Genie.Core.Base.Generating;
 using Genie.Core.Tools;
 
 #endregion

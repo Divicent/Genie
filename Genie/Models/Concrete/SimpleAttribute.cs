@@ -6,7 +6,7 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Models.Concrete
 {
-    internal class SimpleAttribute : ISimpleAttribute
+    public class SimpleAttribute : ISimpleAttribute
     {
         public string DataType { get; set; }
         public string Name { get; set; }

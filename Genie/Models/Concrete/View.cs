@@ -7,7 +7,7 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Models.Concrete
 {
-    internal class View : IView
+    public class View : IView
     {
         public string Comment { get; set; }
         public string FieldName { get; set; }

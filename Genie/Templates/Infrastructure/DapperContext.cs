@@ -1,11 +1,10 @@
 #region Usings
 
 using Genie.Core.Base.Configuration.Abstract;
-using Genie.Core.Tools;
 using Genie.Core.Base.Generating;
+using Genie.Core.Tools;
 
 #endregion
-
 
 
 namespace Genie.Core.Templates.Infrastructure

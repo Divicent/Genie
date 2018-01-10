@@ -7,7 +7,7 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Models.Concrete
 {
-    internal class Relation : IRelation
+    public class Relation : IRelation
     {
         public string Name { get; set; }
         public List<IAttribute> Attributes { get; set; }

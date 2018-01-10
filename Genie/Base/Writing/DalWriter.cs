@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Genie.Core.Base.Exceptions;
+using Genie.Core.Base.Files.Abstract;
 using Genie.Core.Base.ProcessOutput.Abstract;
 using Genie.Core.Models.Abstract;
 
@@ -19,7 +19,9 @@ namespace Genie.Core.Base.Writing
         /// <param name="files">Files to write</param>
         /// <param name="basePath">Base path </param>
         /// <param name="progress">A Progress output</param>
-        public static void Write(IEnumerable<IContentFile> files, string basePath, IProgressReporter progress)
+        /// <param name="fileSystem"></param>
+        public static void Write(IEnumerable<IContentFile> files, string basePath, IProgressReporter progress,
+            IFileSystem fileSystem)
         {
             try
             {
@@ -28,16 +30,17 @@ namespace Genie.Core.Base.Writing
                 foreach (var contentFile in files)
                 {
                     progress.Tick(contentFile.Path);
-                    var file = new FileInfo(Path.Combine(basePath, contentFile.Path));
-                    var directory = file.Directory?.FullName;
+                    var file = fileSystem.CombinePaths(basePath, contentFile.Path);
+                    var directory = fileSystem.GetDirectoryOfAFile(file);
 
-                    if (!createdDirectories.Contains(directory) && directory != null && !Directory.Exists(directory))
+                    if (!createdDirectories.Contains(directory) && directory != null &&
+                        !fileSystem.DirectoryExists(directory))
                     {
-                        Directory.CreateDirectory(directory);
+                        fileSystem.CreateDirectory(directory);
                         createdDirectories.Add(directory);
                     }
 
-                    File.WriteAllText(file.FullName, contentFile.Content);
+                    fileSystem.WriteText(contentFile.Content, file);
                 }
             }
             catch (Exception e)

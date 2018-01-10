@@ -1,17 +1,20 @@
 ﻿#region Usings
 
 using System;
-using System.IO;
 using System.Linq;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Configuration.Concrete;
 using Genie.Core.Base.Exceptions;
+using Genie.Core.Base.Files.Abstract;
+using Genie.Core.Base.Files.Concrete;
 using Genie.Core.Base.Generating;
 using Genie.Core.Base.ObstacleManaging;
 using Genie.Core.Base.ProcessOutput.Abstract;
 using Genie.Core.Base.ProcessOutput.Concrete;
 using Genie.Core.Base.ProjectFileManaging;
 using Genie.Core.Base.Reading.Concrete;
+using Genie.Core.Base.Versioning.Abstract;
+using Genie.Core.Base.Versioning.Concrete;
 using Genie.Core.Base.Writing;
 using Genie.Core.Tools;
 using Newtonsoft.Json;
@@ -51,12 +54,14 @@ namespace Genie.Core.Base
         {
             var result = new GenieGenerationResult();
             IConfiguration config = null;
+            IFileSystem fileSystem = new GenieFileSystem();
+            IVersionManager versionManager = new GenieVersionManager(fileSystem);
 
             using (var progress = output.Progress(7, "Generating", "Done!"))
             {
                 try
                 {
-                    if (!File.Exists(pathToConfigurationJsonFile))
+                    if (!fileSystem.Exists(pathToConfigurationJsonFile))
                         throw new GenieException(
                             $"The configuration file ({pathToConfigurationJsonFile}) could not be found.\nPlease make sure that the genieSettings.json file exists in the location.");
 
@@ -64,7 +69,13 @@ namespace Genie.Core.Base
                     try
                     {
                         config = JsonConvert.DeserializeObject<GenieConfiguration>(
-                            File.ReadAllText(pathToConfigurationJsonFile));
+                            fileSystem.ReadText(pathToConfigurationJsonFile));
+
+                        config.Setup();
+                    }
+                    catch (GenieException exception)
+                    {
+                        throw;
                     }
                     catch (Exception exception)
                     {
@@ -97,19 +108,20 @@ namespace Genie.Core.Base
                     var contentFiles = DalGenerator.Generate(schema, config, progress).ToList();
 
                     progress.Tick("Removing Leftovers");
-                    ObstacleManager.Clear(config.ProjectPath, output, config);
+                    ObstacleManager.Clear(config.ProjectPath, output, config, fileSystem);
 
                     progress.Tick("Writing Content to Files");
                     using (var writeProgress = progress.Child(contentFiles.Count, "Writing Content",
                         $"Done writing content to {contentFiles.Count}"))
                     {
-                        DalWriter.Write(contentFiles, config.ProjectPath, writeProgress);
+                        DalWriter.Write(contentFiles, config.ProjectPath, writeProgress, fileSystem);
                         writeProgress.Tick();
                     }
 
                     progress.Tick("Processing project files");
                     if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
-                        CSharpProjectItemManager.Process(Path.Combine(config.ProjectPath, config.ProjectFile),
+                        CSharpProjectItemManager.Process(
+                            fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile),
                             contentFiles.Select(c => c.Path).ToList());
 
                     progress.Tick();
