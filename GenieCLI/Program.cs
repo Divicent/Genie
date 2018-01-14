@@ -29,11 +29,8 @@ namespace GenieCLI
 
             var path = $"./{fileName}";
 
-            GenieGenerationResult result = null;
-            if (args.Contains("-s"))
-                result = Genie.Core.Base.Genie.Generate(path);
-            else
-                result = Genie.Core.Base.Genie.Generate(path, output);
+            var result = args.Contains("-s") ? Genie.Core.Base.Genie.Generate(path) :
+                Genie.Core.Base.Genie.Generate(path, output);
 
             if (!result.Success)
             {
@@ -42,6 +39,12 @@ namespace GenieCLI
                 Console.WriteLine(result.Error);
                 Console.ResetColor();
             }
+            else if (!args.Contains("-y"))
+            {
+                Console.WriteLine("Done!");
+                Console.ReadKey();
+            }
+            
         }
     }
 }
