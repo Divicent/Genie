@@ -45,6 +45,7 @@ namespace Genie.Core.Tools
                 case "datetime2":
                 case "datetime":
                 case "timestamp":
+                case "time":
                 case "smalldatetime":
                 case "date":
                     return "DateTime";
@@ -53,6 +54,7 @@ namespace Genie.Core.Tools
                 case "nchar":
                 case "char":
                 case "longtext":
+                case "text":
                 case "enum":
                 case "set":
                     return "string";
@@ -67,6 +69,8 @@ namespace Genie.Core.Tools
                     return "byte[]";
                 case "float":
                     return "float";
+                case "double":
+                    return "double";
                 default:
                     return "";
             }
