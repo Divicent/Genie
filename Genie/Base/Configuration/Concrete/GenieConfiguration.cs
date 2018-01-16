@@ -88,7 +88,7 @@ namespace Genie.Core.Base.Configuration.Concrete
 
         public void Setup()
         {
-            GenieVersion = _versionManager.GetCurrentVersion();
+            // GenieVersion = _versionManager.GetCurrentVersion();
         }
     }
 }
