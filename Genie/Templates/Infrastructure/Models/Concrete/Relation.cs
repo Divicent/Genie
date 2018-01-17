@@ -94,27 +94,23 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             {
                 var fix = atd.ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ? ".GetValueOrDefault()" : "";
                 foreignKeyAttributes.AppendLine($@"		/// <summary>
-		/// Get {atd.ReferencingRelationName} object from {
-                        atd.ReferencingNonForeignKeyAttribute.Name
-                    } value.<para />This object will be cache within this instance.
+		/// Get {atd.ReferencingRelationName} object from {atd.ReferencingNonForeignKeyAttribute.Name} value.<para />This object will be cache within this instance.
 		/// </summary>
-		public {atd.ReferencingRelationName} Get{
-                        atd.ReferencingNonForeignKeyAttribute.Name
-                    }(IDbTransaction transaction =null)
+		public {atd.ReferencingRelationName} Get{atd.ReferencingNonForeignKeyAttribute.Name}(IDbTransaction transaction =null)
         {{
-            return DatabaseUnitOfWork != null ? {atd.ReferencingNonForeignKeyAttribute.FieldName}Obj ?? ({
-                        atd.ReferencingNonForeignKeyAttribute.FieldName
-                    }Obj = DatabaseUnitOfWork.{atd.ReferencingRelationName}Repository.Get().Where.{
-                        atd.ReferencingTableColumnName
-                    }.EqualsTo({atd.ReferencingNonForeignKeyAttribute.FieldName}{
-                        fix
-                    }).Filter().Top(1).Query(transaction).FirstOrDefault()) : null;
+            return DatabaseUnitOfWork != null ? {atd.ReferencingNonForeignKeyAttribute.FieldName}Obj ?? ({atd.ReferencingNonForeignKeyAttribute.FieldName}Obj = DatabaseUnitOfWork.{atd.ReferencingRelationName}Repository.Get().Where.{atd.ReferencingTableColumnName}.EqualsTo({atd.ReferencingNonForeignKeyAttribute.FieldName}{fix}).Filter().Top(1).FirstOrDefault(transaction)) : null;
+        }}
+        
+        /// <summary>
+		/// Get {atd.ReferencingRelationName} object from {atd.ReferencingNonForeignKeyAttribute.Name} value asynchronously .<para />This object will be cache within this instance.
+		/// </summary>
+		public async Task<{atd.ReferencingRelationName}> Get{atd.ReferencingNonForeignKeyAttribute.Name}Async(IDbTransaction transaction =null)
+        {{
+            return DatabaseUnitOfWork != null ? {atd.ReferencingNonForeignKeyAttribute.FieldName}Obj ?? ({atd.ReferencingNonForeignKeyAttribute.FieldName}Obj = await DatabaseUnitOfWork.{atd.ReferencingRelationName}Repository.Get().Where.{atd.ReferencingTableColumnName}.EqualsTo({atd.ReferencingNonForeignKeyAttribute.FieldName}{fix}).Filter().Top(1).FirstOrDefaultAsync(transaction)) : null;
         }}");
 
                 fkSetters.AppendLine($@"		/// <summary>
-		/// Set {atd.ReferencingRelationName} object for {
-                        atd.ReferencingNonForeignKeyAttribute.Name
-                    } value. <para />This will also change the {atd.ReferencingNonForeignKeyAttribute.Name} value.
+		/// Set {atd.ReferencingRelationName} object for {atd.ReferencingNonForeignKeyAttribute.Name} value. <para />This will also change the {atd.ReferencingNonForeignKeyAttribute.Name} value.
 		/// </summary>
 		public void Set{atd.ReferencingNonForeignKeyAttribute.Name}({atd.ReferencingRelationName} entity)
         {{
@@ -128,8 +124,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                 case ModelStatus.ToAdd:
                     if (entity.ActionsToRunWhenAdding == null)
                         entity.ActionsToRunWhenAdding = new List<IAddAction>();
-                    entity.ActionsToRunWhenAdding.Add(new AddAction(i => {{ {
-                        atd.ReferencingNonForeignKeyAttribute.Name
+                    entity.ActionsToRunWhenAdding.Add(new AddAction(i => {{ {atd.ReferencingNonForeignKeyAttribute.Name
                     } = (({atd.ReferencingRelationName}) i).{atd.ReferencingTableColumnName}; }}, entity));
                     break;
             }}
@@ -139,11 +134,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             var referenceLists = new StringBuilder();
             foreach (var list in entity.ReferenceLists)
                 referenceLists.AppendLine(
-                    $@"		public IReferencedEntityCollection<{list.ReferencedRelationName}> {
-                            list.ReferencedRelationName.ToPlural()
-                        }WhereThisIs{
-                            list.ReferencedPropertyName
-                        }(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
+                    $@"		public IReferencedEntityCollection<{list.ReferencedRelationName}> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
                             list.ReferencedRelationName
                         }>(DatabaseUnitOfWork.{list.ReferencedRelationName}Repository.Get().Where.{
                             list.ReferencedPropertyName
@@ -164,6 +155,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 using System;
 using System.Linq;
 using System.Data;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using {GenerationContext.BaseNamespace}.Dapper;
 using {GenerationContext.BaseNamespace}.Infrastructure.Collections.Concrete;
