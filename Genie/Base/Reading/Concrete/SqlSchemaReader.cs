@@ -195,7 +195,7 @@ namespace Genie.Core.Base.Reading.Concrete
                             Attributes = new List<IAttribute>(),
                             ForeignKeyAttributes = new List<IForeignKeyAttribute>(),
                             ReferenceLists = new List<IReferenceList>(),
-                            Comment = databaseSchemaColumn.TableComment
+                            Comment = RemoveNewLines(databaseSchemaColumn.TableComment)
                         };
 
                         tables.Add(table);
@@ -213,7 +213,7 @@ namespace Genie.Core.Base.Reading.Concrete
                         DataType = dataType,
                         FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
                                     databaseSchemaColumn.Name.Substring(1),
-                        Comment = databaseSchemaColumn.Comment,
+                        Comment = RemoveNewLines(databaseSchemaColumn.Comment),
                         IsIdentity = databaseSchemaColumn.IsIdentity
                     };
 
@@ -233,7 +233,7 @@ namespace Genie.Core.Base.Reading.Concrete
                     var extendedProperty =
                         extendedProperties.FirstOrDefault(
                             e => e.ObjectName == table.Name && e.ColumnName == attribute.Name);
-                    if (extendedProperty != null) attribute.Comment = extendedProperty.Property;
+                    if (extendedProperty != null) attribute.Comment = RemoveNewLines(extendedProperty.Property);
 
                     table.Attributes.Add(attribute);
                 }
@@ -244,7 +244,7 @@ namespace Genie.Core.Base.Reading.Concrete
                     {
                         view = new View
                         {
-                            Comment = databaseSchemaColumn.TableComment,
+                            Comment = RemoveNewLines(databaseSchemaColumn.TableComment),
                             FieldName =
                                 "_" + (databaseSchemaColumn.TableName.First() + "").ToLower() +
                                 databaseSchemaColumn.TableName.Substring(1),
@@ -267,13 +267,13 @@ namespace Genie.Core.Base.Reading.Concrete
                         FieldName = "_" + (databaseSchemaColumn.Name.First() + "").ToLower() +
                                     databaseSchemaColumn.Name.Substring(1),
                         DataType = dataType,
-                        Comment = databaseSchemaColumn.Comment
+                        Comment = RemoveNewLines(databaseSchemaColumn.Comment)
                     };
 
                     var extendedProp =
                         extendedProperties.FirstOrDefault(
                             e => e.ObjectName == view.Name && e.ColumnName == attr.Name);
-                    if (extendedProp != null) attr.Comment = extendedProp.Property;
+                    if (extendedProp != null) attr.Comment = RemoveNewLines(extendedProp.Property);
 
                     view.Attributes.Add(attr);
                 }
@@ -386,6 +386,8 @@ namespace Genie.Core.Base.Reading.Concrete
                 return enums;
             }
         }
+
+        private string RemoveNewLines(string source) => source.Replace(Environment.NewLine, "<para />");
 
         internal abstract void Setup(IConfiguration configuration);
         protected abstract IDbConnection GetConnection(string connectionString);
