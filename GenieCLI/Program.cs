@@ -27,7 +27,7 @@ namespace GenieCLI
                 }
             }
 
-            var path = $@"C:\Projects\Bathik\BackEnd\Bathik.DAL\genieSettings.json";
+            var path = $"./{fileName}";
 
             var result = args.Contains("-s") ? Genie.Core.Base.Genie.Generate(path) :
                 Genie.Core.Base.Genie.Generate(path, output);
