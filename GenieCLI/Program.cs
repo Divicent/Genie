@@ -27,7 +27,7 @@ namespace GenieCLI
                 }
             }
 
-            var path = $"./{fileName}";
+            var path = $@"C:\Projects\Bathik\BackEnd\Bathik.DAL\genieSettings.json";
 
             var result = args.Contains("-s") ? Genie.Core.Base.Genie.Generate(path) :
                 Genie.Core.Base.Genie.Generate(path, output);
@@ -38,6 +38,7 @@ namespace GenieCLI
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(result.Error);
                 Console.ResetColor();
+                Console.ReadKey();
             }
             else if (!args.Contains("-y"))
             {
