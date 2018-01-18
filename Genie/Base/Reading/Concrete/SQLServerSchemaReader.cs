@@ -1,5 +1,6 @@
 ﻿#region Usings
 
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -103,7 +104,7 @@ namespace Genie.Core.Base.Reading.Concrete
                ,c.DATA_TYPE AS [DataType]
                ,CASE WHEN pkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsPrimaryKey
                ,CASE WHEN fkc.CONSTRAINT_NAME IS NULL THEN 0 ELSE 1 END AS IsForeignKey
-               ,COLUMNPROPERTY(object_id('[' + t.TABLE_SCHEMA + ']' + '.[' + t.TABLE_NAME + ']'), c.COLUMN_NAME, 'IsIdentity') AS IsIdentity
+               ,ISNULL(COLUMNPROPERTY(object_id('[' + t.TABLE_SCHEMA + ']' + '.[' + t.TABLE_NAME + ']'), c.COLUMN_NAME, 'IsIdentity'), 0) AS IsIdentity
                ,rct.TABLE_NAME AS ReferencedTableName
                ,rcuc.COLUMN_NAME AS ReferencedColumn
             FROM INFORMATION_SCHEMA.COLUMNS c
@@ -121,10 +122,11 @@ namespace Genie.Core.Base.Reading.Concrete
 		            ON rct.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME
 	            LEFT OUTER JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE rcuc
 		            ON rc.UNIQUE_CONSTRAINT_NAME = rcuc.CONSTRAINT_NAME
+            WHERE t.TABLE_SCHEMA = '{configuration.Schema}'
             ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION";
 
 
-            QueryToGetParameters = @"
+            QueryToGetParameters = $@"
                     SELECT 
                         p.SPECIFIC_NAME AS SP
 	                    ,p.PARAMETER_NAME AS [Name]
@@ -132,11 +134,11 @@ namespace Genie.Core.Base.Reading.Concrete
                     FROM INFORMATION_SCHEMA.PARAMETERS p
 	                    INNER JOIN INFORMATION_SCHEMA.ROUTINES r
 		                    ON p.SPECIFIC_NAME = r.SPECIFIC_NAME
-                    WHERE r.ROUTINE_TYPE = 'PROCEDURE'
+                    WHERE r.ROUTINE_TYPE = 'PROCEDURE' AND p.SPECIFIC_SCHEMA = '{configuration.Schema}'
                     ORDER BY p.SCOPE_NAME , p.ORDINAL_POSITION";
 
 
-            QueryToGetExtendedProperties = @"SELECT
+            QueryToGetExtendedProperties = $@"SELECT
 	                     s.[name] AS SchemaName
 	                    ,oo.[name] AS ObjectName
 	                    ,col.[name] AS ColumnName
@@ -145,7 +147,7 @@ namespace Genie.Core.Base.Reading.Concrete
                     INNER JOIN sys.extended_properties ep ON ep.major_id = oo.object_id 
                     LEFT JOIN sys.schemas s on oo.schema_id = s.schema_id
                     INNER JOIN sys.columns AS col ON ep.major_id = col.object_id AND ep.minor_id = col.column_id
-                    WHERE ep.[value] IS NOT NULL AND ep.[value] <> ''";
+                    WHERE s.[name] = '{configuration.Schema}' AND ep.[value] IS NOT NULL AND ep.[value] <> ''";
         }
     }
 }
