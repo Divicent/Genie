@@ -23,13 +23,13 @@
 
 <body>
     <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+    <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
     <section class="page-header">
         <img src="imgs/genie_logo.png" width="250px">
         <h2 class="project-tagline">Lightweight, Cross Platform, Open Source High speed Data Access Layer Generator for .Net and .Net Core</h2>
@@ -45,17 +45,20 @@
             </a>
 
             <!-- Facebook -->
-            <a onclick="onShareButtonClick(this, 'Facebook')" href="http://www.facebook.com/sharer.php?u=https://rusith.github.io/Genie" target="_blank">
+            <a onclick="onShareButtonClick(this, 'Facebook')" href="http://www.facebook.com/sharer.php?u=https://rusith.github.io/Genie"
+                target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
             </a>
 
             <!-- Google+ -->
-            <a onclick="onShareButtonClick(this, 'Google+')" href="https://plus.google.com/share?url=https://rusith.github.io/Genie" target="_blank">
+            <a onclick="onShareButtonClick(this, 'Google+')" href="https://plus.google.com/share?url=https://rusith.github.io/Genie"
+                target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" />
             </a>
 
             <!-- LinkedIn -->
-            <a onclick="onShareButtonClick(this, 'LinkedIn')" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://rusith.github.io/Genie" target="_blank">
+            <a onclick="onShareButtonClick(this, 'LinkedIn')" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://rusith.github.io/Genie"
+                target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" />
             </a>
 
@@ -65,7 +68,8 @@
             </a>
 
             <!-- Reddit -->
-            <a onclick="onShareButtonClick(this, 'Reddit')" href="http://reddit.com/submit?url=https://rusith.github.io/Genie&amp;title=Simple Share Buttons" target="_blank">
+            <a onclick="onShareButtonClick(this, 'Reddit')" href="http://reddit.com/submit?url=https://rusith.github.io/Genie&amp;title=Simple Share Buttons"
+                target="_blank">
                 <img src="https://simplesharebuttons.com/images/somacro/reddit.png" alt="Reddit" />
             </a>
 
@@ -83,13 +87,19 @@
     </section>
 
     <section class="main-content">
-        <p><a href="https://travis-ci.org/rusith/Genie"><img src="https://travis-ci.org/rusith/Genie.svg?branch=core" alt="Build Status" /></a>
-            <a href="https://www.codacy.com/app/rusith/Genie?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rusith/Genie&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/e324714bae3447daa66079f239cb287b"/></a></p>
+        <p>
+            <a href="https://travis-ci.org/rusith/Genie">
+                <img src="https://travis-ci.org/rusith/Genie.svg?branch=core" alt="Build Status" />
+            </a>
+            <a href="https://www.codacy.com/app/rusith/Genie?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rusith/Genie&amp;utm_campaign=Badge_Grade">
+                <img src="https://api.codacy.com/project/badge/Grade/e324714bae3447daa66079f239cb287b" />
+            </a>
+        </p>
 
         <h3 id="dataaccesslayergenerator">Data Access Layer Generator</h3>
 
-        <p>Genie is a cross platform .Net library that can generate a data access layer for any .Net or .Net Core application using
-            a relational database.</p>
+        <p>Genie is a cross platform .Net library that can generate a data access layer for any .Net or .Net Core application
+            using a relational database.</p>
 
         <p>Genie has written in C# for .Net core framework</p>
 
@@ -97,11 +107,13 @@
 
         <ul>
             <li>Download latest release or build the project</li>
-            <li>run GenieCLI executable from the genieSetting.json file's location. you can place the download somewhere and add an environment variable to that folder then you can run genie just by typing  'geniecli' </li>
+            <li>run GenieCLI executable from the genieSetting.json file's location. you can place the download somewhere and
+                add an environment variable to that folder then you can run genie just by typing 'geniecli' </li>
         </ul>
 
-        <iframe width="854" height="480" src="https://www.youtube.com/embed/0Jl1XI7XSSI" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
-        
+        <iframe width="854" height="480" src="https://www.youtube.com/embed/0Jl1XI7XSSI" frameborder="0" gesture="media" allow="encrypted-media"
+            allowfullscreen></iframe>
+
         <h2 id="howitworks">How It Works</h2>
 
         <ul>
@@ -110,6 +122,26 @@
             <li>Process the model and generates file content using templates</li>
             <li>Writes the file contents to the disk</li>
         </ul>
+
+        <h2>Genie CLI</h2>
+
+        <p>Genie CLI is a simple CLI Program that uses Genie core library to trigger a generation. This is bundled with the
+            release.
+        </p>
+
+        <h4>Command Line Arguments for CLI</h4>
+        <ul>
+            <li>-s = Silent Generation (Nothing will be printed on the console).</li>
+            <li>-ni = Information will not be printed on the console.</li>
+            <li>-y = Automatically close the program after finished.</li>
+            <li>-f = Specify a file name of the configuration. (default is genieSettings.json)</li>
+        </ul>
+
+        <h3>How to install</h3>
+        <p>After downloading the latest release for your OS , extract the archive and put in some place , add the path to the
+            PATH variable.</p>
+        <p>After that you can call Genie by executing GenieCLI command .</p>
+
 
         <h2 id="configuration">Configuration</h2>
 
@@ -133,7 +165,9 @@
         <h3 id="nodapper">noDapper</h3>
 
         <p> Include the dapper source code in the generated code (/Dapper) Dapper will not be included if set to true . will
-            need to reference dapper externally. <b>This must be true if core is true.</b></p>
+            need to reference dapper externally.
+            <b>This must be true if core is true.</b>
+        </p>
 
         <h3 id="core">core</h3>
 
@@ -147,8 +181,7 @@
 
         <h3 id="abstractModelsLocation">abstractModelsLocation (optional)</h3>
 
-        <p>Genie can generate set of interfaces for every relation and view in thee 
-            specified location.</p>
+        <p>Genie can generate set of interfaces for every relation and view in thee specified location.</p>
 
         <h3 id="abstractModelsNamespace">abstractModelsNamespace (optional)</h3>
 
@@ -179,15 +212,15 @@
 
         <h1 id="generateddal">Generated DAL</h1>
 
-        <p>The generated DAL uses <a href="https://github.com/StackExchange/Dapper">Dapper</a> (micro ORM) to map objects and
-            to access the database.</p>
+        <p>The generated DAL uses
+            <a href="https://github.com/StackExchange/Dapper">Dapper</a> (micro ORM) to map objects and to access the database.</p>
 
         <p>Implements unit of work pattern and repository pattern. each table and view has a model object and a repository.</p>
 
         <p>All repositories can be accessed through a unit of work.</p>
 
-        <p>the DapperContext,should be a singleton. UnitOfWork, DapperContext can be implemented using a DI Container in an upper
-            layer.
+        <p>the DapperContext,should be a singleton. UnitOfWork, DapperContext can be implemented using a DI Container in an
+            upper layer.
         </p>
 
         <script src="https://gist.github.com/rusith/00745a21bd2e86d1df6c86dd7f3b3e0a.js"></script>
@@ -218,8 +251,9 @@
         <h2 id="querying">Querying</h2>
 
         <p>DAL provides an easy way to filter objects. this is a Builder like pattern to filter objects. there is a QueryContext
-            implemented for all repositories. user can access it through the <code>Get()</code> method of any repository.
-            the <code>Get</code> method returns a QueryContext that is specific for the object type of the repository.</p>
+            implemented for all repositories. user can access it through the
+            <code>Get()</code> method of any repository. the
+            <code>Get</code> method returns a QueryContext that is specific for the object type of the repository.</p>
 
         <h3 id="querycontext">QueryContext</h3>
 
@@ -229,11 +263,13 @@
 
         <p>There is a FilterContext that can be used to filter the query there is a property for each column and these properties
             can be used to chain the complete filter expression. each two expressions should be connected using And || Or
-            , however if you do not specify a boolean operator between two expressions it will be <code>and</code> by default.</p>
+            , however if you do not specify a boolean operator between two expressions it will be
+            <code>and</code> by default.</p>
 
         <script src="https://gist.github.com/rusith/4688571ad06209f5233fe3699c399d4c.js"></script>
 
-        <p>there is a filter for every data type and every filter contains methods to filter the property. the <code>Filter()</code>            method returns the parent QueryContext.</p>
+        <p>there is a filter for every data type and every filter contains methods to filter the property. the
+            <code>Filter()</code> method returns the parent QueryContext.</p>
 
         <h4 id="orderby">OrderBy</h4>
 
@@ -242,11 +278,13 @@
 
         <script src="https://gist.github.com/rusith/6d6e9e26e9e3d88e851245398be45126.js"></script>
 
-        <p>the <code>Order()</code> method returns the parent QueryContext.</p>
+        <p>the
+            <code>Order()</code> method returns the parent QueryContext.</p>
 
         <h3 id="page">Page</h3>
 
-        <p>The <code>Page</code> function can be used to add paging to the query.</p>
+        <p>The
+            <code>Page</code> function can be used to add paging to the query.</p>
 
         <h3 id="top">Top</h3>
 
@@ -264,32 +302,35 @@
 
         <h3 id="queryfunction">Query Function</h3>
 
-        <p>The <code>Query</code> function ends the QueryContext and returns the query result.</p>
+        <p>The
+            <code>Query</code> function ends the QueryContext and returns the query result.</p>
 
         <h3 id="countfunction">Count Function</h3>
 
-        <p>The <code>Count</code> function returns the count of the result.</p>
+        <p>The
+            <code>Count</code> function returns the count of the result.</p>
 
         <h3 id="filter">Filter</h3>
 
-        <p>This function needs an <code>IEnumerable&lt;IPropertyFilter&gt;</code> which is a collection of property names, operations
-            and values(if necessary) . this method can be used to filter the result in a customizable way How the operations
-            are filtered and what are the operations : </p>
+        <p>This function needs an
+            <code>IEnumerable&lt;IPropertyFilter&gt;</code> which is a collection of property names, operations and values(if necessary) . this method can be used to filter
+            the result in a customizable way How the operations are filtered and what are the operations : </p>
 
         <script src="https://gist.github.com/rusith/4f459cbf00dfea32886b55c2dede8933.js"></script>
 
         <h2 id="transactions">Transactions</h2>
 
-        <p>You can start a transaction by calling <code>BeginTransaction</code> method in the UnitOfWork then you should pass
-            the transaction to all methods you use in repositories. you can use the <code>Commit</code> method in the UnitOfWork
-            to commit the transaction.</p>
+        <p>You can start a transaction by calling
+            <code>BeginTransaction</code> method in the UnitOfWork then you should pass the transaction to all methods you use in repositories. you can
+            use the
+            <code>Commit</code> method in the UnitOfWork to commit the transaction.</p>
         </div>
     </section>
 
     <div style="text-align: center;">
-            <div class="fb-comments" data-href="https://rusith.github.io/Genie" data-width="800px" data-numposts="10"></div>
+        <div class="fb-comments" data-href="https://rusith.github.io/Genie" data-width="800px" data-numposts="10"></div>
     </div>
-    
+
 
     <!--Scripts-->
     <script>
@@ -303,10 +344,9 @@
         ga('create', 'UA-106184053-1', 'auto');
         ga('send', 'pageview');
 
-        function onShareButtonClick(obj, name)
-        {
+        function onShareButtonClick(obj, name) {
             var href = obj.getAttribute("href");
-            ga('send', 'event' , 'social', name , name + ' Share', href);
+            ga('send', 'event', 'social', name, name + ' Share', href);
             window.open(href, '_blank');
         }
     </script>
