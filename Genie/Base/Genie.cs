@@ -99,7 +99,7 @@ namespace Genie.Core.Base
                 if (!Path.IsPathRooted(config.ProjectPath))
                 {
                     /* Getting the full path to the project folder
-                     if the specified path is relative to the configuratio file */
+                     if the specified path is relative to the configuration file */
                     config.ProjectPath =
                         Path.GetFullPath(
                             $"{new FileInfo(pathToConfigurationJsonFile).Directory.FullName}{config.ProjectPath}");
