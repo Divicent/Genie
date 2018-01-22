@@ -387,7 +387,7 @@ namespace Genie.Core.Base.Reading.Concrete
             }
         }
 
-        private string RemoveNewLines(string source) => source.Replace(Environment.NewLine, "<para />");
+        private string RemoveNewLines(string source) => source?.Replace(Environment.NewLine, "<para />");
 
         internal abstract void Setup(IConfiguration configuration);
         protected abstract IDbConnection GetConnection(string connectionString);
