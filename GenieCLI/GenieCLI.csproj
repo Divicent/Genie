@@ -5,6 +5,10 @@
   <ItemGroup>
     <PackageReference Include="ShellProgressBar" Version="4.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Private.CoreLib" />
+    <Reference Include="System.Private.CoreLib" />
+  </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>

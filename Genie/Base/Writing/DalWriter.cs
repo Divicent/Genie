@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Genie.Core.Base.Exceptions;
 using Genie.Core.Base.Files.Abstract;
 using Genie.Core.Base.ProcessOutput.Abstract;
@@ -16,20 +17,22 @@ namespace Genie.Core.Base.Writing
         /// <summary>
         ///     Write files to the disk
         /// </summary>
-        /// <param name="files">Files to write</param>
+        /// <param name="fls">Files to write</param>
         /// <param name="basePath">Base path </param>
-        /// <param name="progress">A Progress output</param>
+        /// <param name="output">A process output</param>
         /// <param name="fileSystem"></param>
-        public static void Write(IEnumerable<IContentFile> files, string basePath, IProgressReporter progress,
+        public static void Write(IEnumerable<IContentFile> fls, string basePath, IProcessOutput output,
             IFileSystem fileSystem)
         {
             try
             {
                 var createdDirectories = new HashSet<string>();
+                var files = fls.ToList();
+                var progress =
+                    output.Progress(files.Count, "Writing Files", $"Done writing {files.Count} files.");
 
                 foreach (var contentFile in files)
                 {
-                    progress.Tick(contentFile.Path);
                     var file = fileSystem.CombinePaths(basePath, contentFile.Path);
                     var directory = fileSystem.GetDirectoryOfAFile(file);
 
@@ -41,6 +44,7 @@ namespace Genie.Core.Base.Writing
                     }
 
                     fileSystem.WriteText(contentFile.Content, file);
+                    progress.Tick(contentFile.Path);
                 }
             }
             catch (Exception e)
