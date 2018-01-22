@@ -32,7 +32,7 @@ namespace Genie.Core.Base.Configuration.Abstract
       ///     <para />
       ///     This should point to the Data access layer , not to the project path
       /// </summary>
-      string ProjectPath { get; }
+      string ProjectPath { get; set;  }
 
       /// <summary>
       ///     Base namespace of the data access layer usually, @projectName.DA | @projectName.DataAccess or something like that.

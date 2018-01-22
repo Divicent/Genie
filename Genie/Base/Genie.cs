@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using System;
+using System.IO;
 using System.Linq;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Configuration.Concrete;
@@ -13,8 +14,6 @@ using Genie.Core.Base.ProcessOutput.Abstract;
 using Genie.Core.Base.ProcessOutput.Concrete;
 using Genie.Core.Base.ProjectFileManaging;
 using Genie.Core.Base.Reading.Concrete;
-using Genie.Core.Base.Versioning.Abstract;
-using Genie.Core.Base.Versioning.Concrete;
 using Genie.Core.Base.Writing;
 using Genie.Core.Tools;
 using Newtonsoft.Json;
@@ -56,7 +55,6 @@ namespace Genie.Core.Base
             IConfiguration config = null;
             IFileSystem fileSystem = new GenieFileSystem();
            // IVersionManager versionManager = new GenieVersionManager(fileSystem);
-
             try
             {
                 if (!fileSystem.Exists(pathToConfigurationJsonFile))
@@ -98,6 +96,15 @@ namespace Genie.Core.Base
 
             try
             {
+                if (!Path.IsPathRooted(config.ProjectPath))
+                {
+                    /* Getting the full path to the project folder
+                     if the specified path is relative to the configuratio file */
+                    config.ProjectPath =
+                        Path.GetFullPath(
+                            $"{new FileInfo(pathToConfigurationJsonFile).Directory.FullName}{config.ProjectPath}");
+                }
+
                 output.WriteInformation("Reading Database Schema");
                 var schemaReader = DatabaseSchemaReaderFactory.GetReader(config.DBMS);
                 var schema = schemaReader.Read(config);
