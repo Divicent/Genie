@@ -102,6 +102,8 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
                 case ""c"":
                     return QueryMaker.Contains(propName, value);
                 case ""notcontains"":
+                case ""doesnotcontain"":
+                case ""dnc"":
                 case ""nc"":
                     return QueryMaker.NotContains(propName, value);
                 case ""startswith"":
