@@ -3,9 +3,6 @@
     <ProjectReference Include="..\Genie\Genie.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ShellProgressBar" Version="4.0.0" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System.Private.CoreLib" />
     <Reference Include="System.Private.CoreLib" />
   </ItemGroup>
