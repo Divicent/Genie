@@ -41,7 +41,7 @@ namespace Genie.Core.Base.Generating
         /// <param name="output">Output to report progress</param>
         /// <returns>Collection of file contents</returns>
         public static IEnumerable<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration,
-            IProgressReporter output)
+            IProcessOutput output)
         {
             List<ITemplate> files;
             try
@@ -267,24 +267,19 @@ namespace Genie.Core.Base.Generating
 // ------------------------------------------------------------------------------
 ";
 
-                using (var progress = output.Child(files.Count, "Generating Content",
-                    $"Done generating content for {files.Count} files"))
+                var progress = output.Progress(files.Count, "Generating Content",
+                    $"Done generating content for {files.Count} files");
+                var contentFiles = new List<ContentFile>();
+                foreach (var templateFile in files)
                 {
-                    var contentFiles =
-                        files.Select(templateFile =>
-                        {
-                            progress.Tick(templateFile.Path);
-                            return new ContentFile
-                            {
-                                Path = templateFile.Path + "." + "cs",
-                                Content = comment + templateFile.Generate()
-                            };
-                        }).ToList();
-
-                    progress.Tick();
-
-                    return contentFiles;
+                    contentFiles.Add(new ContentFile
+                    {
+                        Path = templateFile.Path + "." + "cs",
+                        Content = comment + templateFile.Generate()
+                    });
+                    progress.Tick(templateFile.Path);
                 }
+                return contentFiles;
             }
             catch (Exception e)
             {

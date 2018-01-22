@@ -55,86 +55,74 @@ namespace Genie.Core.Base
             var result = new GenieGenerationResult();
             IConfiguration config = null;
             IFileSystem fileSystem = new GenieFileSystem();
-            IVersionManager versionManager = new GenieVersionManager(fileSystem);
+           // IVersionManager versionManager = new GenieVersionManager(fileSystem);
 
-            using (var progress = output.Progress(7, "Generating", "Done!"))
+            try
             {
+                if (!fileSystem.Exists(pathToConfigurationJsonFile))
+                    throw new GenieException(
+                        $"The configuration file ({pathToConfigurationJsonFile}) could not be found.\nPlease make sure that the genieSettings.json file exists in the location.");
+
+                output.WriteInformation("Reading Configuration File");
                 try
                 {
-                    if (!fileSystem.Exists(pathToConfigurationJsonFile))
-                        throw new GenieException(
-                            $"The configuration file ({pathToConfigurationJsonFile}) could not be found.\nPlease make sure that the genieSettings.json file exists in the location.");
+                    config = JsonConvert.DeserializeObject<GenieConfiguration>(
+                        fileSystem.ReadText(pathToConfigurationJsonFile));
 
-                    progress.Tick("Reading Configuration File");
-                    try
-                    {
-                        config = JsonConvert.DeserializeObject<GenieConfiguration>(
-                            fileSystem.ReadText(pathToConfigurationJsonFile));
-
-                        config.Setup();
-                    }
-                    catch (GenieException exception)
-                    {
-                        throw;
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new GenieException(
-                            $"Unable to read the configuration file ({exception.Message}), The configuration file must be a valid JSON file.");
-                    }
-
-                    progress.Tick("Validating Configuration");
-                    config.Validate();
+                    config.Setup();
+                }
+                catch (GenieException)
+                {
+                    throw;
                 }
                 catch (Exception exception)
                 {
-                    result.Error = GenieExceptionMessageFormatter.FormatException(exception,
-                        "En error occurred while trying to initialize generation process (probably a configuration error)");
+                    throw new GenieException(
+                        $"Unable to read the configuration file ({exception.Message}), The configuration file must be a valid JSON file.");
                 }
 
-                if (!string.IsNullOrEmpty(result.Error) || config == null)
-                {
-                    result.Success = false;
-                    return result;
-                }
+                output.WriteInformation("Validating Configuration");
+                config.Validate();
+            }
+            catch (Exception exception)
+            {
+                result.Error = GenieExceptionMessageFormatter.FormatException(exception,
+                    "En error occurred while trying to initialize generation process (probably a configuration error)");
+            }
 
-                try
-                {
-                    progress.Tick("Reading Database Schema");
-                    var schemaReader = DatabaseSchemaReaderFactory.GetReader(config.DBMS);
-                    var schema = schemaReader.Read(config);
-
-                    progress.Tick("Generating File Contents");
-                    var contentFiles = DalGenerator.Generate(schema, config, progress).ToList();
-
-                    progress.Tick("Removing Leftovers");
-                    ObstacleManager.Clear(config.ProjectPath, output, config, fileSystem);
-
-                    progress.Tick("Writing Content to Files");
-                    using (var writeProgress = progress.Child(contentFiles.Count, "Writing Content",
-                        $"Done writing content to {contentFiles.Count}"))
-                    {
-                        DalWriter.Write(contentFiles, config.ProjectPath, writeProgress, fileSystem);
-                        writeProgress.Tick();
-                    }
-
-                    progress.Tick("Processing project files");
-                    if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
-                        CSharpProjectItemManager.Process(
-                            fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile),
-                            contentFiles.Select(c => c.Path).ToList());
-
-                    progress.Tick();
-                }
-                catch (Exception e)
-                {
-                    result.Error = GenieExceptionMessageFormatter.FormatException(e.InnerException, e.Message);
-                    result.Success = false;
-                    return result;
-                }
-
+            if (!string.IsNullOrEmpty(result.Error) || config == null)
+            {
+                result.Success = false;
                 return result;
             }
+
+            try
+            {
+                output.WriteInformation("Reading Database Schema");
+                var schemaReader = DatabaseSchemaReaderFactory.GetReader(config.DBMS);
+                var schema = schemaReader.Read(config);
+
+                var contentFiles = DalGenerator.Generate(schema, config, output).ToList();
+
+                output.WriteInformation("Removing Leftovers");
+                ObstacleManager.Clear(config.ProjectPath, output, config, fileSystem);
+
+                DalWriter.Write(contentFiles, config.ProjectPath, output, fileSystem);
+
+                output.WriteInformation("Processing project files");
+                if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
+                    CSharpProjectItemManager.Process(
+                        fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile),
+                        contentFiles.Select(c => c.Path).ToList());
+            }
+            catch (Exception e)
+            {
+                result.Error = GenieExceptionMessageFormatter.FormatException(e.InnerException, e.Message);
+                result.Success = false;
+                return result;
+            }
+
+            return result;
         }
     }
 }

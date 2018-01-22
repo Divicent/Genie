@@ -1,12 +1,13 @@
 ﻿using System;
 using Genie.Core.Base.ProcessOutput.Abstract;
+using GenieCLI.Progress;
 
 namespace GenieCLI
 {
     public class ProcessOutput : IProcessOutput
     {
-        public bool NoInfo { get; set; }
-        public bool Silent { get; set; }
+        public bool NoInfo { private get; set; }
+        public bool Silent { private get; set; }
 
         public void WriteInformation(string content)
         {
