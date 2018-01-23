@@ -7,5 +7,5 @@ before_build:
 
 test_script:
 - cd Genie.Tests
-- OpenCover.Console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test ." -filter:"+[*]* -[xunit*]*" -output:".\Coverage.xml" -oldstyle
+- OpenCover.Console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:test -filter:"+[*]* -[xunit*]*" -output:".\Coverage.xml" -oldstyle
 - codecov -f ".\Coverage.xml" -t 2a219bc0-2479-4e8b-8414-c81e89eee6aa
