@@ -1,0 +1,14 @@
+before_build:
+- nuget restore
+- choco install opencover.portable
+- choco install codecov
+- choco install dotnetcore-sdk
+
+build_script:
+- dotnet build Genie.Tests
+
+
+test_script:
+- cd Genie.Tests
+- OpenCover.Console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:test -output:".\Coverage.xml" -oldstyle
+- codecov -f ".\Coverage.xml"
