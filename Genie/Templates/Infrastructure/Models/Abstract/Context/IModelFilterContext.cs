@@ -10,7 +10,7 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 {
-    internal class IModelFilterContextTemplate : GenieTemplate
+    public class IModelFilterContextTemplate : GenieTemplate
     {
         private readonly List<ISimpleAttribute> _attributes;
         private readonly string _name;

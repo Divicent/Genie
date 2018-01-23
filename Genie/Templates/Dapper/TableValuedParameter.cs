@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class TableValuedParameterTemplate : GenieTemplate
+    public class TableValuedParameterTemplate : GenieTemplate
     {
         public TableValuedParameterTemplate(string path) : base(path)
         {

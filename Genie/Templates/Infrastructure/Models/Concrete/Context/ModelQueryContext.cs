@@ -12,7 +12,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 {
-    internal class ModelQueryContextTemplate : GenieTemplate
+    public class ModelQueryContextTemplate : GenieTemplate
     {
         private readonly List<ISimpleAttribute> _attributes;
         private readonly IConfiguration _configuration;

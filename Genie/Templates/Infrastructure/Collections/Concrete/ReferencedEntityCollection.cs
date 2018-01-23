@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Collections.Concrete
 {
-    internal class ReferencedEntityCollectionTemplate : GenieTemplate
+    public class ReferencedEntityCollectionTemplate : GenieTemplate
     {
         public ReferencedEntityCollectionTemplate(string path) : base(path)
         {

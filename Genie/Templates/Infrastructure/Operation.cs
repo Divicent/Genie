@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure
 {
-    internal class OperationTemplate : GenieTemplate
+    public class OperationTemplate : GenieTemplate
     {
         public OperationTemplate(string path) : base(path)
         {

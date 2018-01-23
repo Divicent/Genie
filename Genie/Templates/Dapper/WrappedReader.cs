@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class WrappedReaderTemplate : GenieTemplate
+    public class WrappedReaderTemplate : GenieTemplate
     {
         public WrappedReaderTemplate(string path) : base(path)
         {
@@ -20,7 +20,7 @@ using System.Data;
 
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    internal class WrappedReader : IWrappedDataReader
+    public class WrappedReader : IWrappedDataReader
     {{
         private IDataReader reader;
         private IDbCommand cmd;

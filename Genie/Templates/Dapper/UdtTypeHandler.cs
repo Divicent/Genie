@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class UdtTypeHandlerTemplate : GenieTemplate
+    public class UdtTypeHandlerTemplate : GenieTemplate
     {
         public UdtTypeHandlerTemplate(string path) : base(path)
         {

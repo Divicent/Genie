@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class WriteAttributeTemplate : GenieTemplate
+    public class WriteAttributeTemplate : GenieTemplate
     {
         public WriteAttributeTemplate(string path) : base(path)
         {

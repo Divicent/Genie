@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapper_ICustomQueryParameterTemplate : GenieTemplate
+    public class SqlMapper_ICustomQueryParameterTemplate : GenieTemplate
     {
         public SqlMapper_ICustomQueryParameterTemplate(string path) : base(path)
         {

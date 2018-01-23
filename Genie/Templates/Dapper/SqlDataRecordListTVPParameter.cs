@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlDataRecordListTVPParameterTemplate : GenieTemplate
+    public class SqlDataRecordListTVPParameterTemplate : GenieTemplate
     {
         public SqlDataRecordListTVPParameterTemplate(string path) : base(path)
         {

@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class FeatureSupportTemplate : GenieTemplate
+    public class FeatureSupportTemplate : GenieTemplate
     {
         public FeatureSupportTemplate(string path) : base(path)
         {
@@ -23,7 +23,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
     /// <summary>
     /// Handles variances in features per DBMS
     /// </summary>
-    internal class FeatureSupport
+    public class FeatureSupport
     {{
         private static readonly FeatureSupport
             Default = new FeatureSupport(false),

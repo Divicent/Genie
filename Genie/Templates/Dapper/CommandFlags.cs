@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class CommandFlagsTemplate : GenieTemplate
+    public class CommandFlagsTemplate : GenieTemplate
     {
         public CommandFlagsTemplate(string path) : base(path)
         {

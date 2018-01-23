@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 {
-    internal class IModelQueryContextTemplate : GenieTemplate
+    public class IModelQueryContextTemplate : GenieTemplate
     {
         private readonly string _name;
 

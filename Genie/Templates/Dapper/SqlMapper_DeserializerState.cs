@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapper_DeserializerStateTemplate : GenieTemplate
+    public class SqlMapper_DeserializerStateTemplate : GenieTemplate
     {
         public SqlMapper_DeserializerStateTemplate(string path) : base(path)
         {

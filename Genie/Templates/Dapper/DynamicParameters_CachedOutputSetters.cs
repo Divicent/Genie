@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class DynamicParameters_CachedOutputSettersTemplate : GenieTemplate
+    public class DynamicParameters_CachedOutputSettersTemplate : GenieTemplate
     {
         public DynamicParameters_CachedOutputSettersTemplate(string path) : base(path)
         {

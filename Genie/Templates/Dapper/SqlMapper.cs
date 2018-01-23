@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapperTemplate : GenieTemplate
+    public class SqlMapperTemplate : GenieTemplate
     {
         public SqlMapperTemplate(string path) : base(path)
         {

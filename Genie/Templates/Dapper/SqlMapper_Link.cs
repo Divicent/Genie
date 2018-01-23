@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapper_LinkTemplate : GenieTemplate
+    public class SqlMapper_LinkTemplate : GenieTemplate
     {
         public SqlMapper_LinkTemplate(string path) : base(path)
         {
@@ -28,7 +28,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// </summary>
         /// <typeparam name=""TKey"">The type to cache.</typeparam>
         /// <typeparam name=""TValue"">The value type of the cache.</typeparam>
-        internal class Link<TKey, TValue> where TKey : class
+        public class Link<TKey, TValue> where TKey : class
         {{
             public static bool TryGet(Link<TKey, TValue> link, TKey key, out TValue value)
             {{

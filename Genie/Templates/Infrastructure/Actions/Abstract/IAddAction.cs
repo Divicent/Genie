@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Actions.Abstract
 {
-    internal class IAddActionTemplate : GenieTemplate
+    public class IAddActionTemplate : GenieTemplate
     {
         public IAddActionTemplate(string path) : base(path)
         {

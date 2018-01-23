@@ -9,7 +9,7 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 {
-    internal class IModelOrderContextTemplate : GenieTemplate
+    public class IModelOrderContextTemplate : GenieTemplate
     {
         private readonly List<ISimpleAttribute> _attributes;
         private readonly string _name;

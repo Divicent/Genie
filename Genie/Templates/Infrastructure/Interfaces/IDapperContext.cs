@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Interfaces
 {
-    internal class IDapperContextTemplate : GenieTemplate
+    public class IDapperContextTemplate : GenieTemplate
     {
         public IDapperContextTemplate(string path) : base(path)
         {

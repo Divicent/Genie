@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapper_GridReaderTemplate : GenieTemplate
+    public class SqlMapper_GridReaderTemplate : GenieTemplate
     {
         public SqlMapper_GridReaderTemplate(string path) : base(path)
         {

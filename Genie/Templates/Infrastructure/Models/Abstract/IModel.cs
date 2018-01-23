@@ -10,7 +10,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure.Models.Abstract
 {
-    internal class IModelTemplate : GenieTemplate
+    public class IModelTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
 

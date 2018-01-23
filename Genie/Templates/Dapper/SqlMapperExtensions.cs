@@ -8,7 +8,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class SqlMapperExtensionsTemplate : GenieTemplate
+    public class SqlMapperExtensionsTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
 

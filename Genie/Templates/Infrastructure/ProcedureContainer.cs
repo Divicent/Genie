@@ -10,7 +10,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure
 {
-    internal class ProcedureContainerTemplate : GenieTemplate
+    public class ProcedureContainerTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
         private readonly IDatabaseSchema _schema;

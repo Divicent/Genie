@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class DynamicParametersTemplate : GenieTemplate
+    public class DynamicParametersTemplate : GenieTemplate
     {
         public DynamicParametersTemplate(string path) : base(path)
         {

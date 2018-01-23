@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class XmlHandlersTemplate : GenieTemplate
+    public class XmlHandlersTemplate : GenieTemplate
     {
         public XmlHandlersTemplate(string path) : base(path)
         {

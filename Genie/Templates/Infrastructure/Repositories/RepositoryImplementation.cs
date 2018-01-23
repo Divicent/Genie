@@ -9,7 +9,7 @@ using Genie.Core.Base.Reading.Abstract;
 
 namespace Genie.Core.Templates.Infrastructure.Repositories
 {
-    internal class RepositoryImplementationTemplate : GenieTemplate
+    public class RepositoryImplementationTemplate : GenieTemplate
     {
         private readonly IDatabaseSchema _schema;
 

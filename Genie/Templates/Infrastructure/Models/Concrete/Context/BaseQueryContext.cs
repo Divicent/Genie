@@ -8,7 +8,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 {
-    internal class BaseQueryContextTemplate : GenieTemplate
+    public class BaseQueryContextTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
 

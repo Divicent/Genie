@@ -9,7 +9,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure
 {
-    internal class DapperContextTemplate : GenieTemplate
+    public class DapperContextTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
 

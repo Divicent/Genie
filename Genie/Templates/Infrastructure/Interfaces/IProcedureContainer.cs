@@ -8,7 +8,7 @@ using Genie.Core.Base.Reading.Abstract;
 
 namespace Genie.Core.Templates.Infrastructure.Interfaces
 {
-    internal class IProcedureContainerTemplate : GenieTemplate
+    public class IProcedureContainerTemplate : GenieTemplate
     {
         private readonly IDatabaseSchema _schema;
 

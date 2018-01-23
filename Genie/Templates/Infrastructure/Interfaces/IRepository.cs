@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Interfaces
 {
-    internal class IRepositoryTemplate : GenieTemplate
+    public class IRepositoryTemplate : GenieTemplate
     {
         public IRepositoryTemplate(string path) : base(path)
         {

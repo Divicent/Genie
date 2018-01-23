@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class KeyAttributeTemplate : GenieTemplate
+    public class KeyAttributeTemplate : GenieTemplate
     {
         public KeyAttributeTemplate(string path) : base(path)
         {

@@ -14,12 +14,12 @@ namespace Genie.Core.Models.Abstract
       /// <summary>
       ///     Name of the view
       /// </summary>
-      string Name { get; }
+      string Name { get; set; }
 
       /// <summary>
       ///     List of attributes (resulting columns) of the view
       /// </summary>
-      List<ISimpleAttribute> Attributes { get; }
+      List<ISimpleAttribute> Attributes { get; set; }
 
       /// <summary>
       ///     The Field Name

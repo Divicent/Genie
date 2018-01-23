@@ -12,7 +12,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 {
-    internal class RelationTemplate : GenieTemplate
+    public class RelationTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
         private readonly IEnum _enum;

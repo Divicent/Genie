@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class CustomPropertyTypeMapTemplate : GenieTemplate
+    public class CustomPropertyTypeMapTemplate : GenieTemplate
     {
         public CustomPropertyTypeMapTemplate(string path) : base(path)
         {

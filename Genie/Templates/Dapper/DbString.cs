@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Dapper
 {
-    internal class DbStringTemplate : GenieTemplate
+    public class DbStringTemplate : GenieTemplate
     {
         public DbStringTemplate(string path) : base(path)
         {
