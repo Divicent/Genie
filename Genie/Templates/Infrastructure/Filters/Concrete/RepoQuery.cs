@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class RepoQueryTemplate : GenieTemplate
+    public class RepoQueryTemplate : GenieTemplate
     {
         public RepoQueryTemplate(string path) : base(path)
         {

@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class DateFilterTemplate : GenieTemplate
+    public class DateFilterTemplate : GenieTemplate
     {
         public DateFilterTemplate(string path) : base(path)
         {

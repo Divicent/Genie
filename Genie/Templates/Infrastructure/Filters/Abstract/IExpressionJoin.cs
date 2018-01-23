@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 {
-    internal class IExpressionJoinTemplate : GenieTemplate
+    public class IExpressionJoinTemplate : GenieTemplate
     {
         public IExpressionJoinTemplate(string path) : base(path)
         {

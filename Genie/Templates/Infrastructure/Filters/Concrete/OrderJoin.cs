@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class OrderJoinTemplate : GenieTemplate
+    public class OrderJoinTemplate : GenieTemplate
     {
         public OrderJoinTemplate(string path) : base(path)
         {

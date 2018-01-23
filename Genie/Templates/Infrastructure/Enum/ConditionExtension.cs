@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Enum
 {
-    internal class ConditionExtensionTemplate : GenieTemplate
+    public class ConditionExtensionTemplate : GenieTemplate
     {
         public ConditionExtensionTemplate(string path) : base(path)
         {

@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class BaseFilterContextTemplate : GenieTemplate
+    public class BaseFilterContextTemplate : GenieTemplate
     {
         public BaseFilterContextTemplate(string path) : base(path)
         {

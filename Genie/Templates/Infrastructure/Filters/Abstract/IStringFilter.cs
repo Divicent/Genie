@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 {
-    internal class IStringFilterTemplate : GenieTemplate
+    public class IStringFilterTemplate : GenieTemplate
     {
         public IStringFilterTemplate(string path) : base(path)
         {

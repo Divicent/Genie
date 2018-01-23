@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class BoolFilterTemplate : GenieTemplate
+    public class BoolFilterTemplate : GenieTemplate
     {
         public BoolFilterTemplate(string path) : base(path)
         {

@@ -8,7 +8,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class QueryMakerTemplate : GenieTemplate
+    public class QueryMakerTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
 

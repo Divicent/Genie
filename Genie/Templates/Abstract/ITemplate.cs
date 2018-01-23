@@ -1,6 +1,6 @@
 namespace Genie.Core.Templates.Abstract
 {
-    internal interface ITemplate
+    public interface ITemplate
     {
         string Path { get; }
         string Generate();

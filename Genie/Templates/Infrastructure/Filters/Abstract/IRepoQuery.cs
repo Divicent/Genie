@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 {
-    internal class IRepoQueryTemplate : GenieTemplate
+    public class IRepoQueryTemplate : GenieTemplate
     {
         public IRepoQueryTemplate(string path) : base(path)
         {

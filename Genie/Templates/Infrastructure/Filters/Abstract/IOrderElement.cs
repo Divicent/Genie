@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 {
-    internal class IOrderElementTemplate : GenieTemplate
+    public class IOrderElementTemplate : GenieTemplate
     {
         public IOrderElementTemplate(string path) : base(path)
         {

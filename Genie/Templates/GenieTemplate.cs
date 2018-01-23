@@ -7,7 +7,7 @@ using Genie.Core.Templates.Abstract;
 
 namespace Genie.Core.Templates
 {
-    internal abstract class GenieTemplate : ITemplate
+    public abstract class GenieTemplate : ITemplate
     {
         private readonly StringBuilder _stringBuilder = new StringBuilder();
 

@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 {
-    internal class IOrderContextTemplate : GenieTemplate
+    public class IOrderContextTemplate : GenieTemplate
     {
         public IOrderContextTemplate(string path) : base(path)
         {

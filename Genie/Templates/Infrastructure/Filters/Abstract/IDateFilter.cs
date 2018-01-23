@@ -6,7 +6,7 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Abstract
 {
-    internal class IDateFilterTemplate : GenieTemplate
+    public class IDateFilterTemplate : GenieTemplate
     {
         public IDateFilterTemplate(string path) : base(path)
         {

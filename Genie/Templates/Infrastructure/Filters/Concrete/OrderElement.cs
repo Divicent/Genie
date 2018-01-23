@@ -9,7 +9,7 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure.Filters.Concrete
 {
-    internal class OrderElementTemplate : GenieTemplate
+    public class OrderElementTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
 
