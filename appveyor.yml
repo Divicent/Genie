@@ -1,4 +1,5 @@
 image: Visual Studio 2017
+
 before_build:
 - nuget restore
 - choco install opencover.portable
@@ -6,7 +7,5 @@ before_build:
 
 test_script:
 - cd Genie.Tests
-- echo 
-- dotnet build
 - OpenCover.Console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test ." -output:".\Coverage.xml" -oldstyle
 - codecov -f ".\Coverage.xml" -t 2a219bc0-2479-4e8b-8414-c81e89eee6aa
