@@ -45,12 +45,7 @@ namespace Genie.Tests.Core.Templates
 
         private static void TestForConfiguration(IConfiguration configuration)
         {
-            var schemaMock = new Mock<IDatabaseSchema>();
-            schemaMock.SetupProperty((s) => s.Procedures, new List<IStoredProcedure>());
-            schemaMock.SetupProperty((s) => s.Relations, new List<IRelation>());
-            schemaMock.SetupProperty((s) => s.Views, new List<IView>());
-            schemaMock.SetupProperty((s) => s.BaseNamespace, "testnamespace");
-            schemaMock.SetupProperty((s) => s.Enums, new List<IEnum>());
+
             
             
             var relationMock = new Mock<IRelation>();
@@ -128,6 +123,29 @@ namespace Genie.Tests.Core.Templates
             } });
 
             var view = viewMock.Object;
+
+            var enm = new Enum
+            {
+                Name = "Test",
+                Type = "int",
+                Values = new List<IEnumValue>
+                    {new EnumValue {FieldName = "_test1", Name = "Test1", Value = 1}}
+            };
+            
+            var schemaMock = new Mock<IDatabaseSchema>();
+            var procedure = new StoredProcedure
+            {
+                Name = "TestProcedure",
+                Parameters = new List<ProcedureParameter> { new ProcedureParameter { DataType = "string", Name = "Procedure", Position = 1}},
+                ParamString = "dsad",
+                PassString = "dsads",
+            };
+            schemaMock.SetupProperty((s) => s.Procedures, new List<IStoredProcedure> { procedure });
+            schemaMock.SetupProperty((s) => s.Relations, new List<IRelation> { relation });
+            schemaMock.SetupProperty((s) => s.Views, new List<IView> { view });
+            schemaMock.SetupProperty((s) => s.BaseNamespace, "testnamespace");
+            schemaMock.SetupProperty((s) => s.Enums, new List<IEnum> { enm });
+            
             var schema = schemaMock.Object;
             var files = new List<ITemplate>
             {
@@ -235,8 +253,7 @@ namespace Genie.Tests.Core.Templates
                 new TableAttributeTemplate(@"Dapper/TableAttribute"),
                 new WriteAttributeTemplate(@"Dapper/WriteAttribute"),
                 new IModelTemplate(@"SomePath", relation, configuration),
-                new RelationTemplate(@"Test", relation, new Enum { Name = "Test", Type = "int", Values = new List<IEnumValue> 
-                    { new EnumValue { FieldName = "_test1", Name = "Test1", Value = 1 } }}, configuration),
+                new RelationTemplate(@"Test", relation, enm, configuration),
                 new IModelQueryContextTemplate("C://", "Test"),
                 new IModelFilterContextTemplate("C://", "name", relation.Attributes.Cast<ISimpleAttribute>().ToList()),
                 new IModelOrderContextTemplate("C://", "name", relation.Attributes.Cast<ISimpleAttribute>().ToList()),

@@ -7,7 +7,7 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Models.Concrete
 {
-    internal class StoredProcedure : IStoredProcedure
+    public class StoredProcedure : IStoredProcedure
     {
         public string Name { get; set; }
         public string PassString { get; set; }
