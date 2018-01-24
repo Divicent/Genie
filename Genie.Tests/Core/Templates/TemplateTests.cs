@@ -30,7 +30,20 @@ namespace Genie.Tests.Core.Templates
         [Fact]
         public void TestTemplates()
         {
-            var configuration = new Mock<IConfiguration>().Object;
+            var mssqlMock = new Mock<IConfiguration>();
+            mssqlMock.SetupProperty((s) => s.DBMS, "mssql");
+            mssqlMock.SetupProperty((s) => s.Core, false);
+            
+            var mysqlCoreMock = new Mock<IConfiguration>();
+            mysqlCoreMock.SetupProperty((s) => s.DBMS, "mysql");
+            mysqlCoreMock.SetupProperty((s) => s.Core, true);
+            
+            TestForConfiguration(mssqlMock.Object);
+            TestForConfiguration(mysqlCoreMock.Object);
+        }
+
+        private static void TestForConfiguration(IConfiguration configuration)
+        {
             var schemaMock = new Mock<IDatabaseSchema>();
             schemaMock.SetupProperty((s) => s.Procedures, new List<IStoredProcedure>());
             schemaMock.SetupProperty((s) => s.Relations, new List<IRelation>());

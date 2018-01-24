@@ -53,7 +53,7 @@ namespace Genie.Core.Base.Configuration.Abstract
       /// <summary>
       ///     Is for a core environment (.net core)
       /// </summary>
-      bool Core { get; }
+      bool Core { get; set; }
 
       /// <summary>
       ///     List of enum table definitions
@@ -63,7 +63,7 @@ namespace Genie.Core.Base.Configuration.Abstract
       /// <summary>
       ///     Name of the Database Management System
       /// </summary>
-      string DBMS { get; }
+      string DBMS { get; set; }
 
       /// <summary>
       ///     Default database schema name
