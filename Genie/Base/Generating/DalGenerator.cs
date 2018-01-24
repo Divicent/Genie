@@ -141,6 +141,7 @@ namespace Genie.Core.Base.Generating
                             new SqlMapper_DontMapTemplate(@"Dapper/SqlMapper.DontMap"),
                             new SqlMapper_DeserializerStateTemplate(@"Dapper/SqlMapper.DeserializerState"),
                             new SqlMapper_DapperTableTemplate(@"Dapper/SqlMapper.DapperTable"),
+                            new SqlMapper_DapperRowTemplate("@Dapper/SqlMapper.DapperRow"),
                             new SqlMapper_DapperRowMetaObjectTemplate(@"Dapper/SqlMapper.DapperRowMetaObject"),
                             new SqlMapper_CacheInfoTemplate(@"Dapper/SqlMapper.CacheInfo"),
                             new SqlDataRecordListTVPParameterTemplate(@"Dapper/SqlDataRecordListTVPParameter"),
