@@ -16,6 +16,7 @@ using Genie.Core.Templates.Infrastructure.Enum;
 using Genie.Core.Templates.Infrastructure.Filters.Abstract;
 using Genie.Core.Templates.Infrastructure.Filters.Concrete;
 using Genie.Core.Templates.Infrastructure.Interfaces;
+using Genie.Core.Templates.Infrastructure.Models.Abstract;
 using Genie.Core.Templates.Infrastructure.Models.Abstract.Context;
 using Genie.Core.Templates.Infrastructure.Models.Concrete;
 using Genie.Core.Templates.Infrastructure.Models.Concrete.Context;
@@ -56,6 +57,16 @@ namespace Genie.Tests.Core.Templates
             relationMock.SetupProperty((s) => s.Name, "Test");
             relationMock.SetupProperty((s) => s.Comment, "Test");
             relationMock.SetupProperty((s) => s.FieldName, "Test");
+
+            var attr = new Attribute
+            {
+                Comment = "Test1",
+                DataType = "int",
+                IsIdentity = false,
+                IsKey = false,
+                IsLiteralType = false,
+                Name = "SomeName2"
+            };
             relationMock.SetupProperty((s) => s.Attributes, new List<IAttribute> { new Attribute
             {
                 Comment = "Test", 
@@ -64,9 +75,41 @@ namespace Genie.Tests.Core.Templates
                 IsKey = true, 
                 IsLiteralType = true, 
                 Name = "SomeName"
-            } });
-            relationMock.SetupProperty((s) => s.ForeignKeyAttributes,  new EditableList<IForeignKeyAttribute>());
-            relationMock.SetupProperty((s) => s.ReferenceLists,  new List<IReferenceList>());
+            },
+               attr,
+                new Attribute {
+                    Comment = "Test2", 
+                    DataType = "double?", 
+                    IsIdentity = false, 
+                    IsKey = false, 
+                    IsLiteralType = false, 
+                    Name = "SomeName2"
+                },
+                new Attribute {
+                    Comment = "TestDate", 
+                    DataType = "DateTime", 
+                    IsIdentity = false, 
+                    IsKey = false, 
+                    IsLiteralType = false, 
+                    Name = "TestData"
+                },
+                new Attribute {
+                    Comment = "TestBool", 
+                    DataType = "bool", 
+                    IsIdentity = false, 
+                    IsKey = false, 
+                    IsLiteralType = false, 
+                    Name = "TestBool"
+                }
+            });
+            relationMock.SetupProperty((s) => s.ForeignKeyAttributes,  new List<IForeignKeyAttribute> 
+                { new ForeignKeyAttribute 
+                    { ReferencingRelationName = "test", 
+                        ReferencingNonForeignKeyAttribute = attr, ReferencingTableColumnName = "ID"} });
+            relationMock.SetupProperty((s) => s.ReferenceLists,  new List<IReferenceList>
+            {
+                new ReferenceList { ReferencedPropertyName = "ID", ReferencedPropertyOnThisRelation =  "Test1", ReferencedRelationName =  "Test"}
+            });
 
             var relation = relationMock.Object;
             
@@ -191,7 +234,9 @@ namespace Genie.Tests.Core.Templates
                 new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
                 new TableAttributeTemplate(@"Dapper/TableAttribute"),
                 new WriteAttributeTemplate(@"Dapper/WriteAttribute"),
-                new RelationTemplate(@"Test", relation, null, configuration),
+                new IModelTemplate(@"SomePath", relation, configuration),
+                new RelationTemplate(@"Test", relation, new Enum { Name = "Test", Type = "int", Values = new List<IEnumValue> 
+                    { new EnumValue { FieldName = "_test1", Name = "Test1", Value = 1 } }}, configuration),
                 new IModelQueryContextTemplate("C://", "Test"),
                 new IModelFilterContextTemplate("C://", "name", relation.Attributes.Cast<ISimpleAttribute>().ToList()),
                 new IModelOrderContextTemplate("C://", "name", relation.Attributes.Cast<ISimpleAttribute>().ToList()),

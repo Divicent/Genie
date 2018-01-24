@@ -31,8 +31,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
                     ? $@"
         /// <para>{atd.Comment}</para>"
                     : "";
-                props.AppendLine($@"		/// <summary>
-{commentStr}
+                props.AppendLine($@"		/// <summary>{commentStr}
 		///  Apply order by on {atd.Name} attribute . this order by expression will be preserved within entire query context
 		/// </summary>");
 

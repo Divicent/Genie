@@ -127,6 +127,11 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                     entity.ActionsToRunWhenAdding.Add(new AddAction(i => {{ {atd.ReferencingNonForeignKeyAttribute.Name
                     } = (({atd.ReferencingRelationName}) i).{atd.ReferencingTableColumnName}; }}, entity));
                     break;
+                case ModelStatus.JustInMemory:
+	            case ModelStatus.Deleted:
+		            break;
+	            default:
+		            break;
             }}
         }}");
             }
@@ -134,11 +139,20 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             var referenceLists = new StringBuilder();
             foreach (var list in entity.ReferenceLists)
                 referenceLists.AppendLine(
-                    $@"		public IReferencedEntityCollection<{list.ReferencedRelationName}> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
+                    $@"
+		public IReferencedEntityCollection<{list.ReferencedRelationName}> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
                             list.ReferencedRelationName
                         }>(DatabaseUnitOfWork.{list.ReferencedRelationName}Repository.Get().Where.{
                             list.ReferencedPropertyName
                         }.EqualsTo({list.ReferencedPropertyOnThisRelation}).Filter().Query(transaction), (i) => {{ (({
+                            list.ReferencedRelationName
+                        })i).{list.ReferencedPropertyName} = {list.ReferencedPropertyOnThisRelation};}}, this); }}
+                    
+		public async Task<IReferencedEntityCollection<{list.ReferencedRelationName}>> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}Async(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
+                            list.ReferencedRelationName
+                        }>(await DatabaseUnitOfWork.{list.ReferencedRelationName}Repository.Get().Where.{
+                            list.ReferencedPropertyName
+                        }.EqualsTo({list.ReferencedPropertyOnThisRelation}).Filter().QueryAsync(transaction), (i) => {{ (({
                             list.ReferencedRelationName
                         })i).{list.ReferencedPropertyName} = {list.ReferencedPropertyOnThisRelation};}}, this); }}");
 

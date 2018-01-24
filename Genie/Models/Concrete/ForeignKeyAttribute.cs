@@ -6,7 +6,7 @@ using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Models.Concrete
 {
-    internal class ForeignKeyAttribute : IForeignKeyAttribute
+    public class ForeignKeyAttribute : IForeignKeyAttribute
     {
         public IAttribute ReferencingNonForeignKeyAttribute { get; set; }
 
