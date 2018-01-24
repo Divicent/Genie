@@ -1,8 +1,9 @@
+
 #region Usings
 
-#endregion
-
 using Genie.Core.Base.Generating;
+
+#endregion
 
 namespace Genie.Core.Templates.Dapper
 {
@@ -20,7 +21,7 @@ using System.Data;
 
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
-    public class WrappedReader : IWrappedDataReader
+    internal class WrappedReader : IWrappedDataReader
     {{
         private IDataReader reader;
         private IDbCommand cmd;

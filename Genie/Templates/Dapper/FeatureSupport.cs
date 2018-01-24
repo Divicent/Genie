@@ -1,8 +1,9 @@
+
 #region Usings
 
-#endregion
-
 using Genie.Core.Base.Generating;
+
+#endregion
 
 namespace Genie.Core.Templates.Dapper
 {
@@ -23,7 +24,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
     /// <summary>
     /// Handles variances in features per DBMS
     /// </summary>
-    public class FeatureSupport
+    internal class FeatureSupport
     {{
         private static readonly FeatureSupport
             Default = new FeatureSupport(false),

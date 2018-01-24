@@ -1,8 +1,9 @@
+
 #region Usings
 
-#endregion
-
 using Genie.Core.Base.Generating;
+
+#endregion
 
 namespace Genie.Core.Templates.Dapper
 {
