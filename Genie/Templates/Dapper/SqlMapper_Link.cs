@@ -1,8 +1,9 @@
+
 #region Usings
 
-#endregion
-
 using Genie.Core.Base.Generating;
+
+#endregion
 
 namespace Genie.Core.Templates.Dapper
 {
@@ -28,7 +29,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// </summary>
         /// <typeparam name=""TKey"">The type to cache.</typeparam>
         /// <typeparam name=""TValue"">The value type of the cache.</typeparam>
-        public class Link<TKey, TValue> where TKey : class
+        internal class Link<TKey, TValue> where TKey : class
         {{
             public static bool TryGet(Link<TKey, TValue> link, TKey key, out TValue value)
             {{

@@ -64,7 +64,7 @@ namespace Genie.Core.Templates.Infrastructure
                         } {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
             }
 
-            var usingDapper = _configuration.NoDapper ? "using Dapper;\n" : $"{GenerationContext.BaseNamespace}.Dapper";
+            var usingDapper = _configuration.NoDapper ? "using Dapper;\n" : $"using {GenerationContext.BaseNamespace}.Dapper;\n";
 
             L($@"
 
