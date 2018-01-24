@@ -40,8 +40,8 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
                 columnNames.Append($"{(!firstColumn ? ", " : "")}\"{a.Name}\"");
                 firstColumn = false;
                 cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
-				propertyName = ""{a.Name}"";
-				return true;");
+					propertyName = ""{a.Name}"";
+					return true;");
             }
 
             foreach (var a in nonLit)
@@ -49,8 +49,8 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
                 columnNames.Append($"{(!firstColumn ? ", " : "")}\"{a.Name}\"");
                 firstColumn = false;
                 cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
-				propertyName = ""{a.Name}"";
-				return false;");
+					propertyName = ""{a.Name}"";
+					return false;");
             }
 
             L($@"
@@ -71,6 +71,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 		private I{_name}FilterContext _where; 
 	    private I{_name}OrderContext _order;
 		private readonly I{_name}Repository _repo;
+		private readonly string[] _columnNames = {{ {columnNames} }};
 
         public I{_name}QueryContext Page(int pageSize, int page)
         {{
@@ -164,7 +165,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 	            Skip = _skip,
 	            Take = _take,
 	            Transaction = transaction,
-                Columns = new [] {{ {columnNames} }}
+                Columns = _columnNames
 	        }};
 	    }}
 
