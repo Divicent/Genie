@@ -82,8 +82,6 @@ namespace Genie.Core.Base.Configuration.Concrete
                     }
 
             if (error.Length > 0) throw new GenieException(error.ToString());
-
-            if (Core) NoDapper = true;
         }
 
         public void Setup()
