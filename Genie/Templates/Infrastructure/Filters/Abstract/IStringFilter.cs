@@ -107,14 +107,14 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract
         IExpressionJoin<T, TQ> IsNotNull();
         
         /// <summary>
-        /// Adds an expression to the query to accept items where the current attribute's value is in the <paramref name=""value""/> array
+        /// Adds an expression to the query to accept items where the current attribute's value is in the <paramref name=""items""/> array
         /// </summary>
         /// <param name=""items"">Values to check</param>
         /// <returns>A join to continue the query</returns>
         IExpressionJoin<T, TQ> In(params string[] items);
         
         /// <summary>
-        /// Adds an expression to the query to accept items where the current attribute's value is not in the <paramref name=""value""/> array
+        /// Adds an expression to the query to accept items where the current attribute's value is not in the <paramref name=""items""/> array
         /// </summary>
         /// <param name=""items"">Values to check</param>
         /// <returns>A join to continue the query</returns>

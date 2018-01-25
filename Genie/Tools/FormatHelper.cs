@@ -66,12 +66,14 @@ namespace Genie.Core.Tools
                 container.SqlClientNamespace = "MySql.Data.MySqlClient";
                 container.SqlConnectionClassName = "MySqlConnection";
                 container.StoredProcedureCallString = "CALL";
+                container.DataNamespace = "MySql.Data";
             }
-            else if (configuration.DBMS == "mssql")
+            else
             {
                 container.SqlClientNamespace = "System.Data.SqlClient";
                 container.SqlConnectionClassName = "SqlConnection";
                 container.StoredProcedureCallString = "EXEC";
+                container.DataNamespace = "System.Data";
             }
 
             return _containers[configuration.DBMS] = container;

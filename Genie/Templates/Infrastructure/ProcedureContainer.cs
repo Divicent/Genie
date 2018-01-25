@@ -34,34 +34,17 @@ namespace Genie.Core.Templates.Infrastructure
             foreach (var sp in _schema.Procedures)
             {
                 spList.AppendLine(
-                    $@"		public IEnumerable<T> {sp.Name}_List<T>({sp.ParamString}) {{ return QueryList<T>(""{
-                            parts.StoredProcedureCallString
-                        } {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public IEnumerable<T> {sp.Name}_List<T>({sp.ParamString}) {{ return QueryList<T>(""{_configuration.Schema}.{sp.Name}"", new {sp.PassString}); }}");
                 spSingle.AppendLine(
-                    $@"		public T {sp.Name}_Single<T>({sp.ParamString}) {{ return QuerySingle<T>(""{
-                            parts.StoredProcedureCallString
-                        } {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public T {sp.Name}_Single<T>({sp.ParamString}) {{ return QuerySingle<T>(""{_configuration.Schema}.{sp.Name}"", new {sp.PassString}); }}");
                 spVoid.AppendLine(
-                    $@"		public void {sp.Name}_Void({sp.ParamString}) {{ Execute(""{parts.StoredProcedureCallString} {
-                            quote(_configuration.Schema)
-                        }.{quote(sp.Name)} {sp.PassString};""); }}");
-
+                    $@"		public void {sp.Name}_Void({sp.ParamString}) {{ Execute(""{_configuration.Schema}.{sp.Name}"", new {sp.PassString}); }}");
                 spList.AppendLine(
-                    $@"		public async Task<IEnumerable<T>> {sp.Name}_ListAsync<T>({
-                            sp.ParamString
-                        }) {{ return await QueryListAsync<T>(""{parts.StoredProcedureCallString} {
-                            quote(_configuration.Schema)
-                        }.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public async Task<IEnumerable<T>> {sp.Name}_ListAsync<T>({sp.ParamString}) {{ return await QueryListAsync<T>(""{_configuration.Schema}.{sp.Name}"",  new {sp.PassString}); }}");
                 spSingle.AppendLine(
-                    $@"		public async Task<T> {sp.Name}_SingleAsync<T>({
-                            sp.ParamString
-                        }) {{ return await QuerySingleAsync<T>(""{parts.StoredProcedureCallString} {
-                            quote(_configuration.Schema)
-                        }.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public async Task<T> {sp.Name}_SingleAsync<T>({sp.ParamString}) {{ return await QuerySingleAsync<T>(""{_configuration.Schema}.{sp.Name}"", new {sp.PassString}); }}");
                 spVoid.AppendLine(
-                    $@"		public async Task {sp.Name}_VoidAsync({sp.ParamString}) {{ await ExecuteAsync(""{
-                            parts.StoredProcedureCallString
-                        } {quote(_configuration.Schema)}.{quote(sp.Name)} {sp.PassString};""); }}");
+                    $@"		public async Task {sp.Name}_VoidAsync({sp.ParamString}) {{ await ExecuteAsync(""{_configuration.Schema}.{sp.Name}"", new {sp.PassString}); }}");
             }
 
             var usingDapper = _configuration.NoDapper ? "using Dapper;\n" : $"using {GenerationContext.BaseNamespace}.Dapper;\n";
@@ -69,6 +52,7 @@ namespace Genie.Core.Templates.Infrastructure
             L($@"
 
 using System;
+using {parts.DataNamespace};
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,60 +70,63 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 		    Context = context;
 		}}
 
-
-		private void Execute(string query) 
+		private {parts.SqlConnectionClassName} GetConnection()
 		{{
-			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
+			return new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString);
+		}}
+
+		private void Execute(string  name, object parameters) 
+		{{
+			using(var connection = GetConnection())
 			{{
 				connection.Open();
-				connection.Execute(query);
+				connection.Execute(name, parameters, commandType: CommandType.StoredProcedure);
+			}}
+		}}
+
+		private T QuerySingle<T>(string  name, object parameters) 
+		{{
+			using(var connection = GetConnection())
+			{{
+				connection.Open();
+				return connection.QueryFirstOrDefault<T>(name, parameters, commandType: CommandType.StoredProcedure);
+			}}
+		}}
+
+		private IEnumerable<T> QueryList<T>(string  name, object parameters) 
+		{{
+			using(var connection = GetConnection())
+			{{
+				connection.Open();
+				return connection.Query<T>(name, parameters, commandType: CommandType.StoredProcedure);
+			}}
+		}}
+
+		private async Task ExecuteAsync(string  name, object parameters) 
+		{{
+			using(var connection = GetConnection())
+			{{
+				connection.Open();
+				await connection.ExecuteAsync(name, parameters, commandType: CommandType.StoredProcedure);
 				connection.Close();
 			}}
 		}}
 
-		private T QuerySingle<T>(string query) 
+		private async Task<T> QuerySingleAsync<T>(string  name, object parameters) 
 		{{
-			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
+			using(var connection = GetConnection())
 			{{
 				connection.Open();
-				return connection.QueryFirstOrDefault<T>(query);
+				return await connection.QueryFirstOrDefaultAsync<T>(name, parameters, commandType: CommandType.StoredProcedure);
 			}}
 		}}
 
-		private IEnumerable<T> QueryList<T>(string query) 
+		private async Task<IEnumerable<T>> QueryListAsync<T>(string  name, object parameters) 
 		{{
-			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
+			using(var connection = GetConnection())
 			{{
 				connection.Open();
-				return connection.Query<T>(query);
-			}}
-		}}
-
-		private async Task ExecuteAsync(string query) 
-		{{
-			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
-			{{
-				connection.Open();
-				await connection.ExecuteAsync(query);
-				connection.Close();
-			}}
-		}}
-
-		private async Task<T> QuerySingleAsync<T>(string query) 
-		{{
-			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
-			{{
-				connection.Open();
-				return await connection.QueryFirstOrDefaultAsync<T>(query);
-			}}
-		}}
-
-		private async Task<IEnumerable<T>> QueryListAsync<T>(string query) 
-		{{
-			using(var connection = new {parts.SqlConnectionClassName}(Context.Connection.ConnectionString))
-			{{
-				connection.Open();
-				return await connection.QueryAsync<T>(query);
+				return await connection.QueryAsync<T>(name, parameters, commandType: CommandType.StoredProcedure);
 			}}
 		}}
 

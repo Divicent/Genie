@@ -24,16 +24,11 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
             {
                 var parametersCommentBuilder = new StringBuilder();
                 foreach (var parameter in sp.Parameters)
-                    parametersCommentBuilder.AppendLine(
-                        $@"        /// <param name=""{
-                                parameter.Name.Replace("@", "")
-                            }"">Value to pass to the procedure's parameter '{
-                                parameter.Name.Replace("@", "")
-                            }'</param>");
+                    parametersCommentBuilder.Append(
+                       "\n" + $@"        /// <param name=""{parameter.Name.Replace("@", "")}"">Value to pass to the procedure's parameter '{parameter.Name.Replace("@", "")}'</param>");
                 sps.AppendLine($@"
         /// <summary>
-        /// This will execute {sp.Name} and try to map the result to a <typeparamref name=""T""/> collection
-{parametersCommentBuilder}
+        /// This will execute {sp.Name} and try to map the result to a <typeparamref name=""T""/> collection{parametersCommentBuilder}
         /// <returns>Collection of <typeparamref name=""T""/> </returns>
 		IEnumerable<T> {sp.Name}_List<T>({sp.ParamString});
 ");
@@ -41,25 +36,20 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
         /// <summary>
         /// This will execute {sp.Name} and try to map map the result as <typeparamref name=""T""/>
         /// </summary>
-        /// <typeparam name=""T"">Type to map the result</typeparam>
-{parametersCommentBuilder}
+        /// <typeparam name=""T"">Type to map the result</typeparam>{parametersCommentBuilder}
         /// <returns>Procedure result as <typeparamref name=""T""/></returns>
 		T {sp.Name}_Single<T>({sp.ParamString});
 ");
                 sps.AppendLine($@"
         /// <summary>
-        /// This will execute {sp.Name} and will not expect a result
-{parametersCommentBuilder}
+        /// This will execute {sp.Name} and will not expect a result{parametersCommentBuilder}
         /// </summary>
 		void {sp.Name}_Void({sp.ParamString});
 ");
 
                 sps.AppendLine($@"
         /// <summary>
-        /// This will execute {
-                        sp.Name
-                    } asynchronously and try to map the result to a <typeparamref name=""T""/> collection
-{parametersCommentBuilder}
+        /// This will execute {sp.Name} asynchronously and try to map the result to a <typeparamref name=""T""/> collection{parametersCommentBuilder}
         /// <returns>Collection of <typeparamref name=""T""/> </returns>
 		Task<IEnumerable<T>> {sp.Name}_ListAsync<T>({sp.ParamString});
 ");
@@ -67,15 +57,13 @@ namespace Genie.Core.Templates.Infrastructure.Interfaces
         /// <summary>
         /// This will execute {sp.Name} asynchronously and try to map map the result as <typeparamref name=""T""/>
         /// </summary>
-        /// <typeparam name=""T"">Type to map the result</typeparam>
-{parametersCommentBuilder}
+        /// <typeparam name=""T"">Type to map the result</typeparam>{parametersCommentBuilder}
         /// <returns>Procedure result as <typeparamref name=""T""/></returns>
 		Task<T> {sp.Name}_SingleAsync<T>({sp.ParamString});
 ");
                 sps.AppendLine($@"
         /// <summary>
-        /// This will execute {sp.Name} asynchronously and will not expect a result
-{parametersCommentBuilder}
+        /// This will execute {sp.Name} asynchronously and will not expect a result{parametersCommentBuilder}
         /// </summary>
 		Task {sp.Name}_VoidAsync({sp.ParamString});
 ");
