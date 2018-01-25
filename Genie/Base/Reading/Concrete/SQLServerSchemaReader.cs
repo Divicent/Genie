@@ -39,12 +39,11 @@ namespace Genie.Core.Base.Reading.Concrete
             var parameterString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
                                                                                                $"{CommonTools.GetCSharpDataType(param.DataType, true)} {param.Name.Replace("@", "")} = null" +
                                                                                                ",");
-            var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => current +
-                                                                                                   $"{param.Name} = \"+({param.Name.Replace("@", "")} == null ? \"NULL\" : \"'\" + {param.Name.Replace("@", "")} + \"'\")+\"" +
-                                                                                                   ",");
+            var parameterPassString = storedProcedure.Parameters.Aggregate("", (current, param) => 
+                $"{current} {param.Name.Replace("@", "")},");
 
             storedProcedure.ParamString = parameterString.TrimEnd(',');
-            storedProcedure.PassString = parameterPassString.TrimEnd(',');
+            storedProcedure.PassString = $"{{ {parameterPassString.TrimEnd(',')} }}" ;
         }
 
         protected override DatabaseSchemaColumn ReadColumn(IDataReader reader)

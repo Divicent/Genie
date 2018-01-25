@@ -5,9 +5,8 @@ namespace Genie.Core.Models.Concrete
     public class TemplatePartsContainer : ITemplatePartsContainer
     {
         public string SqlClientNamespace { get; set; }
-
         public string SqlConnectionClassName { get; set; }
-
         public string StoredProcedureCallString { get; set; }
+        public string DataNamespace { get; set; }
     }
 }
