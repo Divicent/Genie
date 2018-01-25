@@ -55,6 +55,11 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Collections.Concrete
                         _creator.ActionsToRunWhenAdding = new List<IAddAction>();
                     _creator.ActionsToRunWhenAdding.Add(new AddAction(_addAction, entityToAdd));
                     break;
+                case ModelStatus.JustInMemory:
+                case ModelStatus.Deleted:
+                    break;
+                default:
+                    break;
             }}    
 			_collection.Add(entityToAdd);
 		}}

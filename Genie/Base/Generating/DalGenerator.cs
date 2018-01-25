@@ -17,7 +17,6 @@ using Genie.Core.Templates.Infrastructure.Actions.Abstract;
 using Genie.Core.Templates.Infrastructure.Actions.Concrete;
 using Genie.Core.Templates.Infrastructure.Collections.Abstract;
 using Genie.Core.Templates.Infrastructure.Collections.Concrete;
-using Genie.Core.Templates.Infrastructure.Enum;
 using Genie.Core.Templates.Infrastructure.Filters.Abstract;
 using Genie.Core.Templates.Infrastructure.Filters.Concrete;
 using Genie.Core.Templates.Infrastructure.Interfaces;
@@ -48,7 +47,6 @@ namespace Genie.Core.Base.Generating
             {
                 files = new List<ITemplate>
                 {
-                    new ConditionExtensionTemplate(@"Infrastructure/Enum/ConditionExtension"),
                     new IBoolFilterTemplate(@"Infrastructure/Filters/Abstract/IBoolFilter"),
                     new IDateFilterTemplate(@"Infrastructure/Filters/Abstract/IDateFilter"),
                     new IExpressionJoinTemplate(@"Infrastructure/Filters/Abstract/IExpressionJoin"),

@@ -29,16 +29,16 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             foreach (var relation in _schema.Relations)
             {
                 relations.AppendLine($@"
-      /// <summary>
-      /// An API to access data of the data source {relation.Name}
-      /// </summary>
+        /// <summary>
+        /// An API to access data of the data source {relation.Name}
+        /// </summary>
 	    public interface I{relation.Name}Repository : IRepository<{relation.Name}>
 	    {{
-          /// <summary>
-          /// Get a new query context to query the data source
-          /// </summary>
-          /// <returns>A query context</returns>
-		      I{relation.Name}QueryContext Get();");
+            /// <summary>
+            /// Get a new query context to query the data source
+            /// </summary>
+            /// <returns>A query context</returns>
+		    I{relation.Name}QueryContext Get();");
                 var keys = relation.Attributes.Where(a => a.IsKey).ToList();
                 var keyString = "";
                 var keyCommentString = "";
@@ -69,17 +69,13 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
 
 
                 relationsImpl.AppendLine(
-                    $@"	    internal class {relation.Name}Repository : Repository<{relation.Name}> , I{
-                            relation.Name
-                        }Repository
+                    $@"	    internal class {relation.Name}Repository : Repository<{relation.Name}> , I{relation.Name}Repository
 	    {{
-            internal {
-                            relation.Name
-                        }Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+            internal {relation.Name}Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
             {{
             }}
 
-		        public I{relation.Name}QueryContext Get() {{ return new {relation.Name}QueryContext(this); }}
+		    public I{relation.Name}QueryContext Get() {{ return new {relation.Name}QueryContext(this); }}
 
 ");
                 if (keys.Count > 0)
@@ -87,10 +83,11 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
                     var str = keys.Aggregate("", (c, n) => c + ".And." + n.Name + ".EqualsTo(" + n.Name.ToLower() + ")")
                         .TrimStart('.').TrimStart('A').TrimStart('n').TrimStart('d');
                     relationsImpl.AppendLine($@"            public {relation.Name} GetByKey({keyString})
-            {{
+		    {{
                 return Get().Where
                     {str}.Filter().FirstOrDefault();
-            }}");
+            }}
+");
 
 
                     relationsImpl.AppendLine(
@@ -98,7 +95,8 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             {{
                 return await Get().Where
                     {str}.Filter().FirstOrDefaultAsync();
-            }}");
+            }}
+");
                 }
 
                 relationsImpl.AppendLine($@"	    }}");
@@ -107,16 +105,16 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             foreach (var view in _schema.Views)
             {
                 views.AppendLine($@"
-      /// <summary>
-      /// A read only API to access data of the data source {view.Name}
-      /// </summary>
+        /// <summary>
+        /// A read only API to access data of the data source {view.Name}
+        /// </summary>
 	    public interface I{view.Name}Repository : IReadOnlyRepository<{view.Name}>
 	    {{
-          /// <summary>
-          /// Get a new query context to query the data source
-          /// </summary>
-          /// <returns>A query context</returns>
-		      I{view.Name}QueryContext Get();
+            /// <summary>
+            /// Get a new query context to query the data source
+            /// </summary>
+            /// <returns>A query context</returns>
+		    I{view.Name}QueryContext Get();
 	    }}");
 
                 viewImpl.AppendLine(
