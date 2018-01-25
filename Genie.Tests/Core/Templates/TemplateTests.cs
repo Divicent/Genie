@@ -60,41 +60,54 @@ namespace Genie.Tests.Core.Templates
                 IsLiteralType = false,
                 Name = "SomeName2"
             };
-            relationMock.SetupProperty((s) => s.Attributes, new List<IAttribute> { new Attribute
+
+            var relationAttributes = new List<IAttribute>
             {
-                Comment = "Test", 
-                DataType = "string", 
-                IsIdentity = true, 
-                IsKey = true, 
-                IsLiteralType = true, 
-                Name = "SomeName"
-            },
-               attr,
-                new Attribute {
-                    Comment = "Test2", 
-                    DataType = "double?", 
-                    IsIdentity = false, 
-                    IsKey = false, 
-                    IsLiteralType = false, 
+                new Attribute
+                {
+                    Comment = "Test",
+                    DataType = "string",
+                    IsIdentity = true,
+                    IsKey = true,
+                    IsLiteralType = true,
+                    Name = "SomeName"
+                },
+                attr,
+                new Attribute
+                {
+                    Comment = "Test2",
+                    DataType = "double?",
+                    IsIdentity = false,
+                    IsKey = false,
+                    IsLiteralType = false,
                     Name = "SomeName2"
                 },
-                new Attribute {
-                    Comment = "TestDate", 
-                    DataType = "DateTime", 
-                    IsIdentity = false, 
-                    IsKey = false, 
-                    IsLiteralType = false, 
+                new Attribute
+                {
+                    Comment = "TestDate",
+                    DataType = "DateTime",
+                    IsIdentity = false,
+                    IsKey = false,
+                    IsLiteralType = false,
                     Name = "TestData"
                 },
-                new Attribute {
-                    Comment = "TestBool", 
-                    DataType = "bool", 
-                    IsIdentity = false, 
-                    IsKey = false, 
-                    IsLiteralType = false, 
+                new Attribute
+                {
+                    Comment = "TestBool",
+                    DataType = "bool",
+                    IsIdentity = false,
+                    IsKey = false,
+                    IsLiteralType = false,
                     Name = "TestBool"
                 }
-            });
+            };
+            
+            
+            
+            relationMock.SetupProperty((s) => s.Attributes, relationAttributes);
+            relationMock.Setup(r => r.GetAttributes())
+                .Returns(relationAttributes);
+
             relationMock.SetupProperty((s) => s.ForeignKeyAttributes,  new List<IForeignKeyAttribute> 
                 { new ForeignKeyAttribute 
                     { ReferencingRelationName = "test", 
