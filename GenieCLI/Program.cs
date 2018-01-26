@@ -50,14 +50,21 @@ https://rusith.github.io/Genie
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(result.Error);
                 Console.ResetColor();
-                Console.ReadKey();
+                try
+                {
+                    Console.ReadKey();
+                }
+                catch { /* ignored */ }
             }
             else if (!args.Contains("-y"))
             {
                 Console.WriteLine("Done!");
-                Console.ReadKey();
+                try
+                {
+                    Console.ReadKey();
+                }
+                catch { /* ignored */ }
             }
-            
         }
     }
 }
