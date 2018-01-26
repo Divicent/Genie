@@ -9,7 +9,7 @@ namespace Genie.Tests.GenieCLI
         [Fact]
         public void TesProgram()
         {
-            Program.Main(new string[] {});
+            Program.Main(new string[] { "-y" });
         }
     }
 }
