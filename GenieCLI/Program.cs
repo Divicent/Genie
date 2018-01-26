@@ -28,6 +28,18 @@ namespace GenieCLI
             }
 
             var path = $"./{fileName}";
+            
+            Console.WriteLine(@"
+   ____                  _                       ____   _       ___ 
+  / ___|   ___   _ __   (_)   ___               / ___| | |     |_ _|
+ | |  _   / _ \ | '_ \  | |  / _ \    _____    | |     | |      | | 
+ | |_| | |  __/ | | | | | | |  __/   |_____|   | |___  | |___   | | 
+  \____|  \___| |_| |_| |_|  \___|              \____| |_____| |___|
+
+                             Data Access Layer Generator
+
+https://rusith.github.io/Genie                      
+                                                               ");
 
             var result = args.Contains("-s") ? Genie.Core.Base.Genie.Generate(path) :
                 Genie.Core.Base.Genie.Generate(path, output);
