@@ -9,7 +9,7 @@
 
 ### Data Access Layer Generator
 
-Genie is a cross platform .Net library that can generate a data access layer for any .Net or .Net Core system using a relational database.
+Genie is a cross platform .Net Application that can generate a data access layer for any .Net system using a relational database.
 
 Genie is written in C# for .Net core framework
 
