@@ -15,7 +15,7 @@ namespace Genie.Core.Tools
     /// </summary>
     public static class FormatHelper
     {
-        private static readonly Dictionary<string, ITemplatePartsContainer> _containers =
+        private static readonly Dictionary<string, ITemplatePartsContainer> Containers =
             new Dictionary<string, ITemplatePartsContainer>();
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Genie.Core.Tools
                     StoredProcedureCallString = ""
                 };
 
-            if (_containers.TryGetValue(configuration.DBMS, out _)) return _containers[configuration.DBMS];
+            if (Containers.TryGetValue(configuration.DBMS, out _)) return Containers[configuration.DBMS];
 
             var container = new TemplatePartsContainer();
 
@@ -66,17 +66,15 @@ namespace Genie.Core.Tools
                 container.SqlClientNamespace = "MySql.Data.MySqlClient";
                 container.SqlConnectionClassName = "MySqlConnection";
                 container.StoredProcedureCallString = "CALL";
-                container.DataNamespace = "MySql.Data";
             }
             else
             {
                 container.SqlClientNamespace = "System.Data.SqlClient";
                 container.SqlConnectionClassName = "SqlConnection";
                 container.StoredProcedureCallString = "EXEC";
-                container.DataNamespace = "System.Data";
             }
 
-            return _containers[configuration.DBMS] = container;
+            return Containers[configuration.DBMS] = container;
         }
     }
 }

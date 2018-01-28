@@ -73,14 +73,14 @@ namespace Genie.Core.Base.Generating
                     new StringFilterTemplate(@"Infrastructure/Filters/Concrete/StringFilter"),
 
                     new RepositoryImplementationTemplate(@"Infrastructure/Repositories/Repositories", schema),
-                    new IDapperContextTemplate(@"Infrastructure/Interfaces/IDapperContext"),
+                    new IDBContextTemplate(@"Infrastructure/Interfaces/IDBContext"),
                     new IRepositoryTemplate(@"Infrastructure/Interfaces/IRepository"),
                     new IUnitOfWorkTemplate(@"Infrastructure/Interfaces/IUnitOfWork", schema),
                     new IReadOnlyRepositoryTemplate(@"Infrastructure/Interfaces/IReadOnlyRepository"),
                     new IProcedureContainerTemplate(@"Infrastructure/Interfaces/IProcedureContainer", schema),
                     new IOperationTemplate(@"Infrastructure/Interfaces/IOperation"),
 
-                    new DapperContextTemplate(@"Infrastructure/DapperContext", configuration),
+                    new DBContextTemplate(@"Infrastructure/DBContext", configuration),
                     new RepositoryTemplate(@"Infrastructure/Repository"),
                     new UnitOfWorkTemplate(@"Infrastructure/UnitOfWork", schema),
                     new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository"),

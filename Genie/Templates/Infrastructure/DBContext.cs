@@ -9,11 +9,11 @@ using Genie.Core.Tools;
 
 namespace Genie.Core.Templates.Infrastructure
 {
-    public class DapperContextTemplate : GenieTemplate
+    public class DBContextTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
 
-        public DapperContextTemplate(string path, IConfiguration configuration) : base(path)
+        public DBContextTemplate(string path, IConfiguration configuration) : base(path)
         {
             _configuration = configuration;
         }
@@ -33,7 +33,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 	/// <summary>
     /// An Implementation that uses {container.SqlConnectionClassName}
     /// </summary>
-	public class DapperContext : IDapperContext
+	public class DBContext : IDBContext
     {{
         private readonly string _connectionString;
         private IDbConnection _connection;
@@ -41,7 +41,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 		/// <summary>
         /// Initialize  a new dapper context 
         /// </summary>
-        public DapperContext(IConnectionStringProvider connectionStringProvider)
+        public DBContext(IConnectionStringProvider connectionStringProvider)
         {{
             _connectionString = connectionStringProvider.GetConnectionString();
         }}

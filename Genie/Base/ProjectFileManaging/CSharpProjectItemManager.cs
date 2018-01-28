@@ -53,7 +53,9 @@ namespace Genie.Core.Base.ProjectFileManaging
                 var requiredPackages = new List<(string name, string version)>
                 {
                     (name: "Microsoft.CSharp", version: "4.4.1"),
-                    (name: "System.Data.SqlClient", version: "4.4.2")
+                    (name: "System.Data.SqlClient", version: "4.4.2"),
+                    (name: "System.Reflection.Emit.Lightweight", "4.3.0"),
+                    (name: "System.Reflection.TypeExtensions", "4.4.0")
                 };
 
                 if (configuration.DBMS == "mysql")

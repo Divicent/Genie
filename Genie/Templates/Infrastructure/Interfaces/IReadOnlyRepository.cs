@@ -38,7 +38,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// <summary>
         /// Current context
         /// </summary>
-		IDapperContext Context {{ get; }}
+		IDBContext Context {{ get; }}
 
         /// <summary>
         /// Get Executes given query on repository

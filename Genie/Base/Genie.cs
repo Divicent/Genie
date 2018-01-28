@@ -102,7 +102,7 @@ namespace Genie.Core.Base
                      if the specified path is relative to the configuration file */
                     config.ProjectPath =
                         Path.GetFullPath(
-                            $"{new FileInfo(pathToConfigurationJsonFile).Directory.FullName}{config.ProjectPath}");
+                            $"{new FileInfo(pathToConfigurationJsonFile).Directory.FullName}/{config.ProjectPath}");
                 }
 
                 output.WriteInformation("Reading Database Schema");

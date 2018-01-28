@@ -8,6 +8,5 @@ namespace Genie.Core.Models.Abstract
         string SqlClientNamespace { get; }
         string SqlConnectionClassName { get; }
         string StoredProcedureCallString { get; }
-        string DataNamespace { get; set; }
     }
 }

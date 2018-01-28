@@ -52,7 +52,7 @@ namespace Genie.Core.Templates.Infrastructure
             L($@"
 
 using System;
-using {parts.DataNamespace};
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,9 +63,9 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 {{
 	public class ProcedureContainer: IProcedureContainer
     {{
-		private IDapperContext Context {{ get; }}
+		private IDBContext Context {{ get; }}
 
-		internal ProcedureContainer(IDapperContext context)
+		internal ProcedureContainer(IDBContext context)
 		{{
 		    Context = context;
 		}}
