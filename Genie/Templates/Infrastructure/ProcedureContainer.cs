@@ -47,8 +47,6 @@ namespace Genie.Core.Templates.Infrastructure
                     $@"		public async Task {sp.Name}_VoidAsync({sp.ParamString}) {{ await ExecuteAsync(""{_configuration.Schema}.{sp.Name}"", new {sp.PassString}); }}");
             }
 
-            var usingDapper = _configuration.NoDapper ? "using Dapper;\n" : $"using {GenerationContext.BaseNamespace}.Dapper;\n";
-
             L($@"
 
 using System;
@@ -58,7 +56,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
 using {parts.SqlClientNamespace};
-{usingDapper}
+using {GenerationContext.BaseNamespace}.Dapper;
 namespace {GenerationContext.BaseNamespace}.Infrastructure
 {{
 	public class ProcedureContainer: IProcedureContainer

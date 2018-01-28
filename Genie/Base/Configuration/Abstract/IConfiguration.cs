@@ -46,11 +46,6 @@ namespace Genie.Core.Base.Configuration.Abstract
         string ProjectFile { get; }
 
         /// <summary>
-        ///     Should integrate dapper code ? if false dapper should be referenced externally
-        /// </summary>
-        bool NoDapper { get; }
-
-        /// <summary>
         ///     List of enum table definitions
         /// </summary>
         List<ConfigurationEnumTable> Enums { get; }

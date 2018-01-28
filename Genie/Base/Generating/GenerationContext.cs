@@ -10,9 +10,5 @@
         /// </summary>
         internal static string BaseNamespace { get; set; }
 
-        /// <summary>
-        ///     Internal dapper or not
-        /// </summary>
-        internal static bool NoDapper { get; set; }
     }
 }

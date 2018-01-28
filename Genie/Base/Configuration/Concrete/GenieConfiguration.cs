@@ -27,7 +27,6 @@ namespace Genie.Core.Base.Configuration.Concrete
         public string ConnectionString { get; set; }
         public string ProjectPath { get; set; }
         public string BaseNamespace { get; set; }
-        public bool NoDapper { get; set; }
         public List<ConfigurationEnumTable> Enums { get; set; }
         public string DBMS { get; set; }
         public string Schema { get; set; }

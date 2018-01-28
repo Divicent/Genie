@@ -19,7 +19,6 @@ namespace Genie.Core.Templates.Dapper
 
         public override string Generate()
         {
-            var dapperUsing = GenerationContext.NoDapper ? "using Dapper;" : "";
             const string write = ".First()";
             const string getTypeInfo = "GetTypeInfo().";
 
@@ -76,7 +75,6 @@ using System.Reflection;
 using System.Text;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
-{dapperUsing}
 
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
