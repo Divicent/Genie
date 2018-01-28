@@ -36,7 +36,7 @@ namespace GenieCLI
  | |_| | |  __/ | | | | | | |  __/   |_____|   | |___  | |___   | | 
   \____|  \___| |_| |_| |_|  \___|              \____| |_____| |___|
 
-                             Data Access Layer Generator
+                      -- Data Access Layer Generator --
 
 https://rusith.github.io/Genie                      
                                                                ");
