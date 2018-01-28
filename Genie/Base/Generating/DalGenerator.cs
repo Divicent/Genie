@@ -97,7 +97,8 @@ namespace Genie.Core.Base.Generating
 
                     new BaseModelTemplate(@"Infrastructure/Models/Concrete/BaseModel"),
                     new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext",
-                        configuration)
+                        configuration),
+                    new IConnectionStringProviderTemplate(@"Infrastructure/Interfaces/IConnectionStringProvider")
                 };
 
                 files.AddRange(
@@ -250,7 +251,6 @@ namespace Genie.Core.Base.Generating
             try
             {
                 GenerationContext.BaseNamespace = configuration.BaseNamespace;
-                GenerationContext.Core = configuration.Core;
                 GenerationContext.NoDapper = configuration.NoDapper;
 
                 const string comment =

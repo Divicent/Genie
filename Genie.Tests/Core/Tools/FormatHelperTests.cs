@@ -12,14 +12,14 @@ namespace Genie.Tests.Core.Tools
         private ITemplatePartsContainer GetContainer(string dbms)
         {
             return FormatHelper.GetDbmsSpecificTemplatePartsContainer(
-                new GenieConfiguration(new Mock<IVersionManager>().Object) {DBMS = dbms});
+                new GenieConfiguration() {DBMS = dbms});
         }
 
         [Fact]
         public void Tools_FormatHelper_Quoter_MSSQL()
         {
             var quoter = FormatHelper.GetDbmsSpecificQuoter(
-                new GenieConfiguration(new Mock<IVersionManager>().Object) {DBMS = "mssql"});
+                new GenieConfiguration() {DBMS = "mssql"});
             Assert.Equal(quoter("a"), "[a]");
         }
 
@@ -27,7 +27,7 @@ namespace Genie.Tests.Core.Tools
         public void Tools_FormatHelper_Quoter_MySQL()
         {
             var quoter = FormatHelper.GetDbmsSpecificQuoter(
-                new GenieConfiguration(new Mock<IVersionManager>().Object) {DBMS = "mysql"});
+                new GenieConfiguration() {DBMS = "mysql"});
             Assert.Equal(quoter("a"), "`a`");
         }
 

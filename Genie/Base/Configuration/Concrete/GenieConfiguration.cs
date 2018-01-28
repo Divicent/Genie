@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Exceptions;
-using Genie.Core.Base.Versioning.Abstract;
 
 #endregion
+
 
 namespace Genie.Core.Base.Configuration.Concrete
 {
@@ -17,18 +17,17 @@ namespace Genie.Core.Base.Configuration.Concrete
     /// </summary>
     public class GenieConfiguration : IConfiguration
     {
-        private readonly IVersionManager _versionManager;
+       // private readonly IVersionManager _versionManager;
 
-        public GenieConfiguration(IVersionManager versionManager)
-        {
-            _versionManager = versionManager;
-        }
+//        public GenieConfiguration(IVersionManager versionManager)
+//        {
+//          //  _versionManager = versionManager;
+//        }
 
         public string ConnectionString { get; set; }
         public string ProjectPath { get; set; }
         public string BaseNamespace { get; set; }
         public bool NoDapper { get; set; }
-        public bool Core { get; set; }
         public List<ConfigurationEnumTable> Enums { get; set; }
         public string DBMS { get; set; }
         public string Schema { get; set; }

@@ -20,8 +20,8 @@ namespace Genie.Core.Templates.Dapper
         public override string Generate()
         {
             var dapperUsing = GenerationContext.NoDapper ? "using Dapper;" : "";
-            var write = GenerationContext.Core ? ".First()" : "[0]";
-            var getTypeInfo = GenerationContext.Core ? "GetTypeInfo()." : "";
+            const string write = ".First()";
+            const string getTypeInfo = "GetTypeInfo().";
 
             var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
             var container = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);

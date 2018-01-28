@@ -31,11 +31,9 @@ namespace Genie.Tests.Core.Templates
         {
             var mssqlMock = new Mock<IConfiguration>();
             mssqlMock.SetupProperty((s) => s.DBMS, "mssql");
-            mssqlMock.SetupProperty((s) => s.Core, false);
             
             var mysqlCoreMock = new Mock<IConfiguration>();
             mysqlCoreMock.SetupProperty((s) => s.DBMS, "mysql");
-            mysqlCoreMock.SetupProperty((s) => s.Core, true);
             
             TestForConfiguration(mssqlMock.Object);
             TestForConfiguration(mysqlCoreMock.Object);
@@ -304,7 +302,8 @@ namespace Genie.Tests.Core.Templates
                     view.Attributes),
                 new ModelOrderContextTemplate(
                     @"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name,
-                    view.Attributes)
+                    view.Attributes),
+                new IConnectionStringProviderTemplate(@"Infrastructure/Interfaces/IConnectionStringProvider")
             };
 
 

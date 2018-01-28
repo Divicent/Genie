@@ -20,33 +20,10 @@ namespace Genie.Core.Templates.Infrastructure
 
         public override string Generate()
         {
-            var usingConfiguration = GenerationContext.Core
-                ? "using Microsoft.Extensions.Configuration;"
-                : "using System.Configuration;";
-            var constructor = GenerationContext.Core
-                ? @"        public DapperContext(IConfiguration configuration)
-        {
-			 _connectionString = configuration[""connectionString""];
-		}
-        
-        public DapperContext(string connectionString) 
-        {
-            if(string.IsNullOrWhiteSpace(connectionString))
-            {
-                throw new System.Exception(""ConnectionString is empty or null"");
-            }
-             _connectionString = connectionString;
-        }"
-                : @"		public DapperContext()
-        {
-			var connectionStringName = ConfigurationManager.AppSettings[""UsedConnectionString""];
-			_connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;	
-		}";
 
             var container = FormatHelper.GetDbmsSpecificTemplatePartsContainer(_configuration);
 
             L($@"
-{usingConfiguration}
 using System.Data;
 using {container.SqlClientNamespace};
 using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
@@ -64,14 +41,15 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 		/// <summary>
         /// Initialize  a new dapper context 
         /// </summary>
-{constructor}
+        public DapperContext(IConnectionStringProvider connectionStringProvider)
+        {{
+            _connectionString = connectionStringProvider.GetConnectionString();
+        }}
 
     	/// <summary>
         /// Get the connection to the database
         /// </summary>
-        public IDbConnection Connection => _connection ?? (_connection = new {
-                    container.SqlConnectionClassName
-                }(_connectionString));
+        public IDbConnection Connection => _connection ?? (_connection = new {container.SqlConnectionClassName}(_connectionString));
 
         public IUnitOfWork Unit() 
         {{

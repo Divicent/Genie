@@ -117,10 +117,9 @@ namespace Genie.Core.Base
                 DalWriter.Write(contentFiles, config.ProjectPath, output, fileSystem);
 
                 output.WriteInformation("Processing project files");
-                if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
+                if (!string.IsNullOrWhiteSpace(config.ProjectFile))
                     CSharpProjectItemManager.Process(
-                        fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile),
-                        contentFiles.Select(c => c.Path).ToList());
+                        fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile), output, config);
             }
             catch (Exception e)
             {
