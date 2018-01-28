@@ -30,9 +30,9 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
         where T : class
     {{
         public IDbConnection Conn {{ get; }}
-        public IDapperContext Context {{ get;}}
+        public IDBContext Context {{ get;}}
 
-        protected ReadOnlyRepository(IDapperContext context)
+        protected ReadOnlyRepository(IDBContext context)
         {{
             Context = context;
             Conn = Context.Connection;

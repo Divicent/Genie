@@ -71,7 +71,7 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
                 relationsImpl.AppendLine(
                     $@"	    internal class {relation.Name}Repository : Repository<{relation.Name}> , I{relation.Name}Repository
 	    {{
-            internal {relation.Name}Repository(IDapperContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+            internal {relation.Name}Repository(IDBContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
             {{
             }}
 
@@ -122,7 +122,7 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
                             view.Name
                         }Repository
 	    {{
-            internal {view.Name}Repository(IDapperContext context) : base(context)
+            internal {view.Name}Repository(IDBContext context) : base(context)
             {{
             }}
 

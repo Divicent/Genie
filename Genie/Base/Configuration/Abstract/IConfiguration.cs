@@ -7,95 +7,85 @@ using Genie.Core.Base.Configuration.Concrete;
 
 namespace Genie.Core.Base.Configuration.Abstract
 {
-  /// <summary>
-  ///     Set of supported Database Management Systems
-  /// </summary>
-  public enum DBMS
+    /// <summary>
+    ///     Set of supported Database Management Systems
+    /// </summary>
+    public enum DBMS
     {
         MSSQL = 1,
         MySQL = 2
     }
 
-  /// <inheritdoc />
-  /// <summary>
-  ///     Basic configuration for genie
-  /// </summary>
-  public interface IConfiguration : IValidatableConfiguration
+    /// <inheritdoc />
+    /// <summary>
+    ///     Basic configuration for genie
+    /// </summary>
+    public interface IConfiguration : IValidatableConfiguration
     {
-      /// <summary>
-      ///     Open able , accessible connection string to the target database
-      /// </summary>
-      string ConnectionString { get; }
+        /// <summary>
+        ///     Open able , accessible connection string to the target database
+        /// </summary>
+        string ConnectionString { get; }
 
-      /// <summary>
-      ///     Path to the DAL layer of the target solution / project
-      ///     <para />
-      ///     This should point to the Data access layer , not to the project path
-      /// </summary>
-      string ProjectPath { get; set;  }
+        /// <summary>
+        ///     Path to the DAL layer of the target solution / project
+        ///     <para />
+        ///     This should point to the Data access layer , not to the project path
+        /// </summary>
+        string ProjectPath { get; set; }
 
-      /// <summary>
-      ///     Base namespace of the data access layer usually, @projectName.DA | @projectName.DataAccess or something like that.
-      ///     choice is yours ;)
-      /// </summary>
-      string BaseNamespace { get; }
+        /// <summary>
+        ///     Base namespace of the data access layer usually, @projectName.DA | @projectName.DataAccess or something like that.
+        ///     choice is yours ;)
+        /// </summary>
+        string BaseNamespace { get; }
 
-      /// <summary>
-      ///     Relative path to the project file
-      /// </summary>
-      string ProjectFile { get; }
+        /// <summary>
+        ///     Relative path to the project file
+        /// </summary>
+        string ProjectFile { get; }
 
-      /// <summary>
-      ///     Should integrate dapper code ? if false dapper should be referenced externally
-      /// </summary>
-      bool NoDapper { get; }
+        /// <summary>
+        ///     List of enum table definitions
+        /// </summary>
+        List<ConfigurationEnumTable> Enums { get; }
 
-      /// <summary>
-      ///     Is for a core environment (.net core)
-      /// </summary>
-      bool Core { get; set; }
+        /// <summary>
+        ///     Name of the Database Management System
+        /// </summary>
+        string DBMS { get; set; }
 
-      /// <summary>
-      ///     List of enum table definitions
-      /// </summary>
-      List<ConfigurationEnumTable> Enums { get; }
+        /// <summary>
+        ///     Default database schema name
+        /// </summary>
+        string Schema { get; }
 
-      /// <summary>
-      ///     Name of the Database Management System
-      /// </summary>
-      string DBMS { get; set; }
+        /// <summary>
+        ///     Optional Location to generate abstract models
+        /// </summary>
+        /// <returns></returns>
+        string AbstractModelsLocation { get; set; }
 
-      /// <summary>
-      ///     Default database schema name
-      /// </summary>
-      string Schema { get; }
+        /// <summary>
+        ///     Namespace of the abstract models
+        /// </summary>
+        /// <returns></returns>
+        string AbstractModelsNamespace { get; set; }
 
-      /// <summary>
-      ///     Optional Location to generate abstract models
-      /// </summary>
-      /// <returns></returns>
-      string AbstractModelsLocation { get; set; }
+        /// <summary>
+        ///     Check whether the abstract models are enabled
+        /// </summary>
+        /// <returns></returns>
+        bool AbstractModelsEnabled { get; }
 
-      /// <summary>
-      ///     Namespace of the abstract models
-      /// </summary>
-      /// <returns></returns>
-      string AbstractModelsNamespace { get; set; }
+        /// <summary>
+        ///     Current version of genie
+        /// </summary>
+        string GenieVersion { get; set; }
 
-      /// <summary>
-      ///     Check whether the abstract models are enabled
-      /// </summary>
-      /// <returns></returns>
-      bool AbstractModelsEnabled { get; }
-
-      /// <summary>
-      ///     Current version of genie
-      /// </summary>
-      string GenieVersion { get; set; }
-
-      /// <summary>
-      ///     Setup the configuration
-      /// </summary>
-      void Setup();
+        /// <summary>
+        ///     Setup the configuration
+        /// </summary>
+        void Setup();
     }
 }

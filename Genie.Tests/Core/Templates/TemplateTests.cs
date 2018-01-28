@@ -31,11 +31,9 @@ namespace Genie.Tests.Core.Templates
         {
             var mssqlMock = new Mock<IConfiguration>();
             mssqlMock.SetupProperty((s) => s.DBMS, "mssql");
-            mssqlMock.SetupProperty((s) => s.Core, false);
             
             var mysqlCoreMock = new Mock<IConfiguration>();
             mysqlCoreMock.SetupProperty((s) => s.DBMS, "mysql");
-            mysqlCoreMock.SetupProperty((s) => s.Core, true);
             
             TestForConfiguration(mssqlMock.Object);
             TestForConfiguration(mysqlCoreMock.Object);
@@ -186,14 +184,14 @@ namespace Genie.Tests.Core.Templates
                 new StringFilterTemplate(@"Infrastructure/Filters/Concrete/StringFilter"),
 
                 new RepositoryImplementationTemplate(@"Infrastructure/Repositories/Repositories", schema),
-                new IDapperContextTemplate(@"Infrastructure/Interfaces/IDapperContext"),
+                new IDBContextTemplate(@"Infrastructure/Interfaces/IDapperContext"),
                 new IRepositoryTemplate(@"Infrastructure/Interfaces/IRepository"),
                 new IUnitOfWorkTemplate(@"Infrastructure/Interfaces/IUnitOfWork", schema),
                 new IReadOnlyRepositoryTemplate(@"Infrastructure/Interfaces/IReadOnlyRepository"),
                 new IProcedureContainerTemplate(@"Infrastructure/Interfaces/IProcedureContainer", schema),
                 new IOperationTemplate(@"Infrastructure/Interfaces/IOperation"),
 
-                new DapperContextTemplate(@"Infrastructure/DapperContext", configuration),
+                new DBContextTemplate(@"Infrastructure/DapperContext", configuration),
                 new RepositoryTemplate(@"Infrastructure/Repository"),
                 new UnitOfWorkTemplate(@"Infrastructure/UnitOfWork", schema),
                 new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository"),
@@ -304,7 +302,8 @@ namespace Genie.Tests.Core.Templates
                     view.Attributes),
                 new ModelOrderContextTemplate(
                     @"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name,
-                    view.Attributes)
+                    view.Attributes),
+                new IConnectionStringProviderTemplate(@"Infrastructure/Interfaces/IConnectionStringProvider")
             };
 
 

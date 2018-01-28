@@ -102,7 +102,7 @@ namespace Genie.Core.Base
                      if the specified path is relative to the configuration file */
                     config.ProjectPath =
                         Path.GetFullPath(
-                            $"{new FileInfo(pathToConfigurationJsonFile).Directory.FullName}{config.ProjectPath}");
+                            $"{new FileInfo(pathToConfigurationJsonFile).Directory.FullName}/{config.ProjectPath}");
                 }
 
                 output.WriteInformation("Reading Database Schema");
@@ -117,10 +117,9 @@ namespace Genie.Core.Base
                 DalWriter.Write(contentFiles, config.ProjectPath, output, fileSystem);
 
                 output.WriteInformation("Processing project files");
-                if (!string.IsNullOrWhiteSpace(config.ProjectFile) && !config.Core)
+                if (!string.IsNullOrWhiteSpace(config.ProjectFile))
                     CSharpProjectItemManager.Process(
-                        fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile),
-                        contentFiles.Select(c => c.Path).ToList());
+                        fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile), output, config);
             }
             catch (Exception e)
             {

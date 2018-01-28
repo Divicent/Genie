@@ -73,10 +73,10 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
 
 		public IProcedureContainer Procedures {{ get {{ return _procedureContainer ?? ( _procedureContainer = new ProcedureContainer(Context)); }} }}
 
-        private IDapperContext Context {{ get;}}
+        private IDBContext Context {{ get;}}
         private IDbTransaction Transaction {{ get; set; }}
 
-        public UnitOfWork(IDapperContext context)
+        public UnitOfWork(IDBContext context)
         {{
             Context = context;
             _objects = new HashSet<BaseModel>();

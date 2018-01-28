@@ -32,10 +32,10 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure
         where T : BaseModel 
     {{
         public IDbConnection Conn {{ get; }}
-        public IDapperContext Context {{ get;}}
+        public IDBContext Context {{ get;}}
         public IUnitOfWork UnitOfWork {{ get;}}
 
-        protected Repository(IDapperContext context, IUnitOfWork unitOfWork)
+        protected Repository(IDBContext context, IUnitOfWork unitOfWork)
         {{
             Context = context;
             Conn = Context.Connection;

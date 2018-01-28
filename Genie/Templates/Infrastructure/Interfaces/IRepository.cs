@@ -39,7 +39,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// <summary>
         /// Current context
         /// </summary>
-        IDapperContext Context {{ get; }}
+        IDBContext Context {{ get; }}
 
         /// <summary>
         /// Add an entity to the database . this will add an operation to unit and will be committed to the source when commit is called

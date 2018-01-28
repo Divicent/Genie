@@ -6,9 +6,9 @@ using Genie.Core.Base.Generating;
 
 namespace Genie.Core.Templates.Infrastructure.Interfaces
 {
-    public class IDapperContextTemplate : GenieTemplate
+    public class IDBContextTemplate : GenieTemplate
     {
-        public IDapperContextTemplate(string path) : base(path)
+        public IDBContextTemplate(string path) : base(path)
         {
         }
 
@@ -23,7 +23,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
 	/// <summary>
     /// A system wide context that holds the connection to the database and manages the connection
     /// </summary>
-	public interface IDapperContext
+	public interface IDBContext
 	{{
 	      /// <summary>
           /// Connection to the database
