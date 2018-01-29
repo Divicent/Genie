@@ -24,19 +24,17 @@ namespace Genie.Core.Base.ProjectFileManaging
         /// </summary>
         /// <param name="projectFilePath">Path to the project file</param>
         /// <param name="output"></param>
-        public static void Process(string projectFilePath, IProcessOutput output, IConfiguration configuration, IEnumerable<string> files)
+        /// <param name="configuration"></param>
+        /// <param name="files"></param>
+        public static void Process(string projectFilePath, IProcessOutput output, IConfiguration configuration,
+            IEnumerable<string> files)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(projectFilePath)) return;
-
-                if (configuration.Standard)
+                if (!File.Exists(projectFilePath))
                 {
-                    
-                    if (!File.Exists(projectFilePath))
-                    {
-                        output.WriteInformation("Project file does not exist. creating project file");
-                        File.WriteAllText(projectFilePath, $@"<?xml version=""1.0"" encoding=""utf-16""?>
+                    output.WriteInformation("Project file does not exist. creating project file");
+                    File.WriteAllText(projectFilePath, $@"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -47,11 +45,36 @@ namespace Genie.Core.Base.ProjectFileManaging
     {(configuration.DBMS == "mysql" ? @"\n<PackageReference Include=""MySql.Data"" Version=""6.10.6"" />" : "")}
   </ItemGroup>
 </Project>");
-                        return;
-                    }
-    
-                    var document = new XmlDocument();
-                    document.LoadXml(File.ReadAllText(projectFilePath));
+                    return;
+                }
+
+                var document = new XmlDocument();
+                document.LoadXml(File.ReadAllText(projectFilePath));
+
+                XmlNode projectTag = null;
+                try
+                {
+                    projectTag = document.GetElementsByTagName("Project")[0];
+                }
+                catch (Exception)
+                {
+                    /* Ignored */
+                }
+
+                if (projectTag == null)
+                {
+                    output.WriteWarning("Project file seems to be invalid, could not find project tag");
+                    return;
+                }
+
+                var isStandard = false;
+
+                var sdkAttribute = projectTag.Attributes["Sdk"];
+                if (sdkAttribute != null && sdkAttribute.Value == "Microsoft.NET.Sdk")
+                    isStandard = true;
+
+                if (isStandard)
+                {
                     var packages = document.GetElementsByTagName("PackageReference");
                     var requiredPackages = new List<(string name, string version)>
                     {
@@ -60,15 +83,15 @@ namespace Genie.Core.Base.ProjectFileManaging
                         (name: "System.Reflection.Emit.Lightweight", "4.3.0"),
                         (name: "System.Reflection.TypeExtensions", "4.4.0")
                     };
-    
+
                     if (configuration.DBMS == "mysql")
                     {
                         requiredPackages.Add((name: "MySql.Data", version: "6.10.6"));
                     }
-    
+
                     var existingPackages = new List<(XmlNode node, string requiredVersion)>();
                     var packagesToAdd = new List<XmlNode>();
-    
+
                     foreach (var requiredPackage in requiredPackages)
                     {
                         XmlNode existing = null;
@@ -79,15 +102,16 @@ namespace Genie.Core.Base.ProjectFileManaging
                                 existing = package;
                             }
                         }
+
                         if (existing == null)
                         {
                             var node = document.CreateElement("PackageReference", null);
                             var includeAttribute = document.CreateAttribute("Include", null);
                             includeAttribute.Value = requiredPackage.name;
-    
+
                             var versionAttribuete = document.CreateAttribute("Version", null);
                             versionAttribuete.Value = requiredPackage.version;
-    
+
                             node.Attributes.Append(includeAttribute);
                             node.Attributes.Append(versionAttribuete);
                             packagesToAdd.Add(node);
@@ -97,9 +121,9 @@ namespace Genie.Core.Base.ProjectFileManaging
                             existingPackages.Add((existing, requiredPackage.version));
                         }
                     }
-                    
+
                     var nodesToRemove = new HashSet<XmlNode>();
-    
+
                     if (existingPackages.Count > 1)
                     {
                         var nodes = new HashSet<(XmlNode node, string requiredVersion)>();
@@ -107,7 +131,7 @@ namespace Genie.Core.Base.ProjectFileManaging
                         {
                             var current = existingPackages[i];
                             var removed = false;
-                            for (var j = i + 1 ; j < existingPackages.Count; j++)
+                            for (var j = i + 1; j < existingPackages.Count; j++)
                             {
                                 var next = existingPackages[j];
                                 if (current.node.Attributes["Include"].Value != next.node.Attributes["Include"].Value)
@@ -115,48 +139,37 @@ namespace Genie.Core.Base.ProjectFileManaging
                                 nodesToRemove.Add(next.node);
                                 removed = true;
                             }
-                            if(!removed)
+
+                            if (!removed)
                                 nodes.Add(current);
                         }
-                        
+
                         existingPackages = nodes.ToList();
                     }
-    
-                    
+
+
                     foreach (var nodeToRemove in nodesToRemove)
                     {
                         var parent = nodeToRemove.ParentNode;
                         parent.RemoveChild(nodeToRemove);
                         if (parent.ChildNodes.Count < 1) parent.ParentNode.RemoveChild(parent);
                     }
-    
-                    var parentNode = existingPackages.Any() ? existingPackages.First().node.ParentNode 
+
+                    var parentNode = existingPackages.Any()
+                        ? existingPackages.First().node.ParentNode
                         : document.CreateElement("ItemGroup", null);
-    
+
                     foreach (var expackage in existingPackages)
                         expackage.node.Attributes["Version"].Value = expackage.requiredVersion;
-    
+
                     foreach (var node in packagesToAdd)
                         parentNode.AppendChild(node);
-    
+
                     if (!existingPackages.Any())
                         document.DocumentElement.AppendChild(parentNode);
-    
-                    var xmlWriterSettings = new XmlWriterSettings {Indent = true};
-                    var sb = new StringBuilder();
-                    using (var xw = XmlWriter.Create(sb, xmlWriterSettings))
-                    {
-                        document.WriteContentTo(xw);
-                    }
-    
-                    File.WriteAllText(projectFilePath, sb.Replace("xmlns=\"\"", "").ToString());
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(projectFilePath) || !File.Exists(projectFilePath)) return;
-
-                    var document = new XmlDocument();
-                    document.LoadXml(File.ReadAllText(projectFilePath));
                     var compiles = document.GetElementsByTagName("Compile");
                     var torRemove = (from XmlNode compile in compiles
                         where
@@ -184,17 +197,16 @@ namespace Genie.Core.Base.ProjectFileManaging
                     }
 
                     document.DocumentElement.AppendChild(root);
-
-                    var xmlWriterSettings = new XmlWriterSettings {Indent = true};
-                    var sb = new StringBuilder();
-                    using (var xw = XmlWriter.Create(sb, xmlWriterSettings))
-                    {
-                        document.WriteContentTo(xw);
-                    }
-
-                    File.WriteAllText(projectFilePath, sb.Replace("xmlns=\"\"", "").ToString());
                 }
 
+                var xmlWriterSettings = new XmlWriterSettings {Indent = true};
+                var sb = new StringBuilder();
+                using (var xw = XmlWriter.Create(sb, xmlWriterSettings))
+                {
+                    document.WriteContentTo(xw);
+                }
+
+                File.WriteAllText(projectFilePath, sb.Replace("xmlns=\"\"", "").ToString());
             }
             catch (Exception e)
             {
