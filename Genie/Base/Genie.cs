@@ -100,9 +100,12 @@ namespace Genie.Core.Base
                 {
                     /* Getting the full path to the project folder
                      if the specified path is relative to the configuration file */
+                    if (config.ProjectPath == "." || config.ProjectPath == "./")
+                        config.ProjectPath = "";
+
                     config.ProjectPath =
                         Path.GetFullPath(
-                            $"{new FileInfo(pathToConfigurationJsonFile).Directory.FullName}/{config.ProjectPath}");
+                            $"{new FileInfo(pathToConfigurationJsonFile).Directory.FullName}{config.ProjectPath}");
                 }
 
                 output.WriteInformation("Reading Database Schema");
@@ -119,7 +122,8 @@ namespace Genie.Core.Base
                 output.WriteInformation("Processing project files");
                 if (!string.IsNullOrWhiteSpace(config.ProjectFile))
                     CSharpProjectItemManager.Process(
-                        fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile), output, config);
+                        fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile), output, config, 
+                        contentFiles.Select(c => c.Path));
             }
             catch (Exception e)
             {

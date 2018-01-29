@@ -44,6 +44,11 @@ namespace Genie.Core.Base.Configuration.Abstract
         ///     Relative path to the project file
         /// </summary>
         string ProjectFile { get; }
+        
+        /// <summary>
+        /// Is the target is .net standard project
+        /// </summary>
+        bool Standard { get; }
 
         /// <summary>
         ///     List of enum table definitions
