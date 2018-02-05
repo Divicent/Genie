@@ -41,13 +41,12 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
 		    I{relation.Name}QueryContext Get();");
                 var keys = relation.Attributes.Where(a => a.IsKey).ToList();
                 var keyString = "";
-                var keyCommentString = "";
                 if (keys.Count > 0)
                 {
                     keyString = keys.Aggregate("", (c, n) => c + ", " + n.DataType + " " + n.Name.ToLower())
                         .TrimStart(',').TrimStart(' ');
-                    keyCommentString = keys.Aggregate("", (c, n) => c +
-                                                                    $@"
+                    var keyCommentString = keys.Aggregate("", (c, n) => c +
+                                                                        $@"
             /// <param name=""{n.Name.ToLower()}"">Value for primary key {n.Name}</param>");
                     relations.AppendLine($@"
             /// <summary>
@@ -62,7 +61,14 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             /// </summary>
 {keyCommentString}
             /// <returns>A registered {relation.Name} object</returns>
-            Task<{relation.Name}> GetByKeyAsync({keyString});");
+            Task<{relation.Name}> GetByKeyAsync({keyString});
+            
+            /// <summary>
+            /// Remove an object of {relation.Name} using the values of its primary key(s)
+            /// </summary>
+{keyCommentString}
+            void RemoveByKey({keyString});
+");
                 }
 
                 relations.AppendLine("	    }");
@@ -97,6 +103,18 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
                     {str}.Filter().FirstOrDefaultAsync();
             }}
 ");
+
+                    relationsImpl.AppendLine(
+                        $@"            public void RemoveByKey({keyString})
+            {{
+                Remove(new {relation.Name}
+                {{
+                    {keys.Aggregate("", (c, n) => $"{c}                    {n.Name} = {n.Name.ToLower()},\n")}
+                    DatabaseModelStatus = ModelStatus.Retrieved
+                }});
+            }}
+");
+
                 }
 
                 relationsImpl.AppendLine($@"	    }}");
