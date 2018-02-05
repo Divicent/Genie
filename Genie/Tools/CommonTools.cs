@@ -45,10 +45,11 @@ namespace Genie.Core.Tools
                 case "datetime2":
                 case "datetime":
                 case "timestamp":
-                case "time":
                 case "smalldatetime":
                 case "date":
                     return "DateTime";
+                case "time":
+                    return "TimeStamp";
                 case "varchar":
                 case "nvarchar":
                 case "nchar":
