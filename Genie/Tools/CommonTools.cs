@@ -49,7 +49,7 @@ namespace Genie.Core.Tools
                 case "date":
                     return "DateTime";
                 case "time":
-                    return "TimeStamp";
+                    return "TimeSpan";
                 case "varchar":
                 case "nvarchar":
                 case "nchar":
