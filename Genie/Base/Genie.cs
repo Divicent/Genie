@@ -114,7 +114,6 @@ namespace Genie.Core.Base
 
                 var contentFiles = DalGenerator.Generate(schema, config, output).ToList();
 
-                output.WriteInformation("Removing Leftovers");
                 ObstacleManager.Clear(config.ProjectPath, output, config, fileSystem);
 
                 DalWriter.Write(contentFiles, config.ProjectPath, output, fileSystem);

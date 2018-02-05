@@ -45,7 +45,7 @@ namespace Genie.Core.Base.ObstacleManaging
 
         private static void DeleteIfExists(string path, IFileSystem fileSystem)
         {
-            if (fileSystem.Exists(path)) DeleteDirectory(path, fileSystem);
+            if (fileSystem.DirectoryExists(path)) DeleteDirectory(path, fileSystem);
         }
 
         /// <summary>
