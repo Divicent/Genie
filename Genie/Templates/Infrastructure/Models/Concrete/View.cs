@@ -43,6 +43,23 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             var abstractModelsNamespace = _configuration.AbstractModelsEnabled
                 ? $"using {_configuration.AbstractModelsNamespace};\n"
                 : "";
+
+            var constructor = "";
+            if (_configuration.AbstractModelsEnabled)
+            {
+                var assign = new StringBuilder();
+                foreach (var attribute in _view.Attributes)
+                    assign.AppendLine($"            {attribute.Name} = model.{attribute.Name};");
+                constructor = $@"
+		public {name}() {{ }}
+        
+        public {name}(I{name} model) 
+        {{
+            if(model == null) {{ return; }}
+{assign}
+        }}
+";    
+            }
             var absImplement = _configuration.AbstractModelsEnabled ? $": I{name}" : "";
             L($@"
 
@@ -54,6 +71,8 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
     [Table(""{quote(_configuration.Schema)}.{quote(name)}"")]
     public class {name} {absImplement}
     {{
+
+{constructor}
 
 {attributes}
 
