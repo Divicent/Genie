@@ -19,6 +19,8 @@ namespace Genie.Core.Templates
         public string Path { get; }
 
         public abstract string Generate();
+        
+        public bool External { get; set; } = false;
 
         protected void R(string str)
         {

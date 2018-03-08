@@ -14,5 +14,10 @@
         ///     Relative path of the file to the base path
         /// </summary>
         string Path { get; set; }
+        
+        /// <summary>
+        ///    Is this an external file from the target project
+        /// </summary>
+        bool External { get; set; }
     }
 }

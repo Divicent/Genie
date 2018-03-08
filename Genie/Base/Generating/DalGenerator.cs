@@ -221,17 +221,20 @@ namespace Genie.Core.Base.Generating
                         }
                     else
                         canWriteAbstractModels = true;
-
+                
                 if (canWriteAbstractModels)
                 {
+                    var internl =configuration.AbstractModelsNamespace.Contains(configuration.BaseNamespace);
+                    
                     foreach (var relation in schema.Relations)
                         files.Add(new IModelTemplate(
                             Path.Combine(configuration.AbstractModelsLocation, $"I{relation.Name}"), relation,
-                            configuration));
+                            configuration, !internl) );
 
                     foreach (var view in schema.Views)
                         files.Add(new IModelTemplate(
-                            Path.Combine(configuration.AbstractModelsLocation, $"I{view.Name}"), view, configuration));
+                            Path.Combine(configuration.AbstractModelsLocation, $"I{view.Name}"), view, configuration,
+                            !internl));
                 }
             }
             catch (Exception e)
@@ -262,7 +265,8 @@ namespace Genie.Core.Base.Generating
                     contentFiles.Add(new ContentFile
                     {
                         Path = templateFile.Path + "." + "cs",
-                        Content = comment + templateFile.Generate()
+                        Content = comment + templateFile.Generate(),
+                        External = templateFile.External
                     });
                     progress.Tick(templateFile.Path);
                 }

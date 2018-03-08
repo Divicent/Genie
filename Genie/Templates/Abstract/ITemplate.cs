@@ -4,5 +4,6 @@ namespace Genie.Core.Templates.Abstract
     {
         string Path { get; }
         string Generate();
+        bool External { get; set; }
     }
 }

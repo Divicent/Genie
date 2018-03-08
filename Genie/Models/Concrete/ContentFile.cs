@@ -10,5 +10,6 @@ namespace Genie.Core.Models.Concrete
     {
         public string Content { get; set; }
         public string Path { get; set; }
+        public bool External { get; set; }
     }
 }

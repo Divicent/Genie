@@ -122,7 +122,7 @@ namespace Genie.Core.Base
                 if (!string.IsNullOrWhiteSpace(config.ProjectFile))
                     CSharpProjectItemManager.Process(
                         fileSystem.CombinePaths(config.ProjectPath, config.ProjectFile), output, config, 
-                        contentFiles.Select(c => c.Path));
+                        contentFiles.Where(i => !i.External).Select(c => c.Path));
             }
             catch (Exception e)
             {

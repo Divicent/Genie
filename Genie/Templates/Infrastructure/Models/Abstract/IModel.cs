@@ -16,10 +16,11 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract
 
         private readonly IModel _model;
 
-        public IModelTemplate(string path, IModel model, IConfiguration configuration) : base(path)
+        public IModelTemplate(string path, IModel model, IConfiguration configuration, bool external) : base(path)
         {
             _configuration = configuration;
             _model = model;
+            External = external;
         }
 
         public override string Generate()
