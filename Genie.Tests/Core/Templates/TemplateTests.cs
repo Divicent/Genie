@@ -260,7 +260,7 @@ namespace Genie.Tests.Core.Templates
                 new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
                 new TableAttributeTemplate(@"Dapper/TableAttribute"),
                 new WriteAttributeTemplate(@"Dapper/WriteAttribute"),
-                new IModelTemplate(@"SomePath", relation, configuration),
+                new IModelTemplate(@"SomePath", relation, configuration, false),
                 new RelationTemplate(@"Test", relation, enm, configuration),
                 new IModelQueryContextTemplate("C://", "Test"),
                 new IModelFilterContextTemplate("C://", "name", relation.Attributes.Cast<ISimpleAttribute>().ToList()),
