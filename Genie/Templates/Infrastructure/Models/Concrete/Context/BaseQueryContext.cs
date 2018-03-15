@@ -89,6 +89,10 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 
         private static string GetExpression(string type, string propName, object value, bool quoted )
         {{
+
+            if (quoted && value != null)
+                value = value.ToString().Replace(""'"", ""''"");
+
             switch (type.ToLower())
             {{
                 case ""equals"":
