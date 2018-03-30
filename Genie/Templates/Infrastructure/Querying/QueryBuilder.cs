@@ -297,14 +297,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Querying
 
 	    private QueryBuilder Page()
 	    {{
-	        if (_repoQuery.Page != null && _repoQuery.PageSize != null)
-	        {{
-	            _page = $"" LIMIT {{_repoQuery.Page * _repoQuery.PageSize}}, {{_repoQuery.PageSize}} "";
-	        }}
-	        else if(_repoQuery.Skip != null || _repoQuery.Take != null || _repoQuery.Limit != null)
-	        {{
-                _page = $"" LIMIT {{_repoQuery.Skip??0}},  {{_repoQuery.Take??_repoQuery.Limit??0}} "";
-	        }}
+{pageFunction}
 
 		    return this;
 	    }}
