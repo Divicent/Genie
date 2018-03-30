@@ -23,6 +23,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
+using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
 {{
@@ -143,6 +144,14 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         /// <param name=""transaction"">Transaction to use</param>
         /// <returns>Count to the results</returns>
         Task<int> CountAsync(IDbTransaction transaction = null);
+
+	    /// <summary>
+		/// Get Sum of a column. this will ignore pagination parameters
+		/// </summary>
+		/// <param name=""predicate"">Select a column</param>
+		/// <typeparam name=""T"">Type of the result</typeparam>
+		/// <returns></returns>
+		Task<T> SumByAsync<T>(Func<I{_name}ColumnSelector, IColumn<T>> predicate) where T : struct;
 
         /// <summary>
         /// Extract built where clause

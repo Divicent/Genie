@@ -387,7 +387,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 
 
 
-        public static bool IsWriteable(PropertyInfo pi)
+        private static bool IsWriteable(PropertyInfo pi)
         {{
             var attributes = pi.GetCustomAttributes(typeof(WriteAttribute), false).ToList();
             if (attributes.Count != 1)
@@ -403,7 +403,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
-	    public static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
+	    private static IEnumerable<T> Get<T>(this IDbConnection connection, IRepoQuery query)
         {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
@@ -420,7 +420,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
-	    public static async Task<IEnumerable<T>> GetAsync<T>(this IDbConnection connection, IRepoQuery query)
+	    private static async Task<IEnumerable<T>> GetAsync<T>(this IDbConnection connection, IRepoQuery query)
         {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
@@ -435,7 +435,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
-	    public static int  Count(this IDbConnection connection, IRepoQuery query)
+	    private static int  Count(this IDbConnection connection, IRepoQuery query)
         {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
@@ -449,7 +449,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
-	    public static async Task<int> CountAsync(this IDbConnection connection, IRepoQuery query)
+	    private static async Task<int> CountAsync(this IDbConnection connection, IRepoQuery query)
         {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
@@ -463,7 +463,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""connection"">Open {container.SqlConnectionClassName}</param>
 	    /// <param name=""query""></param>
 	    /// <returns>Entity of T</returns>
-	    public static string GetWhereClause(this IDbConnection connection, IRepoQuery query)
+	    private static string GetWhereClause(this IDbConnection connection, IRepoQuery query)
 	    {{
 	        return GetRetriveQuery(query, false, true);
 	    }}
@@ -477,7 +477,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <param name=""transaction""></param>
         /// <param name=""commandTimeout""></param>
         /// <returns>Identity of inserted entity</returns>
-        public static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
+        private static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
             var parameters = GetInsertParameters(entityToInsert);
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
@@ -509,7 +509,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <param name=""transaction""></param>
         /// <param name=""commandTimeout""></param>
         /// <returns>Identity of inserted entity</returns>
-        public static async Task<long?> InsertAsync(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
+        private static async Task<long?> InsertAsync(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
             var parameters = GetInsertParameters(entityToInsert);
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
@@ -540,7 +540,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
-	    public static bool Update(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
+	    private static bool Update(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
             var query = BuildUpdateQuery(entityToUpdate);
             if(query == null)
@@ -563,7 +563,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
-	    public static async Task<bool> UpdateAsync(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
+	    private static async Task<bool> UpdateAsync(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
             var query = BuildUpdateQuery(entityToUpdate);
             if(query == null)
@@ -586,7 +586,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>true if deleted, false if not found</returns>
-	    public static bool Delete(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
+	    private static bool Delete(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{
@@ -605,7 +605,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>true if deleted, false if not found</returns>
-	    public static async Task<bool> DeleteAsync(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
+	    private static async Task<bool> DeleteAsync(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
 			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
 			{{

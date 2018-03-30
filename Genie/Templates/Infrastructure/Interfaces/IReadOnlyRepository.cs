@@ -84,6 +84,21 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
 	    Task<int> CountAsync(IRepoQuery query);
 
         /// <summary>
+        /// Get sum of a column
+        /// </summary>
+        /// <param name=""query"">Query to execute in the repository</param>
+        /// <returns>given type</returns>
+        TA SumBy<TA>(IRepoQuery query, string column)
+
+
+        /// <summary>
+        /// Get sum of a column asynchronously
+        /// </summary>
+        /// <param name=""query"">Query to execute in the repository</param>
+        /// <returns>given type</returns>
+        Task<TA> SumByAsync<TA>(IRepoQuery query, string column)
+
+        /// <summary>
         /// Extracts the where clause of the provided query object
         /// </summary>
         /// <param name=""query"">Query to use</param>

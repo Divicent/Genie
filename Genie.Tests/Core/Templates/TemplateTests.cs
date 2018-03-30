@@ -18,6 +18,7 @@ using Genie.Core.Templates.Infrastructure.Models.Abstract;
 using Genie.Core.Templates.Infrastructure.Models.Abstract.Context;
 using Genie.Core.Templates.Infrastructure.Models.Concrete;
 using Genie.Core.Templates.Infrastructure.Models.Concrete.Context;
+using Genie.Core.Templates.Infrastructure.Querying;
 using Genie.Core.Templates.Infrastructure.Repositories;
 using Moq;
 using Xunit;
@@ -192,9 +193,9 @@ namespace Genie.Tests.Core.Templates
                 new IOperationTemplate(@"Infrastructure/Interfaces/IOperation"),
 
                 new DBContextTemplate(@"Infrastructure/DapperContext", configuration),
-                new RepositoryTemplate(@"Infrastructure/Repository"),
+                new RepositoryTemplate(@"Infrastructure/Repository", configuration),
                 new UnitOfWorkTemplate(@"Infrastructure/UnitOfWork", schema),
-                new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository"),
+                new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository", configuration),
                 new ProcedureContainerTemplate(@"Infrastructure/ProcedureContainer", schema, configuration),
                 new OperationTemplate(@"Infrastructure/Operation"),
 
@@ -303,7 +304,12 @@ namespace Genie.Tests.Core.Templates
                 new ModelOrderContextTemplate(
                     @"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name,
                     view.Attributes),
-                new IConnectionStringProviderTemplate(@"Infrastructure/Interfaces/IConnectionStringProvider")
+                new IConnectionStringProviderTemplate(@"Infrastructure/Interfaces/IConnectionStringProvider"),
+                new IColumnTemplate(@"Infrastructure/Models/IModel"),
+                new IModelColumnSelectorTemplate(@"Infrastructure/Models/IModel", view),
+                new ModelColumnSelectorTemplate(@"Infrastructure/Models/IModel", view),
+                new QueryBuilderTemplate("", configuration),
+                new QueryBuilderCacheTemplate("")
             };
 
 
