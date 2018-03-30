@@ -34,7 +34,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
         private static string FormatColumn(ISimpleAttribute attribute)
         {
             return $@"
-                public IColumn<{attribute.DataType}> {attribute.Name} {{ get {{ return new Column<{attribute.DataType}>(""{attribute.Name}""); }} }}
+public IColumn<{attribute.DataType}> {attribute.Name} {{ get {{ return new Column<{attribute.DataType}>(""{attribute.Name}""); }} }}
             ";
         }
     }

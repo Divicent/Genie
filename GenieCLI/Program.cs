@@ -27,7 +27,7 @@ namespace GenieCLI
                 }
             }
 
-            var path = $@"D:\Tests\TestDAL\TestDAL\{fileName}";
+            var path = $@"./{fileName}";
             
             Console.WriteLine(@"
    ____                  _                       ____   _       ___ 

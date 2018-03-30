@@ -33,10 +33,10 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         private static string FormatColumn(ISimpleAttribute attribute)
         {
             return $@"
-                /// <summary>
-                /// Select {attribute.Name} Column
-                /// </summary>
-                IColumn<{attribute.DataType}> {attribute.Name} {{ get; }}
+/// <summary>
+/// Select {attribute.Name} Column
+/// </summary>
+IColumn<{attribute.DataType}> {attribute.Name} {{ get; }}
             ";
         }
     }
