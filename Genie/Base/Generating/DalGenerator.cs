@@ -24,6 +24,7 @@ using Genie.Core.Templates.Infrastructure.Models.Abstract;
 using Genie.Core.Templates.Infrastructure.Models.Abstract.Context;
 using Genie.Core.Templates.Infrastructure.Models.Concrete;
 using Genie.Core.Templates.Infrastructure.Models.Concrete.Context;
+using Genie.Core.Templates.Infrastructure.Querying;
 using Genie.Core.Templates.Infrastructure.Repositories;
 
 #endregion
@@ -81,9 +82,9 @@ namespace Genie.Core.Base.Generating
                     new IOperationTemplate(@"Infrastructure/Interfaces/IOperation"),
 
                     new DBContextTemplate(@"Infrastructure/DBContext", configuration),
-                    new RepositoryTemplate(@"Infrastructure/Repository"),
+                    new RepositoryTemplate(@"Infrastructure/Repository", configuration),
                     new UnitOfWorkTemplate(@"Infrastructure/UnitOfWork", schema),
-                    new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository"),
+                    new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository", configuration),
                     new ProcedureContainerTemplate(@"Infrastructure/ProcedureContainer", schema, configuration),
                     new OperationTemplate(@"Infrastructure/Operation"),
 
@@ -98,7 +99,11 @@ namespace Genie.Core.Base.Generating
                     new BaseModelTemplate(@"Infrastructure/Models/Concrete/BaseModel"),
                     new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext",
                         configuration),
-                    new IConnectionStringProviderTemplate(@"Infrastructure/Interfaces/IConnectionStringProvider")
+                    new IConnectionStringProviderTemplate(@"Infrastructure/Interfaces/IConnectionStringProvider"),
+                    new IColumnTemplate(@"Infrastructure/Models/Abstract/IColumn"),
+                    new ColumnTemplate(@"Infrastructure/Models/Concrete/Column"),
+                    new QueryBuilderTemplate(@"Infrastructure/Querying/QueryBuilder", configuration),
+                    new QueryBuilderCacheTemplate(@"Infrastructure/Querying/QueryBuilderCache", configuration)
                 };
 
                 files.AddRange(
@@ -170,7 +175,10 @@ namespace Genie.Core.Base.Generating
                     files.Add(new IModelOrderContextTemplate(
                         @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "OrderContext", relation.Name,
                         relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-
+                    
+                    files.Add(new IModelColumnSelectorTemplate(
+                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "ColumnSelector", relation));
+                    
                     files.Add(new ModelQueryContextTemplate(
                         @"Infrastructure/Models/Concrete/Context/" + relation.Name + "QueryContext", relation.Name,
                         relation.Attributes.Cast<ISimpleAttribute>().ToList(), configuration));
@@ -180,6 +188,8 @@ namespace Genie.Core.Base.Generating
                     files.Add(new ModelOrderContextTemplate(
                         @"Infrastructure/Models/Concrete/Context/" + relation.Name + "OrderContext", relation.Name,
                         relation.Attributes.Cast<ISimpleAttribute>().ToList()));
+                    files.Add(new ModelColumnSelectorTemplate(
+                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "ColumnSelector", relation));
                 }
 
                 foreach (var view in schema.Views)
@@ -194,6 +204,8 @@ namespace Genie.Core.Base.Generating
                     files.Add(new IModelOrderContextTemplate(
                         @"Infrastructure/Models/Abstract/Context/I" + view.Name + "OrderContext", view.Name,
                         view.Attributes));
+                    files.Add(new IModelColumnSelectorTemplate(
+                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "ColumnSelector", view));
 
                     files.Add(new ModelQueryContextTemplate(
                         @"Infrastructure/Models/Concrete/Context/" + view.Name + "QueryContext", view.Name,
@@ -204,6 +216,8 @@ namespace Genie.Core.Base.Generating
                     files.Add(new ModelOrderContextTemplate(
                         @"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name,
                         view.Attributes));
+                    files.Add(new ModelColumnSelectorTemplate(
+                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "ColumnSelector", view));
                 }
 
                 var canWriteAbstractModels = false;

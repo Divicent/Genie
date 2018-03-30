@@ -1,5 +1,8 @@
 #region Usings
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Genie.Core.Templates.Abstract;
 
@@ -20,7 +23,7 @@ namespace Genie.Core.Templates
 
         public abstract string Generate();
         
-        public bool External { get; set; } = false;
+        public bool External { get; set; }
 
         protected void R(string str)
         {
@@ -35,6 +38,17 @@ namespace Genie.Core.Templates
         protected string E()
         {
             return _stringBuilder.ToString();
+        }
+        
+        protected static string Lines<T>(IEnumerable<T> collection, Func<T, string> accumilator, string space= "")
+        {
+            var first = true;
+            return collection.Aggregate("", (c, n) =>
+            {
+                var str = $"{c}{(first ? "": Environment.NewLine)}{space}{accumilator(n).Replace(Environment.NewLine, $"{Environment.NewLine}{space}")}";
+                first = false;
+                return str;
+            });
         }
     }
 }

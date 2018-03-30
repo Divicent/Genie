@@ -13,7 +13,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract
     public class IModelTemplate : GenieTemplate
     {
         private readonly IConfiguration _configuration;
-
         private readonly IModel _model;
 
         public IModelTemplate(string path, IModel model, IConfiguration configuration, bool external) : base(path)
