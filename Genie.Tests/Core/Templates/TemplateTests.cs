@@ -309,7 +309,7 @@ namespace Genie.Tests.Core.Templates
                 new IModelColumnSelectorTemplate(@"Infrastructure/Models/IModel", view),
                 new ModelColumnSelectorTemplate(@"Infrastructure/Models/IModel", view),
                 new QueryBuilderTemplate("", configuration),
-                new QueryBuilderCacheTemplate("")
+                new QueryBuilderCacheTemplate("", configuration)
             };
 
 

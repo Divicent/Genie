@@ -112,7 +112,6 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Querying
 		    return SelectSum(name)
 			    .Where()
 			    .Page()
-			    .GroupByAllExcept(name)
 			    .Build();
 	    }}
 
