@@ -137,10 +137,14 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
             return await _repo.CountAsync(GetQuery(transaction));
 	    }}
 
-		public Task<T> SumByAsync<T>(Func<I{_name}ColumnSelector, IColumn<T>> predicate) where T : struct
+		public T SumBy<T>(Func<I{_name}ColumnSelector, IColumn<T>> predicate, IDbTransaction transaction = null) where T : struct
 		{{
-			var column = predicate(new CompanyColumnSelector());
-			var query = GetQuery(null);
+			return _repo.SumBy<T>(GetQuery(transaction), predicate(new {_name}ColumnSelector()).Name);
+		}}
+
+		public async Task<T> SumByAsync<T>(Func<I{_name}ColumnSelector, IColumn<T>> predicate, IDbTransaction transaction = null) where T : struct
+		{{
+			return await _repo.SumByAsync<T>(GetQuery(transaction), predicate(new {_name}ColumnSelector()).Name);
 		}}
 
 		public I{_name}QueryContext Filter(IEnumerable<IPropertyFilter> filters) 

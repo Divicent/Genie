@@ -103,7 +103,7 @@ namespace Genie.Core.Base.Generating
                     new IColumnTemplate(@"Infrastructure/Models/Abstract/IColumn"),
                     new ColumnTemplate(@"Infrastructure/Models/Concrete/Column"),
                     new QueryBuilderTemplate(@"Infrastructure/Querying/QueryBuilder", configuration),
-                    new QueryBuilderCacheTemplate(@"Infrastructure/Querying/QueryBuilderCache")
+                    new QueryBuilderCacheTemplate(@"Infrastructure/Querying/QueryBuilderCache", configuration)
                 };
 
                 files.AddRange(

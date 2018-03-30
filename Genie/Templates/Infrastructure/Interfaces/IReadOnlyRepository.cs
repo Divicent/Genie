@@ -88,7 +88,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// </summary>
         /// <param name=""query"">Query to execute in the repository</param>
         /// <returns>given type</returns>
-        TA SumBy<TA>(IRepoQuery query, string column)
+        TA SumBy<TA>(IRepoQuery query, string column);
 
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Interfaces
         /// </summary>
         /// <param name=""query"">Query to execute in the repository</param>
         /// <returns>given type</returns>
-        Task<TA> SumByAsync<TA>(IRepoQuery query, string column)
+        Task<TA> SumByAsync<TA>(IRepoQuery query, string column);
 
         /// <summary>
         /// Extracts the where clause of the provided query object

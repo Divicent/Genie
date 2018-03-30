@@ -65,22 +65,18 @@ namespace Genie.Core.Templates.Dapper
             L($@"
 
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using {container.SqlClientNamespace};
+using MySql.Data.MySqlClient;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
+using QB = {GenerationContext.BaseNamespace}.Infrastructure.Querying.QueryBuilder;
 
 namespace {GenerationContext.BaseNamespace}.Dapper
 {{
 	public static class SqlMapperExtensions
     {{
-        public interface IProxy
+       /* public interface IProxy
         {{
             bool IsDirty {{ get; set; }}
         }}
@@ -468,6 +464,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	        return GetRetriveQuery(query, false, true);
 	    }}
 
+*/
 
         /// <summary>
         /// Inserts an entity into table ""T"" and returns identity id.
@@ -477,15 +474,14 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <param name=""transaction""></param>
         /// <param name=""commandTimeout""></param>
         /// <returns>Identity of inserted entity</returns>
-        private static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
+        public static long? Insert(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
-            var parameters = GetInsertParameters(entityToInsert);
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			using(connection = new MySqlConnection(connection.ConnectionString))
 			{{
 				connection.Open();
-				var cmd = string.Format(""insert into {{0}} ({{1}}) values ({{2}})"", parameters.Item1, parameters.Item2, parameters.Item3);
+				var cmd = QB.Insert(entityToInsert);
                 connection.Execute(cmd, entityToInsert, transaction, commandTimeout);
-                var r = connection.Query(""select @@IDENTITY id"", transaction: transaction, commandTimeout: commandTimeout).ToList();
+                var r = connection.Query(QB.GetId(), transaction: transaction, commandTimeout: commandTimeout).ToList();
                 long id = 0;
                 if (r.Any())
                 {{
@@ -501,6 +497,7 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         }}
 
 
+
         /// <summary>
         /// Inserts an entity into table ""T"" and returns identity id asynchronously.
         /// </summary>
@@ -509,15 +506,14 @@ namespace {GenerationContext.BaseNamespace}.Dapper
         /// <param name=""transaction""></param>
         /// <param name=""commandTimeout""></param>
         /// <returns>Identity of inserted entity</returns>
-        private static async Task<long?> InsertAsync(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
+        public static async Task<long?> InsertAsync(this IDbConnection connection, BaseModel entityToInsert, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
-            var parameters = GetInsertParameters(entityToInsert);
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			using(connection = new MySqlConnection(connection.ConnectionString))
 			{{
 				connection.Open();
-				var cmd = string.Format(""insert into {{0}} ({{1}}) values ({{2}})"", parameters.Item1, parameters.Item2, parameters.Item3);
+				var cmd = QB.Insert(entityToInsert);
                 await connection.ExecuteAsync(cmd, entityToInsert, transaction, commandTimeout);
-                var r = (await connection.QueryAsync(""select @@IDENTITY id"", transaction: transaction, commandTimeout: commandTimeout)).ToList();
+                var r = (await connection.QueryAsync(QB.GetId(), transaction: transaction, commandTimeout: commandTimeout)).ToList();
                 long id = 0;
                 if (r.Any())
                 {{
@@ -540,14 +536,14 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
-	    private static bool Update(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
+	    public static bool Update(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
-            var query = BuildUpdateQuery(entityToUpdate);
+            var query = QB.Update(entityToUpdate);
             if(query == null)
             {{
                 return false;
             }}
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			using(connection = new MySqlConnection(connection.ConnectionString))
 			{{
 				connection.Open();
 				var updated = connection.Execute(query, entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
@@ -563,14 +559,14 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>true if updated, false if not found or not modified (tracked entities)</returns>
-	    private static async Task<bool> UpdateAsync(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
+	  	public static async Task<bool> UpdateAsync(this IDbConnection connection, BaseModel entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
-            var query = BuildUpdateQuery(entityToUpdate);
+            var query = QB.Update(entityToUpdate);
             if(query == null)
             {{
                 return false;
             }}
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			using(connection = new MySqlConnection(connection.ConnectionString))
 			{{
 				connection.Open();
 				var updated = await connection.ExecuteAsync(query, entityToUpdate, commandTimeout: commandTimeout, transaction: transaction);
@@ -586,12 +582,12 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>true if deleted, false if not found</returns>
-	    private static bool Delete(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
+	    public static bool Delete(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			using(connection = new MySqlConnection(connection.ConnectionString))
 			{{
 				connection.Open();
-				var deleted = connection.Execute(GetDeleteQuery(entity), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
+				var deleted = connection.Execute(QB.Delete(entity), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
 				return deleted;
 			}}
         }}
@@ -605,12 +601,12 @@ namespace {GenerationContext.BaseNamespace}.Dapper
 	    /// <param name=""transaction""></param>
 	    /// <param name=""commandTimeout""></param>
 	    /// <returns>true if deleted, false if not found</returns>
-	    private static async Task<bool> DeleteAsync(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
+	   	public static async Task<bool> DeleteAsync(this IDbConnection connection, BaseModel entity, IDbTransaction transaction = null, int? commandTimeout = null)
         {{
-			using(connection = new {container.SqlConnectionClassName}(connection.ConnectionString))
+			using(connection = new MySqlConnection(connection.ConnectionString))
 			{{
 				connection.Open();
-				var deleted = await connection.ExecuteAsync(GetDeleteQuery(entity), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
+				var deleted = await connection.ExecuteAsync(QB.Delete(entity), entity, transaction: transaction, commandTimeout: commandTimeout) > 0;
 				return deleted;
 			}}
         }}

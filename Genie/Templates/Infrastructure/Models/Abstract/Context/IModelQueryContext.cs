@@ -146,12 +146,20 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         Task<int> CountAsync(IDbTransaction transaction = null);
 
 	    /// <summary>
-		/// Get Sum of a column. this will ignore pagination parameters
+		/// Get Sum of a column
 		/// </summary>
 		/// <param name=""predicate"">Select a column</param>
 		/// <typeparam name=""T"">Type of the result</typeparam>
 		/// <returns></returns>
-		Task<T> SumByAsync<T>(Func<I{_name}ColumnSelector, IColumn<T>> predicate) where T : struct;
+		T SumBy<T>(Func<I{_name}ColumnSelector, IColumn<T>> predicate,IDbTransaction transaction = null) where T : struct;
+
+	    /// <summary>
+		/// Get Sum of a column
+		/// </summary>
+		/// <param name=""predicate"">Select a column</param>
+		/// <typeparam name=""T"">Type of the result</typeparam>
+		/// <returns></returns>
+		Task<T> SumByAsync<T>(Func<I{_name}ColumnSelector, IColumn<T>> predicate, IDbTransaction transaction = null) where T : struct;
 
         /// <summary>
         /// Extract built where clause
