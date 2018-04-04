@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Exceptions;
 using Genie.Core.Base.ProcessOutput.Abstract;
+using Genie.Core.Tools;
 
 #endregion
 
@@ -19,6 +19,9 @@ namespace Genie.Core.Base.ProjectFileManaging
     /// </summary>
     internal static class CSharpProjectItemManager
     {
+        private const string GenieCoreVersion = "1.0.0-beta-4";
+
+
         /// <summary>
         ///  Process the project file using given items
         /// </summary>
@@ -40,16 +43,13 @@ namespace Genie.Core.Base.ProjectFileManaging
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include=""Microsoft.CSharp"" Version=""4.4.1"" />
-    <PackageReference Include=""System.Data.SqlClient"" Version=""4.4.2"" />
-    {(configuration.DBMS == "mysql" ? @"\n<PackageReference Include=""MySql.Data"" Version=""6.10.6"" />" : "")}
+    <PackageReference Include=""Genie.Core"" Version=""${GenieCoreVersion}"" />
   </ItemGroup>
 </Project>");
                     return;
                 }
 
-                var document = new XmlDocument();
-                document.LoadXml(File.ReadAllText(projectFilePath));
+                var document = XmlHelper.GetDocument(projectFilePath);
 
                 XmlNode projectTag = null;
                 try
@@ -78,16 +78,8 @@ namespace Genie.Core.Base.ProjectFileManaging
                     var packages = document.GetElementsByTagName("PackageReference");
                     var requiredPackages = new List<(string name, string version)>
                     {
-                        (name: "Microsoft.CSharp", version: "4.4.1"),
-                        (name: "System.Data.SqlClient", version: "4.4.2"),
-                        (name: "System.Reflection.Emit.Lightweight", "4.3.0"),
-                        (name: "System.Reflection.TypeExtensions", "4.4.0")
+                        (name: "Genie.Core", version: GenieCoreVersion)
                     };
-
-                    if (configuration.DBMS == "mysql")
-                    {
-                        requiredPackages.Add((name: "MySql.Data", version: "6.10.6"));
-                    }
 
                     var existingPackages = new List<(XmlNode node, string requiredVersion)>();
                     var packagesToAdd = new List<XmlNode>();
@@ -106,11 +98,9 @@ namespace Genie.Core.Base.ProjectFileManaging
                         if (existing == null)
                         {
                             var node = document.CreateElement("PackageReference", null);
-                            var includeAttribute = document.CreateAttribute("Include", null);
-                            includeAttribute.Value = requiredPackage.name;
 
-                            var versionAttribuete = document.CreateAttribute("Version", null);
-                            versionAttribuete.Value = requiredPackage.version;
+                            var includeAttribute = XmlHelper.CreateAttribute(document, "Include", requiredPackage.name);
+                            var versionAttribuete = XmlHelper.CreateAttribute(document, "Version", requiredPackage.version);
 
                             node.Attributes.Append(includeAttribute);
                             node.Attributes.Append(versionAttribuete);
@@ -170,14 +160,73 @@ namespace Genie.Core.Base.ProjectFileManaging
                 }
                 else
                 {
+                    var folder = new FileInfo(projectFilePath).Directory;
+                    var packageFile = Path.Combine(folder.FullName, "packages.config");
+                    if (File.Exists(packageFile))
+                    {
+                        try
+                        {
+                            var packageDoc = new XmlDocument();
+                            packageDoc.LoadXml(File.ReadAllText(packageFile));
+                            var changed = false;
+
+                            var packagesNodes = packageDoc.GetElementsByTagName("packages");
+                            if (packagesNodes.Count > 0)
+                            {
+                                var packagesNode = packagesNodes[0];
+                                var found = false;
+                                foreach (XmlNode packagesNodeChildNode in packagesNode.ChildNodes)
+                                {
+                                    var id = packagesNodeChildNode.Attributes["id"]?.Value;
+                                    if (id != "Genie.Core")
+                                        continue;
+                                    found = true;
+                                    var version = packagesNode.Attributes["version"];
+                                    if (version == null || version.Value != GenieCoreVersion)
+                                    {
+                                        if (version == null)
+                                        {
+                                            version = XmlHelper.CreateAttribute(packageDoc, "version", GenieCoreVersion);
+                                            packagesNodeChildNode.Attributes.Append(version);
+                                        }
+                                        version.Value = GenieCoreVersion;
+                                        changed = true;
+                                    }
+                                    break;
+                                }
+
+                                if (!found)
+                                {
+                                    var newNode = packageDoc.CreateNode(XmlNodeType.Element, "package", null);
+
+
+                                    var id = XmlHelper.CreateAttribute(packageDoc, "id", "Genie.Core");
+                                    var version = XmlHelper.CreateAttribute(packageDoc, "version", GenieCoreVersion);
+                                    newNode.Attributes.Append(id);
+                                    newNode.Attributes.Append(version);
+                                    packagesNode.AppendChild(newNode);
+                                    changed = true;
+                                }
+                            }
+
+                            if (changed)
+                            {
+                                XmlHelper.Save(packageDoc, packageFile);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            /*Ignore*/
+                        }
+                    }
                     var compiles = document.GetElementsByTagName("Compile");
                     var torRemove = (from XmlNode compile in compiles
-                        where
-                            compile?.Attributes != null
-                        let include = compile.Attributes["Include"]?.Value
-                        where !string.IsNullOrWhiteSpace(include) &&
-                              (include.StartsWith("Dapper") || include.StartsWith("Infrastructure"))
-                        select compile).ToList();
+                                     where
+                                         compile?.Attributes != null
+                                     let include = compile.Attributes["Include"]?.Value
+                                     where !string.IsNullOrWhiteSpace(include) &&
+                                           (include.StartsWith("Dapper") || include.StartsWith("Infrastructure"))
+                                     select compile).ToList();
 
                     foreach (var tr in torRemove)
                     {
@@ -190,8 +239,7 @@ namespace Genie.Core.Base.ProjectFileManaging
                     foreach (var file in files)
                     {
                         var node = document.CreateElement("Compile", null);
-                        var include = document.CreateAttribute("Include");
-                        include.Value = file.Replace("/", "\\");
+                        var include = XmlHelper.CreateAttribute(document, "Include", file.Replace("/", "\\"));
                         node.Attributes.Append(include);
                         root.AppendChild(node);
                     }
@@ -199,14 +247,7 @@ namespace Genie.Core.Base.ProjectFileManaging
                     document.DocumentElement.AppendChild(root);
                 }
 
-                var xmlWriterSettings = new XmlWriterSettings {Indent = true};
-                var sb = new StringBuilder();
-                using (var xw = XmlWriter.Create(sb, xmlWriterSettings))
-                {
-                    document.WriteContentTo(xw);
-                }
-
-                File.WriteAllText(projectFilePath, sb.Replace("xmlns=\"\"", "").ToString());
+                XmlHelper.Save(document, projectFilePath);
             }
             catch (Exception e)
             {

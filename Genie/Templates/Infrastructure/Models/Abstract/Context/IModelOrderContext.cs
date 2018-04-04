@@ -41,11 +41,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
             }
 
             L($@"
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
-
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
-{{
-
     /// <summary>
     /// Helps to build order for queries on the data source {_name}
     /// </summary>
@@ -55,7 +50,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
 {props}
 
     }}
-}}");
+");
 
             return E();
         }

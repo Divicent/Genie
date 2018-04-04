@@ -15,17 +15,11 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
         public override string Generate()
         {
             L($@"
-using System;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
-
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context
-{{
     public class {_model.GetName()}ColumnSelector: I{_model.GetName()}ColumnSelector
     {{
         {Lines(_model.GetAttributes(), FormatColumn, "        ")}
     }}
-}}");
+");
 
             return E();
         }

@@ -110,7 +110,7 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
                 Remove(new {relation.Name}
                 {{
                     {keys.Aggregate("", (c, n) => $"{c}                    {n.Name} = {n.Name.ToLower()},\n")}
-                    DatabaseModelStatus = ModelStatus.Retrieved
+                    __DatabaseModelStatus = ModelStatus.Retrieved
                 }});
             }}
 ");
@@ -152,7 +152,9 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
 
 using System.Linq;
 using System.Threading.Tasks;
-using {GenerationContext.BaseNamespace}.Infrastructure.Interfaces;
+using Genie.Core.Infrastructure;
+using Genie.Core.Infrastructure.Interfaces;
+using Genie.Core.Infrastructure.Models;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context;

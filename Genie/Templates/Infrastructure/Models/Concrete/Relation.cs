@@ -98,7 +98,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 		/// </summary>
 		public {atd.ReferencingRelationName} Get{atd.ReferencingNonForeignKeyAttribute.Name}(IDbTransaction transaction =null)
         {{
-            return DatabaseUnitOfWork != null ? {atd.ReferencingNonForeignKeyAttribute.FieldName}Obj ?? ({atd.ReferencingNonForeignKeyAttribute.FieldName}Obj = DatabaseUnitOfWork.{atd.ReferencingRelationName}Repository.Get().Where.{atd.ReferencingTableColumnName}.EqualsTo({atd.ReferencingNonForeignKeyAttribute.FieldName}{fix}).Filter().Top(1).FirstOrDefault(transaction)) : null;
+            return __DatabaseUnitOfWork != null ? {atd.ReferencingNonForeignKeyAttribute.FieldName}Obj ?? ({atd.ReferencingNonForeignKeyAttribute.FieldName}Obj = __DatabaseUnitOfWork.{atd.ReferencingRelationName}Repository().Get().Where.{atd.ReferencingTableColumnName}.EqualsTo({atd.ReferencingNonForeignKeyAttribute.FieldName}{fix}).Filter().Top(1).FirstOrDefault(transaction)) : null;
         }}
         
         /// <summary>
@@ -106,7 +106,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 		/// </summary>
 		public async Task<{atd.ReferencingRelationName}> Get{atd.ReferencingNonForeignKeyAttribute.Name}Async(IDbTransaction transaction =null)
         {{
-            return DatabaseUnitOfWork != null ? {atd.ReferencingNonForeignKeyAttribute.FieldName}Obj ?? ({atd.ReferencingNonForeignKeyAttribute.FieldName}Obj = await DatabaseUnitOfWork.{atd.ReferencingRelationName}Repository.Get().Where.{atd.ReferencingTableColumnName}.EqualsTo({atd.ReferencingNonForeignKeyAttribute.FieldName}{fix}).Filter().Top(1).FirstOrDefaultAsync(transaction)) : null;
+            return __DatabaseUnitOfWork != null ? {atd.ReferencingNonForeignKeyAttribute.FieldName}Obj ?? ({atd.ReferencingNonForeignKeyAttribute.FieldName}Obj = await __DatabaseUnitOfWork.{atd.ReferencingRelationName}Repository().Get().Where.{atd.ReferencingTableColumnName}.EqualsTo({atd.ReferencingNonForeignKeyAttribute.FieldName}{fix}).Filter().Top(1).FirstOrDefaultAsync(transaction)) : null;
         }}");
 
                 fkSetters.AppendLine($@"		/// <summary>
@@ -116,15 +116,15 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
         {{
             if (entity == null)
                 return;
-            switch (entity.DatabaseModelStatus)
+            switch (entity.__DatabaseModelStatus)
             {{
                 case ModelStatus.Retrieved:
                     {atd.ReferencingNonForeignKeyAttribute.Name} = entity.{atd.ReferencingTableColumnName};
                     break;
                 case ModelStatus.ToAdd:
-                    if (entity.ActionsToRunWhenAdding == null)
-                        entity.ActionsToRunWhenAdding = new List<IAddAction>();
-                    entity.ActionsToRunWhenAdding.Add(new AddAction(i => {{ {atd.ReferencingNonForeignKeyAttribute.Name
+                    if (entity.__ActionsToRunWhenAdding == null)
+                        entity.__ActionsToRunWhenAdding = new List<IAddAction>();
+                    entity.__ActionsToRunWhenAdding.Add(new AddAction(i => {{ {atd.ReferencingNonForeignKeyAttribute.Name
                     } = (({atd.ReferencingRelationName}) i).{atd.ReferencingTableColumnName}; }}, entity));
                     break;
                 case ModelStatus.JustInMemory:
@@ -142,7 +142,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                     $@"
 		public IReferencedEntityCollection<{list.ReferencedRelationName}> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
                             list.ReferencedRelationName
-                        }>(DatabaseUnitOfWork.{list.ReferencedRelationName}Repository.Get().Where.{
+                        }>(__DatabaseUnitOfWork.{list.ReferencedRelationName}Repository().Get().Where.{
                             list.ReferencedPropertyName
                         }.EqualsTo({list.ReferencedPropertyOnThisRelation}).Filter().Query(transaction), (i) => {{ (({
                             list.ReferencedRelationName
@@ -150,7 +150,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                     
 		public async Task<IReferencedEntityCollection<{list.ReferencedRelationName}>> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}Async(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
                             list.ReferencedRelationName
-                        }>(await DatabaseUnitOfWork.{list.ReferencedRelationName}Repository.Get().Where.{
+                        }>(await __DatabaseUnitOfWork.{list.ReferencedRelationName}Repository().Get().Where.{
                             list.ReferencedPropertyName
                         }.EqualsTo({list.ReferencedPropertyOnThisRelation}).Filter().QueryAsync(transaction), (i) => {{ (({
                             list.ReferencedRelationName
@@ -185,20 +185,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             
 
             L($@"
-using System;
-using System.Linq;
-using System.Data;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using {GenerationContext.BaseNamespace}.Dapper;
-using {GenerationContext.BaseNamespace}.Infrastructure.Collections.Concrete;
-using {GenerationContext.BaseNamespace}.Infrastructure.Collections.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Actions.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Actions.Concrete;
-{abstractModelsNamespace}
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
-{{
-
 {enm}
 
     [Table(""{quote(_configuration.Schema)}.{quote(name)}"")]
@@ -219,14 +205,13 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
 
 {referenceLists}
 
-        internal override void SetId(object id)
+        public override void SetId(object id)
         {{
 
 {keysStr}
 
         }}
     }}
-}}
 ");
 
             return E();
