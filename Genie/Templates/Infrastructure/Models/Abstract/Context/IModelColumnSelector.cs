@@ -18,6 +18,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
         {
             L($@"
 using System;
+using Genie.Core.Infrastructure.Models;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
 {{

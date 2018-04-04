@@ -64,7 +64,8 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             L($@"
 
 using System;
-using {GenerationContext.BaseNamespace}.Dapper;
+using Genie.Core.Mapper;
+
 {abstractModelsNamespace}
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
 {{

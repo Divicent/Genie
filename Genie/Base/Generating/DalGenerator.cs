@@ -11,20 +11,11 @@ using Genie.Core.Base.Reading.Abstract;
 using Genie.Core.Models.Abstract;
 using Genie.Core.Models.Concrete;
 using Genie.Core.Templates.Abstract;
-using Genie.Core.Templates.Dapper;
 using Genie.Core.Templates.Infrastructure;
-using Genie.Core.Templates.Infrastructure.Actions.Abstract;
-using Genie.Core.Templates.Infrastructure.Actions.Concrete;
-using Genie.Core.Templates.Infrastructure.Collections.Abstract;
-using Genie.Core.Templates.Infrastructure.Collections.Concrete;
-using Genie.Core.Templates.Infrastructure.Filters.Abstract;
-using Genie.Core.Templates.Infrastructure.Filters.Concrete;
-using Genie.Core.Templates.Infrastructure.Interfaces;
 using Genie.Core.Templates.Infrastructure.Models.Abstract;
 using Genie.Core.Templates.Infrastructure.Models.Abstract.Context;
 using Genie.Core.Templates.Infrastructure.Models.Concrete;
 using Genie.Core.Templates.Infrastructure.Models.Concrete.Context;
-using Genie.Core.Templates.Infrastructure.Querying;
 using Genie.Core.Templates.Infrastructure.Repositories;
 
 #endregion
@@ -48,119 +39,9 @@ namespace Genie.Core.Base.Generating
             {
                 files = new List<ITemplate>
                 {
-                    new IBoolFilterTemplate(@"Infrastructure/Filters/Abstract/IBoolFilter"),
-                    new IDateFilterTemplate(@"Infrastructure/Filters/Abstract/IDateFilter"),
-                    new IExpressionJoinTemplate(@"Infrastructure/Filters/Abstract/IExpressionJoin"),
-                    new IFilterContextTemplate(@"Infrastructure/Filters/Abstract/IFilterContext"),
-                    new INumberFilterTemplate(@"Infrastructure/Filters/Abstract/INumberFilter"),
-                    new IOrderContextTemplate(@"Infrastructure/Filters/Abstract/IOrderContext"),
-                    new IOrderElementTemplate(@"Infrastructure/Filters/Abstract/IOrderElement"),
-                    new IOrderJoinTemplate(@"Infrastructure/Filters/Abstract/IOrderJoin"),
-                    new IPropertyFilterTemplate(@"Infrastructure/Filters/Abstract/IPropertyFilter"),
-                    new IRepoQueryTemplate(@"Infrastructure/Filters/Abstract/IRepoQuery"),
-                    new IStringFilterTemplate(@"Infrastructure/Filters/Abstract/IStringFilter"),
-
-                    new BaseFilterContextTemplate(@"Infrastructure/Filters/Concrete/BaseFilterContext"),
-                    new BaseOrderContextTemplate(@"Infrastructure/Filters/Concrete/BaseOrderContext"),
-                    new BoolFilterTemplate(@"Infrastructure/Filters/Concrete/BoolFilter"),
-                    new DateFilterTemplate(@"Infrastructure/Filters/Concrete/DateFilter"),
-                    new ExpressionJoinTemplate(@"Infrastructure/Filters/Concrete/ExpressionJoin"),
-                    new NumberFilterTemplate(@"Infrastructure/Filters/Concrete/NumberFilter"),
-                    new OrderElementTemplate(@"Infrastructure/Filters/Concrete/OrderElement", configuration),
-                    new OrderJoinTemplate(@"Infrastructure/Filters/Concrete/OrderJoin"),
-                    new PropertyFilterTemplate(@"Infrastructure/Filters/Concrete/PropertyFilter"),
-                    new QueryMakerTemplate(@"Infrastructure/Filters/Concrete/QueryMaker", configuration),
-                    new RepoQueryTemplate(@"Infrastructure/Filters/Concrete/RepoQuery"),
-                    new StringFilterTemplate(@"Infrastructure/Filters/Concrete/StringFilter"),
-
                     new RepositoryImplementationTemplate(@"Infrastructure/Repositories/Repositories", schema),
-                    new IDBContextTemplate(@"Infrastructure/Interfaces/IDBContext"),
-                    new IRepositoryTemplate(@"Infrastructure/Interfaces/IRepository"),
-                    new IUnitOfWorkTemplate(@"Infrastructure/Interfaces/IUnitOfWork", schema),
-                    new IReadOnlyRepositoryTemplate(@"Infrastructure/Interfaces/IReadOnlyRepository"),
-                    new IProcedureContainerTemplate(@"Infrastructure/Interfaces/IProcedureContainer", schema),
-                    new IOperationTemplate(@"Infrastructure/Interfaces/IOperation"),
-
-                    new DBContextTemplate(@"Infrastructure/DBContext", configuration),
-                    new RepositoryTemplate(@"Infrastructure/Repository", configuration),
-                    new UnitOfWorkTemplate(@"Infrastructure/UnitOfWork", schema),
-                    new ReadOnlyRepositoryTemplate(@"Infrastructure/ReadOnlyRepository", configuration),
-                    new ProcedureContainerTemplate(@"Infrastructure/ProcedureContainer", schema, configuration),
-                    new OperationTemplate(@"Infrastructure/Operation"),
-
-                    new IReferencedEntityCollectionTemplate(
-                        @"Infrastructure/Collections/Abstract/IReferencedEntityCollection"),
-                    new ReferencedEntityCollectionTemplate(
-                        @"Infrastructure/Collections/Concrete/ReferencedEntityCollection"),
-
-                    new IAddActionTemplate(@"Infrastructure/Actions/Abstract/IAddAction"),
-                    new AddActionTemplate(@"Infrastructure/Actions/Concrete/AddAction"),
-
-                    new BaseModelTemplate(@"Infrastructure/Models/Concrete/BaseModel"),
-                    new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext",
-                        configuration),
-                    new IConnectionStringProviderTemplate(@"Infrastructure/Interfaces/IConnectionStringProvider"),
-                    new IColumnTemplate(@"Infrastructure/Models/Abstract/IColumn"),
-                    new ColumnTemplate(@"Infrastructure/Models/Concrete/Column"),
-                    new QueryBuilderTemplate(@"Infrastructure/Querying/QueryBuilder", configuration),
-                    new QueryBuilderCacheTemplate(@"Infrastructure/Querying/QueryBuilderCache", configuration)
+                    new UnitOfWorkExtensionsTemplate(@"Infrastructure/UnitOfWorkExtensions", schema)
                 };
-
-                files.AddRange(
-                    new List<ITemplate>
-                    {
-                        new CommandDefinitionTemplate(@"Dapper/CommandDefinition"),
-                        new CommandFlagsTemplate(@"Dapper/CommandFlags"),
-                        new CustomPropertyTypeMapTemplate(@"Dapper/CustomPropertyTypeMap"),
-                        new DataTableHandlerTemplate(@"Dapper/DataTableHandler"),
-                        new DbStringTemplate(@"Dapper/DbString"),
-                        new DefaultTypeMapTemplate(@"Dapper/DefaultTypeMap"),
-                        new DynamicParameters_CachedOutputSettersTemplate(@"Dapper/DynamicParameters.CachedOutputSetters"),
-                        new DynamicParametersTemplate(@"Dapper/DynamicParameters"),
-                        new DynamicParameters_ParamInfoTemplate(@"Dapper/DynamicParameters.ParamInfo"),
-                        new ExplicitConstructorAttributeTemplate(@"Dapper/ExplicitConstructorAttribute"),
-                        new FeatureSupportTemplate(@"Dapper/FeatureSupport"),
-                        new SimpleMemberMapTemplate(@"Dapper/SimpleMemberMap"),
-                        new SqlDataRecordHandlerTemplate(@"Dapper/SqlDataRecordHandler"),
-                        new SqlDataRecordListTVPParameterTemplate(@"Dapper/SqlDataRecordListTVPParameter"),
-                        new SqlMapper_AsyncTemplate(@"Dapper/SqlMapper.Async"),
-                        new SqlMapper_CacheInfoTemplate(@"Dapper/SqlMapper.CacheInfo"),
-                        new SqlMapperTemplate(@"Dapper/SqlMapper"),
-                        new SqlMapper_DapperRowTemplate(@"Dapper/SqlMapper.DapperRow"),
-                        new SqlMapper_DapperRowMetaObjectTemplate(@"Dapper/SqlMapper.DapperRowMetaObject"),
-                        new SqlMapper_DapperTableTemplate(@"Dapper/SqlMapper.DapperTable"),
-                        new SqlMapper_DeserializerStateTemplate(@"Dapper/SqlMapper.DeserializerState"),
-                        new SqlMapper_DontMapTemplate(@"Dapper/SqlMapper.DontMap"),
-                        new SqlMapper_GridReader_AsyncTemplate(@"Dapper/SqlMapper.GridReader.Async"),
-                        new SqlMapper_GridReaderTemplate(@"Dapper/SqlMapper.GridReader"),
-                        new SqlMapper_ICustomQueryParameterTemplate(@"Dapper/SqlMapper.ICustomQueryParameter"),
-                        new SqlMapper_IDataReaderTemplate(@"Dapper/SqlMapper.IDataReader"),
-                        new SqlMapper_IdentityTemplate(@"Dapper/SqlMapper.Identity"),
-                        new SqlMapper_IDynamicParametersTemplate(@"Dapper/SqlMapper.IDynamicParameters"),
-                        new SqlMapper_IMemberMapTemplate(@"Dapper/SqlMapper.IMemberMap"),
-                        new SqlMapper_IParameterCallbacksTemplate(@"Dapper/SqlMapper.IParameterCallbacks"),
-                        new SqlMapper_IParameterLookupTemplate(@"Dapper/SqlMapper.IParameterLookup"),
-                        new SqlMapper_ITypeHandlerTemplate(@"Dapper/SqlMapper.ITypeHandler"),
-                        new SqlMapper_ITypeMapTemplate(@"Dapper/SqlMapper.ITypeMap"),
-                        new SqlMapper_LinkTemplate(@"Dapper/SqlMapper.Link"),
-                        new SqlMapper_LiteralTokenTemplate(@"Dapper/SqlMapper.LiteralToken"),
-                        new SqlMapper_SettingsTemplate(@"Dapper/SqlMapper.Settings"),
-                        new SqlMapper_TypeDeserializerCacheTemplate(@"Dapper/SqlMapper.TypeDeserializerCache"),
-                        new SqlMapper_TypeHandlerTemplate(@"Dapper/SqlMapper.TypeHandler"),
-                        new SqlMapper_TypeHandlerCacheTemplate(@"Dapper/SqlMapper.TypeHandlerCache"),
-                        new TableValuedParameterTemplate(@"Dapper/TableValuedParameter"),
-                        new TypeExtensionsTemplate(@"Dapper/TypeExtensions"),
-                        new UdtTypeHandlerTemplate(@"Dapper/UdtTypeHandler"),
-                        new WrappedDataReaderTemplate(@"Dapper/WrappedDataReader"),
-                        new WrappedReaderTemplate(@"Dapper/WrappedReader"),
-                        new XmlHandlersTemplate(@"Dapper/XmlHandlers"),
-                        new KeyAttributeTemplate(@"Dapper/KeyAttribute"),
-                        new IdentityAttributeTemplate(@"Dapper/IdentityAttribute"),
-                        new SqlMapperExtensionsTemplate(@"Dapper/SqlMapperExtensions", configuration),
-                        new TableAttributeTemplate(@"Dapper/TableAttribute"),
-                        new WriteAttributeTemplate(@"Dapper/WriteAttribute")
-                    }
-                );
 
                 foreach (var relation in schema.Relations)
                 {

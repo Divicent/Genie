@@ -60,7 +60,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
             var endName = _attributes.Any(a => a.Name == "End") ? "EndScope" : "End";
 
             L($@"
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
+using Genie.Core.Infrastructure.Filters.Abstract;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
 {{

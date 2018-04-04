@@ -22,8 +22,8 @@ using System;
 using System.Data;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
+using Genie.Core.Infrastructure.Filters.Abstract;
+using Genie.Core.Infrastructure.Models;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
 {{

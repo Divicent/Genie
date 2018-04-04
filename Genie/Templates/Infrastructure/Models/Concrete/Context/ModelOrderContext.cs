@@ -40,9 +40,9 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
             }
 
             L($@"
+using Genie.Core.Infrastructure.Filters.Abstract;
+using Genie.Core.Infrastructure.Filters.Concrete;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
 
 namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context

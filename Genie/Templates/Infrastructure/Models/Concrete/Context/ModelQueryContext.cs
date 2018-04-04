@@ -58,9 +58,10 @@ using System;
 using System.Data;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Genie.Core.Infrastructure.Filters.Abstract;
+using Genie.Core.Infrastructure.Filters.Concrete;
+using Genie.Core.Infrastructure.Models;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete;
 using {GenerationContext.BaseNamespace}.Infrastructure.Repositories.Abstract;
 using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
 
