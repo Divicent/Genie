@@ -54,19 +54,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
             }
 
             L($@"
-using System;
-using System.Data;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Genie.Core.Infrastructure.Filters.Abstract;
-using Genie.Core.Infrastructure.Filters.Concrete;
-using Genie.Core.Infrastructure.Models;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Repositories.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
-
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context
-{{
     internal class {_name}QueryContext: BaseQueryContext, I{_name}QueryContext
 	{{
 		private I{_name}FilterContext _where; 
@@ -194,7 +181,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
 			return _repo.GetWhereClause(GetQuery(null));
 		}}
 	}}
-}}");
+");
 
             return E();
         }

@@ -18,16 +18,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
         public override string Generate()
         {
             L($@"
-using System;
-using System.Data;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Genie.Core.Infrastructure.Filters.Abstract;
-using Genie.Core.Infrastructure.Models;
-
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
-{{
-
     /// <summary>
     /// Helps to build retrieve queries on {
                     _name
@@ -167,7 +157,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         /// <returns></returns>
 		string GetWhereClause();
 	}}
-}}");
+");
 
             return E();
         }

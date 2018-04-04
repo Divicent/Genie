@@ -62,13 +62,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             }
             var absImplement = _configuration.AbstractModelsEnabled ? $": I{name}" : "";
             L($@"
-
-using System;
-using Genie.Core.Mapper;
-
-{abstractModelsNamespace}
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
-{{
     [Table(""{quote(_configuration.Schema)}.{quote(name)}"")]
     public class {name} {absImplement}
     {{
@@ -78,7 +71,6 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
 {attributes}
 
     }}
-}}
 ");
 
             return E();

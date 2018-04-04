@@ -185,23 +185,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             
 
             L($@"
-
-using System;
-using System.Linq;
-using System.Data;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Genie.Core.Infrastructure.Actions.Abstract;
-using Genie.Core.Infrastructure.Actions.Concrete;
-using Genie.Core.Infrastructure.Collections.Abstract;
-using Genie.Core.Infrastructure.Collections.Concrete;
-using Genie.Core.Infrastructure.Models;
-using Genie.Core.Mapper;
-{abstractModelsNamespace}
-
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
-{{
-
 {enm}
 
     [Table(""{quote(_configuration.Schema)}.{quote(name)}"")]
@@ -229,7 +212,6 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete
 
         }}
     }}
-}}
 ");
 
             return E();

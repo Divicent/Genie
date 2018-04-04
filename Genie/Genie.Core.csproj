@@ -4,6 +4,9 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Templates\Infrastructure\Models\Concrete\Context\BaseQueryContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MySqlConnector" Version="0.26.2" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />

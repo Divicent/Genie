@@ -35,7 +35,7 @@ namespace Genie.Core.Templates.Infrastructure
                 funcs.AppendLine($@"
         public static I{view.Name}Repository {view.Name}Repository(this IUnitOfWork unit)
         {{
-            return Get(unit, ""{view.Name}"", () => new {view.Name}Repository(unit.Context, unit));
+            return Get(unit, ""{view.Name}"", () => new {view.Name}Repository(unit.Context));
         }}
 ");
             }

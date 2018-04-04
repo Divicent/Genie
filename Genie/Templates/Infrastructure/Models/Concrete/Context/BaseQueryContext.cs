@@ -22,13 +22,13 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
             var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
             L($@"
 
-using System.Collections.Generic;
-using System.Linq;
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete;
+//using System.Collections.Generic;
+//using System.Linq;
+//using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Abstract;
+//using {GenerationContext.BaseNamespace}.Infrastructure.Filters.Concrete;
 
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context
-{{
+//namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context
+//{{
     public abstract class BaseQueryContext
     {{
         protected int? _page;
@@ -159,7 +159,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
             }}
         }}
     }}
-}}
+//}}
 ");
 
             return E();

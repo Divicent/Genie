@@ -12,6 +12,7 @@ using Genie.Core.Models.Abstract;
 using Genie.Core.Models.Concrete;
 using Genie.Core.Templates.Abstract;
 using Genie.Core.Templates.Infrastructure;
+using Genie.Core.Templates.Infrastructure.Models;
 using Genie.Core.Templates.Infrastructure.Models.Abstract;
 using Genie.Core.Templates.Infrastructure.Models.Abstract.Context;
 using Genie.Core.Templates.Infrastructure.Models.Concrete;
@@ -39,66 +40,51 @@ namespace Genie.Core.Base.Generating
             {
                 files = new List<ITemplate>
                 {
-                    new RepositoryImplementationTemplate(@"Infrastructure/Repositories/Repositories", schema),
-                    new UnitOfWorkExtensionsTemplate(@"Infrastructure/UnitOfWorkExtensions", schema)
+                    new UnitOfWorkExtensionsTemplate(@"Infrastructure/UnitOfWorkExtensions", schema),
+                    new ProcedureContainerExtensionsTemplate(@"Infrastructure/ProcedureContainerExtensions", schema, configuration)
                 };
 
                 foreach (var relation in schema.Relations)
                 {
-                    files.Add(new RelationTemplate(@"Infrastructure/Models/Concrete/" + relation.Name, relation,
-                        schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum"), configuration));
 
-                    files.Add(new IModelQueryContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "QueryContext", relation.Name));
-                    files.Add(new IModelFilterContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "FilterContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    files.Add(new IModelOrderContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "OrderContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    
-                    files.Add(new IModelColumnSelectorTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + relation.Name + "ColumnSelector", relation));
-                    
-                    files.Add(new ModelQueryContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "QueryContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList(), configuration));
-                    files.Add(new ModelFilterContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "FilterContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    files.Add(new ModelOrderContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "OrderContext", relation.Name,
-                        relation.Attributes.Cast<ISimpleAttribute>().ToList()));
-                    files.Add(new ModelColumnSelectorTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + relation.Name + "ColumnSelector", relation));
+                    var attributes = relation.Attributes.Cast<ISimpleAttribute>().ToList();
+
+                    files.Add(new ObjectTemplate($"Infrastructure/Models/{relation.Name}", configuration,
+                        new IModelColumnSelectorTemplate("", relation),
+                        new IModelFilterContextTemplate("", relation.Name, attributes),
+                        new IModelOrderContextTemplate("", relation.Name, attributes),
+                        new IModelQueryContextTemplate("", relation.Name),
+
+                        new ModelColumnSelectorTemplate(@"", relation),
+                        new ModelFilterContextTemplate("", relation.Name, attributes),
+                        new ModelOrderContextTemplate("", relation.Name, attributes),
+                        new ModelQueryContextTemplate("", relation.Name, attributes, configuration),
+                        new RelationTemplate("", relation, schema.Enums.FirstOrDefault(e => e.Name == $"{relation.Name}Enum"), configuration),
+                        new IRepositoryTemplate("", relation),
+                        new RepositoryTemplate("", relation)
+
+                    ));
                 }
 
                 foreach (var view in schema.Views)
                 {
-                    files.Add(new ViewTemplate(@"Infrastructure/Models/Concrete/" + view.Name, view, configuration));
+                    var attributes = view.Attributes.ToList();
 
-                    files.Add(new IModelQueryContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "QueryContext", view.Name));
-                    files.Add(new IModelFilterContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "FilterContext", view.Name,
-                        view.Attributes));
-                    files.Add(new IModelOrderContextTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "OrderContext", view.Name,
-                        view.Attributes));
-                    files.Add(new IModelColumnSelectorTemplate(
-                        @"Infrastructure/Models/Abstract/Context/I" + view.Name + "ColumnSelector", view));
+                    files.Add(new ObjectTemplate($"Infrastructure/Models/{view.Name}", configuration,
+                        new IModelColumnSelectorTemplate("", view),
+                        new IModelFilterContextTemplate("", view.Name, attributes),
+                        new IModelOrderContextTemplate("", view.Name, attributes),
+                        new IModelQueryContextTemplate("", view.Name),
 
-                    files.Add(new ModelQueryContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "QueryContext", view.Name,
-                        view.Attributes, configuration));
-                    files.Add(new ModelFilterContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "FilterContext", view.Name,
-                        view.Attributes));
-                    files.Add(new ModelOrderContextTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "OrderContext", view.Name,
-                        view.Attributes));
-                    files.Add(new ModelColumnSelectorTemplate(
-                        @"Infrastructure/Models/Concrete/Context/" + view.Name + "ColumnSelector", view));
+                        new ModelColumnSelectorTemplate(@"", view),
+                        new ModelFilterContextTemplate("", view.Name, attributes),
+                        new ModelOrderContextTemplate("", view.Name, attributes),
+                        new ModelQueryContextTemplate("", view.Name, attributes, configuration),
+                        new ViewTemplate("", view, configuration), 
+                        new IRepositoryTemplate("", view),
+                        new RepositoryTemplate("", view)
+
+                    ));
                 }
 
                 var canWriteAbstractModels = false;

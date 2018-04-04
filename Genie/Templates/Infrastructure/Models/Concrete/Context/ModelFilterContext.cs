@@ -87,12 +87,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 
             L($@"
 
-using Genie.Core.Infrastructure.Filters.Abstract;
-using Genie.Core.Infrastructure.Filters.Concrete;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
-
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context
-{{
     internal class {_name}FilterContext : BaseFilterContext, I{_name}FilterContext 
     {{
 		private readonly I{_name}QueryContext  _queryContext;
@@ -118,7 +112,6 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Conte
             }}
         }}
 	}}
-}}
 ");
 
             return E();

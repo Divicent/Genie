@@ -60,15 +60,11 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
             var endName = _attributes.Any(a => a.Name == "End") ? "EndScope" : "End";
 
             L($@"
-using Genie.Core.Infrastructure.Filters.Abstract;
 
-namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context
-{{
-
-  /// <summary>
-  /// Helps to build filters for queries on the data source {_name}
-  /// </summary>
-	public interface I{_name}FilterContext : IFilterContext
+    /// <summary>
+    /// Helps to build filters for queries on the data source {_name}
+    /// </summary>
+  	public interface I{_name}FilterContext : IFilterContext
 	{{
 
 {props}
@@ -84,7 +80,7 @@ namespace {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Conte
         I{_name}FilterContext {endName} {{ get; }}
 
     }}
-}}");
+");
 
             return E();
         }
