@@ -155,8 +155,7 @@ namespace Genie.Tests.Core.Templates
                 new RepositoryImplementationTemplate(@"Infrastructure/Repositories/Repositories", schema),
                
                 new UnitOfWorkExtensionsTemplate(@"Infrastructure/UnitOfWork", schema),
-                new BaseQueryContextTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext",
-                    configuration),
+                new ProcedureContainerExtensionsTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext", schema,configuration),
                 new IModelTemplate(@"SomePath", relation, configuration, false),
                 new RelationTemplate(@"Test", relation, enm, configuration),
                 new IModelQueryContextTemplate("C://", "Test"),
@@ -202,6 +201,10 @@ namespace Genie.Tests.Core.Templates
                     view.Attributes),
                 new IModelColumnSelectorTemplate(@"Infrastructure/Models/IModel", view),
                 new ModelColumnSelectorTemplate(@"Infrastructure/Models/IModel", view),
+                new IRepositoryTemplate("", view),
+                new IRepositoryTemplate("", relation),
+                new RepositoryTemplate("", view),
+                new RepositoryTemplate("", relation)
             };
 
 
