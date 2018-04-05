@@ -13,4 +13,4 @@ Genie is a cross platform .Net Application that can generate a data access layer
 
 Genie is written in C# for .Net core framework
 
-[More info](https://rusith.github.io/Genie/)
+[More info](https://geniedotnet.github.io/Genie/)
