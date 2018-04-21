@@ -3,7 +3,7 @@
 </h1>
 
 [![Build Status](https://travis-ci.org/Divicent/Genie.svg?branch=core)](https://travis-ci.org/Divicent/Genie)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/91e0dd6f714e42b495b5f2e003cb6e14)](https://www.codacy.com/app/Divicent/Genie?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Divicent/Genie&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9bf8783c18c6417f82e2d3b2c6ae5fe6)](https://www.codacy.com/app/rusith/Genie?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Divicent/Genie&amp;utm_campaign=Badge_Grade)
 [![Build status](https://ci.appveyor.com/api/projects/status/vma6y578itkrmdlv?svg=true)](https://ci.appveyor.com/project/ShanakaRusith/genie)
 [![codecov](https://codecov.io/gh/rusith/Genie/branch/core/graph/badge.svg)](https://codecov.io/gh/Divicent/Genie)
 
