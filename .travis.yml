@@ -28,7 +28,7 @@ deploy:
     - ${TRAVIS_BUILD_DIR}/genieCLI_osx-x64-${TRAVIS_TAG}.zip
   skip_cleanup: true
   on:
-    repo: GenieDotNet/Genie
+    repo: Divicent/Genie
     branch: core
     tags: true
 env:
