@@ -32,6 +32,8 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
             var lit = _attributes.Where(a => a.IsLiteralType).ToList();
             var nonLit = _attributes.Where(a => !a.IsLiteralType).ToList();
 
+            
+
             var cases = new StringBuilder();
             var columnNames = new StringBuilder();
             var firstColumn = true;
@@ -51,6 +53,18 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
                 cases.AppendLine($@"				case ""{a.Name.ToLower()}"":
 					propertyName = ""{a.Name}"";
 					return false;");
+            }
+
+            var dateTypes = _attributes.Where(a => a.DataType == "DateTime").ToList();
+            var dateCases = new StringBuilder();
+            if (dateTypes.Count > 0)
+            {
+                foreach (var dateType in dateTypes)
+                {
+                    dateCases.AppendLine($@"				case ""{dateType.Name.ToLower()}"":
+					return Convert.ToDateTime(value).ToString();
+                    ");
+                }
             }
 
             L($@"
@@ -173,6 +187,15 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 			{{
 {cases}
 				default: return null;
+			}}
+		}} 
+
+		protected override string FixStringValue(string propertyName, string value) 
+		{{
+			switch(propertyName.ToLower()) 
+			{{
+{dateCases}
+				default: return value;
 			}}
 		}}
 
