@@ -60,7 +60,8 @@ namespace Genie.Core.Base.Reading.Concrete
                 IsPrimaryKey = reader.GetInt32(6) == 1,
                 IsForeignKey = reader.GetInt32(7) == 1,
                 TableComment = reader.GetString(10),
-                Comment = reader.GetString(11)
+                Comment = reader.GetString(11),
+                IsIdentity = reader.GetBoolean(12)
             };
 
             if (column.IsForeignKey)
@@ -113,6 +114,7 @@ namespace Genie.Core.Base.Reading.Concrete
                 ,rcuc.REFERENCED_COLUMN_NAME AS ReferencedColumn
                 ,t.TABLE_COMMENT
                 ,c.COLUMN_COMMENT
+                ,c.EXTRA = 'auto_increment' AS IsIdentity
             FROM INFORMATION_SCHEMA.COLUMNS c
                 INNER JOIN INFORMATION_SCHEMA.TABLES t
                     ON c.`TABLE_NAME` = t.`TABLE_NAME` AND c.TABLE_SCHEMA = t.TABLE_SCHEMA

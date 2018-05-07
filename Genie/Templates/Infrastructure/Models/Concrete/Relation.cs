@@ -3,7 +3,6 @@
 using System.Linq;
 using System.Text;
 using Genie.Core.Base.Configuration.Abstract;
-using Genie.Core.Base.Generating;
 using Genie.Core.Extensions;
 using Genie.Core.Models.Abstract;
 using Genie.Core.Tools;
@@ -56,7 +55,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                                 _enum.Name
                             }({key.Value}));");
 
-                enm.AppendLine($@"	}}");
+                enm.AppendLine(@"	}");
             }
 
             var fields = new StringBuilder();
@@ -159,10 +158,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             var keys = entity.Attributes.Where(e => e.IsKey);
             var keysStr = new StringBuilder();
             foreach (var k in keys) keysStr.AppendLine($@"            {k.FieldName} = ({k.DataType})id;");
-
-            var abstractModelsNamespace = _configuration.AbstractModelsEnabled
-                ? $"using {_configuration.AbstractModelsNamespace};\n"
-                : "";
+            
             var absImplement = _configuration.AbstractModelsEnabled ? $", I{name}" : "";
 
             var constructor = "";
@@ -179,10 +175,10 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             if(model == null) {{ return; }}
 {assign}
         }}
-";    
+";
             }
 
-            
+
 
             L($@"
 {enm}
