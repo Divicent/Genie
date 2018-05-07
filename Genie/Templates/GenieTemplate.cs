@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DotLiquid;
 using Genie.Core.Templates.Abstract;
 
 #endregion
@@ -49,6 +50,12 @@ namespace Genie.Core.Templates
                 first = false;
                 return str;
             });
+        }
+
+        protected string Process(string template, object data)
+        {
+            var parsed = Template.Parse(template);
+            return parsed.Render(Hash.FromAnonymousObject(data));
         }
     }
 }

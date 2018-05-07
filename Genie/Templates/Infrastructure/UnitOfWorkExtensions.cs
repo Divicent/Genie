@@ -1,6 +1,5 @@
 #region Usings
 
-using System.Text;
 using Genie.Core.Base.Generating;
 using Genie.Core.Base.Reading.Abstract;
 
@@ -19,55 +18,54 @@ namespace Genie.Core.Templates.Infrastructure
 
         public override string Generate()
         {
-            var funcs = new StringBuilder();
-            foreach (var relation in _schema.Relations)
-            {
-                funcs.AppendLine($@"
-        public static I{relation.Name}Repository {relation.Name}Repository(this IUnitOfWork unit)
-        {{
-            return Get(unit, ""{relation.Name}"", () => new {relation.Name}Repository(unit.Context, unit));
-        }}
-");
-            }
 
-            foreach (var view in _schema.Views)
-            {
-                funcs.AppendLine($@"
-        public static I{view.Name}Repository {view.Name}Repository(this IUnitOfWork unit)
-        {{
-            return Get(unit, ""{view.Name}"", () => new {view.Name}Repository(unit.Context));
-        }}
-");
-            }
 
-            L($@"
+
+            const string template =
+@"
 using System;
 using Genie.Core.Infrastructure.Interfaces;
-using {GenerationContext.BaseNamespace}.Infrastructure.Repositories.Abstract;
-using {GenerationContext.BaseNamespace}.Infrastructure.Repositories.Concrete;
+using {{baseNamespace}}.Infrastructure.Repositories.Abstract;
+using {{baseNamespace}}.Infrastructure.Repositories.Concrete;
 
-namespace {GenerationContext.BaseNamespace}.Infrastructure
-{{
+namespace {{baseNamespace}}.Infrastructure
+{
     public static class UnitOfWorkExtensions
-    {{
+    {
+{% for relation in relations %}
+        public static I{{relation.Name}}Repository {{relation.Name}}Repository(this IUnitOfWork unit)
+        {
+            return Get(unit, ""{{relation.Name}}"", () => new {{relation.Name}}Repository(unit.Context, unit));
+        }
+{% endfor %}
 
-{funcs}
-
+{% for view in views %}
+        public static I{{view.Name}}Repository {{view.Name}}Repository(this IUnitOfWork unit)
+        {
+            return Get(unit, ""{{view.Name}}"", () => new {{view.Name}}Repository(unit.Context));
+        }
+{% endfor %}
 
         private static T Get<T>(IUnitOfWork unit, string key, Func<T> constructor) where T:class
-        {{
+        {
             if (unit.Repos.TryGetValue(key, out var current))
                 return current as T;
             var @new = constructor();
             unit.Repos[key] = @new;
             return @new;
-        }}
-  
-    }}
-}}
-");
+        }
+    }
+}
+";
 
-            return E();
+            var processed = Process(template, new
+            {
+                baseNamespace = GenerationContext.BaseNamespace,
+                relations = _schema.Relations,
+                views = _schema.Views,
+            });
+
+            return processed;
         }
     }
 }

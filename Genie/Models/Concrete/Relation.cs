@@ -1,13 +1,14 @@
 ﻿#region Usings
 
 using System.Collections.Generic;
+using DotLiquid;
 using Genie.Core.Models.Abstract;
 
 #endregion
 
 namespace Genie.Core.Models.Concrete
 {
-    public class Relation : IRelation
+    public class Relation : IRelation, ILiquidizable
     {
         public string Name { get; set; }
         public List<IAttribute> Attributes { get; set; }
@@ -34,6 +35,19 @@ namespace Genie.Core.Models.Concrete
         public IEnumerable<IReferenceList> GetReferenceLists()
         {
             return ReferenceLists;
+        }
+
+        public object ToLiquid()
+        {
+            return new
+            {
+                Name,
+                Attributes,
+                ForeignKeyAttributes,
+                ReferenceLists,
+                FieldName,
+                Comment
+            };
         }
     }
 }

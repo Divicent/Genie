@@ -15,6 +15,7 @@ using Genie.Core.Base.ProcessOutput.Concrete;
 using Genie.Core.Base.ProjectFileManaging;
 using Genie.Core.Base.Reading.Concrete;
 using Genie.Core.Base.Writing;
+using Genie.Core.Models.Concrete;
 using Genie.Core.Tools;
 using Newtonsoft.Json;
 
@@ -52,6 +53,7 @@ namespace Genie.Core.Base
         private static GenieGenerationResult GenerateInternal(string pathToConfigurationJsonFile, IProcessOutput output)
         {
             var result = new GenieGenerationResult();
+
             IConfiguration config = null;
             IFileSystem fileSystem = new GenieFileSystem();
            // IVersionManager versionManager = new GenieVersionManager(fileSystem);
