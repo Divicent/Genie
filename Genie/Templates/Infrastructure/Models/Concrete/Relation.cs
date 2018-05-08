@@ -51,9 +51,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 
                 foreach (var key in _enum.Values)
                     enm.AppendLine(
-                        $@"		public static {_enum.Name} {key.Name} => {key.FieldName} ?? ( {key.FieldName} = new {
-                                _enum.Name
-                            }({key.Value}));");
+                        $@"		public static {_enum.Name} {key.Name} => {key.FieldName} ?? ( {key.FieldName} = new {_enum.Name}({key.Value}));");
 
                 enm.AppendLine(@"	}");
             }
@@ -82,9 +80,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 
                 var rpn = atd.RefPropName != null ? atd.RefPropName + " = null;" : "";
                 attrProperties.AppendLine(
-                    $@"		public {atd.DataType} {atd.Name} {{ get {{ return {atd.FieldName}; }} set {{ if({
-                            atd.FieldName
-                        } == value ) {{ return; }}  {atd.FieldName} = value; __Updated(""{atd.Name}""); {rpn} }} }}");
+                    $@"		public {atd.DataType} {atd.Name} {{ get {{ return {atd.FieldName}; }} set {{ if({atd.FieldName} == value ) {{ return; }}  {atd.FieldName} = value; __Updated(""{atd.Name}""); {rpn} }} }}");
             }
 
             var foreignKeyAttributes = new StringBuilder();
@@ -139,21 +135,9 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
             foreach (var list in entity.ReferenceLists)
                 referenceLists.AppendLine(
                     $@"
-		public IReferencedEntityCollection<{list.ReferencedRelationName}> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
-                            list.ReferencedRelationName
-                        }>(__DatabaseUnitOfWork.{list.ReferencedRelationName}Repository().Get().Where.{
-                            list.ReferencedPropertyName
-                        }.EqualsTo({list.ReferencedPropertyOnThisRelation}).Filter().Query(transaction), (i) => {{ (({
-                            list.ReferencedRelationName
-                        })i).{list.ReferencedPropertyName} = {list.ReferencedPropertyOnThisRelation};}}, this); }}
+		public IReferencedEntityCollection<{list.ReferencedRelationName}> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{list.ReferencedRelationName}>(__DatabaseUnitOfWork.{list.ReferencedRelationName}Repository().Get().Where.{list.ReferencedPropertyName}.EqualsTo({list.ReferencedPropertyOnThisRelation}).Filter().Query(transaction), (i) => {{ (({list.ReferencedRelationName})i).{list.ReferencedPropertyName} = {list.ReferencedPropertyOnThisRelation};}}, this); }}
                     
-		public async Task<IReferencedEntityCollection<{list.ReferencedRelationName}>> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}Async(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{
-                            list.ReferencedRelationName
-                        }>(await __DatabaseUnitOfWork.{list.ReferencedRelationName}Repository().Get().Where.{
-                            list.ReferencedPropertyName
-                        }.EqualsTo({list.ReferencedPropertyOnThisRelation}).Filter().QueryAsync(transaction), (i) => {{ (({
-                            list.ReferencedRelationName
-                        })i).{list.ReferencedPropertyName} = {list.ReferencedPropertyOnThisRelation};}}, this); }}");
+		public async Task<IReferencedEntityCollection<{list.ReferencedRelationName}>> {list.ReferencedRelationName.ToPlural()}WhereThisIs{list.ReferencedPropertyName}Async(IDbTransaction transaction = null ){{  return new ReferencedEntityCollection<{list.ReferencedRelationName}>(await __DatabaseUnitOfWork.{list.ReferencedRelationName}Repository().Get().Where.{list.ReferencedPropertyName}.EqualsTo({list.ReferencedPropertyOnThisRelation}).Filter().QueryAsync(transaction), (i) => {{ (({list.ReferencedRelationName})i).{list.ReferencedPropertyName} = {list.ReferencedPropertyOnThisRelation};}}, this); }}");
 
             var keys = entity.Attributes.Where(e => e.IsKey);
             var keysStr = new StringBuilder();
