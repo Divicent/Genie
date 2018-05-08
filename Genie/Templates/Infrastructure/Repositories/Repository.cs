@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Genie.Core.Models.Abstract;
+﻿using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Templates.Infrastructure.Repositories
 {
@@ -64,10 +63,10 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
 	        internal class {{name}}Repository : ReadOnlyRepository<Models.Concrete.{{name}}>, I{{name}}Repository
             {
                 internal {{name}}Repository(IDBContext context) : base(context) {}
-                public I{{name}}QueryContext Get() {{ return new {{name}}QueryContext(this); }}
+                public I{{name}}QueryContext Get() { return new {{name}}QueryContext(this); }
             }
 ";
-            return Process($"{nameof(IRepositoryTemplate)}View", template, new
+            return Process($"{nameof(RepositoryTemplate)}View", template, new
             {
                 name = view.Name
             });

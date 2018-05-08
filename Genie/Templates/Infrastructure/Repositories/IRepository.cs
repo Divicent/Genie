@@ -57,6 +57,7 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             return Process(nameof(IRepositoryTemplate) + "Relation", template, new
             {
                 name = relation.Name,
+                relation
             });
         }
 

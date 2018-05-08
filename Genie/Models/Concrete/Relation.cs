@@ -51,8 +51,7 @@ namespace Genie.Core.Models.Concrete
                 keyString = keys.Aggregate("", (c, n) => c + ", " + n.DataType + " " + n.Name.ToLower())
                     .TrimStart(',').TrimStart(' ');
                 keyCommentString = keys.Aggregate("", (c, n) => c +
-                                                                $@"
-            /// <param name=""{n.Name.ToLower()}"">Value for primary key {n.Name}</param>");
+                                                                $@"            /// <param name=""{n.Name.ToLower()}"">Value for primary key {n.Name}</param>");
 
                 keyGetter = keys.Aggregate("", (c, n) => c + ".And." + n.Name + ".EqualsTo(" + n.Name.ToLower() + ")")
                     .TrimStart('.').TrimStart('A').TrimStart('n').TrimStart('d');
@@ -70,7 +69,8 @@ namespace Genie.Core.Models.Concrete
                 keyString,
                 keyCommentString,
                 keyGetter,
-                removeKeys
+                removeKeys,
+                hasKeys
             };
         }
     }
