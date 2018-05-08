@@ -16,13 +16,18 @@ namespace Genie.Core.Models.Concrete
         public string Comment { get; set; }
         public object ToLiquid()
         {
+            var atdComment = !string.IsNullOrWhiteSpace(Comment);
             return new
             {
                 DataType,
                 Name,
                 FieldName,
                 IsLiteralType,
-                Comment
+                Comment,
+                atdComment = !string.IsNullOrWhiteSpace(Comment),
+                commentStr = atdComment
+                    ? $@"
+        /// <para>{Comment}</para>" : ""
             };
         }
     }

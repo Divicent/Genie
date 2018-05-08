@@ -22,37 +22,27 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 
         public override string Generate()
         {
-            var props = new StringBuilder();
 
-            foreach (var atd in _attributes)
+            const string template =
+@"
+                /// <summary>
+                /// Helps to build order for queries on the data source {{name}}
+                /// </summary>
+                public interface I{{name}}OrderContext: IOrderContext
+                {
+            {% for atd in attributes %}
+		            /// <summary>{{atd.commentStr}}
+		            ///  Apply order by on {{atd.Name}} attribute . this order by expression will be preserved within entire query context
+		            /// </summary>
+		            IOrderElement<I{{name}}OrderContext,I{{name}}QueryContext> {{atd.Name}} { get; }
+            {% endfor %}
+                }
+";
+            return Process(nameof(IModelOrderContextTemplate), template, new
             {
-                var atdComment = !string.IsNullOrWhiteSpace(atd.Comment);
-                var commentStr = atdComment
-                    ? $@"
-        /// <para>{atd.Comment}</para>"
-                    : "";
-                props.AppendLine($@"		/// <summary>{commentStr}
-		///  Apply order by on {atd.Name} attribute . this order by expression will be preserved within entire query context
-		/// </summary>");
-
-
-                props.AppendLine($@"		IOrderElement<I{_name}OrderContext,I{_name}QueryContext> {atd.Name} {{ get; }}
-");
-            }
-
-            L($@"
-    /// <summary>
-    /// Helps to build order for queries on the data source {_name}
-    /// </summary>
-    public interface I{_name}OrderContext: IOrderContext
-    {{
-
-{props}
-
-    }}
-");
-
-            return E();
+                name = _name,
+                attributes = _attributes
+            });
         }
     }
 }

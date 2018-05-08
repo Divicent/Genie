@@ -24,36 +24,29 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract
 
         public override string Generate()
         {
-            var entity = _model;
-            var name = _model.GetName();
-            var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
-
-            var attrProperties = new StringBuilder();
-
-            foreach (var atd in entity.GetAttributes())
-            {
-                attrProperties.AppendLine();
-                if (!string.IsNullOrWhiteSpace(atd.Comment))
-                    attrProperties.AppendLine($@"      /// <summary>
-      /// {atd.Comment}
-      /// </summary>");
-                attrProperties.AppendLine(
-                    $@"      {atd.DataType} {atd.Name} {{ get; set; }}");
-            }
-
-            L($@"
+            const string template =
+@"
 using System;
 
-namespace {_configuration.AbstractModelsNamespace}
-{{
-    public interface I{name}
-    {{
-{attrProperties}
-    }}
-}}
-");
-
-            return E();
+namespace {{configuration.AbstractModelsNamespace}}
+{
+    public interface I{{name}}
+    {
+{% for atd in attributes %}
+      /// <summary>
+      /// {{atd.Comment}}
+      /// </summary>
+      {{atd.DataType}} {{atd.Name}} { get; set; }
+{% endfor %}
+    }
+}
+";
+            return Process(nameof(IModelTemplate), template, new
+            {
+                configuration = _configuration,
+                name = _model.GetName(),
+                attributes = _model.GetAttributes()
+            });
         }
     }
 }
