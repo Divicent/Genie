@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
 
 #endregion
@@ -31,20 +29,20 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
                 /// </summary>
   	            public interface I{{name}}FilterContext : IFilterContext
 	            {
-            {% for atd in attributes %}
+{% for atd in attributes %}
 		            /// <summary>{{atd.commentStr}}
 		            ///  Apply filters on {{atd.Name}} attribute . these filters will be preserved within entire query context
 		            /// </summary>
-                {% if atd.DataType == 'string' %}
+{% if atd.DataType == 'string' %}
                     IStringFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
-                {% else if atd.DataType contains 'int' or atd.DataType contains 'double' or atd.DataType contains 'decimal' or atd.DataType contains 'long' %}
+{% else if atd.DataType contains 'int' or atd.DataType contains 'double' or atd.DataType contains 'decimal' or atd.DataType contains 'long' %}
                     INumberFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
-                {% else if atd.DataType contains 'DateTime'%}
+{% else if atd.DataType contains 'DateTime'%}
                     IDateFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
-                {% else if atd.DataType contains 'bool'%}
+{% else if atd.DataType contains 'bool'%}
                     IBoolFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
-                {% endif %}
-            {% endfor %}
+{% endif %}
+{% endfor %}
 
                     /// <summary>
                     /// Start Parenthesizes

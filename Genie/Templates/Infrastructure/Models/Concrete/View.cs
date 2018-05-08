@@ -1,8 +1,6 @@
 #region Usings
 
-using System.Text;
 using Genie.Core.Base.Configuration.Abstract;
-using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
 using Genie.Core.Tools;
 
@@ -23,57 +21,49 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 
         public override string Generate()
         {
-            var entity = _view;
-            var name = _view.Name;
+
+            const string template =
+                @"
+                [Table(""{{quotedSchema}}.{{quotedName}}"")]
+                public class {{name}} {{absImplement}}
+                {
+
+{% if abstractModelsEnabled %}
+		            public {{name}}() { }
+        
+                    public {{name}}(I{{name}} model) 
+                    {
+                        if(model == null) { return; }
+{% for attribute in attributes %}
+                        {{attribute.Name}} = model.{{attribute.Name}};
+{% endfor %}
+                    }
+
+{% endif %}
+
+{% for atd in attributes %}
+{% if atd.HasComment %}
+		            /// <summary>
+		            /// {atd.Comment}
+		            /// </summary>
+{% endif %}
+		            public {{atd.DataType}} {{atd.Name}} { get; set; }
+{% endfor %}
+                }
+";
 
             var quote = FormatHelper.GetDbmsSpecificQuoter(_configuration);
 
-            var attributes = new StringBuilder();
 
-            foreach (var atd in entity.Attributes)
+            return Process(nameof(ViewTemplate), template, new
             {
-                if (!string.IsNullOrWhiteSpace(atd.Comment))
-                    attributes.AppendLine($@"		/// <summary>
-		/// {atd.Comment}
-		/// </summary>");
-
-                attributes.AppendLine($@"		public {atd.DataType} {atd.Name} {{ get; set; }} ");
-            }
-
-            var abstractModelsNamespace = _configuration.AbstractModelsEnabled
-                ? $"using {_configuration.AbstractModelsNamespace};\n"
-                : "";
-
-            var constructor = "";
-            if (_configuration.AbstractModelsEnabled)
-            {
-                var assign = new StringBuilder();
-                foreach (var attribute in _view.Attributes)
-                    assign.AppendLine($"            {attribute.Name} = model.{attribute.Name};");
-                constructor = $@"
-		public {name}() {{ }}
-        
-        public {name}(I{name} model) 
-        {{
-            if(model == null) {{ return; }}
-{assign}
-        }}
-";    
-            }
-            var absImplement = _configuration.AbstractModelsEnabled ? $": I{name}" : "";
-            L($@"
-    [Table(""{quote(_configuration.Schema)}.{quote(name)}"")]
-    public class {name} {absImplement}
-    {{
-
-{constructor}
-
-{attributes}
-
-    }}
-");
-
-            return E();
+                name = _view.Name,
+                quotedSchema = quote(_configuration.Schema),
+                quotedName = quote(_view.Name),
+                abstractModelsEnabled = _configuration.AbstractModelsEnabled,
+                absImplement = _configuration.AbstractModelsEnabled ? $", I{_view.Name}" : "",
+                attributes = _view.Attributes
+            });
         }
     }
 }

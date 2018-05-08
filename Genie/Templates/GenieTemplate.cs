@@ -1,9 +1,6 @@
 #region Usings
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DotLiquid;
 using Genie.Core.Templates.Abstract;
 
@@ -13,8 +10,7 @@ namespace Genie.Core.Templates
 {
     public abstract class GenieTemplate : ITemplate
     {
-        private readonly StringBuilder _stringBuilder = new StringBuilder();
-        private static Dictionary<string, Template> _templateCache = new Dictionary<string, Template>();
+        private static readonly Dictionary<string, Template> TemplateCache = new Dictionary<string, Template>();
 
         protected GenieTemplate(string path)
         {
@@ -27,39 +23,13 @@ namespace Genie.Core.Templates
         
         public bool External { get; set; }
 
-        protected void R(string str)
-        {
-            _stringBuilder.Append(str);
-        }
-
-        protected void L(string str)
-        {
-            _stringBuilder.AppendLine(str);
-        }
-
-        protected string E()
-        {
-            return _stringBuilder.ToString();
-        }
-        
-        protected static string Lines<T>(IEnumerable<T> collection, Func<T, string> accumilator, string space= "")
-        {
-            var first = true;
-            return collection.Aggregate("", (c, n) =>
-            {
-                var str = $"{c}{(first ? "": Environment.NewLine)}{space}{accumilator(n).Replace(Environment.NewLine, $"{Environment.NewLine}{space}")}";
-                first = false;
-                return str;
-            });
-        }
-
         protected string Process(string templateName, string template, object data)
         {
-            if (_templateCache.TryGetValue(templateName, out var parsed))
+            if (TemplateCache.TryGetValue(templateName, out var parsed))
                 return parsed.Render(Hash.FromAnonymousObject(data));
 
             parsed = Template.Parse(template);
-            _templateCache[templateName] = parsed;
+            TemplateCache[templateName] = parsed;
             return parsed.Render(Hash.FromAnonymousObject(data));
         }
     }

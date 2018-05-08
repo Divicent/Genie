@@ -28,29 +28,29 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 		            private readonly I{{name}}QueryContext  _queryContext;
 		            internal {{name}}FilterContext({{name}}QueryContext context) { _queryContext = context; }
 
-            {% for atd in attributes%}
-                {% if atd.DataType == 'string' %}
+{% for atd in attributes%}
+{% if atd.DataType == 'string' %}
                     private IStringFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.FieldName}};
-                {% else if atd.DataType contains 'int' or atd.DataType contains 'double' or atd.DataType contains 'decimal' or atd.DataType contains 'long' %}
+{% else if atd.DataType contains 'int' or atd.DataType contains 'double' or atd.DataType contains 'decimal' or atd.DataType contains 'long' %}
                     private INumberFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.FieldName}};
-                {% else if atd.DataType contains 'DateTime'%}
+{% else if atd.DataType contains 'DateTime'%}
     	            private IDateFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.FieldName}};
-                {% else if atd.DataType contains 'bool'%}
+{% else if atd.DataType contains 'bool'%}
     	            private IBoolFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.FieldName}};
-                {% endif %}
-            {% endfor %}
+{% endif %}
+{% endfor %}
 
-            {% for atd in attributes%}
-                {% if atd.DataType == 'string' %}
+{% for atd in attributes%}
+{% if atd.DataType == 'string' %}
                     public IStringFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.Name}} { get { return {{atd.FieldName}} ?? ( {{atd.FieldName}} = new StringFilter<I{{name}}FilterContext, I{{name}}QueryContext>(""{{atd.Name}}"", this, _queryContext)); } }
-                {% else if atd.DataType contains 'int' or atd.DataType contains 'double' or atd.DataType contains 'decimal' or atd.DataType contains 'long' %}
+{% else if atd.DataType contains 'int' or atd.DataType contains 'double' or atd.DataType contains 'decimal' or atd.DataType contains 'long' %}
 		            public INumberFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.Name}} { get { return {{atd.FieldName}} ?? ( {{atd.FieldName}} = new NumberFilter<I{{name}}FilterContext, I{{name}}QueryContext>(""{{atd.Name}}"", this, _queryContext)); } }
-                {% else if atd.DataType contains 'DateTime'%}
+{% else if atd.DataType contains 'DateTime'%}
 		            public IDateFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.Name}} { get { return {{atd.FieldName}} ?? ( {{atd.FieldName}} = new DateFilter<I{{name}}FilterContext, I{{name}}QueryContext>(""{{atd.Name}}"", this, _queryContext)); } }
-                {% else if atd.DataType contains 'bool'%}
+{% else if atd.DataType contains 'bool'%}
 		            public IBoolFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.Name}} { get { return {{atd.FieldName}} ?? ( {{atd.FieldName}} = new BoolFilter<I{{name}}FilterContext, I{{name}}QueryContext>(""{atd.Name}"", this, _queryContext)); } }
-                {% endif %}
-            {% endfor %}
+{% endif %}
+{% endfor %}
 
                     public I{{name}}FilterContext {{startName}}
                     {

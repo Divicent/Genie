@@ -21,7 +21,8 @@ namespace Genie.Core.Models.Concrete
             {
                 ReferencingNonForeignKeyAttribute,
                 ReferencingRelationName,
-                ReferencingTableColumnName
+                ReferencingTableColumnName,
+                Fix = ReferencingNonForeignKeyAttribute.DataType.EndsWith("?") ? ".GetValueOrDefault()" : ""
             };
         }
     }

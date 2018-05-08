@@ -27,7 +27,9 @@ namespace Genie.Core.Models.Concrete
                 Comment,
                 IsKey,
                 RefPropName,
-                IsIdentity
+                IsIdentity,
+                HasComment = !string.IsNullOrWhiteSpace(Comment),
+                RefPropNameNull = RefPropName != null ? RefPropName + " = null;" : ""
             };
         }
     }

@@ -19,12 +19,12 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 @"
                 public interface I{{name}}ColumnSelector
                 {
-            {% for attribute in attributes %}
+{% for attribute in attributes %}
                     /// <summary>
                     /// Select {{attribute.Name}} Column
                     /// </summary>
                     IColumn<{{attribute.DataType}}> {{attribute.Name}} { get; }
-            {% endfor %}
+{% endfor %}
                 }
 ";
             return Process(nameof(IModelColumnSelectorTemplate), template, new

@@ -1,9 +1,7 @@
 #region Usings
 
-using System.Text;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Models.Abstract;
-using Genie.Core.Tools;
 
 #endregion
 

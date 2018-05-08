@@ -1,8 +1,6 @@
 #region Usings
 
 using System.Collections.Generic;
-using System.Text;
-using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
 
 #endregion

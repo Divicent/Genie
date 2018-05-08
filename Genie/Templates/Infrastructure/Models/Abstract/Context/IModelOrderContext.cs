@@ -1,8 +1,6 @@
 #region Usings
 
 using System.Collections.Generic;
-using System.Text;
-using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
 
 #endregion
@@ -30,12 +28,12 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
                 /// </summary>
                 public interface I{{name}}OrderContext: IOrderContext
                 {
-            {% for atd in attributes %}
+{% for atd in attributes %}
 		            /// <summary>{{atd.commentStr}}
 		            ///  Apply order by on {{atd.Name}} attribute . this order by expression will be preserved within entire query context
 		            /// </summary>
 		            IOrderElement<I{{name}}OrderContext,I{{name}}QueryContext> {{atd.Name}} { get; }
-            {% endfor %}
+{% endfor %}
                 }
 ";
             return Process(nameof(IModelOrderContextTemplate), template, new
