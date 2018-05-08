@@ -14,6 +14,7 @@ namespace Genie.Core.Templates
     public abstract class GenieTemplate : ITemplate
     {
         private readonly StringBuilder _stringBuilder = new StringBuilder();
+        private static Dictionary<string, Template> _templateCache = new Dictionary<string, Template>();
 
         protected GenieTemplate(string path)
         {
@@ -52,9 +53,13 @@ namespace Genie.Core.Templates
             });
         }
 
-        protected string Process(string template, object data)
+        protected string Process(string templateName, string template, object data)
         {
-            var parsed = Template.Parse(template);
+            if (_templateCache.TryGetValue(templateName, out var parsed))
+                return parsed.Render(Hash.FromAnonymousObject(data));
+
+            parsed = Template.Parse(template);
+            _templateCache[templateName] = parsed;
             return parsed.Render(Hash.FromAnonymousObject(data));
         }
     }

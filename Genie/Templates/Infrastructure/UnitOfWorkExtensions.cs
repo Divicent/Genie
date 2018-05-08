@@ -18,9 +18,6 @@ namespace Genie.Core.Templates.Infrastructure
 
         public override string Generate()
         {
-
-
-
             const string template =
 @"
 using System;
@@ -58,7 +55,7 @@ namespace {{baseNamespace}}.Infrastructure
 }
 ";
 
-            var processed = Process(template, new
+            var processed = Process(nameof(UnitOfWorkExtensionsTemplate), template, new
             {
                 baseNamespace = GenerationContext.BaseNamespace,
                 relations = _schema.Relations,

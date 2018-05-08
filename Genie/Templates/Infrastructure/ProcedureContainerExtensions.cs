@@ -46,7 +46,7 @@ namespace {{baseNamespace}}.Infrastructure
 }
 
 ";
-            return Process(template, new
+            return Process(nameof(ProcedureContainerExtensionsTemplate),template, new
             {
                 baseNamespace = GenerationContext.BaseNamespace,
                 procedures = _schema.Procedures,
