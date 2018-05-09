@@ -182,7 +182,6 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                 quotedSchema = quote(_configuration.Schema),
                 quotedName = quote(name),
                 name,
-                val = "dsadas",
                 absImplement = _configuration.AbstractModelsEnabled ? $", I{name}" : "",
                 abstractModelsEnabled = _configuration.AbstractModelsEnabled,
                 relation =_relation,
