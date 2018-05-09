@@ -146,21 +146,25 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                     public override void SetId(object id)
                     {
 {% for k in identities %}
-    {% if atd.DataType == 'string' %}
+    {% if k.DataType == 'string' %}
                         {{k.FieldName}} = id as string;
-    {% else if atd.DataType contains 'int' %}
+    {% endif %}
+    {% if k.DataType contains 'int' %}
                         {{k.FieldName}} = Convert.ToInt32(id);
-    {% else if atd.DataType contains 'double' %}
+    {% endif %}
+    {% if k.DataType contains 'double' %}
                         {{k.FieldName}} = Convert.ToDouble(id);
-    {% else if atd.DataType contains 'decimal' %}
+    {% endif %}
+    {% if k.DataType contains 'decimal' %}
                         {{k.FieldName}} = Convert.ToDecimal(id);
-    {% else if atd.DataType contains 'decimal' %}
-                        {{k.FieldName}} = Convert.ToDecimal(id);
-    {% else if atd.DataType contains 'long' %}
+    {% endif %}
+    {% if k.DataType contains 'long' %}
                         {{k.FieldName}} = Convert.ToInt64(id);
-    {% else if atd.DataType contains 'DateTime'%}
+    {% endif %}
+    {% if k.DataType contains 'DateTime'%}
 		                {{k.FieldName}} = Convert.ToDateTime(id);
-    {% else if atd.DataType contains 'bool'%}
+    {% endif %}
+    {% if k.DataType contains 'bool'%}
 		                {{k.FieldName}} = Convert.ToBoolean(id);
     {% endif %}
 {% endfor %}

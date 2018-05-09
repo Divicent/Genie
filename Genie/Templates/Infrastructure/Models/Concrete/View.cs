@@ -61,7 +61,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                 quotedSchema = quote(_configuration.Schema),
                 quotedName = quote(_view.Name),
                 abstractModelsEnabled = _configuration.AbstractModelsEnabled,
-                absImplement = _configuration.AbstractModelsEnabled ? $", I{_view.Name}" : "",
+                absImplement = _configuration.AbstractModelsEnabled ? $": I{_view.Name}" : "",
                 attributes = _view.Attributes
             });
         }
