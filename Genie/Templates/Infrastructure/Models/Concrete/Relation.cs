@@ -145,8 +145,24 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
 
                     public override void SetId(object id)
                     {
-{% for k in keys%}
-                        {{k.FieldName}} = ({{k.DataType}})id;
+{% for k in identities %}
+    {% if atd.DataType == 'string' %}
+                        {{k.FieldName}} = id as string;
+    {% else if atd.DataType contains 'int' %}
+                        {{k.FieldName}} = Convert.ToInt32(id);
+    {% else if atd.DataType contains 'double' %}
+                        {{k.FieldName}} = Convert.ToDouble(id);
+    {% else if atd.DataType contains 'decimal' %}
+                        {{k.FieldName}} = Convert.ToDecimal(id);
+    {% else if atd.DataType contains 'decimal' %}
+                        {{k.FieldName}} = Convert.ToDecimal(id);
+    {% else if atd.DataType contains 'long' %}
+                        {{k.FieldName}} = Convert.ToInt64(id);
+    {% else if atd.DataType contains 'DateTime'%}
+		                {{k.FieldName}} = Convert.ToDateTime(id);
+    {% else if atd.DataType contains 'bool'%}
+		                {{k.FieldName}} = Convert.ToBoolean(id);
+    {% endif %}
 {% endfor %}
                     }
                 }
@@ -162,10 +178,11 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete
                 quotedSchema = quote(_configuration.Schema),
                 quotedName = quote(name),
                 name,
+                val = "dsadas",
                 absImplement = _configuration.AbstractModelsEnabled ? $", I{name}" : "",
                 abstractModelsEnabled = _configuration.AbstractModelsEnabled,
                 relation =_relation,
-                keys = _relation.Attributes.Where(e => e.IsKey).ToList()
+                identities = _relation.Attributes.Where(e => e.IsIdentity).ToList()
             });
         }
     }

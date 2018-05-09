@@ -17,6 +17,7 @@ namespace Genie.Core.Models.Concrete
         public object ToLiquid()
         {
             var atdComment = !string.IsNullOrWhiteSpace(Comment);
+
             return new
             {
                 DataType,
