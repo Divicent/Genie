@@ -54,7 +54,7 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 		            public IDateFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.Name}} { get { return {{atd.FieldName}} ?? ( {{atd.FieldName}} = new DateFilter<I{{name}}FilterContext, I{{name}}QueryContext>(""{{atd.Name}}"", this, _queryContext)); } }
 {% endif %}
 {% if atd.DataType contains 'bool'%}
-		            public IBoolFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.Name}} { get { return {{atd.FieldName}} ?? ( {{atd.FieldName}} = new BoolFilter<I{{name}}FilterContext, I{{name}}QueryContext>(""{atd.Name}"", this, _queryContext)); } }
+		            public IBoolFilter<I{{name}}FilterContext, I{{name}}QueryContext> {{atd.Name}} { get { return {{atd.FieldName}} ?? ( {{atd.FieldName}} = new BoolFilter<I{{name}}FilterContext, I{{name}}QueryContext>(""{{atd.Name}}"", this, _queryContext)); } }
 {% endif %}
 {% endfor %}
 
