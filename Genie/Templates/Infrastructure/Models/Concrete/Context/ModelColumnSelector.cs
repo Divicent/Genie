@@ -1,5 +1,4 @@
-﻿using Genie.Core.Base.Generating;
-using Genie.Core.Models.Abstract;
+﻿using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 {
@@ -14,22 +13,20 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 
         public override string Generate()
         {
-            L($@"
-    public class {_model.GetName()}ColumnSelector: I{_model.GetName()}ColumnSelector
-    {{
-        {Lines(_model.GetAttributes(), FormatColumn, "        ")}
-    }}
-");
-
-            return E();
-        }
-        
-        
-        private static string FormatColumn(ISimpleAttribute attribute)
-        {
-            return $@"
-public IColumn<{attribute.DataType}> {attribute.Name} {{ get {{ return new Column<{attribute.DataType}>(""{attribute.Name}""); }} }}
-            ";
+            const string template =
+@"
+                public class {{name}}ColumnSelector: I{{name}}ColumnSelector
+                {
+{% for attribute in attributes%}
+                    public IColumn<{{attribute.DataType}}> {{attribute.Name}} { get { return new Column<{{attribute.DataType}}>(""{{attribute.Name}}""); } }
+{% endfor %}
+                }
+";
+            return Process(nameof(ModelColumnSelectorTemplate), template, new
+            {
+                name = _model.GetName(),
+                attributes = _model.GetAttributes()
+            });
         }
     }
 }

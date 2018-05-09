@@ -59,10 +59,8 @@ namespace Genie.Core.Templates.Infrastructure.Models
 
         public override string Generate()
         {
-            var abstractModelsNamespace = _configuration.AbstractModelsEnabled
-                ? $"using {_configuration.AbstractModelsNamespace};\n"
-                : "";
-            L($@"
+            const string template =
+@"
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -77,70 +75,167 @@ using Genie.Core.Infrastructure.Filters.Concrete;
 using Genie.Core.Infrastructure.Interfaces;
 using Genie.Core.Infrastructure.Models;
 using Genie.Core.Mapper;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
-using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context;
-using {GenerationContext.BaseNamespace}.Infrastructure.Repositories.Abstract;
-{abstractModelsNamespace}
+using {{baseNamespace}}.Infrastructure.Models.Abstract.Context;
+using {{baseNamespace}}.Infrastructure.Models.Concrete;
+using {{baseNamespace}}.Infrastructure.Models.Concrete.Context;
+using {{baseNamespace}}.Infrastructure.Repositories.Abstract;
+{{abstractModelsNamespace}}
 
-namespace {GenerationContext.BaseNamespace}.Infrastructure
-{{
+namespace {{baseNamespace}}.Infrastructure
+{
 
     namespace Models 
-    {{
+    {
         namespace Abstract
-        {{
+        {
             namespace Context
-            {{
+            {
             
-{_iColumnSelector.Generate()}
+{{icolumnSelector}}
 
-{_iFilterContext.Generate()}
+{{ifilterContext}}
 
-{_iOrderContext.Generate()}
+{{iOrderContext}}
 
-{_iQueryContext.Generate()}
+{{iQueryContext}}
 
-            }}
-        }}
+            }
+        }
 
         namespace Concrete
-        {{
+        {
         
-{_model.Generate()}
+{{model}}
         
             namespace Context
-            {{
+            {
 
-{_modelColumnSelector.Generate()}
+{{modelColumnSelector}}
 
-{_filterContext.Generate()}
+{{filterContext}}
 
-{_orderContext.Generate()}
+{{orderContext}}
 
-{_queryContext.Generate()}
+{{queryContext}}
 
-            }}
-        }}
-    }}
+            }
+        }
+    }
 
     namespace Repositories
-    {{
+    {
         namespace Abstract 
-        {{
-{_iRepository.Generate()}
-        }}
+        {
+{{iRepository}}
+        }
 
         namespace Concrete 
-        {{
-{_repository.Generate()}
-        }}
-    }}
-}}
+        {
+{{repository}}
+        }
+    }
+}
 
-");
+";
+            var abstractModelsNamespace = _configuration.AbstractModelsEnabled
+                ? $"using {_configuration.AbstractModelsNamespace};\n"
+                : "";
 
-            return E();
+            return Process(nameof(ObjectTemplate), template, new
+            {
+                baseNamespace = GenerationContext.BaseNamespace,
+                abstractModelsNamespace,
+                icolumnSelector = _iColumnSelector.Generate(),
+                ifilterContext = _iFilterContext.Generate(),
+                iOrderContext = _iOrderContext.Generate(),
+                iQueryContext = _iQueryContext.Generate(),
+                model = _model.Generate(),
+                modelColumnSelector = _modelColumnSelector.Generate(),
+                filterContext = _filterContext.Generate(),
+                orderContext = _orderContext.Generate(),
+                queryContext = _queryContext.Generate(),
+                iRepository = _iRepository.Generate(),
+                repository = _repository.Generate()
+            });
+//            L($@"
+//using System;
+//using System.Collections.Generic;
+//using System.Data;
+//using System.Threading.Tasks;
+//using Genie.Core.Infrastructure;
+//using Genie.Core.Infrastructure.Actions.Abstract;
+//using Genie.Core.Infrastructure.Actions.Concrete;
+//using Genie.Core.Infrastructure.Collections.Abstract;
+//using Genie.Core.Infrastructure.Collections.Concrete;
+//using Genie.Core.Infrastructure.Filters.Abstract;
+//using Genie.Core.Infrastructure.Filters.Concrete;
+//using Genie.Core.Infrastructure.Interfaces;
+//using Genie.Core.Infrastructure.Models;
+//using Genie.Core.Mapper;
+//using {GenerationContext.BaseNamespace}.Infrastructure.Models.Abstract.Context;
+//using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete;
+//using {GenerationContext.BaseNamespace}.Infrastructure.Models.Concrete.Context;
+//using {GenerationContext.BaseNamespace}.Infrastructure.Repositories.Abstract;
+//{abstractModelsNamespace}
+
+//namespace {GenerationContext.BaseNamespace}.Infrastructure
+//{{
+
+//    namespace Models 
+//    {{
+//        namespace Abstract
+//        {{
+//            namespace Context
+//            {{
+            
+//{_iColumnSelector.Generate()}
+
+//{_iFilterContext.Generate()}
+
+//{_iOrderContext.Generate()}
+
+//{_iQueryContext.Generate()}
+
+//            }}
+//        }}
+
+//        namespace Concrete
+//        {{
+        
+//{_model.Generate()}
+        
+//            namespace Context
+//            {{
+
+//{_modelColumnSelector.Generate()}
+
+//{_filterContext.Generate()}
+
+//{_orderContext.Generate()}
+
+//{_queryContext.Generate()}
+
+//            }}
+//        }}
+//    }}
+
+//    namespace Repositories
+//    {{
+//        namespace Abstract 
+//        {{
+//{_iRepository.Generate()}
+//        }}
+
+//        namespace Concrete 
+//        {{
+//{_repository.Generate()}
+//        }}
+//    }}
+//}}
+
+//");
+
+//            return E();
         }
     }
 }

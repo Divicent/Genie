@@ -1,8 +1,6 @@
 #region Usings
 
 using System.Collections.Generic;
-using System.Text;
-using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
 
 #endregion
@@ -22,35 +20,22 @@ namespace Genie.Core.Templates.Infrastructure.Models.Concrete.Context
 
         public override string Generate()
         {
-            var fields = new StringBuilder();
-            var props = new StringBuilder();
 
-            foreach (var atd in _attributes)
-            {
-                fields.AppendLine(
-                    $@"        private IOrderElement<I{_name}OrderContext, I{_name}QueryContext> {atd.FieldName};");
-                props.AppendLine(
-                    $@"	    public IOrderElement<I{_name}OrderContext, I{_name}QueryContext> {
-                            atd.Name
-                        } {{ get {{ return {atd.FieldName} ?? ( {atd.FieldName} = new OrderElement<I{
-                            _name
-                        }OrderContext, I{
-                            _name
-                        }QueryContext>(""{atd.Name}"", this, _queryContext)); }} }}");
-            }
-
-            L($@"
-	public class {_name}OrderContext : BaseOrderContext, I{_name}OrderContext
-    {{
-		private readonly I{_name}QueryContext  _queryContext;
-		internal {_name}OrderContext(I{_name}QueryContext context) {{ _queryContext = context; }}
-{fields}
-
-{props}
-    }}
-");
-
-            return E();
+            const string template =
+@"
+	            public class {{name}}OrderContext : BaseOrderContext, I{{name}}OrderContext
+                {
+		            private readonly I{{name}}QueryContext  _queryContext;
+		            internal {{name}}OrderContext(I{{name}}QueryContext context) { _queryContext = context; }
+{% for atd in attributes %}
+                    private IOrderElement<I{{name}}OrderContext, I{{name}}QueryContext> {{atd.FieldName}};
+{% endfor %}
+{% for atd in attributes %}
+                    public IOrderElement<I{{name}}OrderContext, I{{name}}QueryContext> {{atd.Name}} { get { return {{atd.FieldName}} ?? ( {{atd.FieldName}} = new OrderElement<I{{name}}OrderContext, I{{name}}QueryContext>(""{{atd.Name}}"", this, _queryContext)); } }
+{% endfor %}
+                }
+";
+            return Process(nameof(ModelOrderContextTemplate), template, new {name = _name, attributes = _attributes,});
         }
     }
 }

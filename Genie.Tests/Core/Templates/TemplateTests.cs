@@ -150,9 +150,6 @@ namespace Genie.Tests.Core.Templates
             var schema = schemaMock.Object;
             var files = new List<ITemplate>
             {
-            
-
-                new RepositoryImplementationTemplate(@"Infrastructure/Repositories/Repositories", schema),
                
                 new UnitOfWorkExtensionsTemplate(@"Infrastructure/UnitOfWork", schema),
                 new ProcedureContainerExtensionsTemplate(@"Infrastructure/Models/Concrete/Context/BaseQueryContext", schema,configuration),
