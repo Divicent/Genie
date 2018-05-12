@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Genie.Core.Models.Abstract;
+﻿using Genie.Core.Models.Abstract;
 
 namespace Genie.Core.Templates.Infrastructure.Repositories
 {
@@ -16,72 +15,72 @@ namespace Genie.Core.Templates.Infrastructure.Repositories
             return _model is IRelation relation ? Relation(relation) : View(_model as IView);
         }
 
-
-
         private string Relation(IRelation relation)
         {
-            var name = relation.Name;
-            L($@"
-        /// <summary>
-        /// An API to access data of the data source Models.Concrete.{name}
-        /// </summary>
-	    public interface I{name}Repository : IRepository<Models.Concrete.{name}>
-	    {{
-            /// <summary>
-            /// Get a new query context to query the data source
-            /// </summary>
-            /// <returns>A query context</returns>
-		    I{name}QueryContext Get();");
-            var keys = relation.Attributes.Where(a => a.IsKey).ToList();
-            if (keys.Count > 0)
-            {
-                var keyString = keys.Aggregate("", (c, n) => c + ", " + n.DataType + " " + n.Name.ToLower())
-                    .TrimStart(',').TrimStart(' ');
-                var keyCommentString = keys.Aggregate("", (c, n) => c +
-                                                                    $@"
-            /// <param name=""{n.Name.ToLower()}"">Value for primary key {n.Name}</param>");
-                L($@"
-            /// <summary>
-            /// Get an object of {name} using the values of its primary key(s)
-            /// </summary>
-{keyCommentString}
-            /// <returns>A registered {name} object</returns>
-            Models.Concrete.{name} GetByKey({keyString});
-            
-            /// <summary>
-            /// Get an object of {name} asynchronously using the values of its primary key(s)
-            /// </summary>
-{keyCommentString}
-            /// <returns>A registered {name} object</returns>
-            Task<Models.Concrete.{name}> GetByKeyAsync({keyString});
-            
-            /// <summary>
-            /// Remove an object of {name} using the values of its primary key(s)
-            /// </summary>
-{keyCommentString}
-            void RemoveByKey({keyString});
 
-        }}
-");
+            const string template =
+@"
+            /// <summary>
+            /// An API to access data of the data source Models.Concrete.{{name}}
+            /// </summary>
+            public interface I{{name}}Repository : IRepository<Models.Concrete.{{name}}>
+            {
+                /// <summary>
+                /// Get a new query context to query the data source
+                /// </summary>
+                /// <returns>A query context</returns>
+                I{{name}}QueryContext Get();
+
+{% if relation.hasKeys %}
+                /// <summary>
+                /// Get an object of {{name}} using the values of its primary key(s)
+                /// </summary>
+{{relation.keyCommentString}}
+                /// <returns>A registered {{name}} object</returns>
+                Models.Concrete.{{name}} GetByKey({{relation.keyString}});
+
+                /// <summary>
+                /// Get an object of {{name}} asynchronously using the values of its primary key(s)
+                /// </summary>
+{{relation.keyCommentString}}
+                /// <returns>A registered {{name}} object</returns>
+                Task<Models.Concrete.{{name}}> GetByKeyAsync({{relation.keyString}});
+
+                /// <summary>
+                /// Remove an object of {{name}} using the values of its primary key(s)
+                /// </summary>
+{{relation.keyCommentString}}
+                void RemoveByKey({{relation.keyString}});
+{% endif %}
             }
-            return E();
+";
+            return Process(nameof(IRepositoryTemplate) + "Relation", template, new
+            {
+                name = relation.Name,
+                relation
+            });
         }
 
         private string View(IView view)
         {
-            L($@"
-        /// <summary>
-        /// A read only API to access data of the data source {view.Name}
-        /// </summary>
-	    public interface I{view.Name}Repository : IReadOnlyRepository<Models.Concrete.{view.Name}>
-	    {{
+            const string template =
+@"
             /// <summary>
-            /// Get a new query context to query the data source
+            /// A read only API to access data of the data source {{name}}
             /// </summary>
-            /// <returns>A query context</returns>
-		    I{view.Name}QueryContext Get();
-	    }}");
-            return E();
+            public interface I{{name}}Repository : IReadOnlyRepository<Models.Concrete.{{name}}>
+            {
+                /// <summary>
+                /// Get a new query context to query the data source
+                /// </summary>
+                /// <returns>A query context</returns>
+		        I{{name}}QueryContext Get();
+            }
+";
+            return Process(nameof(IRepositoryTemplate) + "View", template, new
+            {
+                name = view.Name,
+            });
         }
     }
 }

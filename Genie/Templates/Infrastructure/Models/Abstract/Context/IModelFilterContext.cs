@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Genie.Core.Base.Generating;
 using Genie.Core.Models.Abstract;
 
 #endregion
@@ -23,66 +21,50 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 
         public override string Generate()
         {
-            var props = new StringBuilder();
-            foreach (var atd in _attributes)
+
+            const string template =
+@"
+                /// <summary>
+                /// Helps to build filters for queries on the data source {{name}}
+                /// </summary>
+  	            public interface I{{name}}FilterContext : IFilterContext
+	            {
+{% for atd in attributes %}
+		            /// <summary>{{atd.commentStr}}
+		            ///  Apply filters on {{atd.Name}} attribute . these filters will be preserved within entire query context
+		            /// </summary>
+{% if atd.DataType == 'string' %}
+                    IStringFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
+{% endif %}
+{% if atd.DataType contains 'int' or atd.DataType contains 'double' or atd.DataType contains 'decimal' or atd.DataType contains 'long' %}
+                    INumberFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
+{% endif %}
+{% if atd.DataType contains 'DateTime'%}
+                    IDateFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
+{% endif %}
+{% if atd.DataType contains 'bool'%}
+                    IBoolFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
+{% endif %}
+{% endfor %}
+
+                    /// <summary>
+                    /// Start Parenthesizes
+                    /// </summary>
+                    I{{name}}FilterContext {{startName}} { get; }
+
+                    /// <summary>
+                    /// Start Parenthesizes
+                    /// </summary>
+                    I{{name}}FilterContext {{endName}} { get; }
+                }
+";
+            return Process(nameof(IModelFilterContextTemplate), template, new
             {
-                props.AppendLine();
-                var atdComment = !string.IsNullOrWhiteSpace(atd.Comment);
-                var commentStr = atdComment
-                    ? $@"
-        /// <para>{atd.Comment}</para>"
-                    : "";
-                props.AppendLine($@"		/// <summary>{commentStr}
-		///  Apply filters on {atd.Name} attribute . these filters will be preserved within entire query context
-		/// </summary>");
-
-                if (atd.DataType == "string")
-                    props.AppendLine(
-                        $@"	    IStringFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
-");
-                else if (atd.DataType == "int" || atd.DataType == "int?" || atd.DataType == "double" ||
-                         atd.DataType == "double?" || atd.DataType == "decimal" || atd.DataType == "decimal?" ||
-                         atd.DataType == "long" || atd.DataType == "long?")
-                    props.AppendLine(
-                        $@"		INumberFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
-");
-                else if (atd.DataType == "DateTime" || atd.DataType == "DateTime?")
-                    props.AppendLine(
-                        $@"	    IDateFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
-");
-                else if (atd.DataType == "bool" || atd.DataType == "bool?")
-                    props.AppendLine(
-                        $@"	    IBoolFilter<I{_name}FilterContext,I{_name}QueryContext> {atd.Name} {{ get; }}
-");
-            }
-
-            var startName = _attributes.Any(a => a.Name == "Start") ? "StartScope" : "Start";
-            var endName = _attributes.Any(a => a.Name == "End") ? "EndScope" : "End";
-
-            L($@"
-
-    /// <summary>
-    /// Helps to build filters for queries on the data source {_name}
-    /// </summary>
-  	public interface I{_name}FilterContext : IFilterContext
-	{{
-
-{props}
-
-        /// <summary>
-        /// Start Parenthesizes
-        /// </summary>
-        I{_name}FilterContext {startName} {{ get; }}
-
-        /// <summary>
-        /// Start Parenthesizes
-        /// </summary>
-        I{_name}FilterContext {endName} {{ get; }}
-
-    }}
-");
-
-            return E();
+                name = _name,
+                attributes = _attributes,
+                startName = _attributes.Any(a => a.Name == "Start") ? "StartScope" : "Start",
+                endName = _attributes.Any(a => a.Name == "End") ? "EndScope" : "End"
+            });
         }
     }
 }

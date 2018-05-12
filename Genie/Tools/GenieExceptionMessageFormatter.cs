@@ -24,9 +24,9 @@ namespace Genie.Core.Tools
 
             return new StringBuilder(messageTemplate)
                 .Replace("$baseMessage$", baseMessage ?? "")
-                .Replace("$exceptionMessage$", exception.Message ?? "")
+                .Replace("$exceptionMessage$", exception?.Message ?? "")
                 .Replace("$exceptionTrace$",
-                    exception.Source.Replace(Environment.NewLine, "\t\t" + Environment.NewLine))
+                    exception?.Source?.Replace(Environment.NewLine, "\t\t" + Environment.NewLine) ?? "")
                 .ToString();
         }
     }

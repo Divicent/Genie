@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using DotLiquid;
 using Genie.Core.Base.Configuration.Abstract;
 using Genie.Core.Base.Exceptions;
 
@@ -15,14 +16,8 @@ namespace Genie.Core.Base.Configuration.Concrete
     /// <summary>
     ///     Contains configurations that are need to do the data access layer generation
     /// </summary>
-    public class GenieConfiguration : IConfiguration
+    public class GenieConfiguration : IConfiguration, ILiquidizable
     {
-       // private readonly IVersionManager _versionManager;
-
-//        public GenieConfiguration(IVersionManager versionManager)
-//        {
-//          //  _versionManager = versionManager;
-//        }
 
         public string ConnectionString { get; set; }
         public string ProjectPath { get; set; }
@@ -84,7 +79,24 @@ namespace Genie.Core.Base.Configuration.Concrete
 
         public void Setup()
         {
-            // GenieVersion = _versionManager.GetCurrentVersion();
+        }
+
+        public object ToLiquid()
+        {
+            return new
+            {
+                ConnectionString,
+                ProjectPath,
+                BaseNamespace,
+                Enums,
+                DBMS,
+                Schema,
+                ProjectFile,
+                AbstractModelsNamespace,
+                AbstractModelsLocation,
+                AbstractModelsEnabled,
+                GenieVersion,
+            };
         }
     }
 }
