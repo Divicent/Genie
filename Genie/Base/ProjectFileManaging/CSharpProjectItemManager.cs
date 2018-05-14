@@ -213,7 +213,7 @@ namespace Genie.Core.Base.ProjectFileManaging
                             {
                                 XmlHelper.Save(packageDoc, packageFile);
                             }
-                            output.WriteWarning($"Please run 'Install-Package Genie.Core {GenieCoreVersion}' on the target library if you have not installed the package.");
+                            output.WriteWarning($"Please run 'Install-Package Genie.Core -Version {GenieCoreVersion}' on the target library if you have not installed the package.");
                         }
                         catch (Exception)
                         {
