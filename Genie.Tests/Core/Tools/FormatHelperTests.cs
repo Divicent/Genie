@@ -1,8 +1,6 @@
 using Genie.Core.Base.Configuration.Concrete;
-using Genie.Core.Base.Versioning.Abstract;
 using Genie.Core.Models.Abstract;
 using Genie.Core.Tools;
-using Moq;
 using Xunit;
 
 namespace Genie.Tests.Core.Tools
@@ -12,23 +10,23 @@ namespace Genie.Tests.Core.Tools
         private ITemplatePartsContainer GetContainer(string dbms)
         {
             return FormatHelper.GetDbmsSpecificTemplatePartsContainer(
-                new GenieConfiguration() {DBMS = dbms});
+                new GenieConfiguration {DBMS = dbms});
         }
 
         [Fact]
         public void Tools_FormatHelper_Quoter_MSSQL()
         {
             var quoter = FormatHelper.GetDbmsSpecificQuoter(
-                new GenieConfiguration() {DBMS = "mssql"});
-            Assert.Equal(quoter("a"), "[a]");
+                new GenieConfiguration {DBMS = "mssql"});
+            Assert.Equal("[a]", quoter("a"));
         }
 
         [Fact]
         public void Tools_FormatHelper_Quoter_MySQL()
         {
             var quoter = FormatHelper.GetDbmsSpecificQuoter(
-                new GenieConfiguration() {DBMS = "mysql"});
-            Assert.Equal(quoter("a"), "`a`");
+                new GenieConfiguration {DBMS = "mysql"});
+            Assert.Equal("`a`", quoter("a"));
         }
 
         [Fact]
@@ -42,14 +40,14 @@ namespace Genie.Tests.Core.Tools
         public void Tools_FormatHelper_TemplateParts_ProcedureCallString_MSSQL()
         {
             var parts = GetContainer("mssql");
-            Assert.Equal(parts.StoredProcedureCallString, "EXEC");
+            Assert.Equal("EXEC", parts.StoredProcedureCallString);
         }
 
         [Fact]
         public void Tools_FormatHelper_TemplateParts_ProcedureCallString_MySql()
         {
             var parts = GetContainer("mysql");
-            Assert.Equal(parts.StoredProcedureCallString, "CALL");
+            Assert.Equal("CALL", parts.StoredProcedureCallString);
         }
 
 
@@ -71,14 +69,14 @@ namespace Genie.Tests.Core.Tools
         public void Tools_FormatHelper_TemplateParts_SlqClientNamespace_MSSQL()
         {
             var parts = GetContainer("mssql");
-            Assert.Equal(parts.SqlClientNamespace, "System.Data.SqlClient");
+            Assert.Equal("System.Data.SqlClient", parts.SqlClientNamespace);
         }
 
         [Fact]
         public void Tools_FormatHelper_TemplateParts_SlqClientNamespace_MySql()
         {
             var parts = GetContainer("mysql");
-            Assert.Equal(parts.SqlClientNamespace, "MySql.Data.MySqlClient");
+            Assert.Equal("MySql.Data.MySqlClient", parts.SqlClientNamespace);
         }
 
 
@@ -101,14 +99,14 @@ namespace Genie.Tests.Core.Tools
         public void Tools_FormatHelper_TemplateParts_SqlClassName_MSSQL()
         {
             var parts = GetContainer("mssql");
-            Assert.Equal(parts.SqlConnectionClassName, "SqlConnection");
+            Assert.Equal("SqlConnection", parts.SqlConnectionClassName);
         }
 
         [Fact]
         public void Tools_FormatHelper_TemplateParts_SqlClassName_MySql()
         {
             var parts = GetContainer("mysql");
-            Assert.Equal(parts.SqlConnectionClassName, "MySqlConnection");
+            Assert.Equal("MySqlConnection", parts.SqlConnectionClassName);
         }
 
 
