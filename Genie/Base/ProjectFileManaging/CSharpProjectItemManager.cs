@@ -19,7 +19,7 @@ namespace Genie.Core.Base.ProjectFileManaging
     /// </summary>
     internal static class CSharpProjectItemManager
     {
-        private const string GenieCoreVersion = "1.0.1";
+        private const string GenieCoreVersion = "1.0.2";
 
 
         /// <summary>
