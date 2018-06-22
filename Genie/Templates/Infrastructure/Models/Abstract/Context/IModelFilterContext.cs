@@ -42,6 +42,9 @@ namespace Genie.Core.Templates.Infrastructure.Models.Abstract.Context
 {% if atd.DataType contains 'DateTime'%}
                     IDateFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
 {% endif %}
+{% if atd.DataType contains 'TimeSpan'%}
+                    ITimeSpanFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
+{% endif %}
 {% if atd.DataType contains 'bool'%}
                     IBoolFilter<I{{name}}FilterContext,I{{name}}QueryContext> {{atd.Name}} { get; }
 {% endif %}
