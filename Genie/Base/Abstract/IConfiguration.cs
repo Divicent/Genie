@@ -3,7 +3,7 @@
     /// <summary>
     /// Basic configuration for genie
     /// </summary>
-    internal interface IBasicConfiguration: IValidatiableConfiguration
+    internal interface IConfiguration: IValidatiableConfiguration
     {
         /// <summary>
         /// Open able , accessible connection string to the target database 

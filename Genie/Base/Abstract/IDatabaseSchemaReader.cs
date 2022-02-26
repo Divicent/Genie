@@ -10,6 +10,6 @@
         /// Reads the database and provides the schema of the database
         /// </summary>
         /// <returns></returns>
-        IDatabaseSchema Read(IBasicConfiguration configuration, IProcessOutput output);
+        IDatabaseSchema Read(IConfiguration configuration, IProcessOutput output);
     }
 }

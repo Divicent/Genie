@@ -15,6 +15,6 @@ namespace Genie.Base.Abstract
         /// <param name="schema">schema to use</param>
         /// <param name="configuration">basic configuration to use</param>
         /// <returns>list of files</returns>
-        List<IContentFile> Generate(IDatabaseSchema schema, IBasicConfiguration configuration);
+        List<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration);
     }
 }

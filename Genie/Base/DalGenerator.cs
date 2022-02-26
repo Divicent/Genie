@@ -23,7 +23,7 @@ namespace Genie.Base
 {
     internal class DalGenerator : IDalGenerator
     {
-        public List<IContentFile> Generate(IDatabaseSchema schema, IBasicConfiguration configuration, IProcessOutput output)
+        public List<IContentFile> Generate(IDatabaseSchema schema, IConfiguration configuration, IProcessOutput output)
         {
 
             output.WriteInformation("Generating files.");

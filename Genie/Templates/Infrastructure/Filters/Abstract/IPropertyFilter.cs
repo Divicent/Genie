@@ -52,9 +52,7 @@ namespace Genie.Templates.Infrastructure.Filters.Abstract
         /// </summary>
         object Value { get; set; }
     }
-}
-
-");
+}");
             return this.GenerationEnvironment.ToString();
         }
     }
